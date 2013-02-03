@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>Google Translate CLI by soimort</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Google Translate CLI</h1>
+        <h2>Google Translate to serve as a command line tool</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/soimort/google-translate-cli/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/soimort/google-translate-cli/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/soimort/google-translate-cli" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>Google Translate to serve as a command line tool</h1>
+
+<p><a href="https://github.com/soimort/google-translate-cli">google-translate-cli</a> is a 100-line AWK program to let you use Google Translate without a web browser, i.e., from the terminal.</p>
+
+<pre><code>$ translate {en=zh} "You want me to spoon-feed it to you? This is so f*cking easy to use."
+你要我用汤匙喂到你吗？这是那么他妈的容易使用。
+</code></pre>
+
+<h2>Dependencies</h2>
+
+<p>All you need is <a href="http://www.gnu.org/software/gawk/">GNU awk</a> (3.1+) to run this program. No Google API Key is required.</p>
+
+<h2>Installation</h2>
+
+<pre><code>$ git clone git://github.com/soimort/google-translate-cli.git
+$ cd google-translate-cli/
+$ make install
+</code></pre>
+
+<h2>Usage</h2>
+
+<pre><code>$ trs
+Usage: translate {[SL]=[TL]} TEXT|TEXT_FILENAME
+       translate {[SL]=[TL1]+[TL2]+...} TEXT|TEXT_FILENAME
+       translate TEXT1 TEXT2 ...
+
+TEXT: Source text (The text to be translated)
+      Can also be the filename of a plain text file.
+  SL: Source language (The language of the source text)
+  TL: Target language (The language to translate the source text into)
+      Language codes as listed here:
+    * http://developers.google.com/translate/v2/using_rest#language-params
+      Ignore the code where you want the system to identify it for you.
+      Prefix the code with an ampersat @ to show the result phonetically.
+</code></pre>
+
+<h2>Examples</h2>
+
+<p>Translate anything of any language into English.</p>
+
+<pre><code>$ trs Weltschmerz
+world-weariness
+
+$ trs Weltschmerz コスプレ "Bon appétit." 周星馳
+world-weariness
+Cosplay
+Good appetite.
+Stephen Chow
+</code></pre>
+
+<p>Translate "Hello, world" into Esperanto.</p>
+
+<pre><code>$ trs {=eo} "Hello, world"
+Saluton, mondo
+</code></pre>
+
+<p>Translate "Hello, world" into Chinese, Japanese, Korean and Thai.</p>
+
+<pre><code>$ trs {=zh+ja+ko+th} "Hello, world"
+您好，世界
+世界よこんにちは
+안녕하세요, 세계
+สวัสดีโลก
+</code></pre>
+
+<p>Translate a Latin phrase into English.</p>
+
+<pre><code>$ trs {la=} "Ego sum qui sum."
+I am who I am.
+</code></pre>
+
+<p>Translate Japanese to French.</p>
+
+<pre><code>$ trs {ja=fr} "愛してる。"
+Je t'aime!
+</code></pre>
+
+<p>Show the phonetics of a Japanese quote and translate it into both English and Traditional Chinese.</p>
+
+<pre><code>$ trs {ja=@ja+en+zh-TW} "あなたは死なないわ、私が守るもの。"
+Anata wa shinanai wa, watashi ga mamoru mono. 
+What you'll not die, I will protect you.
+你會不會死，我會保護你。
+</code></pre>
+
+<p>Translate an English context text file into Chinese.</p>
+
+<p>e.g. <code>POETRY.txt</code>:</p>
+
+<pre><code>Afternoon Of Circus And Citadel
+by Paul Celan
+
+In Brest, before the Fire-Hoops burning,
+In the Tent, where Tigers sprang,
+there I heard you, Finite, singing,
+there I saw you, Mandelstam.
+
+The Sky hung over the Roadstead,
+the Gull, hung over the Crane.
+The Finite sang there, the Constant –
+you, the Gunboat, Baobab.
+
+I hailed the Tricolor
+with a Russian Word –
+the Lost was Un-Lost,
+the Heart Anchored there.
+</code></pre>
+
+<p>The translation is streamed to standard output.</p>
+
+<pre><code>$ trs {=zh} POETRY.txt
+下午，广场和城堡
+由保罗·策兰
+
+在布雷斯特，消防篮球燃烧前，
+在帐篷里，老虎窜出，
+在那里，我听到你的，有限的，唱歌，
+在那里，我看到你，曼德尔施塔姆。
+
+挂在天空的锚地，
+沙鸥，挂在起重机上。
+有限唱在那里，恒 - 
+你，的炮舰，猴面包树。
+
+我欢呼三色旗
+与俄罗斯词 - 
+失落的是联合国忘了，
+心锚。
+</code></pre>
+
+<h2>Language Code Reference</h2>
+
+<p>See <a href="https://developers.google.com/translate/v2/using_rest#language-params">https://developers.google.com/translate/v2/using_rest#language-params</a>.</p>
+
+<h2>Important Notes</h2>
+
+<ul>
+<li><p>Be careful with shell special characters. In most cases, putting them inside a pair of <strong><em>single quotation marks</em></strong> is safe.</p></li>
+<li>
+<p>You may NOT use exclamation marks <code>!</code> (<a href="http://www.gnu.org/software/bash/manual/html_node/Double-Quotes.html">as well as</a> <code>$</code>, <code>`</code> and <code>\</code>) inside <em>double quotes</em> without escaping them; the shell will complain.<br>
+Here is an example (non-working):</p>
+
+<p><code>$ trs {=de} "Damn it! I'm not working!"</code></p>
+
+<p>Instead, you use:</p>
+
+<p><code>$ trs {=de} "Bazinga\! I'm working now\!"</code></p>
+</li>
+<li><p>You should NOT be using <code>[</code> nor <code>]</code> on any occasions.</p></li>
+<li><p>Don't get one source text too long (and when reading from a text file, don't get one line too long). The query string is encoded into URIs and overlength may lead to unexpected lost.</p></li>
+</ul><h2>Additional Tips for Vim Users</h2>
+
+<p>Add a line to your <code>~/.vimrc</code> (feel free to use any language codes as you like):</p>
+
+<pre><code>set keywordprg=trs\ {ja=@ja+en}
+</code></pre>
+
+<p>Afterwards you could press <code>Shift-K</code> to see the translation of the word under the cursor:</p>
+
+<p><img src="http://i.imgur.com/xyQJzaI.png" alt=""></p>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
