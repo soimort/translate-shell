@@ -126,7 +126,7 @@ See <https://developers.google.com/translate/v2/using_rest#language-params>.
 
 * Be careful with shell special characters. In most cases, putting them inside a pair of ___single quotation marks___ is safe.
 
-* You may NOT use exclamation marks '`!`' ([as well as](http://www.gnu.org/software/bash/manual/html_node/Double-Quotes.html) '`$`', '\`' and '`\`') inside _double quotes_ without escaping them; the shell will complain.  
+* You may NOT use exclamation marks `!` ([as well as](http://www.gnu.org/software/bash/manual/html_node/Double-Quotes.html) `$`, <code>&#96;</code> and `\`) inside _double quotes_ without escaping them; the shell will complain.  
 Here is an example (non-working):
 
     `$ trs {=de} "Damn it! I'm not working!"`
@@ -135,7 +135,7 @@ Here is an example (non-working):
 
     `$ trs {=de} "Bazinga\! I'm working now\!"`
 
-* You should NOT be using '`[`' nor '`]`' on any occasions.
+* You should NOT be using `[` nor `]` on any occasions.
 
 * Don't get one source text too long (and when reading from a text file, don't get one line too long). The query string is encoded into URIs and overlength may lead to unexpected lost.
 
