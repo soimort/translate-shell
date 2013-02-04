@@ -141,10 +141,10 @@ Here is an example (non-working):
 
 ## Additional Tips for Vim Users
 
-Add a line to your `~/.vimrc` (feel free to use any language codes as you like):
+Add a line to your `~/.vimrc`: (feel free to use any language codes as you like)
 
     set keywordprg=trs\ {ja=@ja+en}
 
-Afterwards you could press `Shift-K` to see the translation of the word under the cursor:
+Afterwards you could press `Shift-K` to see the translation of the word under the cursor.
 
-![](http://i.imgur.com/xyQJzaI.png)
+![](http://i.imgur.com/OK2UYyn.gif)
