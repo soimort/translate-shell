@@ -1,5 +1,7 @@
 # Google Translate to serve as a command line tool
 
+[![Build Status](https://travis-ci.org/soimort/google-translate-cli.png?branch=master)](https://travis-ci.org/soimort/google-translate-cli)
+
 [google-translate-cli](https://github.com/soimort/google-translate-cli) is a 100-line AWK program to let you use Google Translate without a web browser, i.e., from the terminal.
 
     $ translate {en=zh} "You want me to spoon-feed it to you? This is so f*cking easy to use."
@@ -11,9 +13,29 @@ All you need is [GNU awk](http://www.gnu.org/software/gawk/) (3.1+) to run this 
 
 ## Installation
 
+### GNU/Linux, Windows (Cygwin)
+
     $ git clone git://github.com/soimort/google-translate-cli.git
     $ cd google-translate-cli/
     $ make install
+
+### OS X, FreeBSD
+
+Firstly, install GNU awk from ports (if necessary). The original BSD awk will not work.
+
+    $ git clone git://github.com/soimort/google-translate-cli.git
+    $ cd google-translate-cli/
+    $ make install
+
+### Windows (MinGW)
+
+Firstly, install GNU awk from `mingw-get` (if necessary):
+
+    $ mingw-get install msys-gawk
+
+    $ git clone git://github.com/soimort/google-translate-cli.git
+    $ cd google-translate-cli/
+    $ cp translate.awk /bin/trs
 
 ## Usage
 
