@@ -9,3 +9,6 @@ install:
 uninstall:
 	@sudo rm /usr/bin/translate /usr/bin/trs \
 	&& echo "Successfully uninstalled."
+
+test:
+	[ `./translate {ja=@ja} 忍者` = 'Ninja' ]
