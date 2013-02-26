@@ -1,1 +1,4 @@
+before_install:
+ - sudo apt-get install -qq gawk
+
 script: make test
