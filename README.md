@@ -13,25 +13,41 @@ All you need is [GNU awk](http://www.gnu.org/software/gawk/) (3.1+) to run this 
 
 ## Installation
 
-### GNU/Linux, Windows (Cygwin)
+### Manually
+
+`translate.awk` is a runnable AWK script. Feel free to copy it to anywhere in your `$PATH` and rename it whatever you like.
+
+On Mac OS X and FreeBSD, you may want to change the shebang from:
+
+    #!/usr/bin/gawk -f
+
+to:
+
+    #!/usr/bin/env gawk -f
+
+### Automatically
+
+#### GNU/Linux, Windows (Cygwin)
 
     $ git clone git://github.com/soimort/google-translate-cli.git
     $ cd google-translate-cli/
     $ make install
 
-### OS X, FreeBSD
+#### OS X, FreeBSD
 
-Firstly, install GNU awk from ports (if necessary). The original BSD awk will not work.
+Firstly, install GNU awk (if necessary). The original BSD awk will not work.
 
     $ git clone git://github.com/soimort/google-translate-cli.git
     $ cd google-translate-cli/
     $ make install
 
-### Windows (MinGW)
+#### Windows (MinGW)
 
-Firstly, install GNU awk from `mingw-get` (if necessary):
+Firstly, install GNU awk (if necessary),
 
     $ mingw-get install msys-gawk
+
+Then put `translate.awk` into your `$PATH`,
 
     $ git clone git://github.com/soimort/google-translate-cli.git
     $ cd google-translate-cli/
