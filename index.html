@@ -46,29 +46,48 @@
 
 <h2>Installation</h2>
 
-<h3>GNU/Linux, Windows (Cygwin)</h3>
+<h3>Manually</h3>
+
+<p><code>translate.awk</code> is a runnable AWK script. Feel free to copy it to anywhere in your <code>$PATH</code> and rename it whatever you like.</p>
+
+<p>On Mac OS X and FreeBSD, you may want to change the shebang from:</p>
+
+<pre><code>#!/usr/bin/gawk -f
+</code></pre>
+
+<p>to:</p>
+
+<pre><code>#!/usr/bin/env gawk -f
+</code></pre>
+
+<h3>Automatically</h3>
+
+<h4>GNU/Linux, Windows (Cygwin)</h4>
 
 <pre><code>$ git clone git://github.com/soimort/google-translate-cli.git
 $ cd google-translate-cli/
 $ make install
 </code></pre>
 
-<h3>OS X, FreeBSD</h3>
+<h4>OS X, FreeBSD</h4>
 
-<p>Firstly, install GNU awk from ports (if necessary). The original BSD awk will not work.</p>
+<p>Firstly, install GNU awk (if necessary). The original BSD awk will not work.</p>
 
 <pre><code>$ git clone git://github.com/soimort/google-translate-cli.git
 $ cd google-translate-cli/
 $ make install
 </code></pre>
 
-<h3>Windows (MinGW)</h3>
+<h4>Windows (MinGW)</h4>
 
-<p>Firstly, install GNU awk from <code>mingw-get</code> (if necessary):</p>
+<p>Firstly, install GNU awk (if necessary),</p>
 
 <pre><code>$ mingw-get install msys-gawk
+</code></pre>
 
-$ git clone git://github.com/soimort/google-translate-cli.git
+<p>Then put <code>translate.awk</code> into your <code>$PATH</code>,</p>
+
+<pre><code>$ git clone git://github.com/soimort/google-translate-cli.git
 $ cd google-translate-cli/
 $ cp translate.awk /bin/trs
 </code></pre>
