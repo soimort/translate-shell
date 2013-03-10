@@ -4,8 +4,8 @@
 
 [google-translate-cli](https://github.com/soimort/google-translate-cli) is a 100-line AWK program to let you use Google Translate without a web browser, i.e., from the terminal.
 
-    $ translate {en=zh} "You want me to spoon-feed it to you? This is so f*cking easy to use."
-    你要我用汤匙喂到你吗？这是那么他妈的容易使用。
+    $ translate 成都是个好地方，我每年都要去玩，一定要建设好成都
+    Chengdu is a good place, and every year I play, we must build Chengdu
 
 ## Dependencies
 
