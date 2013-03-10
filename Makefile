@@ -11,4 +11,8 @@ uninstall:
 	&& echo "Successfully uninstalled."
 
 test:
-	[ `./translate {ja=@ja} 忍者` = 'Ninja' ]
+	[ `./translate 忍者` = 'Ninja' ] \
+	&& [ `./translate {zh=} 忍者` = 'Ninja' ] \
+	&& [ `./translate {=fr} 忍者` = 'Ninja' ] \
+	&& [ `./translate {ja=@ja} 忍者` = 'Ninja' ] \
+	&& [ `./translate {zh=ja} 忍者` = '忍者' ]
