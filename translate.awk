@@ -40,7 +40,7 @@ BEGIN {
     while (ARGV[++text_p]) {
         $0 = ""
         getline < ARGV[text_p]
-        if (NF) #if ($0 != "")
+        if (NF)
             split($0, texts)
         else
             split(ARGV[text_p], texts)
