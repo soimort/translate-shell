@@ -33,9 +33,9 @@ to:
     $ cd google-translate-cli/
     $ make install
 
-#### OS X, FreeBSD
+#### OS X, FreeBSD, NetBSD, OpenBSD
 
-Firstly, install GNU awk (if necessary). The original BSD awk will not work.
+Firstly, install GNU awk (if necessary). The original BWK awk ("One True AWK") will not work (since it's lack of TCP/IP networking functionality).
 
     $ git clone git://github.com/soimort/google-translate-cli.git
     $ cd google-translate-cli/
