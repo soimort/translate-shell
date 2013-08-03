@@ -59,17 +59,13 @@ BEGIN {
                     "&sl=" sl "&tl=" tl "&text=" text
                 
                 print "GET " url |& httpService
-                hasContent = 0
-                while ((httpService |& getline) > 0) {
-                    if (hasContent) content = $0
-                    else if ($0 == "") hasContent = 1
-                }
+                while ((httpService |& getline) > 0)
+                    content = $0
                 close(httpService)
                 
                 translation = phonetics = ""
                 match(content, /\]\]/)
                 s0 = substr(content, 3, RSTART - 2)
-                
                 while (s0 != "") {
                     match(s0, /\[[^\]]*\]/)
                     t0 = substr(s0, RSTART + 1, RLENGTH - 2)
