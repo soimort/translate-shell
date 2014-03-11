@@ -1,3 +1,6 @@
 #!/bin/sh
 
-gawk -f translate.awk "$@"
+BIN_PATH=$(readlink -f "$0")
+BIN_DIR=$(dirname "$BIN_PATH")
+
+gawk -f $BIN_DIR/translate.awk "$@"
