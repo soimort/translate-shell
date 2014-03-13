@@ -21,14 +21,14 @@ BEGIN {
     percentEncoding["\""]      = "%22"
     percentEncoding["&"]       = "%26"
     
-    match(ARGV[1], /{.*=.*}/)
+    match(ARGV[1], /^[a-z]*=[a-z\+]*$/)
     if (RSTART) {
-        match(ARGV[1], /{.*=/)
-        sl = substr(ARGV[1], RSTART + 1, RLENGTH - 2)
+        match(ARGV[1], /^.*=/)
+        sl = substr(ARGV[1], RSTART, RLENGTH - 1)
         if (sl == "") sl = "auto"
         
-        match(ARGV[1], /=.*}/)
-        split(substr(ARGV[1], RSTART + 1, RLENGTH - 2), tls, "+")
+        match(ARGV[1], /=.*$/)
+        split(substr(ARGV[1], RSTART + 1, RLENGTH), tls, "+")
         if (length(tls) == 0) tls[1] = ""
         
         text_p = 1
