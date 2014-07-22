@@ -48,21 +48,11 @@ BEGIN {
     urlEncoding["\""] = "%22"
     urlEncoding["&"]  = "%26"
 
-    match(ARGV[1], /{.*=.*}/)
-    if (RSTART) {
-        match(ARGV[1], /{.*=/)
-        sl = substr(ARGV[1], RSTART + 1, RLENGTH - 2)
-        if (sl == "") sl = "auto"
-
-        match(ARGV[1], /=.*}/)
-        split(substr(ARGV[1], RSTART + 1, RLENGTH - 2), tls, "+")
-        if (length(tls) == 0) tls[1] = ""
-
-        text_p = 1
-    } else {
-        sl = tls[1] = "auto"
-        text_p = 0
-    }
+    match(ARGV[1], /^[{([]?([a-z][a-z](-[A-Z][A-Z])?)?=((@?[a-z][a-z](-[A-Z][A-Z])?\+)*(@?[a-z][a-z](-[A-Z][A-Z])?)?)[})\]]?$/, param)
+    text_p = RSTART
+    sl = param[1] == "" ? "auto" : param[2]
+    split(param[3], tls, "+")
+    if (length(tls) == 0) tls[1] = ""
 
     while (ARGV[++text_p]) {
         $0 = ""
