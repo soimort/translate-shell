@@ -51,7 +51,7 @@ BEGIN {
     text_p = (ARGV[1] != "-") ? 1 : 2
     match(ARGV[text_p], /^[{([]?([a-z][a-z](-[A-Z][A-Z])?)?=((@?[a-z][a-z](-[A-Z][A-Z])?\+)*(@?[a-z][a-z](-[A-Z][A-Z])?)?)[})\]]?$/, param)
     text_p = text_p - 1 + RSTART
-    sl = param[1] == "" ? "auto" : param[2]
+    sl = param[1] == "" ? "auto" : param[1]
     split(param[3], tls, "+")
     if (length(tls) == 0) tls[1] = ""
 
