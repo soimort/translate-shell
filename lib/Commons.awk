@@ -29,3 +29,44 @@ function matchesAny(string, patterns,
         if (string ~ "^" patterns[i]) return patterns[i]
     return ""
 }
+
+# Join an array into one string;
+# Return the string.
+function join(array, separator, sortedIn,
+              ####
+              i, j, saveSortedIn, temp) {
+    # Default parameters
+    if (!separator)
+        separator = " "
+    if (!sortedIn)
+        sortedIn = "@ind_num_asc"
+
+    temp = ""
+    j = 0
+    saveSortedIn = PROCINFO["sorted_in"]
+    PROCINFO["sorted_in"] = sortedIn
+    for (i in array)
+        temp = j++ ? temp separator array[i] : array[i]
+    PROCINFO["sorted_in"] = saveSortedIn
+
+    return temp
+}
+
+# Debug an array.
+function da(array, formatString, sortedIn,
+                ####
+                i, j, saveSortedIn) {
+    # Default parameters
+    if (!formatString)
+        formatString = "_[%s]='%s'"
+    if (!sortedIn)
+        sortedIn = "@ind_num_asc"
+
+    saveSortedIn = PROCINFO["sorted_in"]
+    PROCINFO["sorted_in"] = sortedIn
+    for (i in array) {
+        split(i, j, SUBSEP)
+        d(sprintf(formatString, join(j, ","), array[i]))
+    }
+    PROCINFO["sorted_in"] = saveSortedIn
+}
