@@ -1,5 +1,10 @@
 #!/usr/bin/gawk -f
 
+# Append an element into an array (zero-based).
+function append(array, element) {
+    array[length(array)] = element
+}
+
 # Return an element if it belongs to the array;
 # Otherwise, return a null string.
 function belongsTo(element, array,
