@@ -94,7 +94,7 @@ function matchesAny(string, patterns,
 
 # Join an array into one string;
 # Return the string.
-function join(array, separator, sortedIn,
+function join(array, separator, sortedIn, preserveNull,
               ####
               i, j, saveSortedIn, temp) {
     # Default parameters
@@ -108,7 +108,8 @@ function join(array, separator, sortedIn,
     saveSortedIn = PROCINFO["sorted_in"]
     PROCINFO["sorted_in"] = sortedIn
     for (i in array)
-        temp = j++ ? temp separator array[i] : array[i]
+        if (preserveNull || array[i])
+            temp = j++ ? temp separator array[i] : array[i]
     PROCINFO["sorted_in"] = saveSortedIn
 
     return temp
