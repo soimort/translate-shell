@@ -1,5 +1,30 @@
 #!/usr/bin/gawk -f
 
+# Convert a literal-formatted string into its original string.
+function literal(string,
+                 ####
+                 c, escaping, i, s) {
+    if (string !~ /^".*"$/)
+        return string
+
+    split(string, s, "")
+    string = ""
+    escaping = 0
+    for (i = 2; i < length(s); i++) {
+        c = s[i]
+        if (escaping) {
+            string = string c
+            escaping = 0 # escape ends
+        } else {
+            if (c == "\\")
+                escaping = 1 # escape begins
+            else
+                string = string c
+        }
+    }
+    return string
+}
+
 # Append an element into an array (zero-based).
 function append(array, element) {
     array[length(array)] = element
