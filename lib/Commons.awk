@@ -5,6 +5,15 @@ function append(array, element) {
     array[length(array)] = element
 }
 
+# Return 1 if the array contains anything; otherwise return 0.
+function anything(array,
+                  ####
+                  i) {
+    for (i in array)
+        if (array[i]) return 1
+    return 0
+}
+
 # Return an element if it belongs to the array;
 # Otherwise, return a null string.
 function belongsTo(element, array,
