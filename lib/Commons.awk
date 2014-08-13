@@ -1,5 +1,28 @@
 #!/usr/bin/gawk -f
 
+# Return the real character represented by an escape sequence.
+# Example: escapeChar("n") returns "\n".
+# See: <https://en.wikipedia.org/wiki/Escape_character>
+#      <https://en.wikipedia.org/wiki/Escape_sequences_in_C>
+function escapeChar(char) {
+    switch (char) {
+    case "b":
+        return "\b" # Backspace
+    case "f":
+        return "\f" # Formfeed
+    case "n":
+        return "\n" # Newline (Line Feed)
+    case "r":
+        return "\r" # Carriage Return
+    case "t":
+        return "\t" # Horizontal Tab
+    case "v":
+        return "\v" # Vertical Tab
+    default:
+        return char
+    }
+}
+
 # Convert a literal-formatted string into its original string.
 function literal(string,
                  ####
@@ -13,7 +36,7 @@ function literal(string,
     for (i = 2; i < length(s); i++) {
         c = s[i]
         if (escaping) {
-            string = string c
+            string = string escapeChar(c)
             escaping = 0 # escape ends
         } else {
             if (c == "\\")
