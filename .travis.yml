@@ -1,0 +1,12 @@
+os:
+  - linux
+  - osx
+
+before_install: |
+  if [ -n "$DEBIAN_FRONTEND" ]; then
+    sudo apt-get install -qq gawk fribidi
+  else
+    brew install gawk fribidi
+  fi
+
+script: true
