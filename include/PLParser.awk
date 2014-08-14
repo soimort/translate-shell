@@ -1,4 +1,6 @@
-#!/usr/bin/gawk -f
+####################################################################
+# PLParser.awk                                                     #
+####################################################################
 
 # Parse a list of tokens and return an AST.
 function plParse(returnAST, tokens,
