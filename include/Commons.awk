@@ -257,3 +257,8 @@ function assert(x, message) {
     else
         e(message)
 }
+
+BEGIN {
+    initUrlEncoding()
+    initAnsiCode()
+}

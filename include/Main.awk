@@ -18,10 +18,6 @@ function initGawk(    group) {
 function init() {
     metainfo()
 
-    # Commons
-    initUrlEncoding()
-    initAnsiCode()
-
     # Main
     initGawk()          #<< AnsiCode
 
