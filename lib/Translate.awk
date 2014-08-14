@@ -207,3 +207,25 @@ function translate(text,
     }
     PROCINFO["sorted_in"] = saveSortedIn
 }
+
+# Read from input and translate each line.
+function translateMain(    i, line) {
+    if (Option["interactive"])
+        prompt()
+
+    i = 0
+    while (getline line < Option["input"]) {
+        # Non-interactive verbose mode: separator between sources
+        if (!Option["interactive"])
+            if (Option["verbose"] && i++ > 0)
+                print replicate("═", Option["width"])
+
+        translate(line)
+
+        # Interactive verbose mode: newline after each translation
+        if (Option["interactive"]) {
+            if (Option["verbose"]) printf "\n"
+            prompt()
+        }
+    }
+}
