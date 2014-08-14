@@ -1,3 +1,8 @@
+####################################################################
+# Commons.awk                                                      #
+#                                                                  #
+# Commonly used functions for string and array operations, logging.#
+####################################################################
 
 # Initialize `UrlEncoding`.
 # See: <https://en.wikipedia.org/wiki/Percent-encoding>
@@ -223,7 +228,7 @@ function d(text) {
     print AnsiCode["gray"] text AnsiCode[0] > "/dev/stderr"
 }
 
-# Debug an array.
+# Log an array.
 function da(array, formatString, sortedIn,
             ####
             i, j, saveSortedIn) {
