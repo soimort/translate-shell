@@ -48,11 +48,6 @@ function literal(string,
     return string
 }
 
-# Append an element into an array (zero-based).
-function append(array, element) {
-    array[length(array)] = element
-}
-
 # Return 1 if the array contains anything; otherwise return 0.
 function anything(array,
                   ####
@@ -60,6 +55,11 @@ function anything(array,
     for (i in array)
         if (array[i]) return 1
     return 0
+}
+
+# Append an element into an array (zero-based).
+function append(array, element) {
+    array[anything(array) ? length(array) : 0] = element
 }
 
 # Return an element if it belongs to the array;
@@ -108,7 +108,7 @@ function join(array, separator, sortedIn, preserveNull,
     saveSortedIn = PROCINFO["sorted_in"]
     PROCINFO["sorted_in"] = sortedIn
     for (i in array)
-        if (preserveNull || array[i])
+        if (preserveNull || array[i] != "")
             temp = j++ ? temp separator array[i] : array[i]
     PROCINFO["sorted_in"] = saveSortedIn
 
