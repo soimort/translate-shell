@@ -1,41 +1,5 @@
 #!/usr/bin/gawk -f
 
-# Initialize ANSI escape codes (ANSI X3.64 Standard Control Sequences).
-# See: <https://en.wikipedia.org/wiki/ANSI_escape_code>
-function initAnsiCode() {
-    # Dumb terminal: no ANSI escape code whatsoever
-    if(ENVIRON["TERM"] == "dumb") return
-
-    AnsiCode["reset"]         = AnsiCode[0] = "\33[0m"
-
-    AnsiCode["bold"]          = "\33[1m"
-    AnsiCode["underline"]     = "\33[4m"
-    AnsiCode["negative"]      = "\33[7m"
-    AnsiCode["no bold"]       = "\33[21m"
-    AnsiCode["no underline"]  = "\33[24m"
-    AnsiCode["positive"]      = "\33[27m"
-
-    AnsiCode["black"]         = "\33[30m"
-    AnsiCode["red"]           = "\33[31m"
-    AnsiCode["green"]         = "\33[32m"
-    AnsiCode["yellow"]        = "\33[33m"
-    AnsiCode["blue"]          = "\33[34m"
-    AnsiCode["magenta"]       = "\33[35m"
-    AnsiCode["cyan"]          = "\33[36m"
-    AnsiCode["gray"]          = "\33[37m"
-
-    AnsiCode["default"]       = "\33[39m"
-
-    AnsiCode["dark gray"]     = "\33[90m"
-    AnsiCode["light red"]     = "\33[91m"
-    AnsiCode["light green"]   = "\33[92m"
-    AnsiCode["light yellow"]  = "\33[93m"
-    AnsiCode["light blue"]    = "\33[94m"
-    AnsiCode["light magenta"] = "\33[95m"
-    AnsiCode["light cyan"]    = "\33[96m"
-    AnsiCode["white"]         = "\33[97m"
-}
-
 # Initialize `UrlEncoding`.
 # See: <https://en.wikipedia.org/wiki/Percent-encoding>
 function initUrlEncoding() {
@@ -207,6 +171,42 @@ function join(array, separator, sortedIn, preserveNull,
     PROCINFO["sorted_in"] = saveSortedIn
 
     return temp
+}
+
+# Initialize ANSI escape codes (ANSI X3.64 Standard Control Sequences).
+# See: <https://en.wikipedia.org/wiki/ANSI_escape_code>
+function initAnsiCode() {
+    # Dumb terminal: no ANSI escape code whatsoever
+    if(ENVIRON["TERM"] == "dumb") return
+
+    AnsiCode["reset"]         = AnsiCode[0] = "\33[0m"
+
+    AnsiCode["bold"]          = "\33[1m"
+    AnsiCode["underline"]     = "\33[4m"
+    AnsiCode["negative"]      = "\33[7m"
+    AnsiCode["no bold"]       = "\33[21m"
+    AnsiCode["no underline"]  = "\33[24m"
+    AnsiCode["positive"]      = "\33[27m"
+
+    AnsiCode["black"]         = "\33[30m"
+    AnsiCode["red"]           = "\33[31m"
+    AnsiCode["green"]         = "\33[32m"
+    AnsiCode["yellow"]        = "\33[33m"
+    AnsiCode["blue"]          = "\33[34m"
+    AnsiCode["magenta"]       = "\33[35m"
+    AnsiCode["cyan"]          = "\33[36m"
+    AnsiCode["gray"]          = "\33[37m"
+
+    AnsiCode["default"]       = "\33[39m"
+
+    AnsiCode["dark gray"]     = "\33[90m"
+    AnsiCode["light red"]     = "\33[91m"
+    AnsiCode["light green"]   = "\33[92m"
+    AnsiCode["light yellow"]  = "\33[93m"
+    AnsiCode["light blue"]    = "\33[94m"
+    AnsiCode["light magenta"] = "\33[95m"
+    AnsiCode["light cyan"]    = "\33[96m"
+    AnsiCode["white"]         = "\33[97m"
 }
 
 # Print warning message.

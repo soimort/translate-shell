@@ -1,7 +1,5 @@
 #!/usr/bin/gawk -f
 
-@include "lib/Commons"
-
 # Tokenize a string.
 function plTokenize(returnTokens, string,
                     delimiters,

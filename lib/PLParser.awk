@@ -1,7 +1,5 @@
 #!/usr/bin/gawk -f
 
-@include "lib/Commons"
-
 # Parse a list of tokens and return an AST.
 function plParse(returnAST, tokens,
                  leftBrackets,

@@ -1,10 +1,5 @@
 #!/usr/bin/gawk -f
 
-@include "lib/Commons"
-@include "lib/Languages"
-@include "lib/PLTokenizer"
-@include "lib/PLParser"
-
 # Detect external audio player (mplayer, mpg123).
 function initAudioPlayer() {
     AudioPlayer = !system("mplayer >/dev/null 2>/dev/null") ?
