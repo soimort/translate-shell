@@ -1,5 +1,41 @@
 #!/usr/bin/gawk -f
 
+# Initialize ANSI escape codes (ANSI X3.64 Standard Control Sequences).
+# See: <https://en.wikipedia.org/wiki/ANSI_escape_code>
+function initAnsiCode() {
+    # Dumb terminal: no ANSI escape code whatsoever
+    if(ENVIRON["TERM"] == "dumb") return
+
+    AnsiCode["reset"]         = AnsiCode[0] = "\33[0m"
+
+    AnsiCode["bold"]          = "\33[1m"
+    AnsiCode["underline"]     = "\33[4m"
+    AnsiCode["negative"]      = "\33[7m"
+    AnsiCode["no bold"]       = "\33[21m"
+    AnsiCode["no underline"]  = "\33[24m"
+    AnsiCode["positive"]      = "\33[27m"
+
+    AnsiCode["black"]         = "\33[30m"
+    AnsiCode["red"]           = "\33[31m"
+    AnsiCode["green"]         = "\33[32m"
+    AnsiCode["yellow"]        = "\33[33m"
+    AnsiCode["blue"]          = "\33[34m"
+    AnsiCode["magenta"]       = "\33[35m"
+    AnsiCode["cyan"]          = "\33[36m"
+    AnsiCode["gray"]          = "\33[37m"
+
+    AnsiCode["default"]       = "\33[39m"
+
+    AnsiCode["dark gray"]     = "\33[90m"
+    AnsiCode["light red"]     = "\33[91m"
+    AnsiCode["light green"]   = "\33[92m"
+    AnsiCode["light yellow"]  = "\33[93m"
+    AnsiCode["light blue"]    = "\33[94m"
+    AnsiCode["light magenta"] = "\33[95m"
+    AnsiCode["light cyan"]    = "\33[96m"
+    AnsiCode["white"]         = "\33[97m"
+}
+
 # Initialize `UrlEncoding`.
 # See: <https://en.wikipedia.org/wiki/Percent-encoding>
 function initUrlEncoding() {
@@ -37,53 +73,6 @@ function initUrlEncoding() {
     UrlEncoding["|"]  = "%7C"
     UrlEncoding["}"]  = "%7D"
     UrlEncoding["~"]  = "%7E"
-}
-
-# Initialize ANSI escape codes (ANSI X3.64 Standard Control Sequences).
-# See: <https://en.wikipedia.org/wiki/ANSI_escape_code>
-function initAnsiCode() {
-    # Dumb terminal: no ANSI escape code whatsoever
-    if(ENVIRON["TERM"] == "dumb") return
-
-    AnsiCode["reset"]         = AnsiCode[0] = "\33[0m"
-
-    AnsiCode["bold"]          = "\33[1m"
-    AnsiCode["underline"]     = "\33[4m"
-    AnsiCode["negative"]      = "\33[7m"
-    AnsiCode["no bold"]       = "\33[21m"
-    AnsiCode["no underline"]  = "\33[24m"
-    AnsiCode["positive"]      = "\33[27m"
-
-    AnsiCode["black"]         = "\33[30m"
-    AnsiCode["red"]           = "\33[31m"
-    AnsiCode["green"]         = "\33[32m"
-    AnsiCode["yellow"]        = "\33[33m"
-    AnsiCode["blue"]          = "\33[34m"
-    AnsiCode["magenta"]       = "\33[35m"
-    AnsiCode["cyan"]          = "\33[36m"
-    AnsiCode["gray"]          = "\33[37m"
-
-    AnsiCode["default"]       = "\33[39m"
-
-    AnsiCode["dark gray"]     = "\33[90m"
-    AnsiCode["light red"]     = "\33[91m"
-    AnsiCode["light green"]   = "\33[92m"
-    AnsiCode["light yellow"]  = "\33[93m"
-    AnsiCode["light blue"]    = "\33[94m"
-    AnsiCode["light magenta"] = "\33[95m"
-    AnsiCode["light cyan"]    = "\33[96m"
-    AnsiCode["white"]         = "\33[97m"
-}
-
-# Naive assertion.
-function assert(x, message) {
-    if (!message)
-        message = "[ERROR] Assertion failed."
-
-    if (x)
-        return x
-    else
-        e(message)
 }
 
 # Return the real character represented by an escape sequence.
@@ -220,10 +209,25 @@ function join(array, separator, sortedIn, preserveNull,
     return temp
 }
 
+# Print warning message.
+function w(text) {
+    print AnsiCode["yellow"] text AnsiCode[0] > "/dev/stderr"
+}
+
+# Print error message.
+function e(text) {
+    print AnsiCode["red"] AnsiCode["bold"] text AnsiCode[0] > "/dev/stderr"
+}
+
+# Print debugging message.
+function d(text) {
+    print AnsiCode["gray"] text AnsiCode[0] > "/dev/stderr"
+}
+
 # Debug an array.
 function da(array, formatString, sortedIn,
-                ####
-                i, j, saveSortedIn) {
+            ####
+            i, j, saveSortedIn) {
     # Default parameters
     if (!formatString)
         formatString = "_[%s]='%s'"
@@ -237,4 +241,15 @@ function da(array, formatString, sortedIn,
         d(sprintf(formatString, join(j, ","), array[i]))
     }
     PROCINFO["sorted_in"] = saveSortedIn
+}
+
+# Naive assertion.
+function assert(x, message) {
+    if (!message)
+        message = "[ERROR] Assertion failed."
+
+    if (x)
+        return x
+    else
+        e(message)
 }
