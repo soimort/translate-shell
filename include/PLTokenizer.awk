@@ -1,4 +1,6 @@
-#!/usr/bin/gawk -f
+####################################################################
+# PLTokenizer.awk                                                  #
+####################################################################
 
 # Tokenize a string.
 function plTokenize(returnTokens, string,
