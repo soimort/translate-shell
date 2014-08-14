@@ -1,5 +1,16 @@
 #!/usr/bin/gawk -f
 
+# Naive assertion.
+function assert(x, message) {
+    if (!message)
+        message = "[ERROR] Assertion failed."
+
+    if (x)
+        return x
+    else
+        e(message)
+}
+
 # Return the real character represented by an escape sequence.
 # Example: escapeChar("n") returns "\n".
 # See: <https://en.wikipedia.org/wiki/Escape_character>
