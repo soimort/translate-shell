@@ -1,5 +1,44 @@
 #!/usr/bin/gawk -f
 
+# Initialize `UrlEncoding`.
+# See: <https://en.wikipedia.org/wiki/Percent-encoding>
+function initUrlEncoding() {
+    UrlEncoding["\n"] = "%0A"
+    UrlEncoding[" "]  = "%20"
+    UrlEncoding["!"]  = "%21"
+    UrlEncoding["\""] = "%22"
+    UrlEncoding["#"]  = "%23"
+    UrlEncoding["$"]  = "%24"
+    UrlEncoding["%"]  = "%25"
+    UrlEncoding["&"]  = "%26"
+    UrlEncoding["'"]  = "%27"
+    UrlEncoding["("]  = "%28"
+    UrlEncoding[")"]  = "%29"
+    UrlEncoding["*"]  = "%2A"
+    UrlEncoding["+"]  = "%2B"
+    UrlEncoding[","]  = "%2C"
+    UrlEncoding["-"]  = "%2D"
+    UrlEncoding["."]  = "%2E"
+    UrlEncoding["/"]  = "%2F"
+    UrlEncoding[":"]  = "%3A"
+    UrlEncoding[";"]  = "%3B"
+    UrlEncoding["<"]  = "%3C"
+    UrlEncoding["="]  = "%3D"
+    UrlEncoding[">"]  = "%3E"
+    UrlEncoding["?"]  = "%3F"
+    UrlEncoding["@"]  = "%40"
+    UrlEncoding["["]  = "%5B"
+    UrlEncoding["\\"] = "%5C"
+    UrlEncoding["]"]  = "%5D"
+    UrlEncoding["^"]  = "%5E"
+    UrlEncoding["_"]  = "%5F"
+    UrlEncoding["`"]  = "%60"
+    UrlEncoding["{"]  = "%7B"
+    UrlEncoding["|"]  = "%7C"
+    UrlEncoding["}"]  = "%7D"
+    UrlEncoding["~"]  = "%7E"
+}
+
 # Naive assertion.
 function assert(x, message) {
     if (!message)
@@ -57,6 +96,15 @@ function literal(string,
         }
     }
     return string
+}
+
+# Return the URL-encoded string.
+function quote(string,    i, r, s) {
+    r = ""
+    split(string, s, "")
+    for (i = 1; i <= length(s); i++)
+        r = r (s[i] in UrlEncoding ? UrlEncoding[s[i]] : s[i])
+    return r
 }
 
 # Replicate a string.
