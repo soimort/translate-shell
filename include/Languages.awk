@@ -1,3 +1,6 @@
+####################################################################
+# Languages.awk                                                    #
+####################################################################
 
 # Initialize all supported locales.
 # Mostly ISO 639-1 codes, with a few ISO 639-2 codes (alpha-3).
