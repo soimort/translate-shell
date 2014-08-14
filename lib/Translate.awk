@@ -166,7 +166,7 @@ function getTranslation(text, sl, tl, hl,
 # Translate the source text (into all target languages).
 function translate(text,
                    ####
-                   i, j, playlist) {
+                   i, j, playlist, saveSortedIn) {
 
     if (!getCode(Option["hl"])) {
         # Check if home language is supported
@@ -187,15 +187,13 @@ function translate(text,
             w("[WARNING] " Locale[getCode(Option["sl"])]["name"] " is a right-to-left language, but GNU FriBidi is not found on your system.\nText might be displayed incorrectly.")
     }
 
+    saveSortedIn = PROCINFO["sorted_in"]
+    PROCINFO["sorted_in"] = "@ind_num_asc"
     for (i in Option["tl"]) {
-        # Non-interactive verbose mode: separator between translations
-        if (!Option["interactive"]) {
-            # Separator for multiple targets
-            if (i > 1) {
-                for (j = 0; j < Option["width"]; j++) printf "─"
-                printf "\n"
-            }
-        }
+        # Non-interactive verbose mode: separator between targets
+        if (!Option["interactive"])
+            if (Option["verbose"] && i > 1)
+                print replicate("─", Option["width"])
 
         print getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist) > Option["output"]
 
@@ -207,4 +205,5 @@ function translate(text,
                 for (j in playlist)
                     print playlist[j]["text"] | SpeechSynthesizer
     }
+    PROCINFO["sorted_in"] = saveSortedIn
 }
