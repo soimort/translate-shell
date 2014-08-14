@@ -20,7 +20,7 @@ function getTranslation(text, sl, tl, hl,
     if (!getCode(tl)) {
         # Check if target language is supported
         w("[WARNING] Unknown target language code: " tl)
-    } else if (rtl = Locale[getCode(tl)]["rtl"]) {
+    } else if (getCode(tl) != "auto" && rtl = Locale[getCode(tl)]["rtl"]) {
         # Check if target language is RTL
         if (!FriBidi)
             w("[WARNING] " Locale[getCode(tl)]["name"] " is a right-to-left language, but GNU FriBidi is not found on your system.\nText might be displayed incorrectly.")
@@ -161,4 +161,50 @@ function getTranslation(text, sl, tl, hl,
     }
 
     return r
+}
+
+# Translate the source text (into all target languages).
+function translate(text,
+                   ####
+                   i, j, playlist) {
+
+    if (!getCode(Option["hl"])) {
+        # Check if home language is supported
+        w("[WARNING] Unknown language code: " Option["hl"] ", fallback to English: en")
+        Option["hl"] = "en" # fallback to English
+    } else if (getCode(Option["hl"]) != "auto" && Locale[getCode(Option["hl"])]["rtl"]) {
+        # Check if home language is RTL
+        if (!FriBidi)
+            w("[WARNING] " Locale[getCode(Option["hl"])]["name"] " is a right-to-left language, but GNU FriBidi is not found on your system.\nText might be displayed incorrectly.")
+    }
+
+    if (!getCode(Option["sl"])) {
+        # Check if source language is supported
+        w("[WARNING] Unknown source language code: " Option["sl"])
+    } else if (getCode(Option["sl"]) != "auto" && Locale[getCode(Option["sl"])]["rtl"]) {
+        # Check if source language is RTL
+        if (!FriBidi)
+            w("[WARNING] " Locale[getCode(Option["sl"])]["name"] " is a right-to-left language, but GNU FriBidi is not found on your system.\nText might be displayed incorrectly.")
+    }
+
+    for (i in Option["tl"]) {
+        # Non-interactive verbose mode: separator between translations
+        if (!Option["interactive"]) {
+            # Separator for multiple targets
+            if (i > 1) {
+                for (j = 0; j < Option["width"]; j++) printf "─"
+                printf "\n"
+            }
+        }
+
+        print getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist) > Option["output"]
+
+        if (Option["play"])
+            if (Option["player"])
+                for (j in playlist)
+                    play(playlist[j]["text"], playlist[j]["tl"])
+            else if (SpeechSynthesizer)
+                for (j in playlist)
+                    print playlist[j]["text"] | SpeechSynthesizer
+    }
 }
