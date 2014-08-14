@@ -102,3 +102,13 @@ function getCodeReferenceTable(displayName) {
             "│ " Locale["he"]["display"] "        - " AnsiCode["bold"] "he" AnsiCode["no bold"] "  │ " Locale["ne"]["display"] "            - " AnsiCode["bold"] "ne" AnsiCode["no bold"] "  │ " Locale["zu"]["display"] "     - " AnsiCode["bold"] "zu" AnsiCode["no bold"] "    │\n" \
             "└────────────────────┴────────────────────────┴─────────────────────┘"
 }
+
+# Return help as a string.
+# Parameters:
+#     displayName = "endonym" or "name"
+function getHelp(displayName) {
+    return "Usage: translate {[source]=[target]} text ...\n" \
+        "       translate {[source]=[target1]+[target2]+...} text ...\n" \
+        "       translate text ...\n\n" \
+        "Language codes for [source] and [target]:\n" getCodeReferenceTable(displayName)
+}
