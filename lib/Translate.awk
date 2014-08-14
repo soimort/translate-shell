@@ -97,7 +97,7 @@ function getTranslation(text, sl, tl, hl,
         if (anything(phonetics))
             r = r "\n" AnsiCode["bold"] join(phonetics) AnsiCode["no bold"] # phonetic transcription
 
-        if (anything(altTranslations[0])) {
+        if (isarray(altTranslations[0]) && anything(altTranslations[0])) {
             # List alternative translations
 
             if (Locale[getCode(hl)]["rtl"] || Locale[getCode(il[0])]["rtl"])
@@ -118,7 +118,7 @@ function getTranslation(text, sl, tl, hl,
                 r = r "\n" AnsiCode["bold"] temp AnsiCode["no bold"]
         }
 
-        if (anything(wordClasses)) {
+        if (isarray(wordClasses) && anything(wordClasses)) {
             # List dictionary entries
 
             for (i = 0; i < length(words); i++) {
