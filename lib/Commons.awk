@@ -48,6 +48,16 @@ function literal(string,
     return string
 }
 
+# Replicate a string.
+function replicate(string, len,
+                   ####
+                   i, temp) {
+    temp = ""
+    for (i = 0; i < len; i++)
+        temp = temp string
+    return temp
+}
+
 # Return 1 if the array contains anything; otherwise return 0.
 function anything(array,
                   ####
