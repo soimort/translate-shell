@@ -1,4 +1,3 @@
-#!/usr/bin/gawk -f
 
 # Detect external audio player (mplayer, mpg123).
 function initAudioPlayer() {

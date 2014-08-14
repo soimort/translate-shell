@@ -1,4 +1,3 @@
-#!/usr/bin/gawk -f
 
 # Initialize `UrlEncoding`.
 # See: <https://en.wikipedia.org/wiki/Percent-encoding>

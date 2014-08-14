@@ -1,4 +1,3 @@
-#!/usr/bin/gawk -f
 
 # Return version as a string.
 function getVersion() {
