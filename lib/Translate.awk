@@ -4,6 +4,14 @@
 @include "lib/PLTokenizer"
 @include "lib/PLParser"
 
+# Initialize `HttpService`.
+function initHttpService() {
+    HttpProtocol = "http://"
+    HttpHost = "translate.google.com"
+    HttpPort = 80
+    HttpService = "/inet/tcp/0/" HttpHost "/" HttpPort
+}
+
 # Pre-process string (URL-encode before send).
 function preprocess(text) {
     return quote(text)
