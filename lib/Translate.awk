@@ -1,8 +1,27 @@
 #!/usr/bin/gawk -f
 
 @include "lib/Commons"
+@include "lib/Languages"
 @include "lib/PLTokenizer"
 @include "lib/PLParser"
+
+# Detect external audio player (mplayer, mpg123).
+function initAudioPlayer() {
+    AudioPlayer = !system("mplayer >/dev/null 2>/dev/null") ?
+        "mplayer" :
+        (!system("mpg123 >/dev/null 2>/dev/null") ?
+         "mpg123" :
+         "")
+}
+
+# Detect external speech synthesizer (say, espeak).
+function initSpeechSynthesizer() {
+    SpeechSynthesizer = !system("say '' >/dev/null 2>/dev/null") ?
+        "say" :
+        (!system("espeak '' >/dev/null 2>/dev/null") ?
+         "espeak" :
+         "")
+}
 
 # Initialize `HttpService`.
 function initHttpService() {
