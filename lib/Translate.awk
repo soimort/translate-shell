@@ -4,6 +4,29 @@
 @include "lib/PLTokenizer"
 @include "lib/PLParser"
 
+# Send an HTTP request and get response from Google Translate.
+function getResponse(text, sl, tl, hl,    content, url) {
+    url = HttpProtocol HttpHost "/translate_a/t?client=t"       \
+        "&ie=UTF-8&oe=UTF-8"                                    \
+        "&text=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl
+
+    print "GET " url |& HttpService
+    while ((HttpService |& getline) > 0)
+        content = $0
+    close(HttpService)
+
+    return assert(content, "[ERROR] Null response.")
+}
+
+# Play using Google Text-to-Speech engine.
+function play(text, tl,    url) {
+    url = HttpProtocol HttpHost "/translate_tts?ie=UTF-8"       \
+        "&tl=" tl "&q=" preprocess(text)
+
+    # Don't use getline from pipe here - the same pipe will be run only once for each AWK script!
+    system(Option["player"] " '" url "' >/dev/null 2>/dev/null")
+}
+
 # Get the translation of a string.
 function getTranslation(text, sl, tl, hl,
                         isVerbose, toSpeech, returnPlaylist,
