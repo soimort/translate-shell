@@ -4,6 +4,18 @@
 @include "lib/PLTokenizer"
 @include "lib/PLParser"
 
+# Pre-process string (URL-encode before send).
+function preprocess(text) {
+    return quote(text)
+}
+
+# Post-process string (remove any redundant whitespace).
+function postprocess(text) {
+    text = gensub(/ ([.,;:?!"])/, "\\1", "g", text)
+    text = gensub(/(["]) /, "\\1", "g", text)
+    return text
+}
+
 # Send an HTTP request and get response from Google Translate.
 function getResponse(text, sl, tl, hl,    content, url) {
     url = HttpProtocol HttpHost "/translate_a/t?client=t"       \
