@@ -75,10 +75,10 @@ BEGIN {
         # -H, -h, -help
         match(ARGV[pos], /^--?(h(e(lp?)?)?|H)$/)
         if (RSTART) {
-            if (ENVIRON["MANPAGE"])
-                system("echo -E \"$MANPAGE\" | " \
+            if (ENVIRON["TRANS_MANPAGE"])
+                system("echo -E \"${TRANS_MANPAGE}\" | " \
                        "groff -Wall -mtty-char -mandoc -Tutf8 -Dutf8 -rLL=${COLUMNS}n -rLT=${COLUMNS}n | " \
-                       "less -P\"\\ \\Manual page ${COMMAND}(1) line %lt (press h for help or q to quit)\"")
+                       "less -P\"\\ \\Manual page ${TRANS_COMMAND}(1) line %lt (press h for help or q to quit)\"")
             else
                 print getHelp()
             exit
@@ -253,12 +253,10 @@ BEGIN {
 
         # Try to call Rlwrap
         if (Rlwrap) {
-            # Get current script name if possible
-            getline temp < "/proc/self/cmdline"
-            split(temp, group, "\0")
-
-            # Be careful - never fork Rlwrap again in the next system call!
-            command = Rlwrap " " Gawk " -f " (group[3] ? group[3] : Program) " -- -no-rlwrap"
+            command = Rlwrap " " (ENVIRON["TRANS_SCRIPT"] ?
+                                  ENVIRON["TRANS_SCRIPT"] :
+                                  Gawk " -f " Program " --") \
+                " -no-rlwrap" # be careful - never fork Rlwrap recursively!
             for (i = 1; i < length(ARGV); i++)
                 if (ARGV[i])
                     command = command " " parameterize(ARGV[i])
