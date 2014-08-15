@@ -1,0 +1,101 @@
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans+Mono);
+
+body#manpage {
+  background: #111;
+  color: #888;
+}
+
+.mp {
+  display: block !important;
+  position: absolute;
+  top: 0;
+  left: 30ex;
+  padding: 48px 48px 48px 48px;
+  background: #111;
+  color: #ddd;
+}
+
+.mp code, .mp pre,
+.mp pre code, .mp tt, .mp kbd,
+.mp samp {
+  color: #aaa;
+}
+
+.mp h1, .mp h2, .mp h3, .mp h4 {
+  color: #fff;
+}
+
+.man-decor, .man-decor ol li {
+  color: #666;
+}
+
+.mp code, .mp strong, .mp b {
+  color: #fff;
+}
+
+.mp em, .mp var, .mp u {
+  color: #ddd;
+}
+
+.mp pre code {
+  color: #ddd;
+}
+
+.mp a, .mp a:link, .mp a:hover,
+.mp a code, .mp a pre, .mp a tt,
+.mp a kbd, .mp a samp {
+  color: #fff;
+}
+
+.mp,.mp code,.mp pre,.mp tt,.mp kbd,.mp samp,.mp h3,.mp h4 {
+  font-family: 'Droid Sans Mono', monospace;
+}
+
+.man-navigation {
+  display: block !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 30ex;
+  padding: 48px 0 0 0;
+  background: #222;
+}
+
+.man-navigation a,
+.man-navigation a:hover,
+.man-navigation a:link,
+.man-navigation a:visited {
+  display: block;
+  margin: 0;
+  padding: 5px 2px 5px 30px;
+  color: #ccc;
+  text-decoration: none;
+  transition: all 0.2s ease-out;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+}
+
+.man-navigation a:hover {
+  text-shadow: 0 0 4px #ccc;
+}
+
+ol.man-decor, ol.man-decor li {
+  margin: 0 0 0 0;
+  background: white;
+  color: black;
+  opacity: 0.8;
+}
+
+.man-head {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.man-foot {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}

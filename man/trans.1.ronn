@@ -1,0 +1,282 @@
+trans(1) -- Google Translate served as a command-line tool
+==========================================================
+
+## SYNOPSIS
+
+`trans` [options] [source]:[target] [<text>] ...
+
+`trans` [options] [source]:[target1]+[target2]+... [<text>] ...
+
+## DESCRIPTION
+
+This tool uses Google Translate to translate input text into any language.
+
+Each command-line argument which is not an option will be treated as <text> to be translated.
+
+When any non-option argument is given, the program will translate it. Also, if an input file is specified by an option, the program will then translate from that file.
+
+When every argument is an option (i.e. no <text> is passed via arguments), the program will read the text to be translated from standard input (unless an input file is specified explicitly by an option).
+
+## OPTIONS
+
+### -, -no-op
+
+This option effectively does nothing at all.
+
+### -V, -version
+
+Print version and exit.
+
+### -H, -h, -help
+
+Show this manual, or print this help message and exit.
+
+### -r, -reference
+
+Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.
+
+### -R, -reference-english
+
+Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.
+
+### -v, -verbose
+
+Verbose mode. (default)
+
+Show the most relevant translation, then its phonetic notation (if any), then its alternative translations (if any), then its definition in dictionary (if it is a word),
+
+This option is unnecessary since verbose mode is enabled by default.
+
+### -b, -brief
+
+Brief mode.
+
+Show the most relevant translation only, or its phonetic notation only. Nothing more.
+
+### -w [num], -width [num]
+
+Specify the screen width for padding when displaying right-to-left languages.
+
+This option overrides the setting of environment variable `COLUMNS`.
+
+### -p, -play
+
+Listen to the translation.
+
+When used in verbose mode, you will hear a statement like "Translations of text: wénběn". When used in brief mode, you will hear only the actual translation: "wénběn" for example.
+
+You must have one of supported audio players (`mplayer` or `mpg123`) installed for streaming from the Google Text-to-Speech engine. Otherwise, a local speech synthesizer can be used instead (`say` on Mac OS X, `espeak` on Linux and other platforms).
+
+### -P [program], -player [program]
+
+Specify the command-line audio player to use, and listen to the translation.
+
+Option `-play` will try to use `mplayer` or `mpg123` by default, since these players are known to work for streaming URLs. Not all command-line audio players can work this way. Use this option only when you have your own preference.
+
+This option overrides the setting of environment variable `PLAYER`.
+
+### -I, -interactive
+
+Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).
+
+### -no-rlwrap
+
+Don't invoke `rlwrap` when starting an interactive shell with `-I`.
+
+This option is useful when the terminal type is not supported by `rlwrap` (e.g. Emacs).
+
+### -prompt [prompt_string]
+
+Customize your prompt string in the interactive shell.
+
+Format specifiers preceded by a "%" character are supported. When these format specifiers appear in the prompt string, they will be replaced by the following:
+
+```
+%_ : prompt message (e.g. "Translations of ") in your home language
+%l : name of your home language
+%L : English name of your home language
+%s : name of source language
+%S : English name of source language
+%t : names of target languages, separated by "+"
+%T : English names of target languages, separated by "+"
+%, : names of target languages, separated by ","
+%< : English names of target languages, separated by ","
+%/ : names of target languages, separated by "/"
+%? : English names of target languages, separated by "/"
+%% : a literal "%"
+```
+
+Furthermore, some format specifiers derived from C Library strftime() and supported by gawk are also supported here:
+
+```
+%a : the locale's abbreviated weekday name
+%A : the locale's full weekday name
+%b : the locale's abbreviated month name
+%B : the locale's full month name
+%c : the locale's appropriate date and time representation
+%C : the century number of the current year (00-99)
+%d : the day of the month (01-31)
+%D : same as '%m/%d/%y'
+%e : the day of the month (1-31), padded with a space if it is only one digit
+%F : same as '%Y-%m-%d' (the ISO 8601 date format)
+%g : the year modulo 100 of the ISO 8601 week number (00–99)
+%G : the full year of the ISO week number
+%h : same as '%b'
+%H : the hour (24-hour clock) (00–23)
+%I : the hour (12-hour clock) (01-12)
+%j : the day of the year (001–366)
+%m : the month (01–12)
+%M : the minute (00–59)
+%n : a newline character (ASCII LF)
+%p : the locale's equivalent of the AM/PM designations associated with a 12-hour clock
+%r : the locale's 12-hour clock time
+%R : same as '%H:%M'
+%u : the weekday (Monday is day one) (1–7)
+%U : the week number of the year (Sunday as the first day of the week) (00–53)
+%V : the week number of the year (Monday as the first day of the week) (01–53)
+%w : the weekday (Sunday is day zero) (0–6)
+%W : the week number of the year (Monday as the first day of the week) (00–53)
+%x : the locale's appropriate date representation
+%X : the locale's appropriate time representation
+%y : the year modulo 100 (00–99)
+%Y : the full year
+%z : the timezone offset in a +HHMM format
+%Z : the time zone name or abbreviation
+```
+
+This option overrides the setting of environment variable `TRANS_PS`.
+
+### -prompt-color [color_code]
+
+Customize your prompt color in the interactive shell.
+
+These color codes (case-insensitive) are available: (remember to quote them when having a space!)
+
+```
+default
+black
+white
+red
+light red
+green
+light green
+yellow
+light yellow
+blue
+light blue
+magenta
+light magenta
+cyan
+light cyan
+gray
+dark gray
+```
+
+This option overrides the setting of environment variable `TRANS_PS_COLOR`.
+
+### -i [file], -input [file]
+
+Specify the input file name.
+
+Source text to be translated will be read from that file (instead of standard input).
+
+### -o [file], -output [file]
+
+Specify the output file name.
+
+Translations will be written to that file (instead of standard output).
+
+### -l [code], -lang [code]
+
+Specify your own, native language ("home/host language"). The code value must be the ISO 639 code of a supported language.
+
+This option is optional. When omitted, the relevant setting of environment variables will be used; when no valid setting is found, English will be used.
+
+This option only affects the display in verbose mode (anything other than the source language and the target language will be displayed in your home language). This option has no effect in brief mode.
+
+This option overrides the setting of environment variables `LANG` and `HOME_LANG`.
+
+### -s [code], -source [code]
+
+Specify the source language (language of the original text). The code value must be the ISO 639 code of a supported language.
+
+This option is optional. When omitted, the relevant setting of environment variable will be used; when no valid setting is found, the language of the original text will be identified automatically (with a possibility of misidentification).
+
+This option overrides the setting of environment variable `SOURCE_LANG`.
+
+### -t [codes], -target [codes]
+
+Specify the target language(s) (language(s) of the translated text). The code value(s) must be the ISO 639 code(s) of supported language(s).
+
+This option is optional. When omitted, the relevant setting of environment variables will be used; when no valid setting is found, everything will be translated into English.
+
+More than one target language can be specified at the same time, concatenated by plus sign "+".
+
+This option overrides the setting of environment variables `LANG` and `TARGET_LANG`.
+
+### --
+
+End-of-options.
+
+All arguments after this option are treated as <text> to be translated.
+
+## SHORTCUT
+
+A simpler alternative way to specify the source language and the target language(s) for translation is to use a shortcut formatted string:
+
+* \[source\]:\[target\]
+* \[source\]:\[target1\]+\[target2\]+...
+* \[source\]=\[target\]
+* \[source\]=\[target1\]+\[target2\]+...
+
+Delimiter ":" and "=" can be used interchangeably.
+
+Both values of source and target must be ISO 639 codes of supported languages.
+
+Either source or target can be omitted, but the delimiter character must be kept.
+
+## CODE LIST
+
+```
+┌───────────────────────┬──────────────────────┬─────────────────┐
+│ Afrikaans     - af    │ Greek          - el  │ Mongolian  - mn │
+│ Albanian      - sq    │ Gujarati       - gu  │ Nepali     - ne │
+│ Arabic        - ar    │ Haitian Creole - ht  │ Norwegian  - no │
+│ Armenian      - hy    │ Hausa          - ha  │ Persian    - fa │
+│ Azerbaijani   - az    │ Hebrew         - he  │ Polish     - pl │
+│ Basque        - eu    │ Hindi          - hi  │ Portuguese - pt │
+│ Belarusian    - be    │ Hmong          - hmn │ Punjabi    - pa │
+│ Bengali       - bn    │ Hungarian      - hu  │ Romanian   - ro │
+│ Bosnian       - bs    │ Icelandic      - is  │ Russian    - ru │
+│ Bulgarian     - bg    │ Igbo           - ig  │ Serbian    - sr │
+│ Catalan       - ca    │ Indonesian     - id  │ Slovak     - sk │
+│ Cebuano       - ceb   │ Irish          - ga  │ Slovenian  - sl │
+│ Chinese Simp. - zh-CN │ Italian        - it  │ Somali     - so │
+│ Chinese Trad. - zh-TW │ Japanese       - ja  │ Spanish    - es │
+│ Croatian      - hr    │ Javanese       - jv  │ Swahili    - sw │
+│ Czech         - cs    │ Kannada        - kn  │ Swedish    - sv │
+│ Danish        - da    │ Khmer          - km  │ Tamil      - ta │
+│ Dutch         - nl    │ Korean         - ko  │ Telugu     - te │
+│ English       - en    │ Lao            - lo  │ Thai       - th │
+│ Esperanto     - eo    │ Latin          - la  │ Turkish    - tr │
+│ Estonian      - et    │ Latvian        - lv  │ Ukrainian  - uk │
+│ Filipino      - tl    │ Lithuanian     - lt  │ Urdu       - ur │
+│ Finnish       - fi    │ Macedonian     - mk  │ Vietnamese - vi │
+│ French        - fr    │ Malay          - ms  │ Welsh      - cy │
+│ Galician      - gl    │ Maltese        - mt  │ Yiddish    - yi │
+│ Georgian      - ka    │ Maori          - mi  │ Yoruba     - yo │
+│ German        - de    │ Marathi        - mr  │ Zulu       - zu │
+└───────────────────────┴──────────────────────┴─────────────────┘
+```
+
+## ERRORS
+
+`trans` returns 0 if the text was translated successfully, otherwise non-zero.
+
+## AUTHORS
+
+Mort Yao <<soi@mort.ninja>>
+
+## REPORTING BUGS
+
+<https://github.com/soimort/translate-shell/issues>
