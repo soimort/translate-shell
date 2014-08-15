@@ -91,6 +91,12 @@ function literal(string,
     return string
 }
 
+# Return the single-quoted string.
+function parameterize(string) {
+    gsub(/'/, "'\\''", string)
+    return "'" string "'"
+}
+
 # Return the URL-encoded string.
 function quote(string,    i, r, s) {
     r = ""

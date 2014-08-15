@@ -453,12 +453,6 @@ function initBiDi() {
     BiDi = FriBidi ? "fribidi --width %s" : "rev | xargs printf '%%ss\n'"
 }
 
-# Return the single-quoted string.
-function parameterize(text) {
-    gsub(/'/, "'\\''", text)
-    return "'" text "'"
-}
-
 # Convert a logical string to visual; don't right justify RTL lines.
 # Parameters:
 #     code: ignore to apply bidirectional algorithm on every string
