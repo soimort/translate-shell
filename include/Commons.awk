@@ -110,6 +110,18 @@ function replicate(string, len,
     return temp
 }
 
+# Squeeze a source line of AWK code.
+function squeeze(line) {
+    # Remove preceding spaces
+    gsub(/^[[:space:]]+/, "", line)
+    # Remove in-line comment
+    gsub(/#[^"]*$/, "", line)
+    # Remove trailing spaces
+    gsub(/[[:space:]]+$/, "", line)
+
+    return line
+}
+
 # Return 1 if the array contains anything; otherwise return 0.
 function anything(array,
                   ####
