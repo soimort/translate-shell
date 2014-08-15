@@ -227,12 +227,19 @@ BEGIN {
         }
 
         # Shortcut format
-        # '{[code]=[code]+...}'
+        # '[code]:[code]+...' or '[code]=[code]+...'
         match(ARGV[pos], /^[{([]?([[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?)?)[})\]]?$/, group)
         if (RSTART) {
             if (group[1]) Option["sl"] = group[1]
             if (group[4]) split(group[4], Option["tl"], "+")
             continue
+        }
+
+        # --
+        match(ARGV[pos], /^--$/)
+        if (RSTART) {
+            ++pos # skip the end-of-options option
+            break # no more option from here
         }
 
         break # no more option from here
