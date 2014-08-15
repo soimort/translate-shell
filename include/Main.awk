@@ -72,31 +72,29 @@ BEGIN {
             exit
         }
 
-        # -H, -help
-        match(ARGV[pos], /^--?(help|H)$/)
+        # -H, -h, -help
+        match(ARGV[pos], /^--?(h(e(lp?)?)?|H)$/)
         if (RSTART) {
-            print getHelp("endonym")
+            if (ENVIRON["MANPAGE"])
+                system("echo -E \"$MANPAGE\" | " \
+                       "groff -Wall -mtty-char -mandoc -Tutf8 -Dutf8 -rLL=${COLUMNS}n -rLT=${COLUMNS}n | " \
+                       "less -P\"\\ \\Manual page ${COMMAND}(1) line %lt (press h for help or q to quit)\"")
+            else
+                print getHelp()
             exit
         }
 
-        # -h, -help-english
-        match(ARGV[pos], /^--?(help-e(n(g(l(i(sh?)?)?)?)?)?|h)$/)
+        # -r, -reference
+        match(ARGV[pos], /^--?(ref(e(r(e(n(ce?)?)?)?)?)?|r)$/)
         if (RSTART) {
-            print getHelp("name")
+            print getReference("endonym")
             exit
         }
 
-        # -C, -code-reference
-        match(ARGV[pos], /^--?(code(-(r(e(f(e(r(e(n(ce?)?)?)?)?)?)?)?)?)?|C)$/)
+        # -R, -reference-english
+        match(ARGV[pos], /^--?(reference-(e(n(g(l(i(sh?)?)?)?)?)?)?|R)$/)
         if (RSTART) {
-            print getCodeReference("code")
-            exit
-        }
-
-        # -R, -reference
-        match(ARGV[pos], /^--?(ref(e(r(e(n(ce?)?)?)?)?)?|R)$/)
-        if (RSTART) {
-            print getCodeReference("name")
+            print getReference("name")
             exit
         }
 

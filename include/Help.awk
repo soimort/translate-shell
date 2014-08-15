@@ -7,43 +7,10 @@ function getVersion() {
     return Name " " Version
 }
 
-# Compare indices.
-# Used by: getCodeReference()
-function codeComparison(i1, v1, i2, v2) {
-    return i1 > i2
-}
-
-# Compare "name" values.
-# Used by: getCodeReference()
-function nameComparison(i1, v1, i2, v2) {
-    return "name" in v1 ? v1["name"] > v2["name"] : 0
-}
-
-# Compare "relevance" values.
-# Used by: getTranslation()
-function relevanceComparison(i1, v1, i2, v2) {
-    return "relevance" in v1 ? v1["relevance"] < v2["relevance"] : 0
-}
-
-# Return code reference list as a string.
-# Parameters:
-#     sortBy = "name" or "code"
-function getCodeReference(sortBy,    i, r, saveSortedIn) {
-    r = sprintf("%10s  %-20s %s\n", "[code]", "[language]", "[endonym]")
-    r = r "    ─────────────────────────────────────────────" "\n"
-    saveSortedIn = PROCINFO["sorted_in"]
-    PROCINFO["sorted_in"] = sortBy "Comparison"
-    for (i in Locale)
-        r = r sprintf(AnsiCode["bold"] "%10s" AnsiCode["no bold"] "  %-20s %s\n", i, Locale[i]["name"], Locale[i]["display"], i)
-    r = r "    ─────────────────────────────────────────────"
-    PROCINFO["sorted_in"] = saveSortedIn
-    return r
-}
-
-# Return code reference table as a string.
+# Return a list of language codes as a string.
 # Parameters:
 #     displayName = "endonym" or "name"
-function getCodeReferenceTable(displayName) {
+function getReference(displayName) {
     if (displayName == "name")
         return "┌─────────────────────────────┬──────────────────────┬─────────────────┐\n" \
             "│ " Locale["af"]["name"] "           - " AnsiCode["bold"] "af" AnsiCode["no bold"] "    │ " Locale["el"]["name"] "          - " AnsiCode["bold"] "el" AnsiCode["no bold"] "  │ " Locale["mn"]["name"] "  - " AnsiCode["bold"] "mn" AnsiCode["no bold"] " │\n" \
@@ -106,12 +73,8 @@ function getCodeReferenceTable(displayName) {
             "└────────────────────┴────────────────────────┴─────────────────────┘"
 }
 
-# Return help as a string.
-# Parameters:
-#     displayName = "endonym" or "name"
-function getHelp(displayName) {
-    return "Usage: translate {[source]=[target]} text ...\n" \
-        "       translate {[source]=[target1]+[target2]+...} text ...\n" \
-        "       translate text ...\n\n" \
-        "Language codes for [source] and [target]:\n" getCodeReferenceTable(displayName)
+# Return help message as a string.
+function getHelp() {
+    return "Usage: translate [options] [source]:[target] [<text>] ...\n" \
+        "       translate [options] [source]:[target1]+[target2]+... [<text>] ...\n"
 }
