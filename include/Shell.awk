@@ -118,5 +118,5 @@ function prompt(    i, p, temp) {
     }
 
     # %s : source language
-    printf(AnsiCode["bold"] AnsiCode[Option["prompt-color"]] p AnsiCode[0] " ", Locale[getCode(Option["sl"])]["display"]) > "/dev/stderr"
+    printf(AnsiCode["bold"] AnsiCode[tolower(Option["prompt-color"])] p AnsiCode[0] " ", Locale[getCode(Option["sl"])]["display"]) > "/dev/stderr"
 }
