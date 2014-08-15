@@ -85,7 +85,7 @@ BEGIN {
         }
 
         # -r, -reference
-        match(ARGV[pos], /^--?(ref(e(r(e(n(ce?)?)?)?)?)?|r)$/)
+        match(ARGV[pos], /^--?r(e(f(e(r(e(n(ce?)?)?)?)?)?)?)?$/)
         if (RSTART) {
             print getReference("endonym")
             exit
