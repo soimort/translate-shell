@@ -91,10 +91,24 @@ function literal(string,
     return string
 }
 
-# Return the single-quoted string.
-function parameterize(string) {
-    gsub(/'/, "'\\''", string)
-    return "'" string "'"
+# Return the escaped string.
+function escape(string) {
+    gsub(/"/, "\\\"", string)
+    gsub(/\\/, "\\\\", string)
+    return string
+}
+
+# Return the escaped, quoted string.
+function parameterize(string, quotationMark) {
+    if (!quotationMark)
+        quotationMark = "'"
+
+    if (quotationMark == "'") {
+        gsub(/'/, "'\\''", string)
+        return "'" string "'"
+    } else {
+        return "\"" escape(string) "\""
+    }
 }
 
 # Return the URL-encoded string.
