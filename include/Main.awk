@@ -44,8 +44,8 @@ function init() {
 
     Option["interactive"] = 0
     Option["no-rlwrap"] = 0
-    Option["prompt"] = ENVIRON["TRANSLATE_PS"] ? ENVIRON["TRANSLATE_PS"] : "%s>"
-    Option["prompt-color"] = ENVIRON["TRANSLATE_PS_COLOR"] ? ENVIRON["TRANSLATE_PS_COLOR"] : "blue"
+    Option["prompt"] = ENVIRON["TRANS_PS"] ? ENVIRON["TRANS_PS"] : "%s>"
+    Option["prompt-color"] = ENVIRON["TRANS_PS_COLOR"] ? ENVIRON["TRANS_PS_COLOR"] : "blue"
 
     Option["input"] = ""
     Option["output"] = "/dev/stdout"
