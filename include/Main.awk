@@ -10,7 +10,7 @@ function initGawk(    group) {
     split(PROCINFO["version"], group, ".")
     if (group[1] < 3 || (group[1] == 3 && group[2] < 1)) {
         e("[ERROR] Oops! Your gawk (version " GawkVersion ") appears to be too old.\nYou need at least gawk 3.1 to run this script.")
-        exit -1
+        exit 1
     }
 }
 
