@@ -16,9 +16,6 @@ function initGawk(    group) {
 
 # Main initialization.
 function init() {
-    metainfo()
-
-    # Main
     initGawk()          #<< AnsiCode
 
     # Languages
