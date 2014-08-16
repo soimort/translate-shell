@@ -4,7 +4,7 @@
 
 # Detect external readline wrapper (rlwrap).
 function initRlwrap() {
-    Rlwrap = !system("rlwrap --version >/dev/null 2>/dev/null") ? "rlwrap" : ""
+    Rlwrap = ("rlwrap --version 2>/dev/null" | getline) ? "rlwrap" : ""
 }
 
 # Prompt for interactive session.
