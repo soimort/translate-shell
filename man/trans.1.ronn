@@ -85,6 +85,12 @@ Don't invoke `rlwrap` when starting an interactive shell with `-I`.
 
 This option is useful when the terminal type is not supported by `rlwrap` (e.g. Emacs).
 
+### -E, -emacs
+
+Start an interactive shell within GNU Emacs, invoking `emacs`.
+
+This option does not need to, and cannot be used along with `-I` or `-no-rlwrap`.
+
 ### -prompt [prompt_string]
 
 Customize your prompt string in the interactive shell.
