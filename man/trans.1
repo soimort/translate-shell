@@ -1,0 +1,328 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "TRANS" "1" "August 2014" "0.8.17" "TRANS MANUAL"
+.
+.SH "NAME"
+\fBtrans\fR \- Google Translate served as a command\-line tool
+.
+.SH "SYNOPSIS"
+\fBtrans\fR [options] [source]:[target] [\fItext\fR] \.\.\.
+.
+.P
+\fBtrans\fR [options] [source]:[target1]+[target2]+\.\.\. [\fItext\fR] \.\.\.
+.
+.SH "DESCRIPTION"
+This tool uses Google Translate to translate input text into any language\.
+.
+.P
+Each command\-line argument which is not an option will be treated as \fItext\fR to be translated\.
+.
+.P
+When any non\-option argument is given, the program will translate it\. Also, if an input file is specified by an option, the program will then translate from that file\.
+.
+.P
+When every argument is an option (i\.e\. no \fItext\fR is passed via arguments), the program will read the text to be translated from standard input (unless an input file is specified explicitly by an option)\.
+.
+.SH "OPTIONS"
+.
+.SS "\-, \-no\-op"
+This option effectively does nothing at all\.
+.
+.SS "\-V, \-version"
+Print version and exit\.
+.
+.SS "\-H, \-h, \-help"
+Show this manual, or print this help message and exit\.
+.
+.SS "\-r, \-reference"
+Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit\.
+.
+.SS "\-R, \-reference\-english"
+Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit\.
+.
+.SS "\-v, \-verbose"
+Verbose mode\. (default)
+.
+.P
+Show the most relevant translation, then its phonetic notation (if any), then its alternative translations (if any), then its definition in dictionary (if it is a word),
+.
+.P
+This option is unnecessary since verbose mode is enabled by default\.
+.
+.SS "\-b, \-brief"
+Brief mode\.
+.
+.P
+Show the most relevant translation only, or its phonetic notation only\. Nothing more\.
+.
+.SS "\-w [num], \-width [num]"
+Specify the screen width for padding when displaying right\-to\-left languages\.
+.
+.P
+This option overrides the setting of environment variable \fBCOLUMNS\fR\.
+.
+.SS "\-p, \-play"
+Listen to the translation\.
+.
+.P
+When used in verbose mode, you will hear a statement like "Translations of text: wénběn"\. When used in brief mode, you will hear only the actual translation: "wénběn" for example\.
+.
+.P
+You must have one of supported audio players (\fBmplayer\fR or \fBmpg123\fR) installed for streaming from the Google Text\-to\-Speech engine\. Otherwise, a local speech synthesizer can be used instead (\fBsay\fR on Mac OS X, \fBespeak\fR on Linux and other platforms)\.
+.
+.SS "\-P [program], \-player [program]"
+Specify the command\-line audio player to use, and listen to the translation\.
+.
+.P
+Option \fB\-play\fR will try to use \fBmplayer\fR or \fBmpg123\fR by default, since these players are known to work for streaming URLs\. Not all command\-line audio players can work this way\. Use this option only when you have your own preference\.
+.
+.P
+This option overrides the setting of environment variable \fBPLAYER\fR\.
+.
+.SS "\-I, \-interactive"
+Start an interactive shell, invoking \fBrlwrap\fR whenever possible (unless \fB\-no\-rlwrap\fR is specified)\.
+.
+.SS "\-no\-rlwrap"
+Don\'t invoke \fBrlwrap\fR when starting an interactive shell with \fB\-I\fR\.
+.
+.P
+This option is useful when the terminal type is not supported by \fBrlwrap\fR (e\.g\. Emacs)\.
+.
+.SS "\-E, \-emacs"
+Start an interactive shell within GNU Emacs, invoking \fBemacs\fR\.
+.
+.P
+This option does not need to, and cannot be used along with \fB\-I\fR or \fB\-no\-rlwrap\fR\.
+.
+.SS "\-prompt [prompt_string]"
+Customize your prompt string in the interactive shell\.
+.
+.P
+Format specifiers preceded by a "%" character are supported\. When these format specifiers appear in the prompt string, they will be replaced by the following:
+.
+.IP "" 4
+.
+.nf
+
+%_ : prompt message (e\.g\. "Translations of ") in your home language
+%l : name of your home language
+%L : English name of your home language
+%s : name of source language
+%S : English name of source language
+%t : names of target languages, separated by "+"
+%T : English names of target languages, separated by "+"
+%, : names of target languages, separated by ","
+%< : English names of target languages, separated by ","
+%/ : names of target languages, separated by "/"
+%? : English names of target languages, separated by "/"
+%% : a literal "%"
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Furthermore, some format specifiers derived from C Library strftime() and supported by gawk are also supported here:
+.
+.IP "" 4
+.
+.nf
+
+%a : the locale\'s abbreviated weekday name
+%A : the locale\'s full weekday name
+%b : the locale\'s abbreviated month name
+%B : the locale\'s full month name
+%c : the locale\'s appropriate date and time representation
+%C : the century number of the current year (00\-99)
+%d : the day of the month (01\-31)
+%D : same as \'%m/%d/%y\'
+%e : the day of the month (1\-31), padded with a space if it is only one digit
+%F : same as \'%Y\-%m\-%d\' (the ISO 8601 date format)
+%g : the year modulo 100 of the ISO 8601 week number (00–99)
+%G : the full year of the ISO week number
+%h : same as \'%b\'
+%H : the hour (24\-hour clock) (00–23)
+%I : the hour (12\-hour clock) (01\-12)
+%j : the day of the year (001–366)
+%m : the month (01–12)
+%M : the minute (00–59)
+%n : a newline character (ASCII LF)
+%p : the locale\'s equivalent of the AM/PM designations associated with a 12\-hour clock
+%r : the locale\'s 12\-hour clock time
+%R : same as \'%H:%M\'
+%u : the weekday (Monday is day one) (1–7)
+%U : the week number of the year (Sunday as the first day of the week) (00–53)
+%V : the week number of the year (Monday as the first day of the week) (01–53)
+%w : the weekday (Sunday is day zero) (0–6)
+%W : the week number of the year (Monday as the first day of the week) (00–53)
+%x : the locale\'s appropriate date representation
+%X : the locale\'s appropriate time representation
+%y : the year modulo 100 (00–99)
+%Y : the full year
+%z : the timezone offset in a +HHMM format
+%Z : the time zone name or abbreviation
+.
+.fi
+.
+.IP "" 0
+.
+.P
+This option overrides the setting of environment variable \fBTRANS_PS\fR\.
+.
+.SS "\-prompt\-color [color_code]"
+Customize your prompt color in the interactive shell\.
+.
+.P
+These color codes (case\-insensitive) are available: (remember to quote them when having a space!)
+.
+.IP "" 4
+.
+.nf
+
+default
+black
+white
+red
+light red
+green
+light green
+yellow
+light yellow
+blue
+light blue
+magenta
+light magenta
+cyan
+light cyan
+gray
+dark gray
+.
+.fi
+.
+.IP "" 0
+.
+.P
+This option overrides the setting of environment variable \fBTRANS_PS_COLOR\fR\.
+.
+.SS "\-i [file], \-input [file]"
+Specify the input file name\.
+.
+.P
+Source text to be translated will be read from that file (instead of standard input)\.
+.
+.SS "\-o [file], \-output [file]"
+Specify the output file name\.
+.
+.P
+Translations will be written to that file (instead of standard output)\.
+.
+.SS "\-l [code], \-lang [code]"
+Specify your own, native language ("home/host language")\. The code value must be the ISO 639 code of a supported language\.
+.
+.P
+This option is optional\. When omitted, the relevant setting of environment variables will be used; when no valid setting is found, English will be used\.
+.
+.P
+This option only affects the display in verbose mode (anything other than the source language and the target language will be displayed in your home language)\. This option has no effect in brief mode\.
+.
+.P
+This option overrides the setting of environment variables \fBLANG\fR and \fBHOME_LANG\fR\.
+.
+.SS "\-s [code], \-source [code]"
+Specify the source language (language of the original text)\. The code value must be the ISO 639 code of a supported language\.
+.
+.P
+This option is optional\. When omitted, the relevant setting of environment variable will be used; when no valid setting is found, the language of the original text will be identified automatically (with a possibility of misidentification)\.
+.
+.P
+This option overrides the setting of environment variable \fBSOURCE_LANG\fR\.
+.
+.SS "\-t [codes], \-target [codes]"
+Specify the target language(s) (language(s) of the translated text)\. The code value(s) must be the ISO 639 code(s) of supported language(s)\.
+.
+.P
+This option is optional\. When omitted, the relevant setting of environment variables will be used; when no valid setting is found, everything will be translated into English\.
+.
+.P
+More than one target language can be specified at the same time, concatenated by plus sign "+"\.
+.
+.P
+This option overrides the setting of environment variables \fBLANG\fR and \fBTARGET_LANG\fR\.
+.
+.SS "\-\-"
+End\-of\-options\.
+.
+.P
+All arguments after this option are treated as \fItext\fR to be translated\.
+.
+.SH "SHORTCUT"
+A simpler alternative way to specify the source language and the target language(s) for translation is to use a shortcut formatted string:
+.
+.IP "\(bu" 4
+[source]:[target]
+.
+.IP "\(bu" 4
+[source]:[target1]+[target2]+\.\.\.
+.
+.IP "\(bu" 4
+[source]=[target]
+.
+.IP "\(bu" 4
+[source]=[target1]+[target2]+\.\.\.
+.
+.IP "" 0
+.
+.P
+Delimiter ":" and "=" can be used interchangeably\.
+.
+.P
+Both values of source and target must be ISO 639 codes of supported languages\.
+.
+.P
+Either source or target can be omitted, but the delimiter character must be kept\.
+.
+.SH "CODE LIST"
+.
+.nf
+
+┌───────────────────────┬──────────────────────┬─────────────────┐
+│ Afrikaans     \- af    │ Greek          \- el  │ Mongolian  \- mn │
+│ Albanian      \- sq    │ Gujarati       \- gu  │ Nepali     \- ne │
+│ Arabic        \- ar    │ Haitian Creole \- ht  │ Norwegian  \- no │
+│ Armenian      \- hy    │ Hausa          \- ha  │ Persian    \- fa │
+│ Azerbaijani   \- az    │ Hebrew         \- he  │ Polish     \- pl │
+│ Basque        \- eu    │ Hindi          \- hi  │ Portuguese \- pt │
+│ Belarusian    \- be    │ Hmong          \- hmn │ Punjabi    \- pa │
+│ Bengali       \- bn    │ Hungarian      \- hu  │ Romanian   \- ro │
+│ Bosnian       \- bs    │ Icelandic      \- is  │ Russian    \- ru │
+│ Bulgarian     \- bg    │ Igbo           \- ig  │ Serbian    \- sr │
+│ Catalan       \- ca    │ Indonesian     \- id  │ Slovak     \- sk │
+│ Cebuano       \- ceb   │ Irish          \- ga  │ Slovenian  \- sl │
+│ Chinese Simp\. \- zh\-CN │ Italian        \- it  │ Somali     \- so │
+│ Chinese Trad\. \- zh\-TW │ Japanese       \- ja  │ Spanish    \- es │
+│ Croatian      \- hr    │ Javanese       \- jv  │ Swahili    \- sw │
+│ Czech         \- cs    │ Kannada        \- kn  │ Swedish    \- sv │
+│ Danish        \- da    │ Khmer          \- km  │ Tamil      \- ta │
+│ Dutch         \- nl    │ Korean         \- ko  │ Telugu     \- te │
+│ English       \- en    │ Lao            \- lo  │ Thai       \- th │
+│ Esperanto     \- eo    │ Latin          \- la  │ Turkish    \- tr │
+│ Estonian      \- et    │ Latvian        \- lv  │ Ukrainian  \- uk │
+│ Filipino      \- tl    │ Lithuanian     \- lt  │ Urdu       \- ur │
+│ Finnish       \- fi    │ Macedonian     \- mk  │ Vietnamese \- vi │
+│ French        \- fr    │ Malay          \- ms  │ Welsh      \- cy │
+│ Galician      \- gl    │ Maltese        \- mt  │ Yiddish    \- yi │
+│ Georgian      \- ka    │ Maori          \- mi  │ Yoruba     \- yo │
+│ German        \- de    │ Marathi        \- mr  │ Zulu       \- zu │
+└───────────────────────┴──────────────────────┴─────────────────┘
+.
+.fi
+.
+.SH "ERRORS"
+\fBtrans\fR returns 0 if the text was translated successfully, otherwise non\-zero\.
+.
+.SH "AUTHORS"
+Mort Yao <\fIsoi@mort\.ninja\fR>
+.
+.SH "REPORTING BUGS"
+\fIhttps://github\.com/soimort/translate\-shell/issues\fR
