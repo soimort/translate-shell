@@ -290,6 +290,11 @@ function assert(x, message) {
         e(message)
 }
 
+# Return non-zero if file exists, otherwise return 0.
+function fileExists(file) {
+    return !system("test -f " file)
+}
+
 BEGIN {
     initUrlEncoding()
     initAnsiCode()
