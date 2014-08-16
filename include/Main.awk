@@ -44,6 +44,7 @@ function init() {
 
     Option["interactive"] = 0
     Option["no-rlwrap"] = 0
+    Option["emacs"] = 0
     Option["prompt"] = ENVIRON["TRANS_PS"] ? ENVIRON["TRANS_PS"] : "%s>"
     Option["prompt-color"] = ENVIRON["TRANS_PS_COLOR"] ? ENVIRON["TRANS_PS_COLOR"] : "blue"
 
@@ -162,6 +163,13 @@ BEGIN {
             continue
         }
 
+        # -E, -emacs
+        match(ARGV[pos], /^--?(emacs|E)$/)
+        if (RSTART) {
+            Option["emacs"] = 1
+            continue
+        }
+
         # -prompt [prompt_string]
         match(ARGV[pos], /^--?prompt(=(.*)?)?$/, group)
         if (RSTART) {
@@ -246,12 +254,10 @@ BEGIN {
     }
 
     # Option parsing finished
-    # Enter interactive mode?
     if (Option["interactive"] && !Option["no-rlwrap"]) {
-        # Initialize Rlwrap
-        initRlwrap()
+        # Interactive mode
+        initRlwrap() # initialize Rlwrap
 
-        # Try to call Rlwrap
         if (Rlwrap) {
             command = Rlwrap " " (ENVIRON["TRANS_SCRIPT"] ?
                                   ENVIRON["TRANS_SCRIPT"] :
@@ -260,14 +266,39 @@ BEGIN {
             for (i = 1; i < length(ARGV); i++)
                 if (ARGV[i])
                     command = command " " parameterize(ARGV[i])
-            if (!system(command))
-                exit # return from child process
 
-            # Rlwrap failed, continue
+            if (!system(command))
+                exit # child process finished, exit
+            else
+                ; # skip
+        } else
+            ; # skip
+
+    } else if (!Option["interactive"] && !Option["no-rlwrap"] && Option["emacs"]) {
+        # Emacs interface
+        Emacs = "emacs"
+
+        for (i = 1; i < length(ARGV); i++)
+            if (ARGV[i])
+                el = el " " (parameterize(ARGV[i], "\""))
+        if (ENVIRON["TRANS_SCRIPT"]) {
+            shellPath = ENVIRON["TRANS_SCRIPT"]
+            match(shellPath, /\/([^/]+)$/, group)
+            shellName = group[1]
+            el = "(progn (setq explicit-shell-file-name \"" shellPath "\") " \
+                "(setq explicit-" shellName "-args '(\"-I\" \"-no-rlwrap\"" el ")) " \
+                "(command-execute 'shell) (rename-buffer \"" Name "\"))"
         } else {
-            # Rlwrap not found, continue
-            # Don't warn users - their terminal might be fancier than you think (e.g. emacs)
+            el = "(progn (setq explicit-shell-file-name \"" Gawk "\") " \
+                "(setq explicit-" Gawk "-args '(\"-f\" \"./" Program "\" \"--\" \"-I\" \"-no-rlwrap\"" el ")) " \
+                "(command-execute 'shell) (rename-buffer \"" Name "\"))"
         }
+        command = Emacs " --eval " parameterize(el)
+
+        if (!system(command))
+            exit
+        else
+            exit 1
     }
 
     if (Option["play"]) {
