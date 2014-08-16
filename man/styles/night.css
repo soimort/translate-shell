@@ -99,3 +99,15 @@ ol.man-decor, ol.man-decor li {
   bottom: 0;
   left: 0;
 }
+
+::-webkit-scrollbar {
+  width: 8px;
+  background-color: #222;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.8);
+  -webkit-box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5);
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+}
