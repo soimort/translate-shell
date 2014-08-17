@@ -42,8 +42,8 @@ function build(target,    group, inline, line) {
         print > Trans
 
         print "read -r -d '' TRANS_PROGRAM << 'EOF'" > Trans
-        if (fileExists(Program))
-            while (getline line < Program) {
+        if (fileExists(EntryPoint))
+            while (getline line < EntryPoint) {
                 match(line, /^[[:space:]]*@include[[:space:]]*"(.*)"$/, group)
                 if (RSTART) {
                     # Include file
@@ -61,6 +61,7 @@ function build(target,    group, inline, line) {
                 }
             }
         print "EOF" > Trans
+        print "export TRANS_PROGRAM" > Trans
 
         print "read -r -d '' TRANS_MANPAGE << 'EOF'" > Trans
         if (fileExists(Man))
@@ -69,11 +70,7 @@ function build(target,    group, inline, line) {
         print "EOF" > Trans
         print "export TRANS_MANPAGE" > Trans
 
-        print "TRANS_COMMAND=" Command > Trans
-        print "export TRANS_COMMAND" > Trans
-
-        print "TRANS_SCRIPT=$0" > Trans
-        print "export TRANS_SCRIPT" > Trans
+        print "export TRANS_COMMAND=" Command > Trans
 
         print "export COLUMNS" > Trans
 
@@ -84,8 +81,8 @@ function build(target,    group, inline, line) {
 
     } else if (target == "awk" || target == "gawk") {
 
-        if (fileExists(Program))
-            while (getline line < Program) {
+        if (fileExists(EntryPoint))
+            while (getline line < EntryPoint) {
                 match(line, /^[[:space:]]*@include[[:space:]]*"(.*)"$/, group)
                 if (RSTART) {
                     # Include file

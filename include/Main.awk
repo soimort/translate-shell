@@ -256,9 +256,9 @@ BEGIN {
         initRlwrap() # initialize Rlwrap
 
         if (Rlwrap) {
-            command = Rlwrap " " (ENVIRON["TRANS_SCRIPT"] ?
-                                  ENVIRON["TRANS_SCRIPT"] :
-                                  Gawk " -f " Program " --") \
+            command = Rlwrap " " Gawk " " (ENVIRON["TRANS_PROGRAM"] ?
+                                           "\"${TRANS_PROGRAM}\"" :
+                                           "-f " EntryPoint) " -" \
                 " -no-rlwrap" # be careful - never fork Rlwrap recursively!
             for (i = 1; i < length(ARGV); i++)
                 if (ARGV[i])
@@ -275,19 +275,18 @@ BEGIN {
         # Emacs interface
         Emacs = "emacs"
 
+        params = ""
         for (i = 1; i < length(ARGV); i++)
             if (ARGV[i])
-                el = el " " (parameterize(ARGV[i], "\""))
-        if (ENVIRON["TRANS_SCRIPT"]) {
-            shellPath = ENVIRON["TRANS_SCRIPT"]
-            match(shellPath, /\/([^/]+)$/, group)
-            shellName = group[1]
-            el = "(progn (setq explicit-shell-file-name \"" shellPath "\") " \
-                "(setq explicit-" shellName "-args '(\"-I\" \"-no-rlwrap\"" el ")) " \
+                params = params " " (parameterize(ARGV[i], "\""))
+        if (ENVIRON["TRANS_PROGRAM"]) {
+            el = "(progn (setq trans-program (getenv \"TRANS_PROGRAM\")) " \
+                "(setq explicit-shell-file-name \"" Gawk "\") " \
+                "(setq explicit-" Gawk "-args (cons trans-program '(\"-\" \"-I\" \"-no-rlwrap\"" params "))) " \
                 "(command-execute 'shell) (rename-buffer \"" Name "\"))"
         } else {
             el = "(progn (setq explicit-shell-file-name \"" Gawk "\") " \
-                "(setq explicit-" Gawk "-args '(\"-f\" \"./" Program "\" \"--\" \"-I\" \"-no-rlwrap\"" el ")) " \
+                "(setq explicit-" Gawk "-args '(\"-f\" \"" EntryPoint "\" \"--\" \"-I\" \"-no-rlwrap\"" params ")) " \
                 "(command-execute 'shell) (rename-buffer \"" Name "\"))"
         }
         command = Emacs " --eval " parameterize(el)
