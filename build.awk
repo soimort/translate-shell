@@ -4,8 +4,6 @@
 @include metainfo.awk
 
 function init() {
-    Command   = "trans"
-
     BuildPath = "build/"
     Trans     = BuildPath Command
 
