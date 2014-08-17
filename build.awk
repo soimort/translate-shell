@@ -28,7 +28,7 @@ function man() {
 }
 
 # Task: build
-function build(target,    group, inline, line) {
+function build(target,    group, inline, line, temp) {
     # Default target: bash
     if (!target) target = "bash"
 
@@ -77,6 +77,8 @@ function build(target,    group, inline, line) {
 
     } else if (target == "awk" || target == "gawk") {
 
+        "uname -s" | getline temp
+
         if (fileExists(EntryPoint))
             while (getline line < EntryPoint) {
                 match(line, /^[[:space:]]*@include[[:space:]]*"(.*)"$/, group)
@@ -86,7 +88,11 @@ function build(target,    group, inline, line) {
                         while (getline inline < (group[1] ".awk"))
                             print inline > Trans".awk"
                 } else {
-                    print line > Trans".awk"
+                    if (temp == "Darwin" && line == "#!/usr/bin/gawk -f")
+                        # OS X: gawk not in /usr/bin, use a better shebang
+                        print "#!/usr/bin/env gawk -f" > Trans".awk"
+                    else
+                        print line > Trans".awk"
                 }
             }
 
