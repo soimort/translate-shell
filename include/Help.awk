@@ -75,6 +75,27 @@ function getReference(displayName) {
 
 # Return help message as a string.
 function getHelp() {
-    return "Usage: translate [options] [source]:[target] [<text>] ...\n" \
-        "       translate [options] [source]:[target1]+[target2]+... [<text>] ...\n"
+    return "Usage: " Command " [options] [source]:[target] [" AnsiCode["underline"] "text" AnsiCode["no underline"] "] ...\n" \
+        "       " Command " [options] [source]:[target1]+[target2]+... [" AnsiCode["underline"] "text" AnsiCode["no underline"] "] ...\n\n" \
+        "Options:\n" \
+        "  " AnsiCode["bold"] "-V, -version" AnsiCode["no bold"] "\n    Print version and exit.\n" \
+        "  " AnsiCode["bold"] "-H, -h, -help" AnsiCode["no bold"] "\n    Show this manual, or print this help message and exit.\n" \
+        "  " AnsiCode["bold"] "-r, -reference" AnsiCode["no bold"] "\n    Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.\n" \
+        "  " AnsiCode["bold"] "-R, -reference-english" AnsiCode["no bold"] "\n    Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.\n" \
+        "  " AnsiCode["bold"] "-v, -verbose" AnsiCode["no bold"] "\n    Verbose mode. (default)\n" \
+        "  " AnsiCode["bold"] "-b, -brief" AnsiCode["no bold"] "\n    Brief mode.\n" \
+        "  " AnsiCode["bold"] "-w [num], -width [num]" AnsiCode["no bold"] "\n    Specify the screen width for padding when displaying right-to-left languages.\n" \
+        "  " AnsiCode["bold"] "-p, -play" AnsiCode["no bold"] "\n    Listen to the translation.\n" \
+        "  " AnsiCode["bold"] "-P [program], -player [program]" AnsiCode["no bold"] "\n    Specify the command-line audio player to use, and listen to the translation.\n" \
+        "  " AnsiCode["bold"] "-I, -interactive" AnsiCode["no bold"] "\n    Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).\n" \
+        "  " AnsiCode["bold"] "-no-rlwrap" AnsiCode["no bold"] "\n    Don't invoke `rlwrap` when starting an interactive shell with `-I`.\n" \
+        "  " AnsiCode["bold"] "-E, -emacs" AnsiCode["no bold"] "\n    Start an interactive shell within GNU Emacs, invoking `emacs`.\n" \
+        "  " AnsiCode["bold"] "-prompt [prompt_string]" AnsiCode["no bold"] "\n    Customize your prompt string in the interactive shell.\n" \
+        "  " AnsiCode["bold"] "-prompt-color [color_code]" AnsiCode["no bold"] "\n    Customize your prompt color in the interactive shell.\n" \
+        "  " AnsiCode["bold"] "-i [file], -input [file]" AnsiCode["no bold"] "\n    Specify the input file name.\n" \
+        "  " AnsiCode["bold"] "-o [file], -output [file]" AnsiCode["no bold"] "\n    Specify the output file name.\n" \
+        "  " AnsiCode["bold"] "-l [code], -lang [code]" AnsiCode["no bold"] "\n    Specify your own, native language (\"home/host language\").\n" \
+        "  " AnsiCode["bold"] "-s [code], -source [code]" AnsiCode["no bold"] "\n    Specify the source language (language of the original text).\n" \
+        "  " AnsiCode["bold"] "-t [codes], -target [codes]" AnsiCode["no bold"] "\n    Specify the target language(s) (language(s) of the translated text).\n" \
+        "\nSee the man page " Command "(1) for more information."
 }
