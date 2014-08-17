@@ -1,0 +1,169 @@
+#!/usr/bin/igawk -f
+
+@include include/Commons.awk
+@include metainfo.awk
+
+function init() {
+    Command   = "trans"
+
+    BuildPath = "build/"
+    Trans     = BuildPath Command
+
+    ManPath   = "man/"
+    Ronn      = ManPath Command ".1.ronn"
+    RonnStyle = ManPath "styles/night.css"
+    Man       = ManPath Command ".1"
+}
+
+# Task: clean
+function clean() {
+    ("rm -fr " parameterize(BuildPath)) | getline
+    return 0
+}
+
+# Task: man
+function man() {
+    return system("ronn --manual=" parameterize(toupper(Command) " MANUAL") \
+                  " --organization=" parameterize(Version) \
+                  " --style=" parameterize(RonnStyle) \
+                  " " Ronn)
+}
+
+# Task: build
+function build(target,    group, inline, line) {
+    # Default target: bash
+    if (!target) target = "bash"
+
+    ("mkdir -p " parameterize(BuildPath)) | getline
+
+    if (target == "bash" || target == "zsh") {
+
+        print "#!/usr/bin/env " target > Trans
+        print > Trans
+
+        print "read -r -d '' TRANS_PROGRAM << 'EOF'" > Trans
+        if (fileExists(Program))
+            while (getline line < Program) {
+                match(line, /^[[:space:]]*@include[[:space:]]*"(.*)"$/, group)
+                if (RSTART) {
+                    # Include file
+                    if (fileExists(group[1] ".awk"))
+                        while (getline inline < (group[1] ".awk")) {
+                            if (inline = squeeze(inline))
+                                print inline > Trans # effective LOC
+                        }
+                } else {
+                    if (line && line !~ /^[[:space:]]*#!/) {
+                        # Remove preceding spaces
+                        gsub(/^[[:space:]]+/, "", line)
+                        print line > Trans
+                    }
+                }
+            }
+        print "EOF" > Trans
+
+        print "read -r -d '' TRANS_MANPAGE << 'EOF'" > Trans
+        if (fileExists(Man))
+            while (getline line < Man)
+                print line > Trans
+        print "EOF" > Trans
+        print "export TRANS_MANPAGE" > Trans
+
+        print "TRANS_COMMAND=" Command > Trans
+        print "export TRANS_COMMAND" > Trans
+
+        print "TRANS_SCRIPT=$0" > Trans
+        print "export TRANS_SCRIPT" > Trans
+
+        print "export COLUMNS" > Trans
+
+        print "gawk \"$TRANS_PROGRAM\" - \"$@\"" > Trans
+
+        ("chmod +x " parameterize(Trans)) | getline
+        return 0
+
+    } else if (target == "awk" || target == "gawk") {
+
+        if (fileExists(Program))
+            while (getline line < Program) {
+                match(line, /^[[:space:]]*@include[[:space:]]*"(.*)"$/, group)
+                if (RSTART) {
+                    # Include file
+                    if (fileExists(group[1] ".awk"))
+                        while (getline inline < (group[1] ".awk"))
+                            print inline > Trans".awk"
+                } else {
+                    print line > Trans".awk"
+                }
+            }
+
+        ("chmod +x " parameterize(Trans".awk")) | getline
+        return 0
+
+    } else {
+
+        w("[FAILED] Unknown target: " AnsiCode["underline"] target AnsiCode["no underline"])
+        w("         Supported targets: " \
+          AnsiCode["underline"] "bash" AnsiCode["no underline"] ", " \
+          AnsiCode["underline"] "zsh" AnsiCode["no underline"] ", " \
+          AnsiCode["underline"] "gawk" AnsiCode["no underline"])
+        return 1
+
+    }
+}
+
+BEGIN {
+    init()
+
+    pos = 0
+    while (ARGV[++pos]) {
+        # -target [target]
+        match(ARGV[pos], /^--?target(=(.*)?)?$/, group)
+        if (RSTART) {
+            target = tolower(group[2] ? group[2] : ARGV[++pos])
+            continue
+        }
+
+        # [task]
+        match(ARGV[pos], /^[^\-]/, group)
+        if (RSTART) {
+            append(tasks, ARGV[pos])
+            continue
+        }
+    }
+
+    # Default task: build
+    if (!anything(tasks)) tasks[0] = "build"
+
+    for (i = 0; i < length(tasks); i++) {
+        task = tasks[i]
+        status = 0
+        switch (task) {
+
+        case "clean":
+            status = clean()
+            break
+
+        case "man":
+            status = man()
+            break
+
+        case "build":
+            status = build(target)
+            break
+
+        default: # unknown task
+            status = -1
+        }
+
+        if (status == 0) {
+            d("[OK] Task " AnsiCode["bold"] task AnsiCode["no bold"] " completed.")
+        } else if (status < 0) {
+            w("[FAILED] Unknown task: " AnsiCode["bold"] task AnsiCode["no bold"])
+            exit 1
+        } else {
+            w("[FAILED] Task " AnsiCode["bold"] task AnsiCode["no bold"] " failed.")
+            exit 1
+        }
+    }
+}
