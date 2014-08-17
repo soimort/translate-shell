@@ -37,7 +37,7 @@ function init() {
     Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] : 64
 
     Option["play"] = 0
-    Option["player"] = ENVIRON["PLAYER"] ? ENVIRON["PLAYER"] : AudioPlayer
+    Option["player"] = ENVIRON["PLAYER"]
 
     Option["interactive"] = 0
     Option["no-rlwrap"] = 0
@@ -129,10 +129,7 @@ BEGIN {
         # -p, -play
         match(ARGV[pos], /^--?p(l(ay?)?)?$/)
         if (RSTART) {
-            if (Option["player"] || SpeechSynthesizer)
-                Option["play"] = 1
-            else
-                w("[WARNING] No available audio player or speech synthesizer is found.")
+            Option["play"] = 1
             continue
         }
 
@@ -302,8 +299,17 @@ BEGIN {
 
     if (Option["play"]) {
         # Initialize audio player or speech synthesizer
-        initAudioPlayer()
-        if (!AudioPlayer) initSpeechSynthesizer()
+        if (!Option["player"]) {
+            initAudioPlayer()
+            Option["player"] = AudioPlayer ? AudioPlayer : Option["player"]
+            if (!Option["player"])
+                initSpeechSynthesizer()
+        }
+
+        if (!Option["player"] && !SpeechSynthesizer) {
+            w("[WARNING] No available audio player or speech synthesizer is found.")
+            Option["play"] = 0
+        }
     }
 
     if (pos < ARGC) {
