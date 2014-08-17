@@ -1,14 +1,9 @@
 os:
   - linux
-  - osx
 
 before_install: |
-  if [ -n "$DEBIAN_FRONTEND" ]; then
-    sudo add-apt-repository ppa:schot/gawk -y
-    sudo apt-get update -q
-    sudo apt-get install gawk
-  else
-    brew install gawk
-  fi
+  sudo add-apt-repository ppa:schot/gawk -y
+  sudo apt-get update -q
+  sudo apt-get install gawk
 
 script: make test
