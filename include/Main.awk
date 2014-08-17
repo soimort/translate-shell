@@ -255,7 +255,7 @@ BEGIN {
         # Interactive mode
         initRlwrap() # initialize Rlwrap
 
-        if (Rlwrap) {
+        if (Rlwrap && (ENVIRON["TRANS_PROGRAM"] || fileExists(EntryPoint))) {
             command = Rlwrap " " Gawk " " (ENVIRON["TRANS_PROGRAM"] ?
                                            "\"${TRANS_PROGRAM}\"" :
                                            "-f " EntryPoint) " -" \
@@ -275,26 +275,29 @@ BEGIN {
         # Emacs interface
         Emacs = "emacs"
 
-        params = ""
-        for (i = 1; i < length(ARGV); i++)
-            if (ARGV[i])
-                params = params " " (parameterize(ARGV[i], "\""))
-        if (ENVIRON["TRANS_PROGRAM"]) {
-            el = "(progn (setq trans-program (getenv \"TRANS_PROGRAM\")) " \
-                "(setq explicit-shell-file-name \"" Gawk "\") " \
-                "(setq explicit-" Gawk "-args (cons trans-program '(\"-\" \"-I\" \"-no-rlwrap\"" params "))) " \
-                "(command-execute 'shell) (rename-buffer \"" Name "\"))"
-        } else {
-            el = "(progn (setq explicit-shell-file-name \"" Gawk "\") " \
-                "(setq explicit-" Gawk "-args '(\"-f\" \"" EntryPoint "\" \"--\" \"-I\" \"-no-rlwrap\"" params ")) " \
-                "(command-execute 'shell) (rename-buffer \"" Name "\"))"
-        }
-        command = Emacs " --eval " parameterize(el)
+        if (ENVIRON["TRANS_PROGRAM"] || fileExists(EntryPoint)) {
+            params = ""
+            for (i = 1; i < length(ARGV); i++)
+                if (ARGV[i])
+                    params = params " " (parameterize(ARGV[i], "\""))
+            if (ENVIRON["TRANS_PROGRAM"]) {
+                el = "(progn (setq trans-program (getenv \"TRANS_PROGRAM\")) " \
+                    "(setq explicit-shell-file-name \"" Gawk "\") " \
+                    "(setq explicit-" Gawk "-args (cons trans-program '(\"-\" \"-I\" \"-no-rlwrap\"" params "))) " \
+                    "(command-execute 'shell) (rename-buffer \"" Name "\"))"
+            } else {
+                el = "(progn (setq explicit-shell-file-name \"" Gawk "\") " \
+                    "(setq explicit-" Gawk "-args '(\"-f\" \"" EntryPoint "\" \"--\" \"-I\" \"-no-rlwrap\"" params ")) " \
+                    "(command-execute 'shell) (rename-buffer \"" Name "\"))"
+            }
+            command = Emacs " --eval " parameterize(el)
 
-        if (!system(command))
-            exit
-        else
-            exit 1
+            if (!system(command))
+                exit # child process finished, exit
+            else
+                Option["interactive"] = 1 # skip
+        } else
+            Option["interactive"] = 1 # skip
     }
 
     if (Option["play"]) {
