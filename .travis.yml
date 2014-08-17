@@ -9,4 +9,4 @@ before_install: |
     brew install gawk
   fi
 
-script: gawk --version
+script: make test
