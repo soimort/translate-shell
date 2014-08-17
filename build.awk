@@ -68,8 +68,6 @@ function build(target,    group, inline, line) {
         print "EOF" > Trans
         print "export TRANS_MANPAGE" > Trans
 
-        print "export TRANS_COMMAND=" Command > Trans
-
         print "export COLUMNS" > Trans
 
         print "gawk \"$TRANS_PROGRAM\" - \"$@\"" > Trans
