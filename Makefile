@@ -11,10 +11,10 @@ INSTDIR  = /usr/bin
 default: build
 
 clean:
-	@igawk -f build.awk clean
+	@gawk -f build.awk clean
 
 $(COMMAND):
-	@igawk -f build.awk build -target=$(TARGET)
+	@gawk -f build.awk build -target=$(TARGET)
 
 build: $(COMMAND)
 
