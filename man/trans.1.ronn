@@ -67,7 +67,7 @@ When used in verbose mode, you will hear a statement like "Translations of text:
 
 You must have one of supported audio players (`mplayer` or `mpg123`) installed for streaming from the Google Text-to-Speech engine. Otherwise, a local speech synthesizer can be used instead (`say` on Mac OS X, `espeak` on Linux and other platforms).
 
-### -P [program], -player [program]
+### -player [program]
 
 Specify the command-line audio player to use, and listen to the translation.
 

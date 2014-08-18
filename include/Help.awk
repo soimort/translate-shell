@@ -86,7 +86,7 @@ function getHelp() {
         "  " AnsiCode["bold"] "-b, -brief" AnsiCode["no bold"] "\n    Brief mode.\n" \
         "  " AnsiCode["bold"] "-w [num], -width [num]" AnsiCode["no bold"] "\n    Specify the screen width for padding when displaying right-to-left languages.\n" \
         "  " AnsiCode["bold"] "-p, -play" AnsiCode["no bold"] "\n    Listen to the translation.\n" \
-        "  " AnsiCode["bold"] "-P [program], -player [program]" AnsiCode["no bold"] "\n    Specify the command-line audio player to use, and listen to the translation.\n" \
+        "  " AnsiCode["bold"] "-player [program]" AnsiCode["no bold"] "\n    Specify the command-line audio player to use, and listen to the translation.\n" \
         "  " AnsiCode["bold"] "-I, -interactive" AnsiCode["no bold"] "\n    Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).\n" \
         "  " AnsiCode["bold"] "-no-rlwrap" AnsiCode["no bold"] "\n    Don't invoke `rlwrap` when starting an interactive shell with `-I`.\n" \
         "  " AnsiCode["bold"] "-E, -emacs" AnsiCode["no bold"] "\n    Start an interactive shell within GNU Emacs, invoking `emacs`.\n" \

@@ -133,8 +133,8 @@ BEGIN {
             continue
         }
 
-        # -P [program], -player [program]
-        match(ARGV[pos], /^--?(player|P)(=(.*)?)?$/, group)
+        # -player [program]
+        match(ARGV[pos], /^--?player(=(.*)?)?$/, group)
         if (RSTART) {
             Option["play"] = 1
             Option["player"] = group[2] ?
