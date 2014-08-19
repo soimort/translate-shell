@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/{{ page.schema }}">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <meta name="robots" content="{{ page.robots }}"/>
+    <meta name="google" content="{{ page.google }}"/>
+    <meta name="google-site-verification" content="{{ page.google-site-verification }}"/>
+
+    <meta name="application-name" content="{{ page.application-name }}"/>
+    <meta name="generator" content="{{ page.generator }}"/>
+    <meta name="keywords" content="{{ page.keywords }}"/>
+
+    <title>{{ page.title }}</title>
+    <meta name="author" itemprop="author" content="{{ page.author }}"/>
+    <meta name="description" itemprop="description" content="{{ page.description }}"/>
+    <meta itemprop="name" content="{{ page.name }}"/>
+    <meta itemprop="image" content="{{ page.image }}"/>
+    <meta itemprop="url" content="{{ page.url }}"/>
+
+    <link rel="stylesheet" href="/bower_components/normalize-css/normalize.css"/>
+
+    {% for stylesheet in page.css %}{% capture f %}{{ stylesheet | split:"" | first }}{% endcapture %}{% if f == '/' %}<link rel="stylesheet" href="{{ stylesheet }}"/>{% else %}<link rel="stylesheet" href="/css/{{ page.theme }}/{{ stylesheet }}"/>{% endif %}
+    {% endfor %}
+  </head>
+  <body>
+    {{ content }}
+  </body>
+</html>
