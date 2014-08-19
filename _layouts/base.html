@@ -21,9 +21,9 @@
     <meta itemprop="image" content="{{ page.image }}"/>
     <meta itemprop="url" content="{{ page.url }}"/>
 
-    <link rel="stylesheet" href="/bower_components/normalize-css/normalize.css"/>
+    <link rel="stylesheet" href="bower_components/normalize-css/normalize.css"/>
 
-    {% for stylesheet in page.css %}{% capture f %}{{ stylesheet | split:"" | first }}{% endcapture %}{% if f == '/' %}<link rel="stylesheet" href="{{ stylesheet }}"/>{% else %}<link rel="stylesheet" href="/css/{{ page.theme }}/{{ stylesheet }}"/>{% endif %}
+    {% for stylesheet in page.css %}{% capture f %}{{ stylesheet | split:"" | first }}{% endcapture %}{% if f == '/' %}<link rel="stylesheet" href="{{ stylesheet }}"/>{% else %}<link rel="stylesheet" href="css/{{ page.theme }}/{{ stylesheet }}"/>{% endif %}
     {% endfor %}
   </head>
   <body>
