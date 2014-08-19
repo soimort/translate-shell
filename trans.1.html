@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' value='text/html;charset=utf8'>
+  <meta name='generator' value='Ronn/v0.7.3 (http://github.com/rtomayko/ronn/tree/0.7.3)'>
+  <title>trans(1) - Google Translate served as a command-line tool</title>
+  <style type='text/css' media='all'>
+  /* style: man */
+  body#manpage {margin:0}
+  .mp {max-width:100ex;padding:0 9ex 1ex 4ex}
+  .mp p,.mp pre,.mp ul,.mp ol,.mp dl {margin:0 0 20px 0}
+  .mp h2 {margin:10px 0 0 0}
+  .mp > p,.mp > pre,.mp > ul,.mp > ol,.mp > dl {margin-left:8ex}
+  .mp h3 {margin:0 0 0 4ex}
+  .mp dt {margin:0;clear:left}
+  .mp dt.flush {float:left;width:8ex}
+  .mp dd {margin:0 0 0 9ex}
+  .mp h1,.mp h2,.mp h3,.mp h4 {clear:left}
+  .mp pre {margin-bottom:20px}
+  .mp pre+h2,.mp pre+h3 {margin-top:22px}
+  .mp h2+pre,.mp h3+pre {margin-top:5px}
+  .mp img {display:block;margin:auto}
+  .mp h1.man-title {display:none}
+  .mp,.mp code,.mp pre,.mp tt,.mp kbd,.mp samp,.mp h3,.mp h4 {font-family:monospace;font-size:14px;line-height:1.42857142857143}
+  .mp h2 {font-size:16px;line-height:1.25}
+  .mp h1 {font-size:20px;line-height:2}
+  .mp {text-align:justify;background:#fff}
+  .mp,.mp code,.mp pre,.mp pre code,.mp tt,.mp kbd,.mp samp {color:#131211}
+  .mp h1,.mp h2,.mp h3,.mp h4 {color:#030201}
+  .mp u {text-decoration:underline}
+  .mp code,.mp strong,.mp b {font-weight:bold;color:#131211}
+  .mp em,.mp var {font-style:italic;color:#232221;text-decoration:none}
+  .mp a,.mp a:link,.mp a:hover,.mp a code,.mp a pre,.mp a tt,.mp a kbd,.mp a samp {color:#0000ff}
+  .mp b.man-ref {font-weight:normal;color:#434241}
+  .mp pre {padding:0 4ex}
+  .mp pre code {font-weight:normal;color:#434241}
+  .mp h2+pre,h3+pre {padding-left:0}
+  ol.man-decor,ol.man-decor li {margin:3px 0 10px 0;padding:0;float:left;width:33%;list-style-type:none;text-transform:uppercase;color:#999;letter-spacing:1px}
+  ol.man-decor {width:100%}
+  ol.man-decor li.tl {text-align:left}
+  ol.man-decor li.tc {text-align:center;letter-spacing:4px}
+  ol.man-decor li.tr {text-align:right;float:right}
+  </style>
+  <style type='text/css' media='all'>
+  /* style: night */
+  @import url(http://fonts.googleapis.com/css?family=Droid+Sans+Mono);
+  body#manpage {background: #111;color: #888}
+  .mp {display: block !important;position: absolute;top: 0;left: 30ex;padding: 48px 48px 48px 48px;background: #111;color: #ddd}
+  .mp code,.mp pre,.mp pre code,.mp tt,.mp kbd,.mp samp {color: #aaa}
+  .mp h1,.mp h2,.mp h3,.mp h4 {color: #fff}
+  .man-decor,.man-decor ol li {color: #666}
+  .mp code,.mp strong,.mp b {color: #fff}
+  .mp em,.mp var,.mp u {color: #ddd}
+  .mp pre code {color: #ddd}
+  .mp a,.mp a:link,.mp a:hover,.mp a code,.mp a pre,.mp a tt,.mp a kbd,.mp a samp {color: #fff}
+  .mp,.mp code,.mp pre,.mp tt,.mp kbd,.mp samp,.mp h3,.mp h4 {font-family: 'Droid Sans Mono',monospace}
+  .man-navigation {display: block !important;position: fixed;top: 0;left: 0;height: 100%;width: 30ex;padding: 48px 0 0 0;background: #222}
+  .man-navigation a,.man-navigation a:hover,.man-navigation a:link,.man-navigation a:visited {display: block;margin: 0;padding: 5px 2px 5px 30px;color: #ccc;text-decoration: none;transition: all 0.2s ease-out;-webkit-transition: all 0.2s ease-out;-moz-transition: all 0.2s ease-out;-o-transition: all 0.2s ease-out}
+  .man-navigation a:hover {text-shadow: 0 0 4px #ccc}
+  ol.man-decor,ol.man-decor li {margin: 0 0 0 0;background: white;color: black;opacity: 0.8}
+  .man-head {position: fixed;top: 0;left: 0}
+  .man-foot {position: fixed;bottom: 0;left: 0}
+  ::-webkit-scrollbar {width: 8px;background-color: #222}
+  ::-webkit-scrollbar-thumb {background: rgba(255,255,255,0.8);-webkit-box-shadow: inset 0 0 8px rgba(0,0,0,0.5);-webkit-border-radius: 8px;border-radius: 8px}
+  </style>
+</head>
+<!--
+  The following styles are deprecated and will be removed at some point:
+  div#man, div#man ol.man, div#man ol.head, div#man ol.man.
+
+  The .man-page, .man-decor, .man-head, .man-foot, .man-title, and
+  .man-navigation should be used instead.
+-->
+<body id='manpage'>
+  <div class='mp' id='man'>
+
+  <div class='man-navigation' style='display:none'>
+    <a href="#NAME">NAME</a>
+    <a href="#SYNOPSIS">SYNOPSIS</a>
+    <a href="#DESCRIPTION">DESCRIPTION</a>
+    <a href="#OPTIONS">OPTIONS</a>
+    <a href="#SHORTCUT">SHORTCUT</a>
+    <a href="#CODE-LIST">CODE LIST</a>
+    <a href="#ERRORS">ERRORS</a>
+    <a href="#AUTHORS">AUTHORS</a>
+    <a href="#REPORTING-BUGS">REPORTING BUGS</a>
+  </div>
+
+  <ol class='man-decor man-head man head'>
+    <li class='tl'>trans(1)</li>
+    <li class='tc'>TRANS MANUAL</li>
+    <li class='tr'>trans(1)</li>
+  </ol>
+
+  <h2 id="NAME">NAME</h2>
+<p class="man-name">
+  <code>trans</code> - <span class="man-whatis">Google Translate served as a command-line tool</span>
+</p>
+
+<h2 id="SYNOPSIS">SYNOPSIS</h2>
+
+<p><code>trans</code> [options] [source]:[target] [<var>text</var>] ...</p>
+
+<p><code>trans</code> [options] [source]:[target1]+[target2]+... [<var>text</var>] ...</p>
+
+<h2 id="DESCRIPTION">DESCRIPTION</h2>
+
+<p>This tool uses Google Translate to translate input text into any language.</p>
+
+<p>Each command-line argument which is not an option will be treated as <var>text</var> to be translated.</p>
+
+<p>When any non-option argument is given, the program will translate it. Also, if an input file is specified by an option, the program will then translate from that file.</p>
+
+<p>When every argument is an option (i.e. no <var>text</var> is passed via arguments), the program will read the text to be translated from standard input (unless an input file is specified explicitly by an option).</p>
+
+<h2 id="OPTIONS">OPTIONS</h2>
+
+<h3 id="-no-op">-, -no-op</h3>
+
+<p>This option effectively does nothing at all.</p>
+
+<h3 id="-V-version">-V, -version</h3>
+
+<p>Print version and exit.</p>
+
+<h3 id="-H-h-help">-H, -h, -help</h3>
+
+<p>Show this manual, or print this help message and exit.</p>
+
+<h3 id="-r-reference">-r, -reference</h3>
+
+<p>Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.</p>
+
+<h3 id="-R-reference-english">-R, -reference-english</h3>
+
+<p>Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.</p>
+
+<h3 id="-v-verbose">-v, -verbose</h3>
+
+<p>Verbose mode. (default)</p>
+
+<p>Show the most relevant translation, then its phonetic notation (if any), then its alternative translations (if any), then its definition in dictionary (if it is a word),</p>
+
+<p>This option is unnecessary since verbose mode is enabled by default.</p>
+
+<h3 id="-b-brief">-b, -brief</h3>
+
+<p>Brief mode.</p>
+
+<p>Show the most relevant translation only, or its phonetic notation only. Nothing more.</p>
+
+<h3 id="-w-num-width-num-">-w [num], -width [num]</h3>
+
+<p>Specify the screen width for padding when displaying right-to-left languages.</p>
+
+<p>This option overrides the setting of environment variable <code>COLUMNS</code>.</p>
+
+<h3 id="-p-play">-p, -play</h3>
+
+<p>Listen to the translation.</p>
+
+<p>When used in verbose mode, you will hear a statement like "Translations of text: wénběn". When used in brief mode, you will hear only the actual translation: "wénběn" for example.</p>
+
+<p>You must have one of supported audio players (<code>mplayer</code> or <code>mpg123</code>) installed for streaming from the Google Text-to-Speech engine. Otherwise, a local speech synthesizer can be used instead (<code>say</code> on Mac OS X, <code>espeak</code> on Linux and other platforms).</p>
+
+<h3 id="-player-program-">-player [program]</h3>
+
+<p>Specify the command-line audio player to use, and listen to the translation.</p>
+
+<p>Option <code>-play</code> will try to use <code>mplayer</code> or <code>mpg123</code> by default, since these players are known to work for streaming URLs. Not all command-line audio players can work this way. Use this option only when you have your own preference.</p>
+
+<p>This option overrides the setting of environment variable <code>PLAYER</code>.</p>
+
+<h3 id="-I-interactive">-I, -interactive</h3>
+
+<p>Start an interactive shell, invoking <code>rlwrap</code> whenever possible (unless <code>-no-rlwrap</code> is specified).</p>
+
+<h3 id="-no-rlwrap">-no-rlwrap</h3>
+
+<p>Don't invoke <code>rlwrap</code> when starting an interactive shell with <code>-I</code>.</p>
+
+<p>This option is useful when the terminal type is not supported by <code>rlwrap</code> (e.g. Emacs).</p>
+
+<h3 id="-E-emacs">-E, -emacs</h3>
+
+<p>Start an interactive shell within GNU Emacs, invoking <code>emacs</code>.</p>
+
+<p>This option does not need to, and cannot be used along with <code>-I</code> or <code>-no-rlwrap</code>.</p>
+
+<h3 id="-prompt-prompt_string-">-prompt [prompt_string]</h3>
+
+<p>Customize your prompt string in the interactive shell.</p>
+
+<p>Format specifiers preceded by a "%" character are supported. When these format specifiers appear in the prompt string, they will be replaced by the following:</p>
+
+<pre><code>%_ : prompt message (e.g. "Translations of ") in your home language
+%l : name of your home language
+%L : English name of your home language
+%s : name of source language
+%S : English name of source language
+%t : names of target languages, separated by "+"
+%T : English names of target languages, separated by "+"
+%, : names of target languages, separated by ","
+%&lt; : English names of target languages, separated by ","
+%/ : names of target languages, separated by "/"
+%? : English names of target languages, separated by "/"
+%% : a literal "%"
+</code></pre>
+
+<p>Furthermore, some format specifiers derived from C Library strftime() and supported by gawk are also supported here:</p>
+
+<pre><code>%a : the locale's abbreviated weekday name
+%A : the locale's full weekday name
+%b : the locale's abbreviated month name
+%B : the locale's full month name
+%c : the locale's appropriate date and time representation
+%C : the century number of the current year (00-99)
+%d : the day of the month (01-31)
+%D : same as '%m/%d/%y'
+%e : the day of the month (1-31), padded with a space if it is only one digit
+%F : same as '%Y-%m-%d' (the ISO 8601 date format)
+%g : the year modulo 100 of the ISO 8601 week number (00–99)
+%G : the full year of the ISO week number
+%h : same as '%b'
+%H : the hour (24-hour clock) (00–23)
+%I : the hour (12-hour clock) (01-12)
+%j : the day of the year (001–366)
+%m : the month (01–12)
+%M : the minute (00–59)
+%n : a newline character (ASCII LF)
+%p : the locale's equivalent of the AM/PM designations associated with a 12-hour clock
+%r : the locale's 12-hour clock time
+%R : same as '%H:%M'
+%u : the weekday (Monday is day one) (1–7)
+%U : the week number of the year (Sunday as the first day of the week) (00–53)
+%V : the week number of the year (Monday as the first day of the week) (01–53)
+%w : the weekday (Sunday is day zero) (0–6)
+%W : the week number of the year (Monday as the first day of the week) (00–53)
+%x : the locale's appropriate date representation
+%X : the locale's appropriate time representation
+%y : the year modulo 100 (00–99)
+%Y : the full year
+%z : the timezone offset in a +HHMM format
+%Z : the time zone name or abbreviation
+</code></pre>
+
+<p>This option overrides the setting of environment variable <code>TRANS_PS</code>.</p>
+
+<h3 id="-prompt-color-color_code-">-prompt-color [color_code]</h3>
+
+<p>Customize your prompt color in the interactive shell.</p>
+
+<p>These color codes (case-insensitive) are available: (remember to quote them when having a space!)</p>
+
+<pre><code>default
+black
+white
+red
+light red
+green
+light green
+yellow
+light yellow
+blue
+light blue
+magenta
+light magenta
+cyan
+light cyan
+gray
+dark gray
+</code></pre>
+
+<p>This option overrides the setting of environment variable <code>TRANS_PS_COLOR</code>.</p>
+
+<h3 id="-i-file-input-file-">-i [file], -input [file]</h3>
+
+<p>Specify the input file name.</p>
+
+<p>Source text to be translated will be read from that file (instead of standard input).</p>
+
+<h3 id="-o-file-output-file-">-o [file], -output [file]</h3>
+
+<p>Specify the output file name.</p>
+
+<p>Translations will be written to that file (instead of standard output).</p>
+
+<h3 id="-l-code-lang-code-">-l [code], -lang [code]</h3>
+
+<p>Specify your own, native language ("home/host language"). The code value must be the ISO 639 code of a supported language.</p>
+
+<p>This option is optional. When omitted, the relevant setting of environment variables will be used; when no valid setting is found, English will be used.</p>
+
+<p>This option only affects the display in verbose mode (anything other than the source language and the target language will be displayed in your home language). This option has no effect in brief mode.</p>
+
+<p>This option overrides the setting of environment variables <code>LANG</code> and <code>HOME_LANG</code>.</p>
+
+<h3 id="-s-code-source-code-">-s [code], -source [code]</h3>
+
+<p>Specify the source language (language of the original text). The code value must be the ISO 639 code of a supported language.</p>
+
+<p>This option is optional. When omitted, the relevant setting of environment variable will be used; when no valid setting is found, the language of the original text will be identified automatically (with a possibility of misidentification).</p>
+
+<p>This option overrides the setting of environment variable <code>SOURCE_LANG</code>.</p>
+
+<h3 id="-t-codes-target-codes-">-t [codes], -target [codes]</h3>
+
+<p>Specify the target language(s) (language(s) of the translated text). The code value(s) must be the ISO 639 code(s) of supported language(s).</p>
+
+<p>This option is optional. When omitted, the relevant setting of environment variables will be used; when no valid setting is found, everything will be translated into English.</p>
+
+<p>More than one target language can be specified at the same time, concatenated by plus sign "+".</p>
+
+<p>This option overrides the setting of environment variables <code>LANG</code> and <code>TARGET_LANG</code>.</p>
+
+<h3 id="-">--</h3>
+
+<p>End-of-options.</p>
+
+<p>All arguments after this option are treated as <var>text</var> to be translated.</p>
+
+<h2 id="SHORTCUT">SHORTCUT</h2>
+
+<p>A simpler alternative way to specify the source language and the target language(s) for translation is to use a shortcut formatted string:</p>
+
+<ul>
+<li>[source]:[target]</li>
+<li>[source]:[target1]+[target2]+...</li>
+<li>[source]=[target]</li>
+<li>[source]=[target1]+[target2]+...</li>
+</ul>
+
+
+<p>Delimiter ":" and "=" can be used interchangeably.</p>
+
+<p>Both values of source and target must be ISO 639 codes of supported languages.</p>
+
+<p>Either source or target can be omitted, but the delimiter character must be kept.</p>
+
+<h2 id="CODE-LIST">CODE LIST</h2>
+
+<pre><code>┌───────────────────────┬──────────────────────┬─────────────────┐
+│ Afrikaans     - af    │ Greek          - el  │ Mongolian  - mn │
+│ Albanian      - sq    │ Gujarati       - gu  │ Nepali     - ne │
+│ Arabic        - ar    │ Haitian Creole - ht  │ Norwegian  - no │
+│ Armenian      - hy    │ Hausa          - ha  │ Persian    - fa │
+│ Azerbaijani   - az    │ Hebrew         - he  │ Polish     - pl │
+│ Basque        - eu    │ Hindi          - hi  │ Portuguese - pt │
+│ Belarusian    - be    │ Hmong          - hmn │ Punjabi    - pa │
+│ Bengali       - bn    │ Hungarian      - hu  │ Romanian   - ro │
+│ Bosnian       - bs    │ Icelandic      - is  │ Russian    - ru │
+│ Bulgarian     - bg    │ Igbo           - ig  │ Serbian    - sr │
+│ Catalan       - ca    │ Indonesian     - id  │ Slovak     - sk │
+│ Cebuano       - ceb   │ Irish          - ga  │ Slovenian  - sl │
+│ Chinese Simp. - zh-CN │ Italian        - it  │ Somali     - so │
+│ Chinese Trad. - zh-TW │ Japanese       - ja  │ Spanish    - es │
+│ Croatian      - hr    │ Javanese       - jv  │ Swahili    - sw │
+│ Czech         - cs    │ Kannada        - kn  │ Swedish    - sv │
+│ Danish        - da    │ Khmer          - km  │ Tamil      - ta │
+│ Dutch         - nl    │ Korean         - ko  │ Telugu     - te │
+│ English       - en    │ Lao            - lo  │ Thai       - th │
+│ Esperanto     - eo    │ Latin          - la  │ Turkish    - tr │
+│ Estonian      - et    │ Latvian        - lv  │ Ukrainian  - uk │
+│ Filipino      - tl    │ Lithuanian     - lt  │ Urdu       - ur │
+│ Finnish       - fi    │ Macedonian     - mk  │ Vietnamese - vi │
+│ French        - fr    │ Malay          - ms  │ Welsh      - cy │
+│ Galician      - gl    │ Maltese        - mt  │ Yiddish    - yi │
+│ Georgian      - ka    │ Maori          - mi  │ Yoruba     - yo │
+│ German        - de    │ Marathi        - mr  │ Zulu       - zu │
+└───────────────────────┴──────────────────────┴─────────────────┘
+</code></pre>
+
+<h2 id="ERRORS">ERRORS</h2>
+
+<p><code>trans</code> returns 0 if the text was translated successfully, otherwise non-zero.</p>
+
+<h2 id="AUTHORS">AUTHORS</h2>
+
+<p>Mort Yao &lt;<a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#115;&#111;&#x69;&#x40;&#x6d;&#111;&#114;&#x74;&#46;&#110;&#x69;&#110;&#106;&#97;" data-bare-link="true">&#x73;&#111;&#x69;&#64;&#109;&#x6f;&#114;&#116;&#x2e;&#110;&#105;&#110;&#x6a;&#97;</a>></p>
+
+<h2 id="REPORTING-BUGS">REPORTING BUGS</h2>
+
+<p><a href="https://github.com/soimort/translate-shell/issues" data-bare-link="true">https://github.com/soimort/translate-shell/issues</a></p>
+
+
+  <ol class='man-decor man-foot man foot'>
+    <li class='tl'>0.8.19</li>
+    <li class='tc'>August 2014</li>
+    <li class='tr'>trans(1)</li>
+  </ol>
+
+  </div>
+</body>
+</html>
