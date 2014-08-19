@@ -643,7 +643,7 @@ return "Usage: " Command " [options] [source]:[target] [" AnsiCode["underline"] 
 "  " AnsiCode["bold"] "-b, -brief" AnsiCode["no bold"] "\n    Brief mode.\n" \
 "  " AnsiCode["bold"] "-w [num], -width [num]" AnsiCode["no bold"] "\n    Specify the screen width for padding when displaying right-to-left languages.\n" \
 "  " AnsiCode["bold"] "-p, -play" AnsiCode["no bold"] "\n    Listen to the translation.\n" \
-"  " AnsiCode["bold"] "-P [program], -player [program]" AnsiCode["no bold"] "\n    Specify the command-line audio player to use, and listen to the translation.\n" \
+"  " AnsiCode["bold"] "-player [program]" AnsiCode["no bold"] "\n    Specify the command-line audio player to use, and listen to the translation.\n" \
 "  " AnsiCode["bold"] "-I, -interactive" AnsiCode["no bold"] "\n    Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).\n" \
 "  " AnsiCode["bold"] "-no-rlwrap" AnsiCode["no bold"] "\n    Don't invoke `rlwrap` when starting an interactive shell with `-I`.\n" \
 "  " AnsiCode["bold"] "-E, -emacs" AnsiCode["no bold"] "\n    Start an interactive shell within GNU Emacs, invoking `emacs`.\n" \
@@ -1238,7 +1238,7 @@ if (RSTART) {
 Option["play"] = 1
 continue
 }
-match(ARGV[pos], /^--?(player|P)(=(.*)?)?$/, group)
+match(ARGV[pos], /^--?player(=(.*)?)?$/, group)
 if (RSTART) {
 Option["play"] = 1
 Option["player"] = group[2] ?
@@ -1466,7 +1466,7 @@ When used in verbose mode, you will hear a statement like "Translations of text:
 .P
 You must have one of supported audio players (\fBmplayer\fR or \fBmpg123\fR) installed for streaming from the Google Text\-to\-Speech engine\. Otherwise, a local speech synthesizer can be used instead (\fBsay\fR on Mac OS X, \fBespeak\fR on Linux and other platforms)\.
 .
-.SS "\-P [program], \-player [program]"
+.SS "\-player [program]"
 Specify the command\-line audio player to use, and listen to the translation\.
 .
 .P
