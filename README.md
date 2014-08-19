@@ -248,7 +248,7 @@ Use `Shift-K` to view the translation of the word under the cursor.
 
 ## Usage
 
-Use `$ trans -H` to view the detailed man page.
+Use `$ trans -H` to view the [detailed man page](http://www.soimort.org/translate-shell/trans.1.html).
 
 ```
 Usage: trans [options] [source]:[target] [text] ...
