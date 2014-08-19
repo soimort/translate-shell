@@ -29,7 +29,7 @@ read -r -d '' TRANS_PROGRAM << 'EOF'
 BEGIN {
 Name        = "Translate Shell"
 Description = "Google Translate to serve as a command-line tool"
-Version     = "0.8.17"
+Version     = "0.8.19"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 }
@@ -1396,7 +1396,7 @@ read -r -d '' TRANS_MANPAGE << 'EOF'
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "TRANS" "1" "August 2014" "0.8.17" "TRANS MANUAL"
+.TH "TRANS" "1" "August 2014" "0.8.19" "TRANS MANUAL"
 .
 .SH "NAME"
 \fBtrans\fR \- Google Translate served as a command\-line tool
