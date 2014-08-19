@@ -1,0 +1,291 @@
+<h1 id="translate-shell">Translate Shell</h1>
+<p><a href="https://travis-ci.org/soimort/translate-shell"><img src="https://travis-ci.org/soimort/translate-shell.png" alt="Build Status" /></a></p>
+<p><a href="http://www.soimort.org/translate-shell">Translate Shell</a> is a command-line interface and interactive shell for <a href="https://translate.google.com/">Google Translate</a>. It works just the way you want it to be.</p>
+<pre><code>$ trans &quot;Saluton, Mondo&quot;
+Hello, World
+
+Translations of Saluton, Mondo
+(Esperanto -&gt; English)
+Saluton(Hello/Hail/Hi/A greeting/Saluton) , Mondo(, World)</code></pre>
+<p>Translations with detailed explanations are shown by default. You can also translate the text briefly, i.e., only the most relevant translation is shown: (this will give you the same result as in <a href="https://github.com/soimort/translate-shell/tree/legacy">Google Translate CLI Legacy</a>)</p>
+<pre><code>$ trans -b &quot;Saluton, Mondo&quot;
+Hello, World</code></pre>
+<p>Translations can be done interactively; input your text line by line:</p>
+<pre><code>$ trans -b -I
+&gt; Was mich nicht umbringt, macht mich stärker.
+What does not kill me makes me stronger.
+&gt; Юмор есть остроумие глубокого чувства.
+Humor is a deep sense of wit.
+&gt; 學而不思則罔，思而不學則殆。
+Learning without thought is labor lost, thought without learning is perilous.
+&gt; 幸福になるためには、人から愛されるのが一番の近道。
+In order to be happy, the shortest way is from being loved by the people.</code></pre>
+<p><strong>Translate Shell</strong> is a complete rewrite of <a href="https://github.com/soimort/translate-shell/tree/legacy">Google Translate CLI Legacy</a>, which is a tiny script written in 100 lines of AWK code. Translate Shell is backward compatible with Google Translate CLI Legacy in its command-line usage; furthermore, it provides more functionality including verbose translation, Text-to-Speech and interactive mode, etc.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<h3 id="system-requirements">System Requirements</h3>
+<p>Any POSIX-compliant system should work, including but not limited to:</p>
+<ul>
+<li>GNU/Linux</li>
+<li>BSD family, including OS X</li>
+<li>illumos family, including SmartOS</li>
+<li>Cygwin on Windows</li>
+</ul>
+<h3 id="dependencies">Dependencies</h3>
+<ul>
+<li><a href="https://www.gnu.org/software/gawk/">GNU Awk</a> (gawk) <code>&gt;=4.0</code>
+<ul>
+<li>This program relies heavily on GNU-only extensions of the AWK language, which are not possible with POSIX AWK or other AWK implementations.</li>
+<li>gawk comes with (almost) all GNU/Linux distributions. On BSD systems, it is available in ports. On OS X, it is available in MacPorts and Homebrew.</li>
+<li>If you have an older version of gawk (<code>&gt;=3.1</code>), you may still want to use <a href="https://github.com/soimort/translate-shell/tree/legacy">Google Translate CLI Legacy</a>.</li>
+<li>Be aware that msys-gawk shipped with MinGW is outdated; however, you may still use Google Translate CLI Legacy as well.</li>
+</ul></li>
+</ul>
+<h3 id="optional-dependencies">Optional Dependencies</h3>
+<ul>
+<li><a href="http://www.gnu.org/software/bash/">GNU Bash</a> or <a href="http://www.zsh.org/">Zsh</a>
+<ul>
+<li>You can use Translate Shell from any modern Unix shell of your choice (bash, zsh, ksh, tcsh, fish, etc.); however, it requires either bash or zsh installed for interpreting the wrapper script.</li>
+</ul></li>
+<li><a href="http://fribidi.org/">GNU FriBidi</a>: an implementation of the Unicode Bidirectional Algorithm (bidi)
+<ul>
+<li>needed for displaying right-to-left (RTL) languages</li>
+</ul></li>
+<li><a href="http://www.mplayerhq.hu/">MPlayer</a>, <a href="http://mpg123.org/">mpg123</a>, or <a href="http://espeak.sourceforge.net/">eSpeak</a>
+<ul>
+<li>needed for the Text-to-Speech functionality</li>
+</ul></li>
+<li><a href="http://utopia.knoware.nl/~hlub/uck/rlwrap/#rlwrap">rlwrap</a>: a GNU readline wrapper
+<ul>
+<li>needed for readline-style editing and history in the interactive mode</li>
+</ul></li>
+<li><a href="http://www.gnu.org/software/groff/">groff</a>: GNU troff (pre-installed on most systems)
+<ul>
+<li>needed for formatting man pages</li>
+</ul></li>
+<li><a href="http://www.gnu.org/software/emacs/">GNU Emacs</a>
+<ul>
+<li>for using the Emacs interface</li>
+</ul></li>
+</ul>
+<h3 id="environment-and-encoding">Environment and Encoding</h3>
+<p>It is strongly recommended that you use UTF-8 codeset for your default locale, as it potentially supports all languages. You can check if your codeset is UTF-8 using:</p>
+<pre><code>$ echo $LANG
+en_US.UTF-8</code></pre>
+<p>And you need to have necessary Unicode fonts installed for the languages you want to display.</p>
+<h2 id="try-it-out">Try It Out</h2>
+<p>As long as you have <code>gawk</code> already, you're good to go!</p>
+<pre><code>$ gawk &quot;$(curl -Ls git.io/translate)&quot; -I</code></pre>
+<h2 id="installation">Installation</h2>
+<h3 id="direct-download">Direct Download</h3>
+<p>Download <a href="http://git.io/trans">this executable</a> and place it into your path.</p>
+<pre><code>$ wget git.io/trans
+$ chmod +x ./trans</code></pre>
+<h3 id="from-homebrew">From Homebrew</h3>
+<pre><code>$ brew install http://www.soimort.org/translate-shell/translate-shell.rb</code></pre>
+<h3 id="from-git">From Git</h3>
+<pre><code>$ git clone https://github.com/soimort/translate-shell
+$ cd translate-shell/
+$ make install</code></pre>
+<p>By default, a bash script <code>trans</code> will be installed to your <code>/usr/bin</code>. If you prefer to use zsh, you can specify zsh as the build target:</p>
+<pre><code>$ make TARGET=zsh install</code></pre>
+<p>You can specify the installation path too:</p>
+<pre><code>$ make INSTDIR=~/bin install</code></pre>
+<h2 id="examples">Examples</h2>
+<h3 id="translate-a-word">Translate a Word</h3>
+<h4 id="from-any-language-to-your-language">From any language to your language</h4>
+<p>Google Translate will detect the language of the source text automatically, and Translate Shell will translate it into the language of your locale.</p>
+<pre><code>$ trans vorto</code></pre>
+<h4 id="from-any-language-to-one-or-more-specific-languages">From any language to one or more specific languages</h4>
+<p>Translate a word into French:</p>
+<pre><code>$ trans :fr word</code></pre>
+<p>Translate a word into Chinese and Japanese: (use a plus sign &quot;<code>+</code>&quot; as the delimiter)</p>
+<pre><code>$ trans :zh+ja word</code></pre>
+<p>You can use an equals sign (&quot;<code>=</code>&quot;) in place of &quot;<code>:</code>&quot;. The traditional way of using a pair of curly brackets in Google Translate CLI Legacy is still supported: (depending on your shell)</p>
+<pre><code>$ trans {=zh+ja} word</code></pre>
+<p>You can also use the <code>-target</code> option to specify this:</p>
+<pre><code>$ trans -t zh+ja word</code></pre>
+<h4 id="from-a-specific-language">From a specific language</h4>
+<p>Google Translate could identify the language of the source text incorrectly; in that case, you will need to specify the language yourself:</p>
+<pre><code>$ trans :en 手紙
+$ trans ja:en 手紙
+$ trans zh:en 手紙</code></pre>
+<p>You can also use the <code>-source</code> option to specify this:</p>
+<pre><code>$ trans -s ja -t en 手紙</code></pre>
+<h3 id="translate-multiple-words-or-a-phrase">Translate Multiple Words or a Phrase</h3>
+<p>Translate each word alone:</p>
+<pre><code>$ trans en:zh freedom of speech</code></pre>
+<p>Put words into one argument and translate them as a whole:</p>
+<pre><code>$ trans en:zh &quot;freedom of speech&quot;</code></pre>
+<h3 id="translate-a-sentence">Translate a Sentence</h3>
+<p>Translating a sentence is much the same like translating a phrase; you can quote words into one argument:</p>
+<pre><code>$ trans :zh &quot;Words will always retain their power.&quot;
+$ trans :zh &#39;Words will always retain their power.&#39;</code></pre>
+<p>To avoid punctuation marks and other special characters (e.g. &quot;<code>!</code>&quot;) being interpreted by the shell, use <em>single quotes</em>:</p>
+<pre><code>$ trans :zh &#39;Yes we can!&#39;</code></pre>
+<p>There are some cases though, you may still want to use <em>double quotes</em>: (i.e. the sentence contains a single quotation mark &quot;<code>'</code>&quot;)</p>
+<pre><code>$ trans :zh &quot;I&#39;m lovin&#39; it! McDonald&#39;s&quot;</code></pre>
+<h3 id="brief-mode">Brief Mode</h3>
+<p>By default, Translate Shell displays translations in a verbose manner. If you prefer to see only the most relevant translation, you can fallback to brief mode using the <code>-brief</code> option:</p>
+<pre><code>$ trans :fr -b &quot;Saluton, Mondo&quot;</code></pre>
+<p>In brief mode, phonetic notation (for some languages) is not shown by default. To enable this, put an at sign &quot;<code>@</code>&quot; in front of the language code:</p>
+<pre><code>$ trans :@ja -b &quot;Saluton, Mondo&quot;</code></pre>
+<h3 id="text-to-speech">Text-to-Speech</h3>
+<p>Use the <code>-play</code> option to listen to the translation:</p>
+<pre><code>$ trans :ja -b -p &quot;Saluton, Mondo&quot;</code></pre>
+<h3 id="right-to-left-rtl-languages">Right-to-Left (RTL) Languages</h3>
+<p>You can use the <code>-width</code> option to specify the screen width for padding when displaying right-to-left languages, if you want:</p>
+<pre><code>$ trans :he -b -w 40 &quot;Saluton, Mondo&quot;</code></pre>
+<h3 id="input-and-output">Input and Output</h3>
+<p>When no non-option argument is given, Translate Shell will read from standard input, or from the file specified by the <code>-input</code> option:</p>
+<pre><code>$ echo &quot;Saluton, Mondo&quot; | trans :fr -b
+$ trans :fr -b -i input.txt</code></pre>
+<p>Translations will be written to standard output, or to the file specified by the <code>-output</code> option:</p>
+<pre><code>$ echo &quot;Saluton, Mondo&quot; | trans :fr -b -o output.txt</code></pre>
+<h3 id="interactive-mode">Interactive Mode</h3>
+<p>Start an interactive shell, using the <code>-interactive</code> option:</p>
+<pre><code>$ trans -I</code></pre>
+<h2 id="text-editors">Text Editors</h2>
+<p><code>trans</code> is just a command-line program which you can easily integrate with your favorite text editor. Any way you want.</p>
+<p>Below are some might-be-useful tips. Feel free to roll your own Emacs mode or Vim script!</p>
+<h3 id="emacs">Emacs</h3>
+<h4 id="interactive-shell">Interactive shell</h4>
+<p>You can, of course, use Emacs as a front-end of Translate Shell, in the same way you emulate your favorite shell with <code>M-x shell</code>. There is a shortcut for starting Emacs with Translate Shell, using the <code>-emacs</code> option:</p>
+<pre><code>$ trans -E</code></pre>
+<h4 id="text-translation">Text translation</h4>
+<p>When editing a text file, viewing the translation of a region is just one single command: (translating any language to Japanese, for example)</p>
+<p><code>M-| trans :ja</code></p>
+<h3 id="vim">Vim</h3>
+<h4 id="text-translation-1">Text translation</h4>
+<p>Add one line to your <code>~/.vimrc</code>:</p>
+<pre><code>set keywordprg=trans\ :ja</code></pre>
+<p>Use <code>Shift-K</code> to view the translation of the word under the cursor.</p>
+<h2 id="usage">Usage</h2>
+<p>Use <code>$ trans -H</code> to view the detailed man page.</p>
+<pre><code>Usage: trans [options] [source]:[target] [text] ...
+       trans [options] [source]:[target1]+[target2]+... [text] ...
+
+Options:
+  -V, -version
+    Print version and exit.
+  -H, -h, -help
+    Show this manual, or print this help message and exit.
+  -r, -reference
+    Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.
+  -R, -reference-english
+    Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.
+  -v, -verbose
+    Verbose mode. (default)
+  -b, -brief
+    Brief mode.
+  -w [num], -width [num]
+    Specify the screen width for padding when displaying right-to-left languages.
+  -p, -play
+    Listen to the translation.
+  -player [program]
+    Specify the command-line audio player to use, and listen to the translation.
+  -I, -interactive
+    Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).
+  -no-rlwrap
+    Don&#39;t invoke `rlwrap` when starting an interactive shell with `-I`.
+  -E, -emacs
+    Start an interactive shell within GNU Emacs, invoking `emacs`.
+  -prompt [prompt_string]
+    Customize your prompt string in the interactive shell.
+  -prompt-color [color_code]
+    Customize your prompt color in the interactive shell.
+  -i [file], -input [file]
+    Specify the input file name.
+  -o [file], -output [file]
+    Specify the output file name.
+  -l [code], -lang [code]
+    Specify your own, native language (&quot;home/host language&quot;).
+  -s [code], -source [code]
+    Specify the source language (language of the original text).
+  -t [codes], -target [codes]
+    Specify the target language(s) (language(s) of the translated text).
+
+See the man page trans(1) for more information.</code></pre>
+<h2 id="environment-variables">Environment Variables</h2>
+<p>You can export some environment variables as your default configuration. This will save you from typing the same command-line options each time.</p>
+<ul>
+<li><code>PLAYER</code>: for option <code>-player</code></li>
+<li><code>TRANS_PS</code>: for option <code>-prompt</code></li>
+<li><code>TRANS_PS_COLOR</code>: for option <code>-prompt-color</code></li>
+<li><code>HOME_LANG</code>: for option <code>-l</code></li>
+<li><code>SOURCE_LANG</code>: for option <code>-s</code></li>
+<li><code>TARGET_LANG</code>: for option <code>-t</code></li>
+</ul>
+<p>Example:</p>
+<pre><code>$ export TARGET_LANG=zh
+$ trans text
+$ trans word</code></pre>
+<h2 id="language-codes">Language Codes</h2>
+<p>Use <code>$ trans -R</code> to view the list of language codes.</p>
+<pre><code>┌───────────────────────┬──────────────────────┬─────────────────┐
+│ Afrikaans     - af    │ Greek          - el  │ Mongolian  - mn │
+│ Albanian      - sq    │ Gujarati       - gu  │ Nepali     - ne │
+│ Arabic        - ar    │ Haitian Creole - ht  │ Norwegian  - no │
+│ Armenian      - hy    │ Hausa          - ha  │ Persian    - fa │
+│ Azerbaijani   - az    │ Hebrew         - he  │ Polish     - pl │
+│ Basque        - eu    │ Hindi          - hi  │ Portuguese - pt │
+│ Belarusian    - be    │ Hmong          - hmn │ Punjabi    - pa │
+│ Bengali       - bn    │ Hungarian      - hu  │ Romanian   - ro │
+│ Bosnian       - bs    │ Icelandic      - is  │ Russian    - ru │
+│ Bulgarian     - bg    │ Igbo           - ig  │ Serbian    - sr │
+│ Catalan       - ca    │ Indonesian     - id  │ Slovak     - sk │
+│ Cebuano       - ceb   │ Irish          - ga  │ Slovenian  - sl │
+│ Chinese Simp. - zh-CN │ Italian        - it  │ Somali     - so │
+│ Chinese Trad. - zh-TW │ Japanese       - ja  │ Spanish    - es │
+│ Croatian      - hr    │ Javanese       - jv  │ Swahili    - sw │
+│ Czech         - cs    │ Kannada        - kn  │ Swedish    - sv │
+│ Danish        - da    │ Khmer          - km  │ Tamil      - ta │
+│ Dutch         - nl    │ Korean         - ko  │ Telugu     - te │
+│ English       - en    │ Lao            - lo  │ Thai       - th │
+│ Esperanto     - eo    │ Latin          - la  │ Turkish    - tr │
+│ Estonian      - et    │ Latvian        - lv  │ Ukrainian  - uk │
+│ Filipino      - tl    │ Lithuanian     - lt  │ Urdu       - ur │
+│ Finnish       - fi    │ Macedonian     - mk  │ Vietnamese - vi │
+│ French        - fr    │ Malay          - ms  │ Welsh      - cy │
+│ Galician      - gl    │ Maltese        - mt  │ Yiddish    - yi │
+│ Georgian      - ka    │ Maori          - mi  │ Yoruba     - yo │
+│ German        - de    │ Marathi        - mr  │ Zulu       - zu │
+└───────────────────────┴──────────────────────┴─────────────────┘</code></pre>
+<h2 id="faq">FAQ</h2>
+<ul>
+<li><p><strong>Q</strong>: <em>How many languages does Google Translate support?</em></p></li>
+<li><p><strong>A</strong>: 80 languages, as far as we know. There are 81 distinct language codes in total (including two codes for the Chinese language). A few aliases of these codes exist.</p></li>
+<li><p><strong>Q</strong>: <em>What are these language codes?</em></p></li>
+<li><p><strong>A</strong>: A language code is used to identify a language. Most of these codes are ISO 639-1 codes (alpha-2), consisted of two alphabet letters; very few languages supported by Google Translate use the ISO 639-2 code (alpha-3), e.g., Hmong (<code>hmn</code>); the Chinese language has two language codes, distinguished by the uppercase region code after its ISO 639-1 code.</p></li>
+<li><p><strong>Q</strong>: <em>Why are there two codes for Chinese? When to use them?</em></p></li>
+<li><p><strong>A</strong>: Two writing systems exist for the Chinese language: Simplified Chinese (<code>zh-CN</code>), used in China and Singapore; and Traditional Chinese (<code>zh-TW</code>), used in Taiwan and Hong Kong. Language code &quot;<code>zh</code>&quot; is an alias of &quot;<code>zh-CN</code>&quot;.</p></li>
+<li><p><strong>Q</strong>: <em>What about writing systems? What is the writing system of my language?</em></p></li>
+<li><strong>A</strong>: Some languages other than Chinese, also have multiple writing systems. Unfortunately, Google Translate seems to support only one of them:
+<ul>
+<li>Belarusian (<code>be</code>): Cyrillic alphabet</li>
+<li>Bosnian (<code>bs</code>): Latin alphabet</li>
+<li>Hausa (<code>ha</code>): Latin / Boko alphabet</li>
+<li>Javanese (<code>jv</code> or <code>jw</code>): Latin alphabet</li>
+<li>Mongolian (<code>mn</code>): Cyrillic alphabet</li>
+<li>Punjabi (<code>pa</code>): Brahmic / Gurmukhī alphabet</li>
+<li>Serbian (<code>sr</code>): Cyrillic alphabet</li>
+</ul></li>
+<li><p><strong>Q</strong>: <em>What are right-to-left (RTL) languages, and why do I need GNU FriBidi for them?</em></p></li>
+<li><strong>A</strong>: 5 languages supported by Google Translate are written from right to left. In order to display bi-directional text correctly for these languages, GNU FriBidi, which implements Unicode bidirectional algorithm, will be used:
+<ul>
+<li>Arabic (<code>ar</code>)</li>
+<li>Persian (<code>fa</code>)</li>
+<li>Hebrew (<code>he</code> or <code>iw</code>)</li>
+<li>Urdu (<code>ur</code>)</li>
+<li>Yiddish (<code>yi</code> or <code>ji</code>)</li>
+</ul></li>
+<li><p><strong>Q</strong>: <em>What is my &quot;home&quot; language?</em></p></li>
+<li><p><strong>A</strong>: By default, home language is set to the language of your current locale (i.e. environment variable <code>LANG</code>). It will affect the display in verbose mode. If you are comfortable with your current locale (e.g. <code>en_US.UTF-8</code>), just leave it alone.</p></li>
+<li><p><strong>Q</strong>: <em>What is the target language, if I don't specify one?</em></p></li>
+<li><p><strong>A</strong>: If no target language is specified, text will be translated into the language of your locale, i.e., your most preferable language.</p></li>
+<li><p><strong>Q</strong>: <em>I tried to translate some very long text but failed to get the complete translation.</em></p></li>
+<li><p><strong>A</strong>: There is a limit of length for each translation. As a general suggestion, don't try to do everything in one hit. Split your text into sentences or lines and translate one at a time.</p></li>
+<li><p><strong>Q</strong>: <em>My terminal does not support ANSI escape sequences and the display looks like a mess. How do I disable them?</em></p></li>
+<li><p><strong>A</strong>: Translate Shell uses ANSI escape sequences to display colors and other effects. You can disable them by telling Translate Shell that your terminal type is dumb: <code>$ TERM=dumb trans ...</code></p></li>
+</ul>
+<h2 id="licensing">Licensing</h2>
+<p>This is free and unencumbered software released into the public domain.</p>
