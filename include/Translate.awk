@@ -68,7 +68,7 @@ function getTranslation(text, sl, tl, hl,
                         isVerbose, toSpeech, returnPlaylist,
                         ####
                         altTranslations, article, ast, content,
-                        explanation, group, i, il,
+                        explanation, group, i, il, ils,
                         isPhonetic, j, original, phonetics,
                         r, rtl, saveSortedIn, segments,
                         temp, tokens, translation, translations,
@@ -128,13 +128,13 @@ function getTranslation(text, sl, tl, hl,
 
         # Identified source languages
         if (i ~ "^0" SUBSEP "8" SUBSEP "0" SUBSEP "[[:digit:]]+$")
-            append(il, literal(ast[i]))
+            append(ils, literal(ast[i]))
     }
     PROCINFO["sorted_in"] = saveSortedIn
 
     translation = join(translations)
 
-    if (!anything(il)) il[0] = sl
+    il = belongsTo(sl, ils) ? sl : ils[0]
 
     # Generate output
     if (!isVerbose) {
@@ -159,19 +159,19 @@ function getTranslation(text, sl, tl, hl,
         if (isarray(altTranslations[0]) && anything(altTranslations[0])) {
             # List alternative translations
 
-            if (Locale[getCode(hl)]["rtl"] || Locale[getCode(il[0])]["rtl"])
+            if (Locale[getCode(hl)]["rtl"] || Locale[getCode(il)]["rtl"])
                 r = r "\n\n" s(sprintf(Locale[getCode(hl)]["message"], join(original))) # caution: mixed languages, BiDi invoked must be implemented correctly (i.e. FriBidi is required)
             else
                 r = r "\n\n" sprintf(Locale[getCode(hl)]["message"], join(original))
-            if (Locale[getCode(il[0])]["rtl"] || Locale[getCode(tl)]["rtl"])
-                r = r "\n" s("(" Locale[getCode(il[0])]["endonym"] " ➔ " Locale[getCode(tl)]["endonym"] ")") # caution: mixed languages
+            if (Locale[getCode(il)]["rtl"] || Locale[getCode(tl)]["rtl"])
+                r = r "\n" s("(" Locale[getCode(il)]["endonym"] " ➔ " Locale[getCode(tl)]["endonym"] ")") # caution: mixed languages
             else
-                r = r "\n" "(" Locale[getCode(il[0])]["endonym"] " ➔ " Locale[getCode(tl)]["endonym"] ")"
+                r = r "\n" "(" Locale[getCode(il)]["endonym"] " ➔ " Locale[getCode(tl)]["endonym"] ")"
 
             temp = segments[0] "(" join(altTranslations[0], "/") ")"
             for (i = 1; i < length(altTranslations); i++)
                 temp = temp " " segments[i] "(" join(altTranslations[i], "/") ")"
-            if (Locale[getCode(il[0])]["rtl"] || Locale[getCode(tl)]["rtl"])
+            if (Locale[getCode(il)]["rtl"] || Locale[getCode(tl)]["rtl"])
                 r = r "\n" AnsiCode["bold"] s(temp) AnsiCode["no bold"] # caution: mixed languages
             else
                 r = r "\n" AnsiCode["bold"] temp AnsiCode["no bold"]
@@ -191,12 +191,12 @@ function getTranslation(text, sl, tl, hl,
                         r = r "\n" AnsiCode["bold"] sprintf("%" Option["width"] - 4 "s", s((article ?
                                                                                             "(" article ")" :
                                                                                             "") " " word, tl, Option["width"] - 4)) AnsiCode["no bold"] # target language
-                        r = r "\n" s(explanation, il[0], Option["width"] - 8) # identified source language
+                        r = r "\n" s(explanation, il, Option["width"] - 8) # identified source language
                     } else {
                         r = r "\n" "    " AnsiCode["bold"] show((article ?
                                                                  "(" article ") " :
                                                                  "") word, tl) AnsiCode["no bold"] # target language
-                        r = r "\n" "        " s(explanation, il[0], Option["width"] - 8) # identified source language
+                        r = r "\n" "        " s(explanation, il, Option["width"] - 8) # identified source language
                     }
                 }
             }
@@ -207,10 +207,10 @@ function getTranslation(text, sl, tl, hl,
                 returnPlaylist[0]["text"] = sprintf(Locale[getCode(hl)]["message"], "")
                 returnPlaylist[0]["tl"] = hl
                 returnPlaylist[1]["text"] = join(original)
-                returnPlaylist[1]["tl"] = il[0]
+                returnPlaylist[1]["tl"] = il
             } else {
                 returnPlaylist[0]["text"] = join(original)
-                returnPlaylist[0]["tl"] = il[0]
+                returnPlaylist[0]["tl"] = il
                 returnPlaylist[1]["text"] = sprintf(Locale[getCode(hl)]["message"], "")
                 returnPlaylist[1]["tl"] = hl
             }
