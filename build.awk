@@ -1,7 +1,7 @@
 #!/usr/bin/gawk -f
 
-@include "include/Commons"
-@include "metainfo"
+@include "include/Commons.awk"
+@include "metainfo.awk"
 
 function init() {
     BuildPath = "build/"
