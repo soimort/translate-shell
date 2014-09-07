@@ -25,7 +25,13 @@ function initHttpService() {
     HttpProtocol = "http://"
     HttpHost = "translate.google.com"
     HttpPort = 80
-    HttpService = "/inet/tcp/0/" HttpHost "/" HttpPort
+    if(match(ENVIRON["http_proxy"], /^http:\/*([^\/]*):([^\/:]*)/, HttpProxySpec)) {
+        HttpService = "/inet/tcp/0/" HttpProxySpec[1] "/" HttpProxySpec[2]
+        HttpPathPrefix = HttpProtocol HttpHost
+    } else {
+        HttpService = "/inet/tcp/0/" HttpHost "/" HttpPort
+        HttpPathPrefix = ""
+    }
 }
 
 # Pre-process string (URL-encode before send).
@@ -42,11 +48,13 @@ function postprocess(text) {
 
 # Send an HTTP request and get response from Google Translate.
 function getResponse(text, sl, tl, hl,    content, url) {
-    url = HttpProtocol HttpHost "/translate_a/t?client=t"       \
+    url = HttpPathPrefix "/translate_a/t?client=t"              \
         "&ie=UTF-8&oe=UTF-8"                                    \
         "&text=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl
 
-    print "GET " url |& HttpService
+    print "GET " url " HTTP/1.1\n"             \
+          "Host: " HttpHost "\n"               \
+          "Connection: close\n" |& HttpService
     while ((HttpService |& getline) > 0)
         content = $0
     close(HttpService)
