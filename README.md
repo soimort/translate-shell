@@ -87,18 +87,18 @@ As long as you have `gawk` already, you're good to go!
 
 ## Installation
 
-### Direct Download
+### Direct Download (Latest Release)
 
 Download [this executable](http://git.io/trans) and place it into your path.
 
     $ wget git.io/trans
     $ chmod +x ./trans
 
-### From Homebrew
+### From Homebrew (Latest Release)
 
     $ brew install http://www.soimort.org/translate-shell/translate-shell.rb
 
-### From Git
+### From Git (Default Branch: `stable`)
 
     $ git clone https://github.com/soimort/translate-shell
     $ cd translate-shell/
