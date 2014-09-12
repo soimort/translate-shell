@@ -92,13 +92,13 @@ en_US.UTF-8</code></pre>
 <p>As long as you have <code>gawk</code> already, you're good to go!</p>
 <pre><code>$ gawk &quot;$(curl -Ls git.io/translate)&quot; -I</code></pre>
 <h2 id="installation">Installation</h2>
-<h3 id="direct-download">Direct Download</h3>
+<h3 id="direct-download-latest-release">Direct Download (Latest Release)</h3>
 <p>Download <a href="http://git.io/trans">this executable</a> and place it into your path.</p>
 <pre><code>$ wget git.io/trans
 $ chmod +x ./trans</code></pre>
-<h3 id="from-homebrew">From Homebrew</h3>
+<h3 id="from-homebrew-latest-release">From Homebrew (Latest Release)</h3>
 <pre><code>$ brew install http://www.soimort.org/translate-shell/translate-shell.rb</code></pre>
-<h3 id="from-git">From Git</h3>
+<h3 id="from-git-default-branch-stable">From Git (Default Branch: <code>stable</code>)</h3>
 <pre><code>$ git clone https://github.com/soimort/translate-shell
 $ cd translate-shell/
 $ make install</code></pre>
@@ -164,7 +164,7 @@ $ trans :fr -b -i input.txt</code></pre>
 <h3 id="translate-a-web-page">Translate a Web Page</h3>
 <p>For the translation of a web page, a URI scheme of HTTP(S) can be provided as a parameter:</p>
 <pre><code>$ trans :fr http://www.w3.org/</code></pre>
-<p>A browser session will be started for viewing. To specify the web browser, use the <code>-browser</code> option.</p>
+<p>A browser session will be started for viewing the translation (in Google Translate). To specify the web browser, use the <code>-browser</code> option.</p>
 <h3 id="interactive-mode">Interactive Mode</h3>
 <p>Start an interactive shell, using the <code>-interactive</code> option:</p>
 <pre><code>$ trans -I</code></pre>
