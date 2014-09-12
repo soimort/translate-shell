@@ -157,6 +157,14 @@ $ trans :zh &#39;Words will always retain their power.&#39;</code></pre>
 $ trans :fr -b -i input.txt</code></pre>
 <p>Translations will be written to standard output, or to the file specified by the <code>-output</code> option:</p>
 <pre><code>$ echo &quot;Saluton, Mondo&quot; | trans :fr -b -o output.txt</code></pre>
+<h3 id="translate-a-file">Translate a File</h3>
+<p>Instead of using the <code>-input</code> option, a URI scheme of file can be provided as a parameter (<code>file://</code> followed by the file name):</p>
+<pre><code>$ trans :fr file://input.txt</code></pre>
+<p>Brief mode is used when translating URI schemes.</p>
+<h3 id="translate-a-web-page">Translate a Web Page</h3>
+<p>For the translation of a web page, a URI scheme of HTTP(S) can be provided as a parameter:</p>
+<pre><code>$ trans :fr http://www.w3.org/</code></pre>
+<p>A browser session will be started for viewing. To specify the web browser, use the <code>-browser</code> option.</p>
 <h3 id="interactive-mode">Interactive Mode</h3>
 <p>Start an interactive shell, using the <code>-interactive</code> option:</p>
 <pre><code>$ trans -I</code></pre>
@@ -195,10 +203,14 @@ Options:
     Brief mode.
   -w [num], -width [num]
     Specify the screen width for padding when displaying right-to-left languages.
+  -browser [program]
+    Specify the web browser to use.
   -p, -play
     Listen to the translation.
   -player [program]
     Specify the command-line audio player to use, and listen to the translation.
+  -x [proxy], -proxy [proxy]
+    Use proxy on given port.
   -I, -interactive
     Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).
   -no-rlwrap
@@ -224,7 +236,9 @@ See the man page trans(1) for more information.</code></pre>
 <h2 id="environment-variables">Environment Variables</h2>
 <p>You can export some environment variables as your default configuration. This will save you from typing the same command-line options each time.</p>
 <ul>
+<li><code>BROWSER</code>: for option <code>-browser</code></li>
 <li><code>PLAYER</code>: for option <code>-player</code></li>
+<li><code>HTTP_PROXY</code> and <code>http_proxy</code>: for option <code>-proxy</code></li>
 <li><code>TRANS_PS</code>: for option <code>-prompt</code></li>
 <li><code>TRANS_PS_COLOR</code>: for option <code>-prompt-color</code></li>
 <li><code>HOME_LANG</code>: for option <code>-l</code></li>

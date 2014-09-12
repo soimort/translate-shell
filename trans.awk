@@ -29,7 +29,7 @@
 BEGIN {
     Name        = "Translate Shell"
     Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.8.19"
+    Version     = "0.8.20"
     Command     = "trans"
     EntryPoint  = "translate.awk"
 }
@@ -331,9 +331,17 @@ function fileExists(file) {
     return !system("test -f " file)
 }
 
+# Initialize `UriSchemes`.
+function initUriSchemes() {
+    UriSchemes[0] = "file"
+    UriSchemes[1] = "http"
+    UriSchemes[2] = "https"
+}
+
 BEGIN {
     initUrlEncoding()
     initAnsiCode()
+    initUriSchemes()
 }
 
 ####################################################################
@@ -944,8 +952,10 @@ function getHelp() {
         "  " AnsiCode["bold"] "-v, -verbose" AnsiCode["no bold"] "\n    Verbose mode. (default)\n" \
         "  " AnsiCode["bold"] "-b, -brief" AnsiCode["no bold"] "\n    Brief mode.\n" \
         "  " AnsiCode["bold"] "-w [num], -width [num]" AnsiCode["no bold"] "\n    Specify the screen width for padding when displaying right-to-left languages.\n" \
+        "  " AnsiCode["bold"] "-browser [program]" AnsiCode["no bold"] "\n    Specify the web browser to use.\n" \
         "  " AnsiCode["bold"] "-p, -play" AnsiCode["no bold"] "\n    Listen to the translation.\n" \
         "  " AnsiCode["bold"] "-player [program]" AnsiCode["no bold"] "\n    Specify the command-line audio player to use, and listen to the translation.\n" \
+        "  " AnsiCode["bold"] "-x [proxy], -proxy [proxy]" AnsiCode["no bold"] "\n    Use proxy on given port.\n" \
         "  " AnsiCode["bold"] "-I, -interactive" AnsiCode["no bold"] "\n    Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).\n" \
         "  " AnsiCode["bold"] "-no-rlwrap" AnsiCode["no bold"] "\n    Don't invoke `rlwrap` when starting an interactive shell with `-I`.\n" \
         "  " AnsiCode["bold"] "-E, -emacs" AnsiCode["no bold"] "\n    Start an interactive shell within GNU Emacs, invoking `emacs`.\n" \
@@ -1234,7 +1244,14 @@ function initHttpService() {
     HttpProtocol = "http://"
     HttpHost = "translate.google.com"
     HttpPort = 80
-    HttpService = "/inet/tcp/0/" HttpHost "/" HttpPort
+    if (Option["proxy"]) {
+        match(Option["proxy"], /^(http:\/*)?([^\/]*):([^\/:]*)/, HttpProxySpec)
+        HttpService = "/inet/tcp/0/" HttpProxySpec[2] "/" HttpProxySpec[3]
+        HttpPathPrefix = HttpProtocol HttpHost
+    } else {
+        HttpService = "/inet/tcp/0/" HttpHost "/" HttpPort
+        HttpPathPrefix = ""
+    }
 }
 
 # Pre-process string (URL-encode before send).
@@ -1251,11 +1268,13 @@ function postprocess(text) {
 
 # Send an HTTP request and get response from Google Translate.
 function getResponse(text, sl, tl, hl,    content, url) {
-    url = HttpProtocol HttpHost "/translate_a/t?client=t"       \
+    url = HttpPathPrefix "/translate_a/t?client=t"              \
         "&ie=UTF-8&oe=UTF-8"                                    \
         "&text=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl
 
-    print "GET " url |& HttpService
+    print "GET " url " HTTP/1.1\n"             \
+          "Host: " HttpHost "\n"               \
+          "Connection: close\n" |& HttpService
     while ((HttpService |& getline) > 0)
         content = $0
     close(HttpService)
@@ -1277,7 +1296,7 @@ function getTranslation(text, sl, tl, hl,
                         isVerbose, toSpeech, returnPlaylist,
                         ####
                         altTranslations, article, ast, content,
-                        explanation, group, i, il,
+                        explanation, group, i, il, ils,
                         isPhonetic, j, original, phonetics,
                         r, rtl, saveSortedIn, segments,
                         temp, tokens, translation, translations,
@@ -1337,13 +1356,13 @@ function getTranslation(text, sl, tl, hl,
 
         # Identified source languages
         if (i ~ "^0" SUBSEP "8" SUBSEP "0" SUBSEP "[[:digit:]]+$")
-            append(il, literal(ast[i]))
+            append(ils, literal(ast[i]))
     }
     PROCINFO["sorted_in"] = saveSortedIn
 
     translation = join(translations)
 
-    if (!anything(il)) il[0] = sl
+    il = belongsTo(sl, ils) ? sl : ils[0]
 
     # Generate output
     if (!isVerbose) {
@@ -1368,19 +1387,19 @@ function getTranslation(text, sl, tl, hl,
         if (isarray(altTranslations[0]) && anything(altTranslations[0])) {
             # List alternative translations
 
-            if (Locale[getCode(hl)]["rtl"] || Locale[getCode(il[0])]["rtl"])
+            if (Locale[getCode(hl)]["rtl"] || Locale[getCode(il)]["rtl"])
                 r = r "\n\n" s(sprintf(Locale[getCode(hl)]["message"], join(original))) # caution: mixed languages, BiDi invoked must be implemented correctly (i.e. FriBidi is required)
             else
                 r = r "\n\n" sprintf(Locale[getCode(hl)]["message"], join(original))
-            if (Locale[getCode(il[0])]["rtl"] || Locale[getCode(tl)]["rtl"])
-                r = r "\n" s("(" Locale[getCode(il[0])]["endonym"] " ➔ " Locale[getCode(tl)]["endonym"] ")") # caution: mixed languages
+            if (Locale[getCode(il)]["rtl"] || Locale[getCode(tl)]["rtl"])
+                r = r "\n" s("(" Locale[getCode(il)]["endonym"] " ➔ " Locale[getCode(tl)]["endonym"] ")") # caution: mixed languages
             else
-                r = r "\n" "(" Locale[getCode(il[0])]["endonym"] " ➔ " Locale[getCode(tl)]["endonym"] ")"
+                r = r "\n" "(" Locale[getCode(il)]["endonym"] " ➔ " Locale[getCode(tl)]["endonym"] ")"
 
             temp = segments[0] "(" join(altTranslations[0], "/") ")"
             for (i = 1; i < length(altTranslations); i++)
                 temp = temp " " segments[i] "(" join(altTranslations[i], "/") ")"
-            if (Locale[getCode(il[0])]["rtl"] || Locale[getCode(tl)]["rtl"])
+            if (Locale[getCode(il)]["rtl"] || Locale[getCode(tl)]["rtl"])
                 r = r "\n" AnsiCode["bold"] s(temp) AnsiCode["no bold"] # caution: mixed languages
             else
                 r = r "\n" AnsiCode["bold"] temp AnsiCode["no bold"]
@@ -1400,12 +1419,12 @@ function getTranslation(text, sl, tl, hl,
                         r = r "\n" AnsiCode["bold"] sprintf("%" Option["width"] - 4 "s", s((article ?
                                                                                             "(" article ")" :
                                                                                             "") " " word, tl, Option["width"] - 4)) AnsiCode["no bold"] # target language
-                        r = r "\n" s(explanation, il[0], Option["width"] - 8) # identified source language
+                        r = r "\n" s(explanation, il, Option["width"] - 8) # identified source language
                     } else {
                         r = r "\n" "    " AnsiCode["bold"] show((article ?
                                                                  "(" article ") " :
                                                                  "") word, tl) AnsiCode["no bold"] # target language
-                        r = r "\n" "        " s(explanation, il[0], Option["width"] - 8) # identified source language
+                        r = r "\n" "        " s(explanation, il, Option["width"] - 8) # identified source language
                     }
                 }
             }
@@ -1416,10 +1435,10 @@ function getTranslation(text, sl, tl, hl,
                 returnPlaylist[0]["text"] = sprintf(Locale[getCode(hl)]["message"], "")
                 returnPlaylist[0]["tl"] = hl
                 returnPlaylist[1]["text"] = join(original)
-                returnPlaylist[1]["tl"] = il[0]
+                returnPlaylist[1]["tl"] = il
             } else {
                 returnPlaylist[0]["text"] = join(original)
-                returnPlaylist[0]["tl"] = il[0]
+                returnPlaylist[0]["tl"] = il
                 returnPlaylist[1]["text"] = sprintf(Locale[getCode(hl)]["message"], "")
                 returnPlaylist[1]["tl"] = hl
             }
@@ -1431,8 +1450,29 @@ function getTranslation(text, sl, tl, hl,
     return r
 }
 
+# Translate a file.
+function fileTranslation(uri,    group, temp1, temp2) {
+    temp1 = Option["input"]
+    temp2 = Option["verbose"]
+
+    match(uri, /^file:\/\/(.*)/, group)
+    Option["input"] = group[1]
+    Option["verbose"] = 0
+
+    translateMain()
+
+    Option["input"] = temp1
+    Option["verbose"] = temp2
+}
+
+# Start a browser session and translate a web page.
+function webTranslation(uri, sl, tl, hl) {
+    system(Option["browser"] " " parameterize("https://translate.google.com/translate?" \
+                                              "hl=" hl "&sl=" sl "&tl=" tl "&u=" uri) "&")
+}
+
 # Translate the source text (into all target languages).
-function translate(text,
+function translate(text, inline,
                    ####
                    i, j, playlist, saveSortedIn) {
 
@@ -1463,15 +1503,24 @@ function translate(text,
             if (Option["verbose"] && i > 1)
                 print replicate("─", Option["width"])
 
-        print getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist) > Option["output"]
+        if (inline &&
+            startsWithAny(text, UriSchemes) == "file") {
+            fileTranslation(text)
+        } else if (inline &&
+                   startsWithAny(text, UriSchemes) == "http" ||
+                   startsWithAny(text, UriSchemes) == "https") {
+            webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
+        } else {
+            print getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist) > Option["output"]
 
-        if (Option["play"])
-            if (Option["player"])
-                for (j in playlist)
-                    play(playlist[j]["text"], playlist[j]["tl"])
-            else if (SpeechSynthesizer)
-                for (j in playlist)
-                    print playlist[j]["text"] | SpeechSynthesizer
+            if (Option["play"])
+                if (Option["player"])
+                    for (j in playlist)
+                        play(playlist[j]["text"], playlist[j]["tl"])
+                else if (SpeechSynthesizer)
+                    for (j in playlist)
+                        print playlist[j]["text"] | SpeechSynthesizer
+        }
     }
     PROCINFO["sorted_in"] = saveSortedIn
 }
@@ -1636,8 +1685,8 @@ function initGawk(    group) {
     }
 }
 
-# Main initialization.
-function init() {
+# Pre-initialization (before option parsing).
+function preInit() {
     initGawk()          #<< AnsiCode
 
     # Languages
@@ -1645,9 +1694,6 @@ function init() {
     initLocale()
     initLocaleDisplay() #<< Locale, BiDi
     initUserLang()      #<< Locale
-
-    # Translate
-    initHttpService()
 
     RS = "\n"
 
@@ -1658,8 +1704,12 @@ function init() {
     Option["verbose"] = 1
     Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] : 64
 
+    Option["browser"] = ENVIRON["BROWSER"]
+
     Option["play"] = 0
     Option["player"] = ENVIRON["PLAYER"]
+
+    Option["proxy"] = ENVIRON["HTTP_PROXY"] ? ENVIRON["HTTP_PROXY"] : ENVIRON["http_proxy"]
 
     Option["interactive"] = 0
     Option["no-rlwrap"] = 0
@@ -1675,9 +1725,15 @@ function init() {
     Option["tl"][1] = ENVIRON["TARGET_LANG"] ? ENVIRON["TARGET_LANG"] : UserLang
 }
 
+# Post-initialization (after option parsing).
+function postInit() {
+    # Translate
+    initHttpService()
+}
+
 # Main entry point.
 BEGIN {
-    init()
+    preInit()
 
     pos = 0
     while (ARGV[++pos]) {
@@ -1748,6 +1804,15 @@ BEGIN {
             continue
         }
 
+        # -browser [program]
+        match(ARGV[pos], /^--?browser(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["browser"] = group[1] ?
+                (group[2] ? group[2] : Option["browser"]) :
+                ARGV[++pos]
+            continue
+        }
+
         # -p, -play
         match(ARGV[pos], /^--?p(l(ay?)?)?$/)
         if (RSTART) {
@@ -1759,8 +1824,17 @@ BEGIN {
         match(ARGV[pos], /^--?player(=(.*)?)?$/, group)
         if (RSTART) {
             Option["play"] = 1
-            Option["player"] = group[2] ?
-                (group[3] ? group[3] : Option["player"]) :
+            Option["player"] = group[1] ?
+                (group[2] ? group[2] : Option["player"]) :
+                ARGV[++pos]
+            continue
+        }
+
+        # -x [proxy], -proxy [proxy]
+        match(ARGV[pos], /^--?(proxy|x)(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["proxy"] = group[2] ?
+                (group[3] ? group[3] : Option["proxy"]) :
                 ARGV[++pos]
             continue
         }
@@ -1870,6 +1944,8 @@ BEGIN {
     }
 
     # Option parsing finished
+    postInit()
+
     if (Option["interactive"] && !Option["no-rlwrap"]) {
         # Interactive mode
         initRlwrap() # initialize Rlwrap
@@ -1934,16 +2010,23 @@ BEGIN {
         }
     }
 
+    # Initialize browser
+    if (!Option["browser"]) {
+        "xdg-mime query default text/html 2>/dev/null" |& getline Option["browser"]
+        match(Option["browser"], "(.*).desktop$", group)
+        Option["browser"] = group[1]
+    }
+
     if (pos < ARGC) {
         # More parameters
 
-        # Translate the rest parameters
+        # Translate the remaining parameters
         for (i = pos; i < ARGC; i++) {
             # Verbose mode: separator between sources
             if (Option["verbose"] && i > pos)
                 print replicate("═", Option["width"])
 
-            translate(ARGV[i])
+            translate(ARGV[i], 1) # inline mode
         }
 
         # If input not specified, we're done
