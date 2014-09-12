@@ -295,7 +295,15 @@ function fileExists(file) {
     return !system("test -f " file)
 }
 
+# Initialize `UriSchemes`.
+function initUriSchemes() {
+    UriSchemes[0] = "file"
+    UriSchemes[1] = "http"
+    UriSchemes[2] = "https"
+}
+
 BEGIN {
     initUrlEncoding()
     initAnsiCode()
+    initUriSchemes()
 }
