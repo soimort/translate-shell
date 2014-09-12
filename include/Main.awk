@@ -355,7 +355,7 @@ BEGIN {
             if (Option["verbose"] && i > pos)
                 print replicate("═", Option["width"])
 
-            translate(ARGV[i])
+            translate(ARGV[i], 1) # inline mode
         }
 
         # If input not specified, we're done

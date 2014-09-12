@@ -231,8 +231,14 @@ function getTranslation(text, sl, tl, hl,
     return r
 }
 
+# Start a browser session and translate a web page.
+function webTranslation(uri, sl, tl, hl) {
+    system(Option["browser"] " " parameterize("https://translate.google.com/translate?" \
+                                              "hl=" hl "&sl=" sl "&tl=" tl "&u=" uri) "&")
+}
+
 # Translate the source text (into all target languages).
-function translate(text,
+function translate(text, inline,
                    ####
                    i, j, playlist, saveSortedIn) {
 
@@ -263,15 +269,21 @@ function translate(text,
             if (Option["verbose"] && i > 1)
                 print replicate("─", Option["width"])
 
-        print getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist) > Option["output"]
+        if (inline &&
+            startsWithAny(text, UriSchemes) == "http" ||
+            startsWithAny(text, UriSchemes) == "https") {
+            webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
+        } else {
+            print getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist) > Option["output"]
 
-        if (Option["play"])
-            if (Option["player"])
-                for (j in playlist)
-                    play(playlist[j]["text"], playlist[j]["tl"])
-            else if (SpeechSynthesizer)
-                for (j in playlist)
-                    print playlist[j]["text"] | SpeechSynthesizer
+            if (Option["play"])
+                if (Option["player"])
+                    for (j in playlist)
+                        play(playlist[j]["text"], playlist[j]["tl"])
+                else if (SpeechSynthesizer)
+                    for (j in playlist)
+                        print playlist[j]["text"] | SpeechSynthesizer
+        }
     }
     PROCINFO["sorted_in"] = saveSortedIn
 }
