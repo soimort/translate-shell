@@ -59,6 +59,12 @@ Specify the screen width for padding when displaying right-to-left languages.
 
 This option overrides the setting of environment variable `COLUMNS`.
 
+### -browser [program]
+
+Specify the web browser to use.
+
+This option overrides the setting of environment variable `BROWSER`.
+
 ### -p, -play
 
 Listen to the translation.

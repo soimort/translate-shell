@@ -33,6 +33,8 @@ function preInit() {
     Option["verbose"] = 1
     Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] : 64
 
+    Option["browser"] = ENVIRON["BROWSER"]
+
     Option["play"] = 0
     Option["player"] = ENVIRON["PLAYER"]
 
@@ -131,6 +133,15 @@ BEGIN {
             continue
         }
 
+        # -browser [program]
+        match(ARGV[pos], /^--?browser(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["browser"] = group[1] ?
+                (group[2] ? group[2] : Option["browser"]) :
+                ARGV[++pos]
+            continue
+        }
+
         # -p, -play
         match(ARGV[pos], /^--?p(l(ay?)?)?$/)
         if (RSTART) {
@@ -148,7 +159,7 @@ BEGIN {
             continue
         }
 
-        # -proxy [proxy]
+        # -x [proxy], -proxy [proxy]
         match(ARGV[pos], /^--?(proxy|x)(=(.*)?)?$/, group)
         if (RSTART) {
             Option["proxy"] = group[2] ?
@@ -328,10 +339,17 @@ BEGIN {
         }
     }
 
+    # Initialize browser
+    if (!Option["browser"]) {
+        "xdg-mime query default text/html 2>/dev/null" |& getline Option["browser"]
+        match(Option["browser"], "(.*).desktop$", group)
+        Option["browser"] = group[1]
+    }
+
     if (pos < ARGC) {
         # More parameters
 
-        # Translate the rest parameters
+        # Translate the remaining parameters
         for (i = pos; i < ARGC; i++) {
             # Verbose mode: separator between sources
             if (Option["verbose"] && i > pos)
