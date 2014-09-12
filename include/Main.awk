@@ -137,8 +137,8 @@ BEGIN {
         match(ARGV[pos], /^--?player(=(.*)?)?$/, group)
         if (RSTART) {
             Option["play"] = 1
-            Option["player"] = group[2] ?
-                (group[3] ? group[3] : Option["player"]) :
+            Option["player"] = group[1] ?
+                (group[2] ? group[2] : Option["player"]) :
                 ARGV[++pos]
             continue
         }
