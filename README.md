@@ -269,10 +269,14 @@ Options:
     Brief mode.
   -w [num], -width [num]
     Specify the screen width for padding when displaying right-to-left languages.
+  -browser [program]
+    Specify the web browser to use.
   -p, -play
     Listen to the translation.
   -player [program]
     Specify the command-line audio player to use, and listen to the translation.
+  -x [proxy], -proxy [proxy]
+    Use proxy on given port.
   -I, -interactive
     Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).
   -no-rlwrap
