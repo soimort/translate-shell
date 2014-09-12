@@ -75,6 +75,16 @@ Option `-play` will try to use `mplayer` or `mpg123` by default, since these pla
 
 This option overrides the setting of environment variable `PLAYER`.
 
+### -x [proxy], -proxy [proxy]
+
+Use proxy on given port. String format:
+
+```
+[PROTOCOL://]HOST[:PORT]
+```
+
+This option overrides the setting of environment variables `HTTP_PROXY` and `http_proxy`.
+
 ### -I, -interactive
 
 Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).

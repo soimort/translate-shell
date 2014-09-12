@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "TRANS" "1" "August 2014" "0.8.19" "TRANS MANUAL"
+.TH "TRANS" "1" "September 2014" "0.8.19" "TRANS MANUAL"
 .
 .SH "NAME"
 \fBtrans\fR \- Google Translate served as a command\-line tool
@@ -79,6 +79,22 @@ Option \fB\-play\fR will try to use \fBmplayer\fR or \fBmpg123\fR by default, si
 .
 .P
 This option overrides the setting of environment variable \fBPLAYER\fR\.
+.
+.SS "\-x [proxy], \-proxy [proxy]"
+Use proxy on given port\. String format:
+.
+.IP "" 4
+.
+.nf
+
+[PROTOCOL://]HOST[:PORT]
+.
+.fi
+.
+.IP "" 0
+.
+.P
+This option overrides the setting of environment variables \fBHTTP_PROXY\fR and \fBhttp_proxy\fR\.
 .
 .SS "\-I, \-interactive"
 Start an interactive shell, invoking \fBrlwrap\fR whenever possible (unless \fB\-no\-rlwrap\fR is specified)\.

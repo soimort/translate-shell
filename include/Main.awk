@@ -14,8 +14,8 @@ function initGawk(    group) {
     }
 }
 
-# Main initialization.
-function init() {
+# Pre-initialization (before option parsing).
+function preInit() {
     initGawk()          #<< AnsiCode
 
     # Languages
@@ -23,9 +23,6 @@ function init() {
     initLocale()
     initLocaleDisplay() #<< Locale, BiDi
     initUserLang()      #<< Locale
-
-    # Translate
-    initHttpService()
 
     RS = "\n"
 
@@ -38,6 +35,8 @@ function init() {
 
     Option["play"] = 0
     Option["player"] = ENVIRON["PLAYER"]
+
+    Option["proxy"] = ENVIRON["HTTP_PROXY"] ? ENVIRON["HTTP_PROXY"] : ENVIRON["http_proxy"]
 
     Option["interactive"] = 0
     Option["no-rlwrap"] = 0
@@ -53,9 +52,15 @@ function init() {
     Option["tl"][1] = ENVIRON["TARGET_LANG"] ? ENVIRON["TARGET_LANG"] : UserLang
 }
 
+# Post-initialization (after option parsing).
+function postInit() {
+    # Translate
+    initHttpService()
+}
+
 # Main entry point.
 BEGIN {
-    init()
+    preInit()
 
     pos = 0
     while (ARGV[++pos]) {
@@ -139,6 +144,15 @@ BEGIN {
             Option["play"] = 1
             Option["player"] = group[1] ?
                 (group[2] ? group[2] : Option["player"]) :
+                ARGV[++pos]
+            continue
+        }
+
+        # -proxy [proxy]
+        match(ARGV[pos], /^--?(proxy|x)(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["proxy"] = group[2] ?
+                (group[3] ? group[3] : Option["proxy"]) :
                 ARGV[++pos]
             continue
         }
@@ -248,6 +262,8 @@ BEGIN {
     }
 
     # Option parsing finished
+    postInit()
+
     if (Option["interactive"] && !Option["no-rlwrap"]) {
         # Interactive mode
         initRlwrap() # initialize Rlwrap

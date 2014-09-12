@@ -25,8 +25,9 @@ function initHttpService() {
     HttpProtocol = "http://"
     HttpHost = "translate.google.com"
     HttpPort = 80
-    if(match(ENVIRON["http_proxy"], /^http:\/*([^\/]*):([^\/:]*)/, HttpProxySpec)) {
-        HttpService = "/inet/tcp/0/" HttpProxySpec[1] "/" HttpProxySpec[2]
+    if (Option["proxy"]) {
+        match(Option["proxy"], /^(http:\/*)?([^\/]*):([^\/:]*)/, HttpProxySpec)
+        HttpService = "/inet/tcp/0/" HttpProxySpec[2] "/" HttpProxySpec[3]
         HttpPathPrefix = HttpProtocol HttpHost
     } else {
         HttpService = "/inet/tcp/0/" HttpHost "/" HttpPort
@@ -48,7 +49,7 @@ function postprocess(text) {
 
 # Send an HTTP request and get response from Google Translate.
 function getResponse(text, sl, tl, hl,    content, url) {
-    url = HttpPathPrefix "/translate_a/t?client=t"              \
+    url = "/translate_a/t?client=t"                             \
         "&ie=UTF-8&oe=UTF-8"                                    \
         "&text=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl
 

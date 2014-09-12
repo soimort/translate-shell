@@ -302,6 +302,7 @@ See the man page trans(1) for more information.
 You can export some environment variables as your default configuration. This will save you from typing the same command-line options each time.
 
 * `PLAYER`: for option `-player`
+* `HTTP_PROXY` and `http_proxy`: for option `-proxy`
 * `TRANS_PS`: for option `-prompt`
 * `TRANS_PS_COLOR`: for option `-prompt-color`
 * `HOME_LANG`: for option `-l`
