@@ -231,6 +231,21 @@ function getTranslation(text, sl, tl, hl,
     return r
 }
 
+# Translate a file.
+function fileTranslation(uri,    group, temp1, temp2) {
+    temp1 = Option["input"]
+    temp2 = Option["verbose"]
+
+    match(uri, /^file:\/\/(.*)/, group)
+    Option["input"] = group[1]
+    Option["verbose"] = 0
+
+    translateMain()
+
+    Option["input"] = temp1
+    Option["verbose"] = temp2
+}
+
 # Start a browser session and translate a web page.
 function webTranslation(uri, sl, tl, hl) {
     system(Option["browser"] " " parameterize("https://translate.google.com/translate?" \
@@ -270,8 +285,11 @@ function translate(text, inline,
                 print replicate("─", Option["width"])
 
         if (inline &&
-            startsWithAny(text, UriSchemes) == "http" ||
-            startsWithAny(text, UriSchemes) == "https") {
+            startsWithAny(text, UriSchemes) == "file") {
+            fileTranslation(text)
+        } else if (inline &&
+                   startsWithAny(text, UriSchemes) == "http" ||
+                   startsWithAny(text, UriSchemes) == "https") {
             webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
         } else {
             print getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist) > Option["output"]
