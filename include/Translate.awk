@@ -49,7 +49,7 @@ function postprocess(text) {
 
 # Send an HTTP request and get response from Google Translate.
 function getResponse(text, sl, tl, hl,    content, url) {
-    url = "/translate_a/t?client=t"                             \
+    url = HttpPathPrefix "/translate_a/t?client=t"              \
         "&ie=UTF-8&oe=UTF-8"                                    \
         "&text=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl
 
