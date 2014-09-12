@@ -210,6 +210,22 @@ Translations will be written to standard output, or to the file specified by the
 
     $ echo "Saluton, Mondo" | trans :fr -b -o output.txt
 
+### Translate a File
+
+Instead of using the `-input` option, a URI scheme of file can be provided as a parameter (`file://` followed by the file name):
+
+    $ trans :fr file://input.txt
+
+Brief mode is used when translating URI schemes.
+
+### Translate a Web Page
+
+For the translation of a web page, a URI scheme of HTTP(S) can be provided as a parameter:
+
+    $ trans :fr http://www.w3.org/
+
+A browser session will be started for viewing. To specify the web browser, use the `-browser` option.
+
 ### Interactive Mode
 
 Start an interactive shell, using the `-interactive` option:
