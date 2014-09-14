@@ -224,7 +224,9 @@ For the translation of a web page, a URI scheme of HTTP(S) can be provided as a 
 
     $ trans :fr http://www.w3.org/
 
-A browser session will be started for viewing the translation (in Google Translate). To specify the web browser, use the `-browser` option.
+A browser session will be started for viewing the translation (in Google Translate). To specify the web browser, use the `-browser` option:
+
+    $ trans :fr -browser firefox http://www.w3.org/
 
 ### Interactive Mode
 
