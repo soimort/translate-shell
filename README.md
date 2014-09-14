@@ -216,7 +216,7 @@ Instead of using the `-input` option, a URI scheme of file can be provided as a 
 
     $ trans :fr file://input.txt
 
-Brief mode is used when translating URI schemes.
+Brief mode is used when translating from URI schemes.
 
 ### Translate a Web Page
 
