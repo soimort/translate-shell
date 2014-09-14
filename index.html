@@ -160,11 +160,12 @@ $ trans :fr -b -i input.txt</code></pre>
 <h3 id="translate-a-file">Translate a File</h3>
 <p>Instead of using the <code>-input</code> option, a URI scheme of file can be provided as a parameter (<code>file://</code> followed by the file name):</p>
 <pre><code>$ trans :fr file://input.txt</code></pre>
-<p>Brief mode is used when translating URI schemes.</p>
+<p>Brief mode is used when translating from URI schemes.</p>
 <h3 id="translate-a-web-page">Translate a Web Page</h3>
 <p>For the translation of a web page, a URI scheme of HTTP(S) can be provided as a parameter:</p>
 <pre><code>$ trans :fr http://www.w3.org/</code></pre>
-<p>A browser session will be started for viewing the translation (in Google Translate). To specify the web browser, use the <code>-browser</code> option.</p>
+<p>A browser session will be started for viewing the translation (in Google Translate). To specify the web browser, use the <code>-browser</code> option:</p>
+<pre><code>$ trans :fr -browser firefox http://www.w3.org/</code></pre>
 <h3 id="interactive-mode">Interactive Mode</h3>
 <p>Start an interactive shell, using the <code>-interactive</code> option:</p>
 <pre><code>$ trans -I</code></pre>
