@@ -72,10 +72,15 @@ Any POSIX-compliant system should work, including but not limited to:
 
 ### Environment and Encoding
 
-It is strongly recommended that you use UTF-8 codeset for your default locale, as it potentially supports all languages. You can check if your codeset is UTF-8 using:
+It is strongly recommended that you use UTF-8 codeset for your default locale, as it potentially supports all languages. You can check whether your codeset is UTF-8 using:
 
     $ echo $LANG
     en_US.UTF-8
+
+Or:
+
+    $ locale
+    LC_CTYPE=en_US.UTF-8
 
 And you need to have necessary Unicode fonts installed for the languages you want to display.
 
@@ -410,7 +415,7 @@ Use `$ trans -R` to view the list of language codes.
 
 * **Q**: *What is my "home" language?*
 
-* **A**: By default, home language is set to the language of your current locale (i.e. environment variable `LANG`). It will affect the display in verbose mode. If you are comfortable with your current locale (e.g. `en_US.UTF-8`), just leave it alone.
+* **A**: By default, home language is set to the language of your current locale (i.e. environment variable `LC_CTYPE` and `LANG`). It will affect the display in verbose mode. If you are comfortable with your current locale (e.g. `en_US.UTF-8`), just leave it alone.
 
 * **Q**: *What is the target language, if I don't specify one?*
 
