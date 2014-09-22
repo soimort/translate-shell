@@ -319,12 +319,27 @@ function translateMain(    i, line) {
             if (Option["verbose"] && i++ > 0)
                 print replicate("═", Option["width"])
 
-        translate(line)
-
-        # Interactive verbose mode: newline after each translation
         if (Option["interactive"]) {
-            if (Option["verbose"]) printf "\n"
+            if (line ~ /:(q|quit)/)
+                exit
+            else if (line ~ /:(s|source)/)
+                print Option["sl"]
+            else if (line ~ /:(t|target)/) {
+                printf "(" Option["tl"][1]
+                for (i = 2; i <= length(Option["tl"]); i++)
+                    printf ", " Option["tl"][i]
+                print ")"
+            }
+
+            else {
+                translate(line)
+
+                # Interactive verbose mode: newline after each translation
+                if (Option["verbose"]) printf "\n"
+            }
+
             prompt()
-        }
+        } else
+            translate(line)
     }
 }

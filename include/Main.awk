@@ -350,8 +350,10 @@ BEGIN {
         }
     }
 
-    if (Option["interactive"])
+    if (Option["interactive"]) {
         print AnsiCode["bold"] AnsiCode[tolower(Option["prompt-color"])] getVersion() AnsiCode[0] > "/dev/stderr"
+        print AnsiCode[tolower(Option["prompt-color"])] "(:q to quit)" AnsiCode[0] > "/dev/stderr"
+    }
 
     # Initialize browser
     if (!Option["browser"]) {
