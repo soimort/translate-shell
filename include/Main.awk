@@ -79,6 +79,10 @@ BEGIN {
         match(ARGV[pos], /^--?(vers(i(on?)?)?|V)$/)
         if (RSTART) {
             print getVersion()
+            print
+            printf("%-22s%s\n", "gawk (GNU Awk)", PROCINFO["version"])
+            printf("%s\n", FriBidi ? FriBidi : "fribidi (GNU FriBidi) [NOT INSTALLED]")
+            printf("%-22s%s\n", "User Language", Locale[getCode(UserLang)]["name"] " (" show(Locale[getCode(UserLang)]["endonym"]) ")")
             exit
         }
 
@@ -345,6 +349,9 @@ BEGIN {
             Option["play"] = 0
         }
     }
+
+    if (Option["interactive"])
+        print AnsiCode["bold"] AnsiCode[tolower(Option["prompt-color"])] getVersion() AnsiCode[0] > "/dev/stderr"
 
     # Initialize browser
     if (!Option["browser"]) {
