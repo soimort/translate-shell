@@ -74,13 +74,12 @@ Any POSIX-compliant system should work, including but not limited to:
 
 It is strongly recommended that you use UTF-8 codeset for your default locale, as it potentially supports all languages. You can check whether your codeset is UTF-8 using:
 
-    $ echo $LANG
+    $ echo $LC_CTYPE
     en_US.UTF-8
 
 Or:
 
     $ locale
-    LC_CTYPE=en_US.UTF-8
 
 And you need to have necessary Unicode fonts installed for the languages you want to display.
 
@@ -428,6 +427,12 @@ Use `$ trans -R` to view the list of language codes.
 * **Q**: *My terminal does not support ANSI escape sequences and the display looks like a mess. How do I disable them?*
 
 * **A**: Translate Shell uses ANSI escape sequences to display colors and other effects. You can disable them by telling Translate Shell that your terminal type is dumb: `$ TERM=dumb trans ...`
+
+## Contributing
+
+Report an issue: <https://github.com/soimort/translate-shell/issues>
+
+Please review the [guidelines for contributing](https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md) before reporting an issue or sending a pull request.
 
 ## Licensing
 
