@@ -98,11 +98,28 @@ Download [this executable](http://git.io/trans) and place it into your path.
     $ wget git.io/trans
     $ chmod +x ./trans
 
-### From Homebrew (Latest Release)
+### From Your OS
+
+#### OS X
+
+Available as a self-hosted Homebrew formula: (always the latest release since it's maintained by the author)
 
     $ brew install http://www.soimort.org/translate-shell/translate-shell.rb
 
-### From Git (Default Branch: `stable`)
+#### FreeBSD
+
+Available in FreeBSD Ports collection:
+
+    $ cd /usr/ports/textproc/google-translate-cli
+    $ make install
+
+#### Debian
+
+Available in Debian Unstable:
+
+    $ apt-get install google-translate-cli
+
+### From Git (For Developers and Advanced Users)
 
     $ git clone https://github.com/soimort/translate-shell
     $ cd translate-shell/
