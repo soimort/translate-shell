@@ -29,7 +29,7 @@
 BEGIN {
     Name        = "Translate Shell"
     Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.8.20"
+    Version     = "0.8.21"
     Command     = "trans"
     EntryPoint  = "translate.awk"
 }
@@ -796,7 +796,7 @@ function getCode(code) {
 function initBiDi() {
     "fribidi --version 2>/dev/null" |& getline FriBidi
     BiDiNoPad = FriBidi ? "fribidi --nopad" : "rev"
-    BiDi = FriBidi ? "fribidi --width %s" : "rev | xargs printf '%%ss\n'"
+    BiDi = FriBidi ? "fribidi --width %s" : "rev | sed \"s/'/\\\\\\'/\" | xargs printf '%%s '"
 }
 
 # Convert a logical string to visual; don't right justify RTL lines.
@@ -807,7 +807,10 @@ function show(text, code,    temp) {
         if (Cache[text][0])
             return Cache[text][0]
         else {
-            ("echo " parameterize(text) " | " BiDiNoPad) | getline temp
+            if (FriBidi || (code && Locale[getCode(code)]["rtl"]))
+                ("echo " parameterize(text) " | " BiDiNoPad) | getline temp
+            else # non-RTL language, or FriBidi not installed
+                temp = text
             return Cache[text][0] = temp
         }
     } else
@@ -824,7 +827,10 @@ function s(text, code, width,    temp) {
         if (Cache[text][width])
             return Cache[text][width]
         else {
-            ("echo " parameterize(text) " | " sprintf(BiDi, width)) | getline temp
+            if (FriBidi || (code && Locale[getCode(code)]["rtl"]))
+                ("echo " parameterize(text) " | " sprintf(BiDi, width)) | getline temp
+            else # non-RTL language, or FriBidi not installed
+                temp = text
             return Cache[text][width] = temp
         }
     } else
@@ -860,10 +866,14 @@ function parseLang(lang,    code, group) {
 
 # Initialize `UserLang`.
 function initUserLang() {
-    UserLang = ENVIRON["LANG"] ? parseLang(ENVIRON["LANG"]) : "en"
+    UserLang = ENVIRON["LC_CTYPE"] ?
+        parseLang(ENVIRON["LC_CTYPE"]) :
+        (ENVIRON["LANG"] ?
+         parseLang(ENVIRON["LANG"]) :
+         "en")
 
-    if (!(ENVIRON["LANG"] ~ /UTF-8$/))
-        w("[WARNING] Your codeset of locale (" ENVIRON["LANG"] ") is not UTF-8. You have been warned.")
+    if (ENVIRON["LANG"] !~ /UTF-8$/ && ENVIRON["LC_CTYPE"] !~ /UTF-8$/)
+        w("[WARNING] Your locale codeset (" ENVIRON["LANG"] ") is not UTF-8. You have been warned.")
 }
 ####################################################################
 # Help.awk                                                         #
@@ -1355,14 +1365,15 @@ function getTranslation(text, sl, tl, hl,
             altTranslations[group[1]][group[2]] = postprocess(literal(ast[i]))
 
         # Identified source languages
-        if (i ~ "^0" SUBSEP "8" SUBSEP "0" SUBSEP "[[:digit:]]+$")
+        if (i ~ "^0" SUBSEP "8" SUBSEP "0" SUBSEP "[[:digit:]]+$" ||
+            i ~ "^0" SUBSEP "2$")
             append(ils, literal(ast[i]))
     }
     PROCINFO["sorted_in"] = saveSortedIn
 
     translation = join(translations)
 
-    il = belongsTo(sl, ils) ? sl : ils[0]
+    il = !anything(ils) || belongsTo(sl, ils) ? sl : ils[0]
 
     # Generate output
     if (!isVerbose) {
@@ -1537,13 +1548,28 @@ function translateMain(    i, line) {
             if (Option["verbose"] && i++ > 0)
                 print replicate("═", Option["width"])
 
-        translate(line)
-
-        # Interactive verbose mode: newline after each translation
         if (Option["interactive"]) {
-            if (Option["verbose"]) printf "\n"
+            if (line ~ /:(q|quit)/)
+                exit
+            else if (line ~ /:(s|source)/)
+                print Option["sl"]
+            else if (line ~ /:(t|target)/) {
+                printf "(" Option["tl"][1]
+                for (i = 2; i <= length(Option["tl"]); i++)
+                    printf ", " Option["tl"][i]
+                print ")"
+            }
+
+            else {
+                translate(line)
+
+                # Interactive verbose mode: newline after each translation
+                if (Option["verbose"]) printf "\n"
+            }
+
             prompt()
-        }
+        } else
+            translate(line)
     }
 }
 ####################################################################
@@ -1702,7 +1728,12 @@ function preInit() {
     Option["debug"] = 0
 
     Option["verbose"] = 1
-    Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] : 64
+    if (ENVIRON["COLUMNS"])
+        Option["width"] = ENVIRON["COLUMNS"]
+    else {
+        "tput cols 2>/dev/null" |& getline Option["width"]
+        if (!Option["width"]) Option["width"] = 64
+    }
 
     Option["browser"] = ENVIRON["BROWSER"]
 
@@ -1745,6 +1776,10 @@ BEGIN {
         match(ARGV[pos], /^--?(vers(i(on?)?)?|V)$/)
         if (RSTART) {
             print getVersion()
+            print
+            printf("%-22s%s\n", "gawk (GNU Awk)", PROCINFO["version"])
+            printf("%s\n", FriBidi ? FriBidi : "fribidi (GNU FriBidi) [NOT INSTALLED]")
+            printf("%-22s%s\n", "User Language", Locale[getCode(UserLang)]["name"] " (" show(Locale[getCode(UserLang)]["endonym"]) ")")
             exit
         }
 
@@ -1754,7 +1789,9 @@ BEGIN {
             if (ENVIRON["TRANS_MANPAGE"])
                 system("echo -E \"${TRANS_MANPAGE}\" | " \
                        "groff -Wall -mtty-char -mandoc -Tutf8 -Dutf8 -rLL=${COLUMNS}n -rLT=${COLUMNS}n | " \
-                       "less -P\"\\ \\Manual page " Command "(1) line %lt (press h for help or q to quit)\"")
+                       (system("most 2>/dev/null") ?
+                        "less -s -P\"\\ \\Manual page " Command "(1) line %lt (press h for help or q to quit)\"" :
+                        "most -Cs"))
             else
                 print getHelp()
             exit
@@ -2008,6 +2045,11 @@ BEGIN {
             w("[WARNING] No available audio player or speech synthesizer is found.")
             Option["play"] = 0
         }
+    }
+
+    if (Option["interactive"]) {
+        print AnsiCode["bold"] AnsiCode[tolower(Option["prompt-color"])] getVersion() AnsiCode[0] > "/dev/stderr"
+        print AnsiCode[tolower(Option["prompt-color"])] "(:q to quit)" AnsiCode[0] > "/dev/stderr"
     }
 
     # Initialize browser

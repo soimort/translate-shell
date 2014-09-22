@@ -16,7 +16,7 @@ image:
 
 <h1 id="translate-shell">Translate Shell</h1>
 <p><a href="https://travis-ci.org/soimort/translate-shell"><img src="https://travis-ci.org/soimort/translate-shell.png" alt="Build Status" /></a></p>
-<p><a href="http://www.soimort.org/translate-shell">Translate Shell</a> is a command-line interface and interactive shell for <a href="https://translate.google.com/">Google Translate</a>. It works just the way you want it to be.</p>
+<p><a href="http://www.soimort.org/translate-shell">Translate Shell</a> (previously <em>Google Translate CLI</em>) is a command-line interface and interactive shell for <a href="https://translate.google.com/">Google Translate</a>. It works just the way you want it to be.</p>
 <pre><code>$ trans &quot;Saluton, Mondo&quot;
 Hello, World
 
@@ -66,7 +66,7 @@ In order to be happy, the shortest way is from being loved by the people.</code>
 <ul>
 <li>needed for displaying right-to-left (RTL) languages</li>
 </ul></li>
-<li><a href="http://www.mplayerhq.hu/">MPlayer</a>, <a href="http://mpg123.org/">mpg123</a>, or <a href="http://espeak.sourceforge.net/">eSpeak</a>
+<li><a href="http://www.mplayerhq.hu/">MPlayer</a>, <a href="http://www.mplayer2.org/">mplayer2</a>, <a href="http://mpg123.org/">mpg123</a>, or <a href="http://espeak.sourceforge.net/">eSpeak</a>
 <ul>
 <li>needed for the Text-to-Speech functionality</li>
 </ul></li>
@@ -84,9 +84,11 @@ In order to be happy, the shortest way is from being loved by the people.</code>
 </ul></li>
 </ul>
 <h3 id="environment-and-encoding">Environment and Encoding</h3>
-<p>It is strongly recommended that you use UTF-8 codeset for your default locale, as it potentially supports all languages. You can check if your codeset is UTF-8 using:</p>
-<pre><code>$ echo $LANG
+<p>It is strongly recommended that you use UTF-8 codeset for your default locale, as it potentially supports all languages. You can check whether your codeset is UTF-8 using:</p>
+<pre><code>$ echo $LC_CTYPE
 en_US.UTF-8</code></pre>
+<p>Or:</p>
+<pre><code>$ locale</code></pre>
 <p>And you need to have necessary Unicode fonts installed for the languages you want to display.</p>
 <h2 id="try-it-out">Try It Out</h2>
 <p>As long as you have <code>gawk</code> already, you're good to go!</p>
@@ -96,9 +98,18 @@ en_US.UTF-8</code></pre>
 <p>Download <a href="http://git.io/trans">this executable</a> and place it into your path.</p>
 <pre><code>$ wget git.io/trans
 $ chmod +x ./trans</code></pre>
-<h3 id="from-homebrew-latest-release">From Homebrew (Latest Release)</h3>
+<h3 id="from-your-os">From Your OS</h3>
+<h4 id="os-x">OS X</h4>
+<p>Available as a self-hosted Homebrew formula: (always the latest release since it's maintained by the author)</p>
 <pre><code>$ brew install http://www.soimort.org/translate-shell/translate-shell.rb</code></pre>
-<h3 id="from-git-default-branch-stable">From Git (Default Branch: <code>stable</code>)</h3>
+<h4 id="freebsd">FreeBSD</h4>
+<p>Available in FreeBSD Ports collection:</p>
+<pre><code>$ cd /usr/ports/textproc/google-translate-cli
+$ make install</code></pre>
+<h4 id="debian">Debian</h4>
+<p>Available in Debian Unstable:</p>
+<pre><code>$ apt-get install google-translate-cli</code></pre>
+<h3 id="from-git-for-developers-and-advanced-users">From Git (For Developers and Advanced Users)</h3>
 <pre><code>$ git clone https://github.com/soimort/translate-shell
 $ cd translate-shell/
 $ make install</code></pre>
@@ -310,7 +321,7 @@ $ trans word</code></pre>
 <li>Yiddish (<code>yi</code> or <code>ji</code>)</li>
 </ul></li>
 <li><p><strong>Q</strong>: <em>What is my &quot;home&quot; language?</em></p></li>
-<li><p><strong>A</strong>: By default, home language is set to the language of your current locale (i.e. environment variable <code>LANG</code>). It will affect the display in verbose mode. If you are comfortable with your current locale (e.g. <code>en_US.UTF-8</code>), just leave it alone.</p></li>
+<li><p><strong>A</strong>: By default, home language is set to the language of your current locale (i.e. environment variable <code>LC_CTYPE</code> and <code>LANG</code>). It will affect the display in verbose mode. If you are comfortable with your current locale (e.g. <code>en_US.UTF-8</code>), just leave it alone.</p></li>
 <li><p><strong>Q</strong>: <em>What is the target language, if I don't specify one?</em></p></li>
 <li><p><strong>A</strong>: If no target language is specified, text will be translated into the language of your locale, i.e., your most preferable language.</p></li>
 <li><p><strong>Q</strong>: <em>I tried to translate some very long text but failed to get the complete translation.</em></p></li>
@@ -318,5 +329,8 @@ $ trans word</code></pre>
 <li><p><strong>Q</strong>: <em>My terminal does not support ANSI escape sequences and the display looks like a mess. How do I disable them?</em></p></li>
 <li><p><strong>A</strong>: Translate Shell uses ANSI escape sequences to display colors and other effects. You can disable them by telling Translate Shell that your terminal type is dumb: <code>$ TERM=dumb trans ...</code></p></li>
 </ul>
+<h2 id="contributing">Contributing</h2>
+<p>Report an issue: <a href="https://github.com/soimort/translate-shell/issues" class="uri">https://github.com/soimort/translate-shell/issues</a></p>
+<p>Please review the <a href="https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md">guidelines for contributing</a> before reporting an issue or sending a pull request.</p>
 <h2 id="licensing">Licensing</h2>
 <p>This is free and unencumbered software released into the public domain.</p>

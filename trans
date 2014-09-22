@@ -29,7 +29,7 @@ read -r -d '' TRANS_PROGRAM << 'EOF'
 BEGIN {
 Name        = "Translate Shell"
 Description = "Google Translate to serve as a command-line tool"
-Version     = "0.8.20"
+Version     = "0.8.21"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 }
@@ -529,14 +529,17 @@ return
 function initBiDi() {
 "fribidi --version 2>/dev/null" |& getline FriBidi
 BiDiNoPad = FriBidi ? "fribidi --nopad" : "rev"
-BiDi = FriBidi ? "fribidi --width %s" : "rev | xargs printf '%%ss\n'"
+BiDi = FriBidi ? "fribidi --width %s" : "rev | sed \"s/'/\\\\\\'/\" | xargs printf '%%s '"
 }
 function show(text, code,    temp) {
 if (!code || Locale[getCode(code)]["rtl"]) {
 if (Cache[text][0])
 return Cache[text][0]
 else {
+if (FriBidi || (code && Locale[getCode(code)]["rtl"]))
 ("echo " parameterize(text) " | " BiDiNoPad) | getline temp
+else
+temp = text
 return Cache[text][0] = temp
 }
 } else
@@ -548,7 +551,10 @@ if (!width) width = Option["width"]
 if (Cache[text][width])
 return Cache[text][width]
 else {
+if (FriBidi || (code && Locale[getCode(code)]["rtl"]))
 ("echo " parameterize(text) " | " sprintf(BiDi, width)) | getline temp
+else
+temp = text
 return Cache[text][width] = temp
 }
 } else
@@ -567,9 +573,13 @@ if (!code) code = "en"
 return code
 }
 function initUserLang() {
-UserLang = ENVIRON["LANG"] ? parseLang(ENVIRON["LANG"]) : "en"
-if (!(ENVIRON["LANG"] ~ /UTF-8$/))
-w("[WARNING] Your codeset of locale (" ENVIRON["LANG"] ") is not UTF-8. You have been warned.")
+UserLang = ENVIRON["LC_CTYPE"] ?
+parseLang(ENVIRON["LC_CTYPE"]) :
+(ENVIRON["LANG"] ?
+parseLang(ENVIRON["LANG"]) :
+"en")
+if (ENVIRON["LANG"] !~ /UTF-8$/ && ENVIRON["LC_CTYPE"] !~ /UTF-8$/)
+w("[WARNING] Your locale codeset (" ENVIRON["LANG"] ") is not UTF-8. You have been warned.")
 }
 function getVersion() {
 return Name " " Version
@@ -950,12 +960,13 @@ if (match(i, "^0" SUBSEP "5" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
 segments[group[1]] = literal(ast[i])
 if (match(i, "^0" SUBSEP "5" SUBSEP "([[:digit:]]+)" SUBSEP "2" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
 altTranslations[group[1]][group[2]] = postprocess(literal(ast[i]))
-if (i ~ "^0" SUBSEP "8" SUBSEP "0" SUBSEP "[[:digit:]]+$")
+if (i ~ "^0" SUBSEP "8" SUBSEP "0" SUBSEP "[[:digit:]]+$" ||
+i ~ "^0" SUBSEP "2$")
 append(ils, literal(ast[i]))
 }
 PROCINFO["sorted_in"] = saveSortedIn
 translation = join(translations)
-il = belongsTo(sl, ils) ? sl : ils[0]
+il = !anything(ils) || belongsTo(sl, ils) ? sl : ils[0]
 if (!isVerbose) {
 r = isPhonetic && anything(phonetics) ?
 join(phonetics) :
@@ -1087,11 +1098,24 @@ while (getline line < Option["input"]) {
 if (!Option["interactive"])
 if (Option["verbose"] && i++ > 0)
 print replicate("═", Option["width"])
-translate(line)
 if (Option["interactive"]) {
-if (Option["verbose"]) printf "\n"
-prompt()
+if (line ~ /:(q|quit)/)
+exit
+else if (line ~ /:(s|source)/)
+print Option["sl"]
+else if (line ~ /:(t|target)/) {
+printf "(" Option["tl"][1]
+for (i = 2; i <= length(Option["tl"]); i++)
+printf ", " Option["tl"][i]
+print ")"
 }
+else {
+translate(line)
+if (Option["verbose"]) printf "\n"
+}
+prompt()
+} else
+translate(line)
 }
 }
 function initRlwrap() {
@@ -1205,7 +1229,12 @@ RS = "\n"
 ExitCode = 0
 Option["debug"] = 0
 Option["verbose"] = 1
-Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] : 64
+if (ENVIRON["COLUMNS"])
+Option["width"] = ENVIRON["COLUMNS"]
+else {
+"tput cols 2>/dev/null" |& getline Option["width"]
+if (!Option["width"]) Option["width"] = 64
+}
 Option["browser"] = ENVIRON["BROWSER"]
 Option["play"] = 0
 Option["player"] = ENVIRON["PLAYER"]
@@ -1233,6 +1262,10 @@ if (RSTART) continue
 match(ARGV[pos], /^--?(vers(i(on?)?)?|V)$/)
 if (RSTART) {
 print getVersion()
+print
+printf("%-22s%s\n", "gawk (GNU Awk)", PROCINFO["version"])
+printf("%s\n", FriBidi ? FriBidi : "fribidi (GNU FriBidi) [NOT INSTALLED]")
+printf("%-22s%s\n", "User Language", Locale[getCode(UserLang)]["name"] " (" show(Locale[getCode(UserLang)]["endonym"]) ")")
 exit
 }
 match(ARGV[pos], /^--?(h(e(lp?)?)?|H)$/)
@@ -1240,7 +1273,9 @@ if (RSTART) {
 if (ENVIRON["TRANS_MANPAGE"])
 system("echo -E \"${TRANS_MANPAGE}\" | " \
 "groff -Wall -mtty-char -mandoc -Tutf8 -Dutf8 -rLL=${COLUMNS}n -rLT=${COLUMNS}n | " \
-"less -P\"\\ \\Manual page " Command "(1) line %lt (press h for help or q to quit)\"")
+(system("most 2>/dev/null") ?
+"less -s -P\"\\ \\Manual page " Command "(1) line %lt (press h for help or q to quit)\"" :
+"most -Cs"))
 else
 print getHelp()
 exit
@@ -1436,6 +1471,10 @@ w("[WARNING] No available audio player or speech synthesizer is found.")
 Option["play"] = 0
 }
 }
+if (Option["interactive"]) {
+print AnsiCode["bold"] AnsiCode[tolower(Option["prompt-color"])] getVersion() AnsiCode[0] > "/dev/stderr"
+print AnsiCode[tolower(Option["prompt-color"])] "(:q to quit)" AnsiCode[0] > "/dev/stderr"
+}
 if (!Option["browser"]) {
 "xdg-mime query default text/html 2>/dev/null" |& getline Option["browser"]
 match(Option["browser"], "(.*).desktop$", group)
@@ -1460,7 +1499,7 @@ read -r -d '' TRANS_MANPAGE << 'EOF'
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "TRANS" "1" "September 2014" "0.8.19" "TRANS MANUAL"
+.TH "TRANS" "1" "September 2014" "0.8.21" "TRANS MANUAL"
 .
 .SH "NAME"
 \fBtrans\fR \- Google Translate served as a command\-line tool
@@ -1708,7 +1747,7 @@ This option is optional\. When omitted, the relevant setting of environment vari
 This option only affects the display in verbose mode (anything other than the source language and the target language will be displayed in your home language)\. This option has no effect in brief mode\.
 .
 .P
-This option overrides the setting of environment variables \fBLANG\fR and \fBHOME_LANG\fR\.
+This option overrides the setting of environment variables \fBLC_TYPE\fR, \fBLANG\fR and \fBHOME_LANG\fR\.
 .
 .SS "\-s [code], \-source [code]"
 Specify the source language (language of the original text)\. The code value must be the ISO 639 code of a supported language\.
@@ -1729,7 +1768,7 @@ This option is optional\. When omitted, the relevant setting of environment vari
 More than one target language can be specified at the same time, concatenated by plus sign "+"\.
 .
 .P
-This option overrides the setting of environment variables \fBLANG\fR and \fBTARGET_LANG\fR\.
+This option overrides the setting of environment variables \fBLC_TYPE\fR, \fBLANG\fR and \fBTARGET_LANG\fR\.
 .
 .SS "\-\-"
 End\-of\-options\.
