@@ -136,14 +136,15 @@ function getTranslation(text, sl, tl, hl,
             altTranslations[group[1]][group[2]] = postprocess(literal(ast[i]))
 
         # Identified source languages
-        if (i ~ "^0" SUBSEP "8" SUBSEP "0" SUBSEP "[[:digit:]]+$")
+        if (i ~ "^0" SUBSEP "8" SUBSEP "0" SUBSEP "[[:digit:]]+$" ||
+            i ~ "^0" SUBSEP "2$")
             append(ils, literal(ast[i]))
     }
     PROCINFO["sorted_in"] = saveSortedIn
 
     translation = join(translations)
 
-    il = belongsTo(sl, ils) ? sl : ils[0]
+    il = !anything(ils) || belongsTo(sl, ils) ? sl : ils[0]
 
     # Generate output
     if (!isVerbose) {
