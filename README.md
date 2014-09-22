@@ -98,6 +98,10 @@ Download [this executable](http://git.io/trans) and place it into your path.
     $ wget git.io/trans
     $ chmod +x ./trans
 
+Additionally, you may verify [this signature](http://www.soimort.org/translate-shell/trans.sig) if you want:
+
+    $ gpg --verify trans.sig trans
+
 ### From Your OS
 
 #### OS X
