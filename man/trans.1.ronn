@@ -216,7 +216,7 @@ This option is optional. When omitted, the relevant setting of environment varia
 
 This option only affects the display in verbose mode (anything other than the source language and the target language will be displayed in your home language). This option has no effect in brief mode.
 
-This option overrides the setting of environment variables `LANG` and `HOME_LANG`.
+This option overrides the setting of environment variables `LC_TYPE`, `LANG` and `HOME_LANG`.
 
 ### -s [code], -source [code]
 
@@ -234,7 +234,7 @@ This option is optional. When omitted, the relevant setting of environment varia
 
 More than one target language can be specified at the same time, concatenated by plus sign "+".
 
-This option overrides the setting of environment variables `LANG` and `TARGET_LANG`.
+This option overrides the setting of environment variables `LC_TYPE`, `LANG` and `TARGET_LANG`.
 
 ### --
 
