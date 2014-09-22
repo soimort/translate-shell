@@ -83,7 +83,9 @@ BEGIN {
             if (ENVIRON["TRANS_MANPAGE"])
                 system("echo -E \"${TRANS_MANPAGE}\" | " \
                        "groff -Wall -mtty-char -mandoc -Tutf8 -Dutf8 -rLL=${COLUMNS}n -rLT=${COLUMNS}n | " \
-                       "less -P\"\\ \\Manual page " Command "(1) line %lt (press h for help or q to quit)\"")
+                       (system("most 2>/dev/null") ?
+                        "less -s -P\"\\ \\Manual page " Command "(1) line %lt (press h for help or q to quit)\"" :
+                        "most -Cs"))
             else
                 print getHelp()
             exit
