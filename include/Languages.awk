@@ -520,8 +520,12 @@ function parseLang(lang,    code, group) {
 
 # Initialize `UserLang`.
 function initUserLang() {
-    UserLang = ENVIRON["LANG"] ? parseLang(ENVIRON["LANG"]) : "en"
+    UserLang = ENVIRON["LC_CTYPE"] ?
+        parseLang(ENVIRON["LC_CTYPE"]) :
+        (ENVIRON["LANG"] ?
+         parseLang(ENVIRON["LANG"]) :
+         "en")
 
-    if (!(ENVIRON["LANG"] ~ /UTF-8$/))
-        w("[WARNING] Your codeset of locale (" ENVIRON["LANG"] ") is not UTF-8. You have been warned.")
+    if (ENVIRON["LANG"] !~ /UTF-8$/ && ENVIRON["LC_CTYPE"] !~ /UTF-8$/)
+        w("[WARNING] Your locale codeset (" ENVIRON["LANG"] ") is not UTF-8. You have been warned.")
 }
