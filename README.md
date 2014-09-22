@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/soimort/translate-shell.png)](https://travis-ci.org/soimort/translate-shell)
 
-[Translate Shell](http://www.soimort.org/translate-shell) is a command-line interface and interactive shell for [Google Translate](https://translate.google.com/). It works just the way you want it to be.
+[Translate Shell](http://www.soimort.org/translate-shell) (previously _Google Translate CLI_) is a command-line interface and interactive shell for [Google Translate](https://translate.google.com/). It works just the way you want it to be.
 
 ```
 $ trans "Saluton, Mondo"
@@ -61,7 +61,7 @@ Any POSIX-compliant system should work, including but not limited to:
     * You can use Translate Shell from any modern Unix shell of your choice (bash, zsh, ksh, tcsh, fish, etc.); however, it requires either bash or zsh installed for interpreting the wrapper script.
 * [GNU FriBidi](http://fribidi.org/): an implementation of the Unicode Bidirectional Algorithm (bidi)
     * needed for displaying right-to-left (RTL) languages
-* [MPlayer](http://www.mplayerhq.hu/), [mpg123](http://mpg123.org/), or [eSpeak](http://espeak.sourceforge.net/)
+* [MPlayer](http://www.mplayerhq.hu/), [mplayer2](http://www.mplayer2.org/), [mpg123](http://mpg123.org/), or [eSpeak](http://espeak.sourceforge.net/)
     * needed for the Text-to-Speech functionality
 * [rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/#rlwrap): a GNU readline wrapper
     * needed for readline-style editing and history in the interactive mode
