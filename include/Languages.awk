@@ -450,7 +450,7 @@ function getCode(code) {
 function initBiDi() {
     "fribidi --version 2>/dev/null" |& getline FriBidi
     BiDiNoPad = FriBidi ? "fribidi --nopad" : "rev"
-    BiDi = FriBidi ? "fribidi --width %s" : "rev | xargs printf '%%ss\n'"
+    BiDi = FriBidi ? "fribidi --width %s" : "rev | sed \"s/'/\\\\\\'/\" | xargs printf '%%s '"
 }
 
 # Convert a logical string to visual; don't right justify RTL lines.
@@ -461,7 +461,10 @@ function show(text, code,    temp) {
         if (Cache[text][0])
             return Cache[text][0]
         else {
-            ("echo " parameterize(text) " | " BiDiNoPad) | getline temp
+            if (FriBidi || (code && Locale[getCode(code)]["rtl"]))
+                ("echo " parameterize(text) " | " BiDiNoPad) | getline temp
+            else # non-RTL language, or FriBidi not installed
+                temp = text
             return Cache[text][0] = temp
         }
     } else
@@ -478,7 +481,10 @@ function s(text, code, width,    temp) {
         if (Cache[text][width])
             return Cache[text][width]
         else {
-            ("echo " parameterize(text) " | " sprintf(BiDi, width)) | getline temp
+            if (FriBidi || (code && Locale[getCode(code)]["rtl"]))
+                ("echo " parameterize(text) " | " sprintf(BiDi, width)) | getline temp
+            else # non-RTL language, or FriBidi not installed
+                temp = text
             return Cache[text][width] = temp
         }
     } else
