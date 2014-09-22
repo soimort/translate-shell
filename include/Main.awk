@@ -31,7 +31,12 @@ function preInit() {
     Option["debug"] = 0
 
     Option["verbose"] = 1
-    Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] : 64
+    if (ENVIRON["COLUMNS"])
+        Option["width"] = ENVIRON["COLUMNS"]
+    else {
+        "tput cols 2>/dev/null" |& getline Option["width"]
+        if (!Option["width"]) Option["width"] = 64
+    }
 
     Option["browser"] = ENVIRON["BROWSER"]
 
