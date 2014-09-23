@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html$if(lang)$ lang="$lang$"$endif$>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+$for(author-meta)$
+  <meta name="author" content="$author-meta$">
+$endfor$
+$if(date-meta)$
+  <meta name="dcterms.date" content="$date-meta$">
+$endif$
+  <title>$if(title-prefix)$$title-prefix$ - $endif$$pagetitle$</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+$if(quotes)$
+  <style type="text/css">q { quotes: "“" "”" "‘" "’"; }</style>
+$endif$
+$if(highlighting-css)$
+  <style type="text/css">
+$highlighting-css$
+  </style>
+$endif$
+
+<link href='css/theme.css' media="all" rel="stylesheet" type="text/css">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
+
+$for(css)$
+  <link rel="stylesheet" href="$css$">
+$endfor$
+$if(math)$
+  $math$
+$endif$
+$for(header-includes)$
+  $header-includes$
+$endfor$
+</head>
+<body>
+$for(include-before)$
+$include-before$
+$endfor$
+
+<a href="https://github.com/$github$"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+
+<img style="position: fixed; bottom: 5%; right: 5%; border: 0;" src="$background$"/>
+
+<nav id="$idprefix$DESC">
+  <a href="$url$"><img src="$project-logo$"/></a>
+  <div id="desc">
+    <h1>$project-name$</h1>
+    <h2>version $project-version$</h2>
+    <a href="https://github.com/$github$">Star・<i class="fa fa-github-square fa-2x"></i></a>
+    <a href="$download-url$">Download・<i class="fa fa-download fa-2x"></i></a>
+    <div id="msg">
+      <span id="checksum" onmouseover="this.innerHTML='$download-checksum-data$'" onmouseout="this.innerHTML='$download-checksum-type$'">$download-checksum-type$</span>
+      <a href="$download-signature$">PGP SIGNATURE</a>
+    </div>
+  </div>
+</nav>
+
+$if(toc)$
+<nav id="$idprefix$TOC">
+  <hr/>
+  $toc$
+</nav>
+$endif$
+
+<article>
+
+$if(title)$
+<header>
+<h1 class="title">$title$</h1>
+$if(subtitle)$
+<h1 class="subtitle">$subtitle$</h1>
+$endif$
+$for(author)$
+<address class="author">$author$</address>
+$endfor$
+$if(date)$
+<h3 class="date">$date$</h3>
+$endif$
+</header>
+$endif$
+
+$body$
+<hr/>
+
+<footer>
+<p>This project is maintained by <a href="https://github.com/soimort">@soimort</a>.</p>
+</footer>
+
+</article>
+
+$for(include-after)$
+$include-after$
+$endfor$
+</body>
+</html>
