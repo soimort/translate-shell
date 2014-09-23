@@ -1,21 +1,65 @@
----
-layout: GitHub/main
-robots: all
-google: notranslate
-google-site-verification:
-application-name:
-generator: Jekyll
-keywords:
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
 
-title: Translate Shell
-author: soimort
-description: Translate Shell
-image:
----
-<a href="https://github.com/soimort/translate-shell/"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+<link href='css/theme.css' media="all" rel="stylesheet" type="text/css">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
+
+</head>
+<body>
+
+<a href="https://github.com/soimort/translate-shell"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+
+<img style="position: fixed; bottom: 5%; right: 5%; border: 0;" src="images/public_domain.png"/>
+
+<nav id="DESC">
+  <a href="http://www.soimort.org/translate-shell/"><img src="images/avatar.jpg"/></a>
+  <div id="desc">
+    <h1>Translate Shell</h1>
+    <h2>version 0.8.21</h2>
+    <a href="https://github.com/soimort/translate-shell">Star・<i class="fa fa-github-square fa-2x"></i></a>
+    <a href="http://www.soimort.org/translate-shell/trans">Download・<i class="fa fa-download fa-2x"></i></a>
+    <div id="msg">
+      <span id="checksum" onmouseover="this.innerHTML='1e41de455370d0503fe55c63c53841f15491bf09'" onmouseout="this.innerHTML='SHA1SUM'">SHA1SUM</span>
+      <a href="http://www.soimort.org/translate-shell/trans.sig">PGP SIGNATURE</a>
+    </div>
+  </div>
+</nav>
+
+<nav id="TOC">
+  <hr/>
+  <ul>
+  <li><a href="#translate-shell">Translate Shell</a><ul>
+  <li><a href="#prerequisites">Prerequisites</a></li>
+  <li><a href="#try-it-out">Try It Out</a></li>
+  <li><a href="#installation">Installation</a></li>
+  <li><a href="#examples">Examples</a></li>
+  <li><a href="#text-editors">Text Editors</a></li>
+  <li><a href="#usage">Usage</a></li>
+  <li><a href="#environment-variables">Environment Variables</a></li>
+  <li><a href="#language-codes">Language Codes</a></li>
+  <li><a href="#faq">FAQ</a></li>
+  <li><a href="#contributing">Contributing</a></li>
+  <li><a href="#licensing">Licensing</a></li>
+  </ul></li>
+  </ul>
+</nav>
+
+<article>
+
 
 <h1 id="translate-shell">Translate Shell</h1>
-<p><a href="https://travis-ci.org/soimort/translate-shell"><img src="https://travis-ci.org/soimort/translate-shell.png" alt="Build Status" /></a></p>
+<p><a href="https://travis-ci.org/soimort/translate-shell"><img src="https://travis-ci.org/soimort/translate-shell.png" alt="Build Status" /></a> <a href="https://github.com/soimort/translate-shell/releases"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-release.png" alt="Version" /></a> <a href="http://www.soimort.org/translate-shell/trans"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png" alt="Download" /></a></p>
 <p><a href="http://www.soimort.org/translate-shell">Translate Shell</a> (previously <em>Google Translate CLI</em>) is a command-line interface and interactive shell for <a href="https://translate.google.com/">Google Translate</a>. It works just the way you want it to be.</p>
 <pre><code>$ trans &quot;Saluton, Mondo&quot;
 Hello, World
@@ -187,16 +231,16 @@ $ trans :fr -b -i input.txt</code></pre>
 <p>Below are some might-be-useful tips. Feel free to roll your own Emacs mode or Vim script!</p>
 <h3 id="emacs">Emacs</h3>
 <h4 id="interactive-shell">Interactive shell</h4>
-<p>You can, of course, use Emacs as a front-end of Translate Shell, in the same way you emulate your favorite shell with <code>M-x shell</code>. There is a shortcut for starting Emacs with Translate Shell, using the <code>-emacs</code> option:</p>
+<p>You can, of course, use Emacs as a front-end of Translate Shell, in the same way you emulate your favorite shell with <kbd>M-x shell</kbd>. There is a shortcut for starting Emacs with Translate Shell, using the <code>-emacs</code> option:</p>
 <pre><code>$ trans -E</code></pre>
 <h4 id="text-translation">Text translation</h4>
 <p>When editing a text file, viewing the translation of a region is just one single command: (translating any language to Japanese, for example)</p>
-<p><code>M-| trans :ja</code></p>
+<p><kbd>M-| trans :ja</kbd></p>
 <h3 id="vim">Vim</h3>
 <h4 id="text-translation-1">Text translation</h4>
 <p>Add one line to your <code>~/.vimrc</code>:</p>
 <pre><code>set keywordprg=trans\ :ja</code></pre>
-<p>Use <code>Shift-K</code> to view the translation of the word under the cursor.</p>
+<p>Use <kbd>Shift-K</kbd> to view the translation of the word under the cursor.</p>
 <h2 id="usage">Usage</h2>
 <p>Use <code>$ trans -H</code> to view the <a href="http://www.soimort.org/translate-shell/trans.1.html">detailed man page</a>.</p>
 <pre><code>Usage: trans [options] [source]:[target] [text] ...
@@ -336,3 +380,13 @@ $ trans word</code></pre>
 <p>Please review the <a href="https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md">guidelines for contributing</a> before reporting an issue or sending a pull request.</p>
 <h2 id="licensing">Licensing</h2>
 <p>This is free and unencumbered software released into the public domain.</p>
+<hr/>
+
+<footer>
+<p>This project is maintained by <a href="https://github.com/soimort">@soimort</a>.</p>
+</footer>
+
+</article>
+
+</body>
+</html>
