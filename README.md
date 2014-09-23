@@ -1,6 +1,8 @@
 # Translate Shell
 
 [![Build Status](https://travis-ci.org/soimort/translate-shell.png)](https://travis-ci.org/soimort/translate-shell)
+[![Version](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-release.png)](https://github.com/soimort/translate-shell/releases)
+[![Download](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png)](http://www.soimort.org/translate-shell/trans)
 
 [Translate Shell](http://www.soimort.org/translate-shell) (previously _Google Translate CLI_) is a command-line interface and interactive shell for [Google Translate](https://translate.google.com/). It works just the way you want it to be.
 
