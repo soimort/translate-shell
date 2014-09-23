@@ -1,4 +1,5 @@
 ---
+title: Translate Shell
 project-name: Translate Shell
 project-version: 0.8.21
 project-logo: images/avatar.jpg
