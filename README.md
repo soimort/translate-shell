@@ -269,7 +269,7 @@ Below are some might-be-useful tips. Feel free to roll your own Emacs mode or Vi
 
 #### Interactive shell
 
-You can, of course, use Emacs as a front-end of Translate Shell, in the same way you emulate your favorite shell with `M-x shell`. There is a shortcut for starting Emacs with Translate Shell, using the `-emacs` option:
+You can, of course, use Emacs as a front-end of Translate Shell, in the same way you emulate your favorite shell with <kbd>M-x shell</kbd>. There is a shortcut for starting Emacs with Translate Shell, using the `-emacs` option:
 
     $ trans -E
 
@@ -277,7 +277,7 @@ You can, of course, use Emacs as a front-end of Translate Shell, in the same way
 
 When editing a text file, viewing the translation of a region is just one single command: (translating any language to Japanese, for example)
 
-`M-| trans :ja`
+<kbd>M-| trans :ja</kbd>
 
 ### Vim
 
@@ -287,7 +287,7 @@ Add one line to your `~/.vimrc`:
 
     set keywordprg=trans\ :ja
 
-Use `Shift-K` to view the translation of the word under the cursor.
+Use <kbd>Shift-K</kbd> to view the translation of the word under the cursor.
 
 ## Usage
 
