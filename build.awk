@@ -61,13 +61,6 @@ function build(target,    group, inline, line, temp) {
         print "EOF" > Trans
         print "export TRANS_PROGRAM" > Trans
 
-        print "read -r -d '' TRANS_MANPAGE << 'EOF'" > Trans
-        if (fileExists(Man))
-            while (getline line < Man)
-                print line > Trans
-        print "EOF" > Trans
-        print "export TRANS_MANPAGE" > Trans
-
         print "export COLUMNS" > Trans
 
         print "gawk \"$TRANS_PROGRAM\" - \"$@\"" > Trans
