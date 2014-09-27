@@ -137,7 +137,7 @@ Available in FreeBSD Ports collection:
 
 Available in Debian Unstable:
 
-    $ apt-get install google-translate-cli
+    $ apt-get install translate-shell
 
 ### From Git (For Developers and Advanced Users)
 
