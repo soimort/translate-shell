@@ -121,7 +121,7 @@ Available in FreeBSD Ports collection:
 
 #### Debian
 
-Available in Debian Unstable:
+Available in Debian Testing (Jessie):
 
     $ apt-get install translate-shell
 
