@@ -129,8 +129,10 @@ function getTranslation(text, sl, tl, hl,
         if (match(i, "^0" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "2" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)$", group))
             words[group[1]][group[2]]["1"][group[3]] = literal(ast[i])
 
-        if (match(i, "^0" SUBSEP "5" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
+        if (match(i, "^0" SUBSEP "5" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group)) {
             segments[group[1]] = literal(ast[i])
+            altTranslations[group[1]][0] = ""
+        }
 
         if (match(i, "^0" SUBSEP "5" SUBSEP "([[:digit:]]+)" SUBSEP "2" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
             altTranslations[group[1]][group[2]] = postprocess(literal(ast[i]))
