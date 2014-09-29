@@ -2,6 +2,8 @@
 
 ## Reporting an Issue
 
+Although Google Translate does a great job on translating between over 80 languages, please report your issue in **English only**.
+
 Please include:
 
 * Your exact command line
