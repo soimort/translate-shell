@@ -53,6 +53,10 @@ Brief mode.
 
 Show the most relevant translation only, or its phonetic notation only. Nothing more.
 
+### -no-ansi
+
+Don't use ANSI escape codes in the translation.
+
 ### -w [num], -width [num]
 
 Specify the screen width for padding when displaying right-to-left languages.

@@ -130,6 +130,13 @@ BEGIN {
             continue
         }
 
+        # -no-ansi
+        match(ARGV[pos], /^--?no-ansi/)
+        if (RSTART) {
+            Option["no-ansi"] = 1
+            continue
+        }
+
         # -w [num], -width [num]
         match(ARGV[pos], /^--?w(i(d(th?)?)?)?(=(.*)?)?$/, group)
         if (RSTART) {
@@ -356,6 +363,10 @@ BEGIN {
         match(Option["browser"], "(.*).desktop$", group)
         Option["browser"] = group[1]
     }
+
+    # Disable ANSI SGR (Select Graphic Rendition) codes if required
+    if (Option["no-ansi"])
+        delete AnsiCode
 
     if (pos < ARGC) {
         # More parameters

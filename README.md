@@ -312,6 +312,8 @@ Options:
     Verbose mode. (default)
   -b, -brief
     Brief mode.
+  -no-ansi
+    Don't use ANSI escape codes in the translation.
   -w [num], -width [num]
     Specify the screen width for padding when displaying right-to-left languages.
   -browser [program]

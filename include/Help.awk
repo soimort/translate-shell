@@ -84,6 +84,7 @@ function getHelp() {
         "  " AnsiCode["bold"] "-R, -reference-english" AnsiCode["no bold"] "\n    Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.\n" \
         "  " AnsiCode["bold"] "-v, -verbose" AnsiCode["no bold"] "\n    Verbose mode. (default)\n" \
         "  " AnsiCode["bold"] "-b, -brief" AnsiCode["no bold"] "\n    Brief mode.\n" \
+        "  " AnsiCode["bold"] "-no-ansi" AnsiCode["no bold"] "\n    Don't use ANSI escape codes in the translation.\n" \
         "  " AnsiCode["bold"] "-w [num], -width [num]" AnsiCode["no bold"] "\n    Specify the screen width for padding when displaying right-to-left languages.\n" \
         "  " AnsiCode["bold"] "-browser [program]" AnsiCode["no bold"] "\n    Specify the web browser to use.\n" \
         "  " AnsiCode["bold"] "-p, -play" AnsiCode["no bold"] "\n    Listen to the translation.\n" \
