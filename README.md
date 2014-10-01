@@ -451,7 +451,7 @@ Use `$ trans -R` to view the list of language codes.
 
 * **Q**: *My terminal does not support ANSI escape sequences and the display looks like a mess. How do I disable them?*
 
-* **A**: Translate Shell uses ANSI escape sequences to display colors and other effects. You can disable them by telling Translate Shell that your terminal type is dumb: `$ TERM=dumb trans ...`
+* **A**: Translate Shell uses ANSI escape sequences to display colors and other effects. You can disable them by either using the option `-no-ansi`, or telling Translate Shell that your terminal type is dumb via the environment variable `TERM`: `$ TERM=dumb trans ...`
 
 ## Contributing
 
