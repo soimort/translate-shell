@@ -200,11 +200,14 @@ function join(array, separator, sortedIn, preserveNull,
     temp = ""
     j = 0
     saveSortedIn = PROCINFO["sorted_in"]
-    PROCINFO["sorted_in"] = sortedIn
-    for (i in array)
-        if (preserveNull || array[i] != "")
-            temp = j++ ? temp separator array[i] : array[i]
-    PROCINFO["sorted_in"] = saveSortedIn
+    if (length(array)) {
+        PROCINFO["sorted_in"] = sortedIn
+        for (i in array)
+            if (preserveNull || array[i] != "")
+                temp = j++ ? temp separator array[i] : array[i]
+        PROCINFO["sorted_in"] = saveSortedIn
+    } else
+        temp = array # array == ""
 
     return temp
 }
