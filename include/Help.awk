@@ -79,7 +79,8 @@ function getHelp() {
         "       " Command " [options] [source]:[target1]+[target2]+... [" AnsiCode["underline"] "text" AnsiCode["no underline"] "] ...\n\n" \
         "Options:\n" \
         "  " AnsiCode["bold"] "-V, -version" AnsiCode["no bold"] "\n    Print version and exit.\n" \
-        "  " AnsiCode["bold"] "-H, -h, -help" AnsiCode["no bold"] "\n    Show this manual, or print this help message and exit.\n" \
+        "  " AnsiCode["bold"] "-H, -h, -help" AnsiCode["no bold"] "\n    Print this help message and exit.\n" \
+        "  " AnsiCode["bold"] "-M, -m, -manual" AnsiCode["no bold"] "\n    Show the manual.\n" \
         "  " AnsiCode["bold"] "-r, -reference" AnsiCode["no bold"] "\n    Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.\n" \
         "  " AnsiCode["bold"] "-R, -reference-english" AnsiCode["no bold"] "\n    Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.\n" \
         "  " AnsiCode["bold"] "-v, -verbose" AnsiCode["no bold"] "\n    Verbose mode. (default)\n" \

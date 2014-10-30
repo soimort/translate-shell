@@ -29,7 +29,11 @@ Print version and exit.
 
 ### -H, -h, -help
 
-Show this manual, or print this help message and exit.
+Print the help message and exit.
+
+### -M, -m, -manual
+
+Show this manual.
 
 ### -r, -reference
 

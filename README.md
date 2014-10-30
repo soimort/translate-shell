@@ -303,7 +303,9 @@ Options:
   -V, -version
     Print version and exit.
   -H, -h, -help
-    Show this manual, or print this help message and exit.
+    Print the help message and exit.
+  -M, -m, -manual
+    Show the manual.
   -r, -reference
     Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.
   -R, -reference-english
