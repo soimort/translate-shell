@@ -84,6 +84,13 @@ BEGIN {
         # -H, -h, -help
         match(ARGV[pos], /^--?(h(e(lp?)?)?|H)$/)
         if (RSTART) {
+            print getHelp()
+            exit
+        }
+
+        # -M, -m, -manual
+        match(ARGV[pos], /^--?(m(a(n(u(al?)?)?)?)?|M)$/)
+        if (RSTART) {
             if (ENVIRON["TRANS_MANPAGE"])
                 system("echo -E \"${TRANS_MANPAGE}\" | " \
                        "groff -Wall -mtty-char -mandoc -Tutf8 -Dutf8 -rLL=${COLUMNS}n -rLT=${COLUMNS}n | " \
