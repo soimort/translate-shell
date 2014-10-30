@@ -44,7 +44,7 @@ function preInit() {
     Option["no-rlwrap"] = 0
     Option["emacs"] = 0
     Option["prompt"] = ENVIRON["TRANS_PS"] ? ENVIRON["TRANS_PS"] : "%s>"
-    Option["prompt-color"] = ENVIRON["TRANS_PS_COLOR"] ? ENVIRON["TRANS_PS_COLOR"] : "blue"
+    Option["prompt-color"] = ENVIRON["TRANS_PS_COLOR"] ? ENVIRON["TRANS_PS_COLOR"] : "default"
 
     Option["input"] = ""
     Option["output"] = "/dev/stdout"
