@@ -88,6 +88,20 @@ BEGIN {
             exit
         }
 
+        # -M, -m, -manual
+        match(ARGV[pos], /^--?(m(a(n(u(al?)?)?)?)?|M)$/)
+        if (RSTART) {
+            if (ENVIRON["TRANS_MANPAGE"])
+                system("echo -E \"${TRANS_MANPAGE}\" | " \
+                       "groff -Wall -mtty-char -mandoc -Tutf8 -Dutf8 -rLL=${COLUMNS}n -rLT=${COLUMNS}n | " \
+                       (system("most 2>/dev/null") ?
+                        "less -s -P\"\\ \\Manual page " Command "(1) line %lt (press h for help or q to quit)\"" :
+                        "most -Cs"))
+            else
+                print getHelp()
+            exit
+        }
+
         # -r, -reference
         match(ARGV[pos], /^--?r(e(f(e(r(e(n(ce?)?)?)?)?)?)?)?$/)
         if (RSTART) {
