@@ -26,11 +26,11 @@
   <a href="http://www.soimort.org/translate-shell/"><img src="images/avatar.jpg"/></a>
   <div id="desc">
     <h1>Translate Shell</h1>
-    <h2>version 0.8.21</h2>
+    <h2>version 0.8.22</h2>
     <a href="https://github.com/soimort/translate-shell">Star・<i class="fa fa-github-square fa-2x"></i></a>
     <a href="http://www.soimort.org/translate-shell/trans">Download・<i class="fa fa-download fa-2x"></i></a>
     <div id="msg">
-      <span id="checksum" onmouseover="this.innerHTML='1e41de455370d0503fe55c63c53841f15491bf09'" onmouseout="this.innerHTML='SHA1SUM'">SHA1SUM</span>
+      <span id="checksum" onmouseover="this.innerHTML='064ff00bbf00975668c5cc758583aea5c838090d'" onmouseout="this.innerHTML='SHA1SUM'">SHA1SUM</span>
       <a href="http://www.soimort.org/translate-shell/trans.sig">PGP SIGNATURE</a>
     </div>
   </div>
@@ -253,7 +253,9 @@ Options:
   -V, -version
     Print version and exit.
   -H, -h, -help
-    Show this manual, or print this help message and exit.
+    Print the help message and exit.
+  -M, -m, -manual
+    Show the manual.
   -r, -reference
     Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.
   -R, -reference-english
@@ -262,6 +264,8 @@ Options:
     Verbose mode. (default)
   -b, -brief
     Brief mode.
+  -no-ansi
+    Don&#39;t use ANSI escape codes in the translation.
   -w [num], -width [num]
     Specify the screen width for padding when displaying right-to-left languages.
   -browser [program]
@@ -376,7 +380,7 @@ $ trans word</code></pre>
 <li><p><strong>Q</strong>: <em>I tried to translate some very long text but failed to get the complete translation.</em></p></li>
 <li><p><strong>A</strong>: There is a limit of length for each translation. As a general suggestion, don't try to do everything in one hit. Split your text into sentences or lines and translate one at a time.</p></li>
 <li><p><strong>Q</strong>: <em>My terminal does not support ANSI escape sequences and the display looks like a mess. How do I disable them?</em></p></li>
-<li><p><strong>A</strong>: Translate Shell uses ANSI escape sequences to display colors and other effects. You can disable them by telling Translate Shell that your terminal type is dumb: <code>$ TERM=dumb trans ...</code></p></li>
+<li><p><strong>A</strong>: Translate Shell uses ANSI escape sequences to display colors and other effects. You can disable them by either using the option <code>-no-ansi</code>, or telling Translate Shell that your terminal type is dumb via the environment variable <code>TERM</code>: <code>$ TERM=dumb trans ...</code></p></li>
 </ul>
 <h2 id="contributing">Contributing</h2>
 <p>Report an issue: <a href="https://github.com/soimort/translate-shell/issues" class="uri">https://github.com/soimort/translate-shell/issues</a></p>

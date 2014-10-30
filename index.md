@@ -1,14 +1,14 @@
 ---
 title: Translate Shell
 project-name: Translate Shell
-project-version: 0.8.21
+project-version: 0.8.22
 project-logo: images/avatar.jpg
 background: images/public_domain.png
 github: soimort/translate-shell
 url: http://www.soimort.org/translate-shell/
 download-url: http://www.soimort.org/translate-shell/trans
 download-checksum-type: SHA1SUM
-download-checksum-data: 1e41de455370d0503fe55c63c53841f15491bf09
+download-checksum-data: 064ff00bbf00975668c5cc758583aea5c838090d
 download-signature: http://www.soimort.org/translate-shell/trans.sig
 
 ---
@@ -317,7 +317,9 @@ Options:
   -V, -version
     Print version and exit.
   -H, -h, -help
-    Show this manual, or print this help message and exit.
+    Print the help message and exit.
+  -M, -m, -manual
+    Show the manual.
   -r, -reference
     Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.
   -R, -reference-english
@@ -326,6 +328,8 @@ Options:
     Verbose mode. (default)
   -b, -brief
     Brief mode.
+  -no-ansi
+    Don't use ANSI escape codes in the translation.
   -w [num], -width [num]
     Specify the screen width for padding when displaying right-to-left languages.
   -browser [program]
@@ -463,7 +467,7 @@ Use `$ trans -R` to view the list of language codes.
 
 * **Q**: *My terminal does not support ANSI escape sequences and the display looks like a mess. How do I disable them?*
 
-* **A**: Translate Shell uses ANSI escape sequences to display colors and other effects. You can disable them by telling Translate Shell that your terminal type is dumb: `$ TERM=dumb trans ...`
+* **A**: Translate Shell uses ANSI escape sequences to display colors and other effects. You can disable them by either using the option `-no-ansi`, or telling Translate Shell that your terminal type is dumb via the environment variable `TERM`: `$ TERM=dumb trans ...`
 
 ## Contributing
 

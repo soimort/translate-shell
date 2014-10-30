@@ -29,7 +29,7 @@
 BEGIN {
     Name        = "Translate Shell"
     Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.8.21"
+    Version     = "0.8.22"
     Command     = "trans"
     EntryPoint  = "translate.awk"
 }
@@ -236,11 +236,14 @@ function join(array, separator, sortedIn, preserveNull,
     temp = ""
     j = 0
     saveSortedIn = PROCINFO["sorted_in"]
-    PROCINFO["sorted_in"] = sortedIn
-    for (i in array)
-        if (preserveNull || array[i] != "")
-            temp = j++ ? temp separator array[i] : array[i]
-    PROCINFO["sorted_in"] = saveSortedIn
+    if (length(array)) {
+        PROCINFO["sorted_in"] = sortedIn
+        for (i in array)
+            if (preserveNull || array[i] != "")
+                temp = j++ ? temp separator array[i] : array[i]
+        PROCINFO["sorted_in"] = saveSortedIn
+    } else
+        temp = array # array == ""
 
     return temp
 }
@@ -956,11 +959,13 @@ function getHelp() {
         "       " Command " [options] [source]:[target1]+[target2]+... [" AnsiCode["underline"] "text" AnsiCode["no underline"] "] ...\n\n" \
         "Options:\n" \
         "  " AnsiCode["bold"] "-V, -version" AnsiCode["no bold"] "\n    Print version and exit.\n" \
-        "  " AnsiCode["bold"] "-H, -h, -help" AnsiCode["no bold"] "\n    Show this manual, or print this help message and exit.\n" \
+        "  " AnsiCode["bold"] "-H, -h, -help" AnsiCode["no bold"] "\n    Print this help message and exit.\n" \
+        "  " AnsiCode["bold"] "-M, -m, -manual" AnsiCode["no bold"] "\n    Show the manual.\n" \
         "  " AnsiCode["bold"] "-r, -reference" AnsiCode["no bold"] "\n    Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.\n" \
         "  " AnsiCode["bold"] "-R, -reference-english" AnsiCode["no bold"] "\n    Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.\n" \
         "  " AnsiCode["bold"] "-v, -verbose" AnsiCode["no bold"] "\n    Verbose mode. (default)\n" \
         "  " AnsiCode["bold"] "-b, -brief" AnsiCode["no bold"] "\n    Brief mode.\n" \
+        "  " AnsiCode["bold"] "-no-ansi" AnsiCode["no bold"] "\n    Don't use ANSI escape codes in the translation.\n" \
         "  " AnsiCode["bold"] "-w [num], -width [num]" AnsiCode["no bold"] "\n    Specify the screen width for padding when displaying right-to-left languages.\n" \
         "  " AnsiCode["bold"] "-browser [program]" AnsiCode["no bold"] "\n    Specify the web browser to use.\n" \
         "  " AnsiCode["bold"] "-p, -play" AnsiCode["no bold"] "\n    Listen to the translation.\n" \
@@ -1358,8 +1363,10 @@ function getTranslation(text, sl, tl, hl,
         if (match(i, "^0" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "2" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)$", group))
             words[group[1]][group[2]]["1"][group[3]] = literal(ast[i])
 
-        if (match(i, "^0" SUBSEP "5" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
+        if (match(i, "^0" SUBSEP "5" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group)) {
             segments[group[1]] = literal(ast[i])
+            altTranslations[group[1]][0] = ""
+        }
 
         if (match(i, "^0" SUBSEP "5" SUBSEP "([[:digit:]]+)" SUBSEP "2" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
             altTranslations[group[1]][group[2]] = postprocess(literal(ast[i]))
@@ -1728,12 +1735,7 @@ function preInit() {
     Option["debug"] = 0
 
     Option["verbose"] = 1
-    if (ENVIRON["COLUMNS"])
-        Option["width"] = ENVIRON["COLUMNS"]
-    else {
-        "tput cols 2>/dev/null" |& getline Option["width"]
-        if (!Option["width"]) Option["width"] = 64
-    }
+    Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] : 64
 
     Option["browser"] = ENVIRON["BROWSER"]
 
@@ -1746,7 +1748,7 @@ function preInit() {
     Option["no-rlwrap"] = 0
     Option["emacs"] = 0
     Option["prompt"] = ENVIRON["TRANS_PS"] ? ENVIRON["TRANS_PS"] : "%s>"
-    Option["prompt-color"] = ENVIRON["TRANS_PS_COLOR"] ? ENVIRON["TRANS_PS_COLOR"] : "blue"
+    Option["prompt-color"] = ENVIRON["TRANS_PS_COLOR"] ? ENVIRON["TRANS_PS_COLOR"] : "default"
 
     Option["input"] = ""
     Option["output"] = "/dev/stdout"
@@ -1785,6 +1787,13 @@ BEGIN {
 
         # -H, -h, -help
         match(ARGV[pos], /^--?(h(e(lp?)?)?|H)$/)
+        if (RSTART) {
+            print getHelp()
+            exit
+        }
+
+        # -M, -m, -manual
+        match(ARGV[pos], /^--?(m(a(n(u(al?)?)?)?)?|M)$/)
         if (RSTART) {
             if (ENVIRON["TRANS_MANPAGE"])
                 system("echo -E \"${TRANS_MANPAGE}\" | " \
@@ -1829,6 +1838,13 @@ BEGIN {
         match(ARGV[pos], /^--?b(r(i(ef?)?)?)?$/)
         if (RSTART) {
             Option["verbose"] = 0
+            continue
+        }
+
+        # -no-ansi
+        match(ARGV[pos], /^--?no-ansi/)
+        if (RSTART) {
+            Option["no-ansi"] = 1
             continue
         }
 
@@ -2058,6 +2074,10 @@ BEGIN {
         match(Option["browser"], "(.*).desktop$", group)
         Option["browser"] = group[1]
     }
+
+    # Disable ANSI SGR (Select Graphic Rendition) codes if required
+    if (Option["no-ansi"])
+        delete AnsiCode
 
     if (pos < ARGC) {
         # More parameters
