@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 read -r -d '' TRANS_PROGRAM << 'EOF'
 # This is free and unencumbered software released into the
