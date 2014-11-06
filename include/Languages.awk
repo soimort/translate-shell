@@ -526,6 +526,6 @@ function initUserLang() {
          parseLang(ENVIRON["LANG"]) :
          "en")
 
-    if (ENVIRON["LANG"] !~ /UTF-8$/ && ENVIRON["LC_CTYPE"] !~ /UTF-8$/)
+    if (tolower(ENVIRON["LANG"]) !~ /utf-?8$/ && tolower(ENVIRON["LC_CTYPE"]) !~ /utf-?8$/)
         w("[WARNING] Your locale codeset (" ENVIRON["LANG"] ") is not UTF-8. You have been warned.")
 }
