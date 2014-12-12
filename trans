@@ -29,7 +29,7 @@ read -r -d '' TRANS_PROGRAM << 'EOF'
 BEGIN {
 Name        = "Translate Shell"
 Description = "Google Translate to serve as a command-line tool"
-Version     = "0.8.22"
+Version     = "0.8.22.1"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 }
@@ -581,7 +581,7 @@ parseLang(ENVIRON["LC_CTYPE"]) :
 (ENVIRON["LANG"] ?
 parseLang(ENVIRON["LANG"]) :
 "en")
-if (ENVIRON["LANG"] !~ /UTF-8$/ && ENVIRON["LC_CTYPE"] !~ /UTF-8$/)
+if (tolower(ENVIRON["LANG"]) !~ /utf-?8$/ && tolower(ENVIRON["LC_CTYPE"]) !~ /utf-?8$/)
 w("[WARNING] Your locale codeset (" ENVIRON["LANG"] ") is not UTF-8. You have been warned.")
 }
 function getVersion() {
@@ -1513,7 +1513,7 @@ read -r -d '' TRANS_MANPAGE << 'EOF'
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "TRANS" "1" "October 2014" "0.8.22" "TRANS MANUAL"
+.TH "TRANS" "1" "October 2014" "0.8.22.1" "TRANS MANUAL"
 .
 .SH "NAME"
 \fBtrans\fR \- Google Translate served as a command\-line tool
