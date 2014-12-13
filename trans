@@ -29,7 +29,7 @@ read -r -d '' TRANS_PROGRAM << 'EOF'
 BEGIN {
 Name        = "Translate Shell"
 Description = "Google Translate to serve as a command-line tool"
-Version     = "0.8.22.1"
+Version     = "0.8.22.2"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 }
@@ -305,6 +305,9 @@ Locale["zh-CN"]["message"] = "%s 的翻译"
 Locale["zh-TW"]["name"]    = "Chinese Traditional"
 Locale["zh-TW"]["endonym"] = "正體中文"
 Locale["zh-TW"]["message"] = "「%s」的翻譯"
+Locale["ny"]["name"]       = "Chichewa"
+Locale["ny"]["endonym"]    = "Nyanja"
+Locale["ny"]["message"]    = "Matanthauzidwe a %s"
 Locale["hr"]["name"]       = "Croatian"
 Locale["hr"]["endonym"]    = "Hrvatski"
 Locale["hr"]["message"]    = "Prijevodi riječi ili izraza %s"
@@ -393,6 +396,9 @@ Locale["jv"]["message"]    = "Terjemahan"
 Locale["kn"]["name"]       = "Kannada"
 Locale["kn"]["endonym"]    = "ಕನ್ನಡ"
 Locale["kn"]["message"]    = "%s ನ ಅನುವಾದಗಳು"
+Locale["kk"]["name"]       = "Kazakh"
+Locale["kk"]["endonym"]    = "Қазақ тілі"
+Locale["kk"]["message"]    = "%s аудармалары"
 Locale["km"]["name"]       = "Khmer"
 Locale["km"]["endonym"]    = "ភាសាខ្មែរ"
 Locale["km"]["message"]    = "ការ​បក​ប្រែ​នៃ %s"
@@ -414,9 +420,15 @@ Locale["lt"]["message"]    = "„%s“ vertimai"
 Locale["mk"]["name"]       = "Macedonian"
 Locale["mk"]["endonym"]    = "Македонски"
 Locale["mk"]["message"]    = "Преводи на %s"
+Locale["mg"]["name"]       = "Malagasy"
+Locale["mg"]["endonym"]    = "Malagasy"
+Locale["mg"]["message"]    = "Dikan'ny %s"
 Locale["ms"]["name"]       = "Malay"
 Locale["ms"]["endonym"]    = "Bahasa Melayu"
 Locale["ms"]["message"]    = "Terjemahan %s"
+Locale["ml"]["name"]       = "Malayalam"
+Locale["ml"]["endonym"]    = "മലയാളം"
+Locale["ml"]["message"]    = "%s എന്നതിന്റെ വിവർത്തനങ്ങൾ"
 Locale["mt"]["name"]       = "Maltese"
 Locale["mt"]["endonym"]    = "Malti"
 Locale["mt"]["message"]    = "Traduzzjonijiet ta' %s"
@@ -429,6 +441,9 @@ Locale["mr"]["message"]    = "%s ची भाषांतरे"
 Locale["mn"]["name"]       = "Mongolian"
 Locale["mn"]["endonym"]    = "Монгол"
 Locale["mn"]["message"]    = "%s-н орчуулга"
+Locale["my"]["name"]       = "Myanmar"
+Locale["my"]["endonym"]    = "မြန်မာစာ"
+Locale["my"]["message"]    = "%s၏ ဘာသာပြန်ဆိုချက်များ"
 Locale["ne"]["name"]       = "Nepali"
 Locale["ne"]["endonym"]    = "नेपाली"
 Locale["ne"]["message"]    = "%sका अनुवाद"
@@ -457,6 +472,12 @@ Locale["ru"]["message"]    = "%s: варианты перевода"
 Locale["sr"]["name"]       = "Serbian"
 Locale["sr"]["endonym"]    = "српски"
 Locale["sr"]["message"]    = "Преводи за „%s“"
+Locale["st"]["name"]       = "Sesotho"
+Locale["st"]["endonym"]    = "Sesotho"
+Locale["st"]["message"]    = "Liphetolelo tsa %s"
+Locale["si"]["name"]       = "Sinhala"
+Locale["si"]["endonym"]    = "සිංහල"
+Locale["si"]["message"]    = "%s හි පරිවර්තන"
 Locale["sk"]["name"]       = "Slovak"
 Locale["sk"]["endonym"]    = "Slovenčina"
 Locale["sk"]["message"]    = "Preklady výrazu: %s"
@@ -469,12 +490,18 @@ Locale["so"]["message"]    = "Turjumaada %s"
 Locale["es"]["name"]       = "Spanish"
 Locale["es"]["endonym"]    = "Español"
 Locale["es"]["message"]    = "Traducciones de %s"
+Locale["su"]["name"]       = "Sundanese"
+Locale["su"]["endonym"]    = "Basa Sunda"
+Locale["su"]["message"]    = "Tarjamahan tina %s"
 Locale["sw"]["name"]       = "Swahili"
 Locale["sw"]["endonym"]    = "Kiswahili"
 Locale["sw"]["message"]    = "Tafsiri ya %s"
 Locale["sv"]["name"]       = "Swedish"
 Locale["sv"]["endonym"]    = "Svenska"
 Locale["sv"]["message"]    = "Översättningar av %s"
+Locale["tg"]["name"]       = "Tajik"
+Locale["tg"]["endonym"]    = "Тоҷикӣ"
+Locale["tg"]["message"]    = "Тарҷумаҳои %s"
 Locale["ta"]["name"]       = "Tamil"
 Locale["ta"]["endonym"]    = "தமிழ்"
 Locale["ta"]["message"]    = "%s இன் மொழிபெயர்ப்புகள்"
@@ -494,6 +521,9 @@ Locale["ur"]["name"]       = "Urdu"
 Locale["ur"]["endonym"]    = "اُردُو"
 Locale["ur"]["message"]    = "کے ترجمے %s"
 Locale["ur"]["rtl"]        = "true"
+Locale["uz"]["name"]       = "Uzbek"
+Locale["uz"]["endonym"]    = "Oʻzbek tili"
+Locale["uz"]["message"]    = "%s tarjimalari"
 Locale["vi"]["name"]       = "Vietnamese"
 Locale["vi"]["endonym"]    = "Tiếng Việt"
 Locale["vi"]["message"]    = "Bản dịch của %s"
@@ -591,64 +621,196 @@ return Name " " Version
 function getReference(displayName) {
 if (displayName == "name")
 return "┌─────────────────────────────┬──────────────────────┬─────────────────┐\n" \
-"│ " Locale["af"]["name"] "           - " AnsiCode["bold"] "af" AnsiCode["no bold"] "    │ " Locale["el"]["name"] "          - " AnsiCode["bold"] "el" AnsiCode["no bold"] "  │ " Locale["mn"]["name"] "  - " AnsiCode["bold"] "mn" AnsiCode["no bold"] " │\n" \
-"│ " Locale["sq"]["name"] "            - " AnsiCode["bold"] "sq" AnsiCode["no bold"] "    │ " Locale["gu"]["name"] "       - " AnsiCode["bold"] "gu" AnsiCode["no bold"] "  │ " Locale["ne"]["name"] "     - " AnsiCode["bold"] "ne" AnsiCode["no bold"] " │\n" \
-"│ " Locale["ar"]["name"] "              - " AnsiCode["bold"] "ar" AnsiCode["no bold"] "    │ " Locale["ht"]["name"] " - " AnsiCode["bold"] "ht" AnsiCode["no bold"] "  │ " Locale["no"]["name"] "  - " AnsiCode["bold"] "no" AnsiCode["no bold"] " │\n" \
-"│ " Locale["hy"]["name"] "            - " AnsiCode["bold"] "hy" AnsiCode["no bold"] "    │ " Locale["ha"]["name"] "          - " AnsiCode["bold"] "ha" AnsiCode["no bold"] "  │ " Locale["fa"]["name"] "    - " AnsiCode["bold"] "fa" AnsiCode["no bold"] " │\n" \
-"│ " Locale["az"]["name"] "         - " AnsiCode["bold"] "az" AnsiCode["no bold"] "    │ " Locale["he"]["name"] "         - " AnsiCode["bold"] "he" AnsiCode["no bold"] "  │ " Locale["pl"]["name"] "     - " AnsiCode["bold"] "pl" AnsiCode["no bold"] " │\n" \
-"│ " Locale["eu"]["name"] "              - " AnsiCode["bold"] "eu" AnsiCode["no bold"] "    │ " Locale["hi"]["name"] "          - " AnsiCode["bold"] "hi" AnsiCode["no bold"] "  │ " Locale["pt"]["name"] " - " AnsiCode["bold"] "pt" AnsiCode["no bold"] " │\n" \
-"│ " Locale["be"]["name"] "          - " AnsiCode["bold"] "be" AnsiCode["no bold"] "    │ " Locale["hmn"]["name"] "          - " AnsiCode["bold"] "hmn" AnsiCode["no bold"] " │ " Locale["pa"]["name"] "    - " AnsiCode["bold"] "pa" AnsiCode["no bold"] " │\n" \
-"│ " Locale["bn"]["name"] "             - " AnsiCode["bold"] "bn" AnsiCode["no bold"] "    │ " Locale["hu"]["name"] "      - " AnsiCode["bold"] "hu" AnsiCode["no bold"] "  │ " Locale["ro"]["name"] "   - " AnsiCode["bold"] "ro" AnsiCode["no bold"] " │\n" \
-"│ " Locale["bs"]["name"] "             - " AnsiCode["bold"] "bs" AnsiCode["no bold"] "    │ " Locale["is"]["name"] "      - " AnsiCode["bold"] "is" AnsiCode["no bold"] "  │ " Locale["ru"]["name"] "    - " AnsiCode["bold"] "ru" AnsiCode["no bold"] " │\n" \
-"│ " Locale["bg"]["name"] "           - " AnsiCode["bold"] "bg" AnsiCode["no bold"] "    │ " Locale["ig"]["name"] "           - " AnsiCode["bold"] "ig" AnsiCode["no bold"] "  │ " Locale["sr"]["name"] "    - " AnsiCode["bold"] "sr" AnsiCode["no bold"] " │\n" \
-"│ " Locale["ca"]["name"] "             - " AnsiCode["bold"] "ca" AnsiCode["no bold"] "    │ " Locale["id"]["name"] "     - " AnsiCode["bold"] "id" AnsiCode["no bold"] "  │ " Locale["sk"]["name"] "     - " AnsiCode["bold"] "sk" AnsiCode["no bold"] " │\n" \
-"│ " Locale["ceb"]["name"] "             - " AnsiCode["bold"] "ceb" AnsiCode["no bold"] "   │ " Locale["ga"]["name"] "          - " AnsiCode["bold"] "ga" AnsiCode["no bold"] "  │ " Locale["sl"]["name"] "  - " AnsiCode["bold"] "sl" AnsiCode["no bold"] " │\n" \
-"│ " Locale["zh-CN"]["name"] "  - " AnsiCode["bold"] "zh-CN" AnsiCode["no bold"] " │ " Locale["it"]["name"] "        - " AnsiCode["bold"] "it" AnsiCode["no bold"] "  │ " Locale["so"]["name"] "     - " AnsiCode["bold"] "so" AnsiCode["no bold"] " │\n" \
-"│ " Locale["zh-TW"]["name"] " - " AnsiCode["bold"] "zh-TW" AnsiCode["no bold"] " │ " Locale["ja"]["name"] "       - " AnsiCode["bold"] "ja" AnsiCode["no bold"] "  │ " Locale["es"]["name"] "    - " AnsiCode["bold"] "es" AnsiCode["no bold"] " │\n" \
-"│ " Locale["hr"]["name"] "            - " AnsiCode["bold"] "hr" AnsiCode["no bold"] "    │ " Locale["jv"]["name"] "       - " AnsiCode["bold"] "jv" AnsiCode["no bold"] "  │ " Locale["sw"]["name"] "    - " AnsiCode["bold"] "sw" AnsiCode["no bold"] " │\n" \
-"│ " Locale["cs"]["name"] "               - " AnsiCode["bold"] "cs" AnsiCode["no bold"] "    │ " Locale["kn"]["name"] "        - " AnsiCode["bold"] "kn" AnsiCode["no bold"] "  │ " Locale["sv"]["name"] "    - " AnsiCode["bold"] "sv" AnsiCode["no bold"] " │\n" \
-"│ " Locale["da"]["name"] "              - " AnsiCode["bold"] "da" AnsiCode["no bold"] "    │ " Locale["km"]["name"] "          - " AnsiCode["bold"] "km" AnsiCode["no bold"] "  │ " Locale["ta"]["name"] "      - " AnsiCode["bold"] "ta" AnsiCode["no bold"] " │\n" \
-"│ " Locale["nl"]["name"] "               - " AnsiCode["bold"] "nl" AnsiCode["no bold"] "    │ " Locale["ko"]["name"] "         - " AnsiCode["bold"] "ko" AnsiCode["no bold"] "  │ " Locale["te"]["name"] "     - " AnsiCode["bold"] "te" AnsiCode["no bold"] " │\n" \
-"│ " Locale["en"]["name"] "             - " AnsiCode["bold"] "en" AnsiCode["no bold"] "    │ " Locale["lo"]["name"] "            - " AnsiCode["bold"] "lo" AnsiCode["no bold"] "  │ " Locale["th"]["name"] "       - " AnsiCode["bold"] "th" AnsiCode["no bold"] " │\n" \
-"│ " Locale["eo"]["name"] "           - " AnsiCode["bold"] "eo" AnsiCode["no bold"] "    │ " Locale["la"]["name"] "          - " AnsiCode["bold"] "la" AnsiCode["no bold"] "  │ " Locale["tr"]["name"] "    - " AnsiCode["bold"] "tr" AnsiCode["no bold"] " │\n" \
-"│ " Locale["et"]["name"] "            - " AnsiCode["bold"] "et" AnsiCode["no bold"] "    │ " Locale["lv"]["name"] "        - " AnsiCode["bold"] "lv" AnsiCode["no bold"] "  │ " Locale["uk"]["name"] "  - " AnsiCode["bold"] "uk" AnsiCode["no bold"] " │\n" \
-"│ " Locale["tl"]["name"] "            - " AnsiCode["bold"] "tl" AnsiCode["no bold"] "    │ " Locale["lt"]["name"] "     - " AnsiCode["bold"] "lt" AnsiCode["no bold"] "  │ " Locale["ur"]["name"] "       - " AnsiCode["bold"] "ur" AnsiCode["no bold"] " │\n" \
-"│ " Locale["fi"]["name"] "             - " AnsiCode["bold"] "fi" AnsiCode["no bold"] "    │ " Locale["mk"]["name"] "     - " AnsiCode["bold"] "mk" AnsiCode["no bold"] "  │ " Locale["vi"]["name"] " - " AnsiCode["bold"] "vi" AnsiCode["no bold"] " │\n" \
-"│ " Locale["fr"]["name"] "              - " AnsiCode["bold"] "fr" AnsiCode["no bold"] "    │ " Locale["ms"]["name"] "          - " AnsiCode["bold"] "ms" AnsiCode["no bold"] "  │ " Locale["cy"]["name"] "      - " AnsiCode["bold"] "cy" AnsiCode["no bold"] " │\n" \
-"│ " Locale["gl"]["name"] "            - " AnsiCode["bold"] "gl" AnsiCode["no bold"] "    │ " Locale["mt"]["name"] "        - " AnsiCode["bold"] "mt" AnsiCode["no bold"] "  │ " Locale["yi"]["name"] "    - " AnsiCode["bold"] "yi" AnsiCode["no bold"] " │\n" \
-"│ " Locale["ka"]["name"] "            - " AnsiCode["bold"] "ka" AnsiCode["no bold"] "    │ " Locale["mi"]["name"] "          - " AnsiCode["bold"] "mi" AnsiCode["no bold"] "  │ " Locale["yo"]["name"] "     - " AnsiCode["bold"] "yo" AnsiCode["no bold"] " │\n" \
-"│ " Locale["de"]["name"] "              - " AnsiCode["bold"] "de" AnsiCode["no bold"] "    │ " Locale["mr"]["name"] "        - " AnsiCode["bold"] "mr" AnsiCode["no bold"] "  │ " Locale["zu"]["name"] "       - " AnsiCode["bold"] "zu" AnsiCode["no bold"] " │\n" \
+"│ " Locale["af"]["name"] "           - " AnsiCode["bold"] "af" AnsiCode["no bold"] "    │ " \
+Locale["ha"]["name"] "          - " AnsiCode["bold"] "ha" AnsiCode["no bold"] "  │ " \
+Locale["fa"]["name"] "    - " AnsiCode["bold"] "fa" AnsiCode["no bold"] " │\n" \
+"│ " Locale["sq"]["name"] "            - " AnsiCode["bold"] "sq" AnsiCode["no bold"] "    │ " \
+Locale["he"]["name"] "         - " AnsiCode["bold"] "he" AnsiCode["no bold"] "  │ " \
+Locale["pl"]["name"] "     - " AnsiCode["bold"] "pl" AnsiCode["no bold"] " │\n" \
+"│ " Locale["ar"]["name"] "              - " AnsiCode["bold"] "ar" AnsiCode["no bold"] "    │ " \
+Locale["hi"]["name"] "          - " AnsiCode["bold"] "hi" AnsiCode["no bold"] "  │ " \
+Locale["pt"]["name"] " - " AnsiCode["bold"] "pt" AnsiCode["no bold"] " │\n" \
+"│ " Locale["hy"]["name"] "            - " AnsiCode["bold"] "hy" AnsiCode["no bold"] "    │ " \
+Locale["hmn"]["name"] "          - " AnsiCode["bold"] "hmn" AnsiCode["no bold"] " │ " \
+Locale["pa"]["name"] "    - " AnsiCode["bold"] "pa" AnsiCode["no bold"] " │\n" \
+"│ " Locale["az"]["name"] "         - " AnsiCode["bold"] "az" AnsiCode["no bold"] "    │ " \
+Locale["hu"]["name"] "      - " AnsiCode["bold"] "hu" AnsiCode["no bold"] "  │ " \
+Locale["ro"]["name"] "   - " AnsiCode["bold"] "ro" AnsiCode["no bold"] " │\n" \
+"│ " Locale["eu"]["name"] "              - " AnsiCode["bold"] "eu" AnsiCode["no bold"] "    │ " \
+Locale["is"]["name"] "      - " AnsiCode["bold"] "is" AnsiCode["no bold"] "  │ " \
+Locale["ru"]["name"] "    - " AnsiCode["bold"] "ru" AnsiCode["no bold"] " │\n" \
+"│ " Locale["be"]["name"] "          - " AnsiCode["bold"] "be" AnsiCode["no bold"] "    │ " \
+Locale["ig"]["name"] "           - " AnsiCode["bold"] "ig" AnsiCode["no bold"] "  │ " \
+Locale["sr"]["name"] "    - " AnsiCode["bold"] "sr" AnsiCode["no bold"] " │\n" \
+"│ " Locale["bn"]["name"] "             - " AnsiCode["bold"] "bn" AnsiCode["no bold"] "    │ " \
+Locale["id"]["name"] "     - " AnsiCode["bold"] "id" AnsiCode["no bold"] "  │ " \
+Locale["st"]["name"] "    - " AnsiCode["bold"] "st" AnsiCode["no bold"] " │\n" \
+"│ " Locale["bs"]["name"] "             - " AnsiCode["bold"] "bs" AnsiCode["no bold"] "    │ " \
+Locale["ga"]["name"] "          - " AnsiCode["bold"] "ga" AnsiCode["no bold"] "  │ " \
+Locale["si"]["name"] "    - " AnsiCode["bold"] "si" AnsiCode["no bold"] " │\n" \
+"│ " Locale["bg"]["name"] "           - " AnsiCode["bold"] "bg" AnsiCode["no bold"] "    │ " \
+Locale["it"]["name"] "        - " AnsiCode["bold"] "it" AnsiCode["no bold"] "  │ " \
+Locale["sk"]["name"] "     - " AnsiCode["bold"] "sk" AnsiCode["no bold"] " │\n" \
+"│ " Locale["ca"]["name"] "             - " AnsiCode["bold"] "ca" AnsiCode["no bold"] "    │ " \
+Locale["ja"]["name"] "       - " AnsiCode["bold"] "ja" AnsiCode["no bold"] "  │ " \
+Locale["sl"]["name"] "  - " AnsiCode["bold"] "sl" AnsiCode["no bold"] " │\n" \
+"│ " Locale["ceb"]["name"] "             - " AnsiCode["bold"] "ceb" AnsiCode["no bold"] "   │ " \
+Locale["jv"]["name"] "       - " AnsiCode["bold"] "jv" AnsiCode["no bold"] "  │ " \
+Locale["so"]["name"] "     - " AnsiCode["bold"] "so" AnsiCode["no bold"] " │\n" \
+"│ " Locale["ny"]["name"] "            - " AnsiCode["bold"] "ny" AnsiCode["no bold"] "    │ " \
+Locale["kn"]["name"] "        - " AnsiCode["bold"] "kn" AnsiCode["no bold"] "  │ " \
+Locale["es"]["name"] "    - " AnsiCode["bold"] "es" AnsiCode["no bold"] " │\n" \
+"│ " Locale["zh-CN"]["name"] "  - " AnsiCode["bold"] "zh-CN" AnsiCode["no bold"] " │ " \
+Locale["kk"]["name"] "         - " AnsiCode["bold"] "kk" AnsiCode["no bold"] "  │ " \
+Locale["su"]["name"] "  - " AnsiCode["bold"] "su" AnsiCode["no bold"] " │\n" \
+"│ " Locale["zh-TW"]["name"] " - " AnsiCode["bold"] "zh-TW" AnsiCode["no bold"] " │ " \
+Locale["km"]["name"] "          - " AnsiCode["bold"] "km" AnsiCode["no bold"] "  │ " \
+Locale["sw"]["name"] "    - " AnsiCode["bold"] "sw" AnsiCode["no bold"] " │\n" \
+"│ " Locale["hr"]["name"] "            - " AnsiCode["bold"] "hr" AnsiCode["no bold"] "    │ " \
+Locale["ko"]["name"] "         - " AnsiCode["bold"] "ko" AnsiCode["no bold"] "  │ " \
+Locale["sv"]["name"] "    - " AnsiCode["bold"] "sv" AnsiCode["no bold"] " │\n" \
+"│ " Locale["cs"]["name"] "               - " AnsiCode["bold"] "cs" AnsiCode["no bold"] "    │ " \
+Locale["lo"]["name"] "            - " AnsiCode["bold"] "lo" AnsiCode["no bold"] "  │ " \
+Locale["tg"]["name"] "      - " AnsiCode["bold"] "tg" AnsiCode["no bold"] " │\n" \
+"│ " Locale["da"]["name"] "              - " AnsiCode["bold"] "da" AnsiCode["no bold"] "    │ " \
+Locale["la"]["name"] "          - " AnsiCode["bold"] "la" AnsiCode["no bold"] "  │ " \
+Locale["ta"]["name"] "      - " AnsiCode["bold"] "ta" AnsiCode["no bold"] " │\n" \
+"│ " Locale["nl"]["name"] "               - " AnsiCode["bold"] "nl" AnsiCode["no bold"] "    │ " \
+Locale["lv"]["name"] "        - " AnsiCode["bold"] "lv" AnsiCode["no bold"] "  │ " \
+Locale["te"]["name"] "     - " AnsiCode["bold"] "te" AnsiCode["no bold"] " │\n" \
+"│ " Locale["en"]["name"] "             - " AnsiCode["bold"] "en" AnsiCode["no bold"] "    │ " \
+Locale["lt"]["name"] "     - " AnsiCode["bold"] "lt" AnsiCode["no bold"] "  │ " \
+Locale["th"]["name"] "       - " AnsiCode["bold"] "th" AnsiCode["no bold"] " │\n" \
+"│ " Locale["eo"]["name"] "           - " AnsiCode["bold"] "eo" AnsiCode["no bold"] "    │ " \
+Locale["mk"]["name"] "     - " AnsiCode["bold"] "mk" AnsiCode["no bold"] "  │ " \
+Locale["tr"]["name"] "    - " AnsiCode["bold"] "tr" AnsiCode["no bold"] " │\n" \
+"│ " Locale["et"]["name"] "            - " AnsiCode["bold"] "et" AnsiCode["no bold"] "    │ " \
+Locale["mg"]["name"] "       - " AnsiCode["bold"] "mg" AnsiCode["no bold"] "  │ " \
+Locale["uk"]["name"] "  - " AnsiCode["bold"] "uk" AnsiCode["no bold"] " │\n" \
+"│ " Locale["tl"]["name"] "            - " AnsiCode["bold"] "tl" AnsiCode["no bold"] "    │ " \
+Locale["ms"]["name"] "          - " AnsiCode["bold"] "ms" AnsiCode["no bold"] "  │ " \
+Locale["ur"]["name"] "       - " AnsiCode["bold"] "ur" AnsiCode["no bold"] " │\n" \
+"│ " Locale["fi"]["name"] "             - " AnsiCode["bold"] "fi" AnsiCode["no bold"] "    │ " \
+Locale["ml"]["name"] "      - " AnsiCode["bold"] "ml" AnsiCode["no bold"] "  │ " \
+Locale["uz"]["name"] "      - " AnsiCode["bold"] "uz" AnsiCode["no bold"] " │\n" \
+"│ " Locale["fr"]["name"] "              - " AnsiCode["bold"] "fr" AnsiCode["no bold"] "    │ " \
+Locale["mt"]["name"] "        - " AnsiCode["bold"] "mt" AnsiCode["no bold"] "  │ " \
+Locale["vi"]["name"] " - " AnsiCode["bold"] "vi" AnsiCode["no bold"] " │\n" \
+"│ " Locale["gl"]["name"] "            - " AnsiCode["bold"] "gl" AnsiCode["no bold"] "    │ " \
+Locale["mi"]["name"] "          - " AnsiCode["bold"] "mi" AnsiCode["no bold"] "  │ " \
+Locale["cy"]["name"] "      - " AnsiCode["bold"] "cy" AnsiCode["no bold"] " │\n" \
+"│ " Locale["ka"]["name"] "            - " AnsiCode["bold"] "ka" AnsiCode["no bold"] "    │ " \
+Locale["mr"]["name"] "        - " AnsiCode["bold"] "mr" AnsiCode["no bold"] "  │ " \
+Locale["yi"]["name"] "    - " AnsiCode["bold"] "yi" AnsiCode["no bold"] " │\n" \
+"│ " Locale["de"]["name"] "              - " AnsiCode["bold"] "de" AnsiCode["no bold"] "    │ " \
+Locale["my"]["name"] "        - " AnsiCode["bold"] "my" AnsiCode["no bold"] "  │ " \
+Locale["yo"]["name"] "     - " AnsiCode["bold"] "yo" AnsiCode["no bold"] " │\n" \
+"│ " Locale["el"]["name"] "               - " AnsiCode["bold"] "el" AnsiCode["no bold"] "    │ " \
+Locale["mn"]["name"] "      - " AnsiCode["bold"] "mn" AnsiCode["no bold"] "  │ " \
+Locale["zu"]["name"] "       - " AnsiCode["bold"] "zu" AnsiCode["no bold"] " │\n" \
+"│ " Locale["gu"]["name"] "            - " AnsiCode["bold"] "gu" AnsiCode["no bold"] "    │ " \
+Locale["ne"]["name"] "         - " AnsiCode["bold"] "ne" AnsiCode["no bold"] "  │ " \
+"                │\n" \
+"│ " Locale["ht"]["name"] "      - " AnsiCode["bold"] "ht" AnsiCode["no bold"] "    │ " \
+Locale["no"]["name"] "      - " AnsiCode["bold"] "no" AnsiCode["no bold"] "  │ " \
+"                │\n" \
 "└─────────────────────────────┴──────────────────────┴─────────────────┘"
 else
-return "┌────────────────────┬────────────────────────┬─────────────────────┐\n" \
-"│ " Locale["af"]["display"] "    - " AnsiCode["bold"] "af" AnsiCode["no bold"] "  │ " Locale["hi"]["display"] "            - " AnsiCode["bold"] "hi" AnsiCode["no bold"] "  │ " Locale["nl"]["display"] "  - " AnsiCode["bold"] "nl" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["ar"]["display"] "      - " AnsiCode["bold"] "ar" AnsiCode["no bold"] "  │ " Locale["hmn"]["display"] "            - " AnsiCode["bold"] "hmn" AnsiCode["no bold"] " │ " Locale["no"]["display"] "       - " AnsiCode["bold"] "no" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["az"]["display"] " - " AnsiCode["bold"] "az" AnsiCode["no bold"] "  │ " Locale["hr"]["display"] "         - " AnsiCode["bold"] "hr" AnsiCode["no bold"] "  │ " Locale["pa"]["display"] "       - " AnsiCode["bold"] "pa" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["be"]["display"] "   - " AnsiCode["bold"] "be" AnsiCode["no bold"] "  │ " Locale["ht"]["display"] "   - " AnsiCode["bold"] "ht" AnsiCode["no bold"] "  │ " Locale["pl"]["display"] "      - " AnsiCode["bold"] "pl" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["bg"]["display"] "    - " AnsiCode["bold"] "bg" AnsiCode["no bold"] "  │ " Locale["hu"]["display"] "           - " AnsiCode["bold"] "hu" AnsiCode["no bold"] "  │ " Locale["pt"]["display"] "   - " AnsiCode["bold"] "pt" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["bn"]["display"] "        - " AnsiCode["bold"] "bn" AnsiCode["no bold"] "  │ " Locale["hy"]["display"] "          - " AnsiCode["bold"] "hy" AnsiCode["no bold"] "  │ " Locale["ro"]["display"] "      - " AnsiCode["bold"] "ro" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["bs"]["display"] "     - " AnsiCode["bold"] "bs" AnsiCode["no bold"] "  │ " Locale["id"]["display"] " - " AnsiCode["bold"] "id" AnsiCode["no bold"] "  │ " Locale["ru"]["display"] "     - " AnsiCode["bold"] "ru" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["ca"]["display"] "       - " AnsiCode["bold"] "ca" AnsiCode["no bold"] "  │ " Locale["ig"]["display"] "             - " AnsiCode["bold"] "ig" AnsiCode["no bold"] "  │ " Locale["sk"]["display"] "  - " AnsiCode["bold"] "sk" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["ceb"]["display"] "      - " AnsiCode["bold"] "ceb" AnsiCode["no bold"] " │ " Locale["is"]["display"] "         - " AnsiCode["bold"] "is" AnsiCode["no bold"] "  │ " Locale["sl"]["display"] " - " AnsiCode["bold"] "sl" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["cs"]["display"] "      - " AnsiCode["bold"] "cs" AnsiCode["no bold"] "  │ " Locale["it"]["display"] "         - " AnsiCode["bold"] "it" AnsiCode["no bold"] "  │ " Locale["so"]["display"] "    - " AnsiCode["bold"] "so" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["cy"]["display"] "      - " AnsiCode["bold"] "cy" AnsiCode["no bold"] "  │ " Locale["ja"]["display"] "           - " AnsiCode["bold"] "ja" AnsiCode["no bold"] "  │ " Locale["sq"]["display"] "       - " AnsiCode["bold"] "sq" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["da"]["display"] "        - " AnsiCode["bold"] "da" AnsiCode["no bold"] "  │ " Locale["jv"]["display"] "        - " AnsiCode["bold"] "jv" AnsiCode["no bold"] "  │ " Locale["sr"]["display"] "      - " AnsiCode["bold"] "sr" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["de"]["display"] "      - " AnsiCode["bold"] "de" AnsiCode["no bold"] "  │ " Locale["ka"]["display"] "          - " AnsiCode["bold"] "ka" AnsiCode["no bold"] "  │ " Locale["sv"]["display"] "     - " AnsiCode["bold"] "sv" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["el"]["display"] "     - " AnsiCode["bold"] "el" AnsiCode["no bold"] "  │ " Locale["km"]["display"] "         - " AnsiCode["bold"] "km" AnsiCode["no bold"] "  │ " Locale["sw"]["display"] "   - " AnsiCode["bold"] "sw" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["en"]["display"] "      - " AnsiCode["bold"] "en" AnsiCode["no bold"] "  │ " Locale["kn"]["display"] "             - " AnsiCode["bold"] "kn" AnsiCode["no bold"] "  │ " Locale["ta"]["display"] "        - " AnsiCode["bold"] "ta" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["eo"]["display"] "    - " AnsiCode["bold"] "eo" AnsiCode["no bold"] "  │ " Locale["ko"]["display"] "           - " AnsiCode["bold"] "ko" AnsiCode["no bold"] "  │ " Locale["te"]["display"] "       - " AnsiCode["bold"] "te" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["es"]["display"] "      - " AnsiCode["bold"] "es" AnsiCode["no bold"] "  │ " Locale["la"]["display"] "           - " AnsiCode["bold"] "la" AnsiCode["no bold"] "  │ " Locale["th"]["display"] "         - " AnsiCode["bold"] "th" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["et"]["display"] "        - " AnsiCode["bold"] "et" AnsiCode["no bold"] "  │ " Locale["lo"]["display"] "              - " AnsiCode["bold"] "lo" AnsiCode["no bold"] "  │ " Locale["tl"]["display"] "     - " AnsiCode["bold"] "tl" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["eu"]["display"] "      - " AnsiCode["bold"] "eu" AnsiCode["no bold"] "  │ " Locale["lt"]["display"] "         - " AnsiCode["bold"] "lt" AnsiCode["no bold"] "  │ " Locale["tr"]["display"] "      - " AnsiCode["bold"] "tr" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["fa"]["display"] "        - " AnsiCode["bold"] "fa" AnsiCode["no bold"] "  │ " Locale["lv"]["display"] "         - " AnsiCode["bold"] "lv" AnsiCode["no bold"] "  │ " Locale["uk"]["display"] "  - " AnsiCode["bold"] "uk" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["fi"]["display"] "        - " AnsiCode["bold"] "fi" AnsiCode["no bold"] "  │ " Locale["mi"]["display"] "            - " AnsiCode["bold"] "mi" AnsiCode["no bold"] "  │ " Locale["ur"]["display"] "        - " AnsiCode["bold"] "ur" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["fr"]["display"] "     - " AnsiCode["bold"] "fr" AnsiCode["no bold"] "  │ " Locale["mk"]["display"] "       - " AnsiCode["bold"] "mk" AnsiCode["no bold"] "  │ " Locale["vi"]["display"] "  - " AnsiCode["bold"] "vi" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["ga"]["display"] "      - " AnsiCode["bold"] "ga" AnsiCode["no bold"] "  │ " Locale["mn"]["display"] "           - " AnsiCode["bold"] "mn" AnsiCode["no bold"] "  │ " Locale["yi"]["display"] "       - " AnsiCode["bold"] "yi" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["gl"]["display"] "       - " AnsiCode["bold"] "gl" AnsiCode["no bold"] "  │ " Locale["mr"]["display"] "            - " AnsiCode["bold"] "mr" AnsiCode["no bold"] "  │ " Locale["yo"]["display"] "      - " AnsiCode["bold"] "yo" AnsiCode["no bold"] "    │\n" \
-"│ " Locale["gu"]["display"] "       - " AnsiCode["bold"] "gu" AnsiCode["no bold"] "  │ " Locale["ms"]["display"] "    - " AnsiCode["bold"] "ms" AnsiCode["no bold"] "  │ " Locale["zh-CN"]["display"] "    - " AnsiCode["bold"] "zh-CN" AnsiCode["no bold"] " │\n" \
-"│ " Locale["ha"]["display"] "        - " AnsiCode["bold"] "ha" AnsiCode["no bold"] "  │ " Locale["mt"]["display"] "            - " AnsiCode["bold"] "mt" AnsiCode["no bold"] "  │ " Locale["zh-TW"]["display"] "    - " AnsiCode["bold"] "zh-TW" AnsiCode["no bold"] " │\n" \
-"│ " Locale["he"]["display"] "        - " AnsiCode["bold"] "he" AnsiCode["no bold"] "  │ " Locale["ne"]["display"] "            - " AnsiCode["bold"] "ne" AnsiCode["no bold"] "  │ " Locale["zu"]["display"] "     - " AnsiCode["bold"] "zu" AnsiCode["no bold"] "    │\n" \
-"└────────────────────┴────────────────────────┴─────────────────────┘"
+return "┌──────────────────────┬───────────────────────┬─────────────────────┐\n" \
+"│ " Locale["af"]["display"] "      - " AnsiCode["bold"] "af" AnsiCode["no bold"] "  │ " \
+Locale["hu"]["display"] "           - " AnsiCode["bold"] "hu" AnsiCode["no bold"] " │ " \
+Locale["pl"]["display"] "      - " AnsiCode["bold"] "pl" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["ar"]["display"] "        - " AnsiCode["bold"] "ar" AnsiCode["no bold"] "  │ " \
+Locale["hy"]["display"] "          - " AnsiCode["bold"] "hy" AnsiCode["no bold"] " │ " \
+Locale["pt"]["display"] "   - " AnsiCode["bold"] "pt" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["az"]["display"] "   - " AnsiCode["bold"] "az" AnsiCode["no bold"] "  │ " \
+Locale["id"]["display"] " - " AnsiCode["bold"] "id" AnsiCode["no bold"] " │ " \
+Locale["ro"]["display"] "      - " AnsiCode["bold"] "ro" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["be"]["display"] "     - " AnsiCode["bold"] "be" AnsiCode["no bold"] "  │ " \
+Locale["ig"]["display"] "             - " AnsiCode["bold"] "ig" AnsiCode["no bold"] " │ " \
+Locale["ru"]["display"] "     - " AnsiCode["bold"] "ru" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["bg"]["display"] "      - " AnsiCode["bold"] "bg" AnsiCode["no bold"] "  │ " \
+Locale["is"]["display"] "         - " AnsiCode["bold"] "is" AnsiCode["no bold"] " │ " \
+Locale["si"]["display"] "        - " AnsiCode["bold"] "si" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["bn"]["display"] "          - " AnsiCode["bold"] "bn" AnsiCode["no bold"] "  │ " \
+Locale["it"]["display"] "         - " AnsiCode["bold"] "it" AnsiCode["no bold"] " │ " \
+Locale["sk"]["display"] "  - " AnsiCode["bold"] "sk" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["bs"]["display"] "       - " AnsiCode["bold"] "bs" AnsiCode["no bold"] "  │ " \
+Locale["ja"]["display"] "           - " AnsiCode["bold"] "ja" AnsiCode["no bold"] " │ " \
+Locale["sl"]["display"] " - " AnsiCode["bold"] "sl" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["ca"]["display"] "         - " AnsiCode["bold"] "ca" AnsiCode["no bold"] "  │ " \
+Locale["jv"]["display"] "        - " AnsiCode["bold"] "jv" AnsiCode["no bold"] " │ " \
+Locale["so"]["display"] "    - " AnsiCode["bold"] "so" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["ceb"]["display"] "        - " AnsiCode["bold"] "ceb" AnsiCode["no bold"] " │ " \
+Locale["ka"]["display"] "          - " AnsiCode["bold"] "ka" AnsiCode["no bold"] " │ " \
+Locale["sq"]["display"] "       - " AnsiCode["bold"] "sq" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["cs"]["display"] "        - " AnsiCode["bold"] "cs" AnsiCode["no bold"] "  │ " \
+Locale["kk"]["display"] "       - " AnsiCode["bold"] "kk" AnsiCode["no bold"] " │ " \
+Locale["sr"]["display"] "      - " AnsiCode["bold"] "sr" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["cy"]["display"] "        - " AnsiCode["bold"] "cy" AnsiCode["no bold"] "  │ " \
+Locale["km"]["display"] "         - " AnsiCode["bold"] "km" AnsiCode["no bold"] " │ " \
+Locale["st"]["display"] "     - " AnsiCode["bold"] "st" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["da"]["display"] "          - " AnsiCode["bold"] "da" AnsiCode["no bold"] "  │ " \
+Locale["kn"]["display"] "             - " AnsiCode["bold"] "kn" AnsiCode["no bold"] " │ " \
+Locale["su"]["display"] "  - " AnsiCode["bold"] "su" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["de"]["display"] "        - " AnsiCode["bold"] "de" AnsiCode["no bold"] "  │ " \
+Locale["ko"]["display"] "           - " AnsiCode["bold"] "ko" AnsiCode["no bold"] " │ " \
+Locale["sv"]["display"] "     - " AnsiCode["bold"] "sv" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["el"]["display"] "       - " AnsiCode["bold"] "el" AnsiCode["no bold"] "  │ " \
+Locale["la"]["display"] "           - " AnsiCode["bold"] "la" AnsiCode["no bold"] " │ " \
+Locale["sw"]["display"] "   - " AnsiCode["bold"] "sw" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["en"]["display"] "        - " AnsiCode["bold"] "en" AnsiCode["no bold"] "  │ " \
+Locale["lo"]["display"] "              - " AnsiCode["bold"] "lo" AnsiCode["no bold"] " │ " \
+Locale["ta"]["display"] "        - " AnsiCode["bold"] "ta" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["eo"]["display"] "      - " AnsiCode["bold"] "eo" AnsiCode["no bold"] "  │ " \
+Locale["lt"]["display"] "         - " AnsiCode["bold"] "lt" AnsiCode["no bold"] " │ " \
+Locale["te"]["display"] "       - " AnsiCode["bold"] "te" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["es"]["display"] "        - " AnsiCode["bold"] "es" AnsiCode["no bold"] "  │ " \
+Locale["lv"]["display"] "         - " AnsiCode["bold"] "lv" AnsiCode["no bold"] " │ " \
+Locale["tg"]["display"] "      - " AnsiCode["bold"] "tg" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["et"]["display"] "          - " AnsiCode["bold"] "et" AnsiCode["no bold"] "  │ " \
+Locale["mg"]["display"] "         - " AnsiCode["bold"] "mg" AnsiCode["no bold"] " │ " \
+Locale["th"]["display"] "         - " AnsiCode["bold"] "th" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["eu"]["display"] "        - " AnsiCode["bold"] "eu" AnsiCode["no bold"] "  │ " \
+Locale["mi"]["display"] "            - " AnsiCode["bold"] "mi" AnsiCode["no bold"] " │ " \
+Locale["tl"]["display"] "     - " AnsiCode["bold"] "tl" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["fa"]["display"] "          - " AnsiCode["bold"] "fa" AnsiCode["no bold"] "  │ " \
+Locale["mk"]["display"] "       - " AnsiCode["bold"] "mk" AnsiCode["no bold"] " │ " \
+Locale["tr"]["display"] "      - " AnsiCode["bold"] "tr" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["fi"]["display"] "          - " AnsiCode["bold"] "fi" AnsiCode["no bold"] "  │ " \
+Locale["ml"]["display"] "           - " AnsiCode["bold"] "ml" AnsiCode["no bold"] " │ " \
+Locale["uk"]["display"] "  - " AnsiCode["bold"] "uk" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["fr"]["display"] "       - " AnsiCode["bold"] "fr" AnsiCode["no bold"] "  │ " \
+Locale["mn"]["display"] "           - " AnsiCode["bold"] "mn" AnsiCode["no bold"] " │ " \
+Locale["ur"]["display"] "        - " AnsiCode["bold"] "ur" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["ga"]["display"] "        - " AnsiCode["bold"] "ga" AnsiCode["no bold"] "  │ " \
+Locale["mr"]["display"] "            - " AnsiCode["bold"] "mr" AnsiCode["no bold"] " │ " \
+Locale["uz"]["display"] " - " AnsiCode["bold"] "uz" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["gl"]["display"] "         - " AnsiCode["bold"] "gl" AnsiCode["no bold"] "  │ " \
+Locale["ms"]["display"] "    - " AnsiCode["bold"] "ms" AnsiCode["no bold"] " │ " \
+Locale["vi"]["display"] "  - " AnsiCode["bold"] "vi" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["gu"]["display"] "         - " AnsiCode["bold"] "gu" AnsiCode["no bold"] "  │ " \
+Locale["mt"]["display"] "            - " AnsiCode["bold"] "mt" AnsiCode["no bold"] " │ " \
+Locale["yi"]["display"] "       - " AnsiCode["bold"] "yi" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["ha"]["display"] "          - " AnsiCode["bold"] "ha" AnsiCode["no bold"] "  │ " \
+Locale["my"]["display"] "          - " AnsiCode["bold"] "my" AnsiCode["no bold"] " │ " \
+Locale["yo"]["display"] "      - " AnsiCode["bold"] "yo" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["he"]["display"] "          - " AnsiCode["bold"] "he" AnsiCode["no bold"] "  │ " \
+Locale["ne"]["display"] "            - " AnsiCode["bold"] "ne" AnsiCode["no bold"] " │ " \
+Locale["zh-CN"]["display"] "    - " AnsiCode["bold"] "zh-CN" AnsiCode["no bold"] " │\n" \
+"│ " Locale["hi"]["display"] "          - " AnsiCode["bold"] "hi" AnsiCode["no bold"] "  │ " \
+Locale["nl"]["display"] "       - " AnsiCode["bold"] "nl" AnsiCode["no bold"] " │ " \
+Locale["zh-TW"]["display"] "    - " AnsiCode["bold"] "zh-TW" AnsiCode["no bold"] " │\n" \
+"│ " Locale["hmn"]["display"] "          - " AnsiCode["bold"] "hmn" AnsiCode["no bold"] " │ " \
+Locale["no"]["display"] "            - " AnsiCode["bold"] "no" AnsiCode["no bold"] " │ " \
+Locale["zu"]["display"] "     - " AnsiCode["bold"] "zu" AnsiCode["no bold"] "    │\n" \
+"│ " Locale["hr"]["display"] "       - " AnsiCode["bold"] "hr" AnsiCode["no bold"] "  │ " \
+Locale["ny"]["display"] "           - " AnsiCode["bold"] "ny" AnsiCode["no bold"] " │ " \
+"                    │\n" \
+"│ " Locale["ht"]["display"] " - " AnsiCode["bold"] "ht" AnsiCode["no bold"] "  │ " \
+Locale["pa"]["display"] "            - " AnsiCode["bold"] "pa" AnsiCode["no bold"] " │ " \
+"                    │\n" \
+"└──────────────────────┴───────────────────────┴─────────────────────┘"
 }
 function getHelp() {
 return "Usage: " Command " [options] [source]:[target] [" AnsiCode["underline"] "text" AnsiCode["no underline"] "] ...\n" \
@@ -1513,7 +1675,7 @@ read -r -d '' TRANS_MANPAGE << 'EOF'
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "TRANS" "1" "October 2014" "0.8.22.1" "TRANS MANUAL"
+.TH "TRANS" "1" "December 2014" "0.8.22.2" "TRANS MANUAL"
 .
 .SH "NAME"
 \fBtrans\fR \- Google Translate served as a command\-line tool
@@ -1826,35 +1988,39 @@ Either source or target can be omitted, but the delimiter character must be kept
 .
 .nf
 
-┌───────────────────────┬──────────────────────┬─────────────────┐
-│ Afrikaans     \- af    │ Greek          \- el  │ Mongolian  \- mn │
-│ Albanian      \- sq    │ Gujarati       \- gu  │ Nepali     \- ne │
-│ Arabic        \- ar    │ Haitian Creole \- ht  │ Norwegian  \- no │
-│ Armenian      \- hy    │ Hausa          \- ha  │ Persian    \- fa │
-│ Azerbaijani   \- az    │ Hebrew         \- he  │ Polish     \- pl │
-│ Basque        \- eu    │ Hindi          \- hi  │ Portuguese \- pt │
-│ Belarusian    \- be    │ Hmong          \- hmn │ Punjabi    \- pa │
-│ Bengali       \- bn    │ Hungarian      \- hu  │ Romanian   \- ro │
-│ Bosnian       \- bs    │ Icelandic      \- is  │ Russian    \- ru │
-│ Bulgarian     \- bg    │ Igbo           \- ig  │ Serbian    \- sr │
-│ Catalan       \- ca    │ Indonesian     \- id  │ Slovak     \- sk │
-│ Cebuano       \- ceb   │ Irish          \- ga  │ Slovenian  \- sl │
-│ Chinese Simp\. \- zh\-CN │ Italian        \- it  │ Somali     \- so │
-│ Chinese Trad\. \- zh\-TW │ Japanese       \- ja  │ Spanish    \- es │
-│ Croatian      \- hr    │ Javanese       \- jv  │ Swahili    \- sw │
-│ Czech         \- cs    │ Kannada        \- kn  │ Swedish    \- sv │
-│ Danish        \- da    │ Khmer          \- km  │ Tamil      \- ta │
-│ Dutch         \- nl    │ Korean         \- ko  │ Telugu     \- te │
-│ English       \- en    │ Lao            \- lo  │ Thai       \- th │
-│ Esperanto     \- eo    │ Latin          \- la  │ Turkish    \- tr │
-│ Estonian      \- et    │ Latvian        \- lv  │ Ukrainian  \- uk │
-│ Filipino      \- tl    │ Lithuanian     \- lt  │ Urdu       \- ur │
-│ Finnish       \- fi    │ Macedonian     \- mk  │ Vietnamese \- vi │
-│ French        \- fr    │ Malay          \- ms  │ Welsh      \- cy │
-│ Galician      \- gl    │ Maltese        \- mt  │ Yiddish    \- yi │
-│ Georgian      \- ka    │ Maori          \- mi  │ Yoruba     \- yo │
-│ German        \- de    │ Marathi        \- mr  │ Zulu       \- zu │
-└───────────────────────┴──────────────────────┴─────────────────┘
+┌─────────────────────────────┬──────────────────────┬─────────────────┐
+│ Afrikaans           \- af    │ Hausa          \- ha  │ Persian    \- fa │
+│ Albanian            \- sq    │ Hebrew         \- he  │ Polish     \- pl │
+│ Arabic              \- ar    │ Hindi          \- hi  │ Portuguese \- pt │
+│ Armenian            \- hy    │ Hmong          \- hmn │ Punjabi    \- pa │
+│ Azerbaijani         \- az    │ Hungarian      \- hu  │ Romanian   \- ro │
+│ Basque              \- eu    │ Icelandic      \- is  │ Russian    \- ru │
+│ Belarusian          \- be    │ Igbo           \- ig  │ Serbian    \- sr │
+│ Bengali             \- bn    │ Indonesian     \- id  │ Sesotho    \- st │
+│ Bosnian             \- bs    │ Irish          \- ga  │ Sinhala    \- si │
+│ Bulgarian           \- bg    │ Italian        \- it  │ Slovak     \- sk │
+│ Catalan             \- ca    │ Japanese       \- ja  │ Slovenian  \- sl │
+│ Cebuano             \- ceb   │ Javanese       \- jv  │ Somali     \- so │
+│ Chichewa            \- ny    │ Kannada        \- kn  │ Spanish    \- es │
+│ Chinese Simplified  \- zh\-CN │ Kazakh         \- kk  │ Sundanese  \- su │
+│ Chinese Traditional \- zh\-TW │ Khmer          \- km  │ Swahili    \- sw │
+│ Croatian            \- hr    │ Korean         \- ko  │ Swedish    \- sv │
+│ Czech               \- cs    │ Lao            \- lo  │ Tajik      \- tg │
+│ Danish              \- da    │ Latin          \- la  │ Tamil      \- ta │
+│ Dutch               \- nl    │ Latvian        \- lv  │ Telugu     \- te │
+│ English             \- en    │ Lithuanian     \- lt  │ Thai       \- th │
+│ Esperanto           \- eo    │ Macedonian     \- mk  │ Turkish    \- tr │
+│ Estonian            \- et    │ Malagasy       \- mg  │ Ukrainian  \- uk │
+│ Filipino            \- tl    │ Malay          \- ms  │ Urdu       \- ur │
+│ Finnish             \- fi    │ Malayalam      \- ml  │ Uzbek      \- uz │
+│ French              \- fr    │ Maltese        \- mt  │ Vietnamese \- vi │
+│ Galician            \- gl    │ Maori          \- mi  │ Welsh      \- cy │
+│ Georgian            \- ka    │ Marathi        \- mr  │ Yiddish    \- yi │
+│ German              \- de    │ Myanmar        \- my  │ Yoruba     \- yo │
+│ Greek               \- el    │ Mongolian      \- mn  │ Zulu       \- zu │
+│ Gujarati            \- gu    │ Nepali         \- ne  │                 │
+│ Haitian Creole      \- ht    │ Norwegian      \- no  │                 │
+└─────────────────────────────┴──────────────────────┴─────────────────┘
 .
 .fi
 .
