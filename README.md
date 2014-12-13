@@ -374,35 +374,39 @@ Example:
 Use `$ trans -R` to view the list of language codes.
 
 ```
-┌───────────────────────┬──────────────────────┬─────────────────┐
-│ Afrikaans     - af    │ Greek          - el  │ Mongolian  - mn │
-│ Albanian      - sq    │ Gujarati       - gu  │ Nepali     - ne │
-│ Arabic        - ar    │ Haitian Creole - ht  │ Norwegian  - no │
-│ Armenian      - hy    │ Hausa          - ha  │ Persian    - fa │
-│ Azerbaijani   - az    │ Hebrew         - he  │ Polish     - pl │
-│ Basque        - eu    │ Hindi          - hi  │ Portuguese - pt │
-│ Belarusian    - be    │ Hmong          - hmn │ Punjabi    - pa │
-│ Bengali       - bn    │ Hungarian      - hu  │ Romanian   - ro │
-│ Bosnian       - bs    │ Icelandic      - is  │ Russian    - ru │
-│ Bulgarian     - bg    │ Igbo           - ig  │ Serbian    - sr │
-│ Catalan       - ca    │ Indonesian     - id  │ Slovak     - sk │
-│ Cebuano       - ceb   │ Irish          - ga  │ Slovenian  - sl │
-│ Chinese Simp. - zh-CN │ Italian        - it  │ Somali     - so │
-│ Chinese Trad. - zh-TW │ Japanese       - ja  │ Spanish    - es │
-│ Croatian      - hr    │ Javanese       - jv  │ Swahili    - sw │
-│ Czech         - cs    │ Kannada        - kn  │ Swedish    - sv │
-│ Danish        - da    │ Khmer          - km  │ Tamil      - ta │
-│ Dutch         - nl    │ Korean         - ko  │ Telugu     - te │
-│ English       - en    │ Lao            - lo  │ Thai       - th │
-│ Esperanto     - eo    │ Latin          - la  │ Turkish    - tr │
-│ Estonian      - et    │ Latvian        - lv  │ Ukrainian  - uk │
-│ Filipino      - tl    │ Lithuanian     - lt  │ Urdu       - ur │
-│ Finnish       - fi    │ Macedonian     - mk  │ Vietnamese - vi │
-│ French        - fr    │ Malay          - ms  │ Welsh      - cy │
-│ Galician      - gl    │ Maltese        - mt  │ Yiddish    - yi │
-│ Georgian      - ka    │ Maori          - mi  │ Yoruba     - yo │
-│ German        - de    │ Marathi        - mr  │ Zulu       - zu │
-└───────────────────────┴──────────────────────┴─────────────────┘
+┌─────────────────────────────┬──────────────────────┬─────────────────┐
+│ Afrikaans           - af    │ Hausa          - ha  │ Persian    - fa │
+│ Albanian            - sq    │ Hebrew         - he  │ Polish     - pl │
+│ Arabic              - ar    │ Hindi          - hi  │ Portuguese - pt │
+│ Armenian            - hy    │ Hmong          - hmn │ Punjabi    - pa │
+│ Azerbaijani         - az    │ Hungarian      - hu  │ Romanian   - ro │
+│ Basque              - eu    │ Icelandic      - is  │ Russian    - ru │
+│ Belarusian          - be    │ Igbo           - ig  │ Serbian    - sr │
+│ Bengali             - bn    │ Indonesian     - id  │ Sesotho    - st │
+│ Bosnian             - bs    │ Irish          - ga  │ Sinhala    - si │
+│ Bulgarian           - bg    │ Italian        - it  │ Slovak     - sk │
+│ Catalan             - ca    │ Japanese       - ja  │ Slovenian  - sl │
+│ Cebuano             - ceb   │ Javanese       - jv  │ Somali     - so │
+│ Chichewa            - ny    │ Kannada        - kn  │ Spanish    - es │
+│ Chinese Simplified  - zh-CN │ Kazakh         - kk  │ Sundanese  - su │
+│ Chinese Traditional - zh-TW │ Khmer          - km  │ Swahili    - sw │
+│ Croatian            - hr    │ Korean         - ko  │ Swedish    - sv │
+│ Czech               - cs    │ Lao            - lo  │ Tajik      - tg │
+│ Danish              - da    │ Latin          - la  │ Tamil      - ta │
+│ Dutch               - nl    │ Latvian        - lv  │ Telugu     - te │
+│ English             - en    │ Lithuanian     - lt  │ Thai       - th │
+│ Esperanto           - eo    │ Macedonian     - mk  │ Turkish    - tr │
+│ Estonian            - et    │ Malagasy       - mg  │ Ukrainian  - uk │
+│ Filipino            - tl    │ Malay          - ms  │ Urdu       - ur │
+│ Finnish             - fi    │ Malayalam      - ml  │ Uzbek      - uz │
+│ French              - fr    │ Maltese        - mt  │ Vietnamese - vi │
+│ Galician            - gl    │ Maori          - mi  │ Welsh      - cy │
+│ Georgian            - ka    │ Marathi        - mr  │ Yiddish    - yi │
+│ German              - de    │ Myanmar        - my  │ Yoruba     - yo │
+│ Greek               - el    │ Mongolian      - mn  │ Zulu       - zu │
+│ Gujarati            - gu    │ Nepali         - ne  │                 │
+│ Haitian Creole      - ht    │ Norwegian      - no  │                 │
+└─────────────────────────────┴──────────────────────┴─────────────────┘
 ```
 
 ## FAQ
