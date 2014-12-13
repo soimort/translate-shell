@@ -409,7 +409,7 @@ Use `$ trans -R` to view the list of language codes.
 
 * **Q**: *How many languages does Google Translate support?*
 
-* **A**: 80 languages, as far as we know. There are 81 distinct language codes in total (including two codes for the Chinese language). A few aliases of these codes exist.
+* **A**: 90 languages, as far as we know. There are 91 distinct language codes in total (including two codes for the Chinese language). A few aliases of these codes exist.
 
 * **Q**: *What are these language codes?*
 
@@ -426,9 +426,13 @@ Use `$ trans -R` to view the list of language codes.
     * Bosnian (`bs`): Latin alphabet
     * Hausa (`ha`): Latin / Boko alphabet
     * Javanese (`jv` or `jw`): Latin alphabet
+    * Kazakh (`kk`): Cyrillic alphabet
     * Mongolian (`mn`): Cyrillic alphabet
     * Punjabi (`pa`): Brahmic / Gurmukhī alphabet
     * Serbian (`sr`): Cyrillic alphabet
+    * Sundanese (`su`): Latin alphabet
+    * Tajik (`tg`): Cyrillic alphabet
+    * Uzbek (`uz`): Latin alphabet
 
 * **Q**: *What are right-to-left (RTL) languages, and why do I need GNU FriBidi for them?*
 
