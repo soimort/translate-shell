@@ -216,14 +216,14 @@ function join(array, separator, sortedIn, preserveNull,
 # See: <https://en.wikipedia.org/wiki/ANSI_escape_code>
 function initAnsiCode() {
     # Dumb terminal: no ANSI escape code whatsoever
-    if(ENVIRON["TERM"] == "dumb") return
+    if (ENVIRON["TERM"] == "dumb") return
 
     AnsiCode["reset"]         = AnsiCode[0] = "\33[0m"
 
     AnsiCode["bold"]          = "\33[1m"
     AnsiCode["underline"]     = "\33[4m"
     AnsiCode["negative"]      = "\33[7m"
-    AnsiCode["no bold"]       = "\33[21m"
+    AnsiCode["no bold"]       = "\33[22m" # SGR code 21 (bold off) not widely supported
     AnsiCode["no underline"]  = "\33[24m"
     AnsiCode["positive"]      = "\33[27m"
 
