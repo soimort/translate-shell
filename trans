@@ -29,7 +29,7 @@ read -r -d '' TRANS_PROGRAM << 'EOF'
 BEGIN {
 Name        = "Translate Shell"
 Description = "Google Translate to serve as a command-line tool"
-Version     = "0.8.22.2"
+Version     = "0.8.22.3"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 }
@@ -191,12 +191,12 @@ temp = array # array == ""
 return temp
 }
 function initAnsiCode() {
-if(ENVIRON["TERM"] == "dumb") return
+if (ENVIRON["TERM"] == "dumb") return
 AnsiCode["reset"]         = AnsiCode[0] = "\33[0m"
 AnsiCode["bold"]          = "\33[1m"
 AnsiCode["underline"]     = "\33[4m"
 AnsiCode["negative"]      = "\33[7m"
-AnsiCode["no bold"]       = "\33[21m"
+AnsiCode["no bold"]       = "\33[22m"
 AnsiCode["no underline"]  = "\33[24m"
 AnsiCode["positive"]      = "\33[27m"
 AnsiCode["black"]         = "\33[30m"
