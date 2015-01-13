@@ -288,11 +288,11 @@ function translate(text, inline,
                 print replicate("─", Option["width"])
 
         if (inline &&
-            startsWithAny(text, UriSchemes) == "file") {
+            startsWithAny(text, UriSchemes) == "file://") {
             fileTranslation(text)
         } else if (inline &&
-                   startsWithAny(text, UriSchemes) == "http" ||
-                   startsWithAny(text, UriSchemes) == "https") {
+                   startsWithAny(text, UriSchemes) == "http://" ||
+                   startsWithAny(text, UriSchemes) == "https://") {
             webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
         } else {
             print getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist) > Option["output"]

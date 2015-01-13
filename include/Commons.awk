@@ -300,9 +300,9 @@ function fileExists(file) {
 
 # Initialize `UriSchemes`.
 function initUriSchemes() {
-    UriSchemes[0] = "file"
-    UriSchemes[1] = "http"
-    UriSchemes[2] = "https"
+    UriSchemes[0] = "file://"
+    UriSchemes[1] = "http://"
+    UriSchemes[2] = "https://"
 }
 
 BEGIN {
