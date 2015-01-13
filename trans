@@ -29,7 +29,7 @@ read -r -d '' TRANS_PROGRAM << 'EOF'
 BEGIN {
 Name        = "Translate Shell"
 Description = "Google Translate to serve as a command-line tool"
-Version     = "0.8.22.3"
+Version     = "0.8.22.4"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 }
@@ -252,9 +252,9 @@ function fileExists(file) {
 return !system("test -f " file)
 }
 function initUriSchemes() {
-UriSchemes[0] = "file"
-UriSchemes[1] = "http"
-UriSchemes[2] = "https"
+UriSchemes[0] = "file://"
+UriSchemes[1] = "http://"
+UriSchemes[2] = "https://"
 }
 BEGIN {
 initUrlEncoding()
@@ -1240,11 +1240,11 @@ if (!Option["interactive"])
 if (Option["verbose"] && i > 1)
 print replicate("─", Option["width"])
 if (inline &&
-startsWithAny(text, UriSchemes) == "file") {
+startsWithAny(text, UriSchemes) == "file://") {
 fileTranslation(text)
 } else if (inline &&
-startsWithAny(text, UriSchemes) == "http" ||
-startsWithAny(text, UriSchemes) == "https") {
+startsWithAny(text, UriSchemes) == "http://" ||
+startsWithAny(text, UriSchemes) == "https://") {
 webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
 } else {
 print getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist) > Option["output"]
@@ -1675,7 +1675,7 @@ read -r -d '' TRANS_MANPAGE << 'EOF'
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "TRANS" "1" "December 2014" "0.8.22.2" "TRANS MANUAL"
+.TH "TRANS" "1" "December 2014" "0.8.22.4" "TRANS MANUAL"
 .
 .SH "NAME"
 \fBtrans\fR \- Google Translate served as a command\-line tool

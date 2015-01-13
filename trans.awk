@@ -29,7 +29,7 @@
 BEGIN {
     Name        = "Translate Shell"
     Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.8.22.3"
+    Version     = "0.8.22.4"
     Command     = "trans"
     EntryPoint  = "translate.awk"
 }
@@ -336,9 +336,9 @@ function fileExists(file) {
 
 # Initialize `UriSchemes`.
 function initUriSchemes() {
-    UriSchemes[0] = "file"
-    UriSchemes[1] = "http"
-    UriSchemes[2] = "https"
+    UriSchemes[0] = "file://"
+    UriSchemes[1] = "http://"
+    UriSchemes[2] = "https://"
 }
 
 BEGIN {
@@ -1704,11 +1704,11 @@ function translate(text, inline,
                 print replicate("─", Option["width"])
 
         if (inline &&
-            startsWithAny(text, UriSchemes) == "file") {
+            startsWithAny(text, UriSchemes) == "file://") {
             fileTranslation(text)
         } else if (inline &&
-                   startsWithAny(text, UriSchemes) == "http" ||
-                   startsWithAny(text, UriSchemes) == "https") {
+                   startsWithAny(text, UriSchemes) == "http://" ||
+                   startsWithAny(text, UriSchemes) == "https://") {
             webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
         } else {
             print getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist) > Option["output"]
