@@ -29,7 +29,7 @@ read -r -d '' TRANS_PROGRAM << 'EOF'
 BEGIN {
 Name        = "Translate Shell"
 Description = "Google Translate to serve as a command-line tool"
-Version     = "0.8.22.4"
+Version     = "0.8.22.5"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 }
@@ -1441,7 +1441,7 @@ match(ARGV[pos], /^--?(m(a(n(u(al?)?)?)?)?|M)$/)
 if (RSTART) {
 if (ENVIRON["TRANS_MANPAGE"])
 system("echo -E \"${TRANS_MANPAGE}\" | " \
-"groff -Wall -mtty-char -mandoc -Tutf8 -Dutf8 -rLL=${COLUMNS}n -rLT=${COLUMNS}n | " \
+"groff -Wall -mtty-char -mandoc -Tutf8 -rLL=${COLUMNS}n -rLT=${COLUMNS}n | " \
 (system("most 2>/dev/null") ?
 "less -s -P\"\\ \\Manual page " Command "(1) line %lt (press h for help or q to quit)\"" :
 "most -Cs"))
@@ -1675,7 +1675,7 @@ read -r -d '' TRANS_MANPAGE << 'EOF'
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "TRANS" "1" "December 2014" "0.8.22.4" "TRANS MANUAL"
+.TH "TRANS" "1" "December 2014" "0.8.22.5" "TRANS MANUAL"
 .
 .SH "NAME"
 \fBtrans\fR \- Google Translate served as a command\-line tool
