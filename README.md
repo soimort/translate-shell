@@ -63,7 +63,7 @@ Any POSIX-compliant system should work, including but not limited to:
     * You can use Translate Shell from any modern Unix shell of your choice (bash, zsh, ksh, tcsh, fish, etc.); however, it requires either bash or zsh installed for interpreting the wrapper script.
 * [GNU FriBidi](http://fribidi.org/): an implementation of the Unicode Bidirectional Algorithm (bidi)
     * needed for displaying right-to-left (RTL) languages
-* [MPlayer](http://www.mplayerhq.hu/), [mplayer2](http://www.mplayer2.org/), [mpg123](http://mpg123.org/), or [eSpeak](http://espeak.sourceforge.net/)
+* [MPlayer](http://www.mplayerhq.hu/), [mplayer2](http://www.mplayer2.org/), [mpv](http://mpv.io/), [mpg123](http://mpg123.org/), or [eSpeak](http://espeak.sourceforge.net/)
     * needed for the Text-to-Speech functionality
 * [rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/#rlwrap): a GNU readline wrapper
     * needed for readline-style editing and history in the interactive mode

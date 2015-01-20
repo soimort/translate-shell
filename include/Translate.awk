@@ -2,13 +2,15 @@
 # Translate.awk                                                    #
 ####################################################################
 
-# Detect external audio player (mplayer, mpg123).
+# Detect external audio player (mplayer, mpv, mpg123).
 function initAudioPlayer() {
     AudioPlayer = !system("mplayer >/dev/null 2>/dev/null") ?
         "mplayer" :
-        (!system("mpg123 >/dev/null 2>/dev/null") ?
-         "mpg123" :
-         "")
+        (!system("mpv >/dev/null 2>/dev/null") ?
+         "mpv" :
+         (!system("mpg123 >/dev/null 2>/dev/null") ?
+          "mpg123" :
+          ""))
 }
 
 # Detect external speech synthesizer (say, espeak).

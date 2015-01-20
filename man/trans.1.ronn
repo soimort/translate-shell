@@ -79,13 +79,13 @@ Listen to the translation.
 
 When used in verbose mode, you will hear a statement like "Translations of text: wénběn". When used in brief mode, you will hear only the actual translation: "wénběn" for example.
 
-You must have one of supported audio players (`mplayer` or `mpg123`) installed for streaming from the Google Text-to-Speech engine. Otherwise, a local speech synthesizer can be used instead (`say` on Mac OS X, `espeak` on Linux and other platforms).
+You must have one of supported audio players (`mplayer`, `mpv` or `mpg123`) installed for streaming from the Google Text-to-Speech engine. Otherwise, a local speech synthesizer can be used instead (`say` on Mac OS X, `espeak` on Linux and other platforms).
 
 ### -player [program]
 
 Specify the command-line audio player to use, and listen to the translation.
 
-Option `-play` will try to use `mplayer` or `mpg123` by default, since these players are known to work for streaming URLs. Not all command-line audio players can work this way. Use this option only when you have your own preference.
+Option `-play` will try to use `mplayer`, `mpv` or `mpg123` by default, since these players are known to work for streaming URLs. Not all command-line audio players can work this way. Use this option only when you have your own preference.
 
 This option overrides the setting of environment variable `PLAYER`.
 

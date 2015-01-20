@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "TRANS" "1" "December 2014" "0.8.22.5" "TRANS MANUAL"
+.TH "TRANS" "1" "January 2015" "0.8.22.5" "TRANS MANUAL"
 .
 .SH "NAME"
 \fBtrans\fR \- Google Translate served as a command\-line tool
@@ -81,13 +81,13 @@ Listen to the translation\.
 When used in verbose mode, you will hear a statement like "Translations of text: wénběn"\. When used in brief mode, you will hear only the actual translation: "wénběn" for example\.
 .
 .P
-You must have one of supported audio players (\fBmplayer\fR or \fBmpg123\fR) installed for streaming from the Google Text\-to\-Speech engine\. Otherwise, a local speech synthesizer can be used instead (\fBsay\fR on Mac OS X, \fBespeak\fR on Linux and other platforms)\.
+You must have one of supported audio players (\fBmplayer\fR, \fBmpv\fR or \fBmpg123\fR) installed for streaming from the Google Text\-to\-Speech engine\. Otherwise, a local speech synthesizer can be used instead (\fBsay\fR on Mac OS X, \fBespeak\fR on Linux and other platforms)\.
 .
 .SS "\-player [program]"
 Specify the command\-line audio player to use, and listen to the translation\.
 .
 .P
-Option \fB\-play\fR will try to use \fBmplayer\fR or \fBmpg123\fR by default, since these players are known to work for streaming URLs\. Not all command\-line audio players can work this way\. Use this option only when you have your own preference\.
+Option \fB\-play\fR will try to use \fBmplayer\fR, \fBmpv\fR or \fBmpg123\fR by default, since these players are known to work for streaming URLs\. Not all command\-line audio players can work this way\. Use this option only when you have your own preference\.
 .
 .P
 This option overrides the setting of environment variable \fBPLAYER\fR\.
