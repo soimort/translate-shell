@@ -125,6 +125,14 @@ Available in Debian Testing (Jessie):
 
     $ apt-get install translate-shell
 
+#### Arch Linux
+
+Available in the [Arch User Repository](https://aur.archlinux.org/packages/translate-shell/):
+
+    $ cower -d translate-shell
+    $ cd translate-shell/
+    $ makepkg -si
+
 ### From Git (For Developers and Advanced Users)
 
     $ git clone https://github.com/soimort/translate-shell
