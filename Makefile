@@ -19,7 +19,7 @@ $(COMMAND):
 build: $(COMMAND)
 
 test: build
-	[ `$(BUILDDIR)/$(COMMAND) -b 忍者` = 'Ninja' ]
+	[ "`$(BUILDDIR)/$(COMMAND) -b 忍者`" = 'Ninja' ]
 
 install: build
 	@install $(BUILDDIR)/$(COMMAND) $(INSTDIR)/$(COMMAND) && echo "[$(NAME)] Successfully installed."
