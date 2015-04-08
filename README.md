@@ -478,11 +478,13 @@ Use `$ trans -R` to view the list of language codes.
 
 * **A**: Translate Shell uses ANSI escape sequences to display colors and other effects. You can disable them by either using the option `-no-ansi`, or telling Translate Shell that your terminal type is dumb via the environment variable `TERM`: `$ TERM=dumb trans ...`
 
+## Reporting Bugs
+
+**Please review the [guidelines for contributing](https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md) before reporting an issue.**
+
 ## Contributing
 
-Report an issue: <https://github.com/soimort/translate-shell/issues>
-
-Please review the [guidelines for contributing](https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md) before reporting an issue or sending a pull request.
+**Please review the [guidelines for contributing](https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md) before sending a pull request.**
 
 ## Licensing
 
