@@ -26,11 +26,11 @@
   <a href="http://www.soimort.org/translate-shell/"><img src="images/avatar.jpg"/></a>
   <div id="desc">
     <h1>Translate Shell</h1>
-    <h2>version 0.8.22.5</h2>
+    <h2>version 0.8.23</h2>
     <a href="https://github.com/soimort/translate-shell">Star・<i class="fa fa-github-square fa-2x"></i></a>
     <a href="http://www.soimort.org/translate-shell/trans">Download・<i class="fa fa-download fa-2x"></i></a>
     <div id="msg">
-      <span id="checksum" onmouseover="this.innerHTML='aa7d6ca2b55893571208234eb81ab76378ecccc1'" onmouseout="this.innerHTML='SHA1SUM'">SHA1SUM</span>
+      <span id="checksum" onmouseover="this.innerHTML='d7bd8acebd883800b66964231acf84fa5d06597a'" onmouseout="this.innerHTML='SHA1SUM'">SHA1SUM</span>
       <a href="http://www.soimort.org/translate-shell/trans.sig">PGP SIGNATURE</a>
     </div>
   </div>
@@ -49,6 +49,7 @@
   <li><a href="#environment-variables">Environment Variables</a></li>
   <li><a href="#language-codes">Language Codes</a></li>
   <li><a href="#faq">FAQ</a></li>
+  <li><a href="#reporting-bugs">Reporting Bugs</a></li>
   <li><a href="#contributing">Contributing</a></li>
   <li><a href="#licensing">Licensing</a></li>
   </ul></li>
@@ -62,7 +63,7 @@
 </header>
 
 <h1 id="translate-shell">Translate Shell</h1>
-<p><a href="https://travis-ci.org/soimort/translate-shell"><img src="https://travis-ci.org/soimort/translate-shell.png" alt="Build Status" /></a> <a href="https://github.com/soimort/translate-shell/releases"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-release.png" alt="Version" /></a> <a href="http://www.soimort.org/translate-shell/trans"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png" alt="Download" /></a></p>
+<p><a href="https://travis-ci.org/soimort/translate-shell"><img src="https://travis-ci.org/soimort/translate-shell.png" alt="Build Status" /></a> <a href="https://github.com/soimort/translate-shell/releases"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-release.png" alt="Version" /></a> <a href="http://www.soimort.org/translate-shell/trans"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png" alt="Download" /></a> <a href="https://gitter.im/soimort/translate-shell?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter" /></a></p>
 <p><a href="http://www.soimort.org/translate-shell">Translate Shell</a> (previously <em>Google Translate CLI</em>) is a command-line interface and interactive shell for <a href="https://translate.google.com/">Google Translate</a>. It works just the way you want it to be.</p>
 <pre><code>$ trans &quot;Saluton, Mondo&quot;
 Hello, World
@@ -113,7 +114,7 @@ In order to be happy, the shortest way is from being loved by the people.</code>
 <ul>
 <li>needed for displaying right-to-left (RTL) languages</li>
 </ul></li>
-<li><a href="http://www.mplayerhq.hu/">MPlayer</a>, <a href="http://www.mplayer2.org/">mplayer2</a>, <a href="http://mpg123.org/">mpg123</a>, or <a href="http://espeak.sourceforge.net/">eSpeak</a>
+<li><a href="http://www.mplayerhq.hu/">MPlayer</a>, <a href="http://www.mplayer2.org/">mplayer2</a>, <a href="http://mpv.io/">mpv</a>, <a href="http://mpg123.org/">mpg123</a>, or <a href="http://espeak.sourceforge.net/">eSpeak</a>
 <ul>
 <li>needed for the Text-to-Speech functionality</li>
 </ul></li>
@@ -158,6 +159,11 @@ $ make install</code></pre>
 <h4 id="debian">Debian</h4>
 <p>Available in Debian Testing (Jessie):</p>
 <pre><code>$ apt-get install translate-shell</code></pre>
+<h4 id="arch-linux">Arch Linux</h4>
+<p>Available in the <a href="https://aur.archlinux.org/packages/translate-shell/">Arch User Repository</a>:</p>
+<pre><code>$ cower -d translate-shell
+$ cd translate-shell/
+$ makepkg -si</code></pre>
 <h3 id="from-git-for-developers-and-advanced-users">From Git (For Developers and Advanced Users)</h3>
 <pre><code>$ git clone https://github.com/soimort/translate-shell
 $ cd translate-shell/
@@ -230,8 +236,7 @@ $ trans :fr -b -i input.txt</code></pre>
 <p>Start an interactive shell, using the <code>-interactive</code> option:</p>
 <pre><code>$ trans -I</code></pre>
 <h2 id="text-editors">Text Editors</h2>
-<p><code>trans</code> is just a command-line program which you can easily integrate with your favorite text editor. Any way you want.</p>
-<p>Below are some might-be-useful tips. Feel free to roll your own Emacs mode or Vim script!</p>
+<p><code>trans</code> is a command-line program which can be easily integrated with your favorite text editor. Below are some useful tips.</p>
 <h3 id="emacs">Emacs</h3>
 <h4 id="interactive-shell">Interactive shell</h4>
 <p>You can, of course, use Emacs as a front-end of Translate Shell, in the same way you emulate your favorite shell with <kbd>M-x shell</kbd>. There is a shortcut for starting Emacs with Translate Shell, using the <code>-emacs</code> option:</p>
@@ -239,6 +244,13 @@ $ trans :fr -b -i input.txt</code></pre>
 <h4 id="text-translation">Text translation</h4>
 <p>When editing a text file, viewing the translation of a region is just one single command: (translating any language to Japanese, for example)</p>
 <p><kbd>M-| trans :ja</kbd></p>
+<h4 id="emacs-mode">Emacs mode</h4>
+<p>There is a simple minor mode for Emacs: <a href="https://github.com/soimort/translate-shell/raw/develop/google-translate-mode.el">google-translate-mode.el</a></p>
+<ul>
+<li><kbd>C-c -</kbd> Show translation of the current word in message buffer.</li>
+<li><kbd>C-c =</kbd> View verbose translation of the current word in popup dialog.</li>
+<li><kbd>C-c +</kbd> Insert translation of the current word right after.</li>
+</ul>
 <h3 id="vim">Vim</h3>
 <h4 id="text-translation-1">Text translation</h4>
 <p>Add one line to your <code>~/.vimrc</code>:</p>
@@ -390,9 +402,10 @@ $ trans word</code></pre>
 <li><p><strong>Q</strong>: <em>My terminal does not support ANSI escape sequences and the display looks like a mess. How do I disable them?</em></p></li>
 <li><p><strong>A</strong>: Translate Shell uses ANSI escape sequences to display colors and other effects. You can disable them by either using the option <code>-no-ansi</code>, or telling Translate Shell that your terminal type is dumb via the environment variable <code>TERM</code>: <code>$ TERM=dumb trans ...</code></p></li>
 </ul>
+<h2 id="reporting-bugs">Reporting Bugs</h2>
+<p><strong>Please review the <a href="https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md">guidelines for contributing</a> before reporting an issue.</strong></p>
 <h2 id="contributing">Contributing</h2>
-<p>Report an issue: <a href="https://github.com/soimort/translate-shell/issues" class="uri">https://github.com/soimort/translate-shell/issues</a></p>
-<p>Please review the <a href="https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md">guidelines for contributing</a> before reporting an issue or sending a pull request.</p>
+<p><strong>Please review the <a href="https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md">guidelines for contributing</a> before sending a pull request.</strong></p>
 <h2 id="licensing">Licensing</h2>
 <p>This is free and unencumbered software released into the public domain.</p>
 <hr/>

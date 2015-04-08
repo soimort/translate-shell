@@ -29,7 +29,7 @@ read -r -d '' TRANS_PROGRAM << 'EOF'
 BEGIN {
 Name        = "Translate Shell"
 Description = "Google Translate to serve as a command-line tool"
-Version     = "0.8.22.5"
+Version     = "0.8.23"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 }
@@ -1031,9 +1031,11 @@ returnAST[key] = token
 function initAudioPlayer() {
 AudioPlayer = !system("mplayer >/dev/null 2>/dev/null") ?
 "mplayer" :
+(!system("mpv >/dev/null 2>/dev/null") ?
+"mpv" :
 (!system("mpg123 >/dev/null 2>/dev/null") ?
 "mpg123" :
-"")
+""))
 }
 function initSpeechSynthesizer() {
 SpeechSynthesizer = !system("say '' >/dev/null 2>/dev/null") ?
@@ -1064,9 +1066,10 @@ text = gensub(/(["]) /, "\\1", "g", text)
 return text
 }
 function getResponse(text, sl, tl, hl,    content, url) {
-url = HttpPathPrefix "/translate_a/t?client=t"              \
-"&ie=UTF-8&oe=UTF-8"                                    \
-"&text=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl
+url = HttpPathPrefix "/translate_a/single?client=t"                 \
+"&ie=UTF-8&oe=UTF-8"                                            \
+"&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at"  \
+"&q=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl
 print "GET " url " HTTP/1.1\n"             \
 "Host: " HttpHost "\n"               \
 "Connection: close\n" |& HttpService
@@ -1104,7 +1107,7 @@ e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
 ExitCode = 1
 }
 if (Option["debug"]) {
-d(sprintf("content='%s'", content))
+d(content)
 da(tokens, "tokens[%s]='%s'")
 da(ast, "ast[%s]='%s'")
 }
@@ -1675,7 +1678,7 @@ read -r -d '' TRANS_MANPAGE << 'EOF'
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "TRANS" "1" "December 2014" "0.8.22.5" "TRANS MANUAL"
+.TH "TRANS" "1" "January 2015" "0.8.23" "TRANS MANUAL"
 .
 .SH "NAME"
 \fBtrans\fR \- Google Translate served as a command\-line tool
@@ -1755,13 +1758,13 @@ Listen to the translation\.
 When used in verbose mode, you will hear a statement like "Translations of text: wénběn"\. When used in brief mode, you will hear only the actual translation: "wénběn" for example\.
 .
 .P
-You must have one of supported audio players (\fBmplayer\fR or \fBmpg123\fR) installed for streaming from the Google Text\-to\-Speech engine\. Otherwise, a local speech synthesizer can be used instead (\fBsay\fR on Mac OS X, \fBespeak\fR on Linux and other platforms)\.
+You must have one of supported audio players (\fBmplayer\fR, \fBmpv\fR or \fBmpg123\fR) installed for streaming from the Google Text\-to\-Speech engine\. Otherwise, a local speech synthesizer can be used instead (\fBsay\fR on Mac OS X, \fBespeak\fR on Linux and other platforms)\.
 .
 .SS "\-player [program]"
 Specify the command\-line audio player to use, and listen to the translation\.
 .
 .P
-Option \fB\-play\fR will try to use \fBmplayer\fR or \fBmpg123\fR by default, since these players are known to work for streaming URLs\. Not all command\-line audio players can work this way\. Use this option only when you have your own preference\.
+Option \fB\-play\fR will try to use \fBmplayer\fR, \fBmpv\fR or \fBmpg123\fR by default, since these players are known to work for streaming URLs\. Not all command\-line audio players can work this way\. Use this option only when you have your own preference\.
 .
 .P
 This option overrides the setting of environment variable \fBPLAYER\fR\.

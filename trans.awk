@@ -29,7 +29,7 @@
 BEGIN {
     Name        = "Translate Shell"
     Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.8.22.5"
+    Version     = "0.8.23"
     Command     = "trans"
     EntryPoint  = "translate.awk"
 }
@@ -1418,13 +1418,15 @@ function plParse(returnAST, tokens,
 # Translate.awk                                                    #
 ####################################################################
 
-# Detect external audio player (mplayer, mpg123).
+# Detect external audio player (mplayer, mpv, mpg123).
 function initAudioPlayer() {
     AudioPlayer = !system("mplayer >/dev/null 2>/dev/null") ?
         "mplayer" :
-        (!system("mpg123 >/dev/null 2>/dev/null") ?
-         "mpg123" :
-         "")
+        (!system("mpv >/dev/null 2>/dev/null") ?
+         "mpv" :
+         (!system("mpg123 >/dev/null 2>/dev/null") ?
+          "mpg123" :
+          ""))
 }
 
 # Detect external speech synthesizer (say, espeak).
@@ -1465,9 +1467,10 @@ function postprocess(text) {
 
 # Send an HTTP request and get response from Google Translate.
 function getResponse(text, sl, tl, hl,    content, url) {
-    url = HttpPathPrefix "/translate_a/t?client=t"              \
-        "&ie=UTF-8&oe=UTF-8"                                    \
-        "&text=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl
+    url = HttpPathPrefix "/translate_a/single?client=t"                 \
+        "&ie=UTF-8&oe=UTF-8"                                            \
+        "&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at"  \
+        "&q=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl
 
     print "GET " url " HTTP/1.1\n"             \
           "Host: " HttpHost "\n"               \
@@ -1522,7 +1525,7 @@ function getTranslation(text, sl, tl, hl,
 
     # Debug mode
     if (Option["debug"]) {
-        d(sprintf("content='%s'", content))
+        d(content)
         da(tokens, "tokens[%s]='%s'")
         da(ast, "ast[%s]='%s'")
     }

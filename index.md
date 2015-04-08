@@ -1,14 +1,14 @@
 ---
 title: Translate Shell
 project-name: Translate Shell
-project-version: 0.8.22.5
+project-version: 0.8.23
 project-logo: images/avatar.jpg
 background: images/public_domain.png
 github: soimort/translate-shell
 url: http://www.soimort.org/translate-shell/
 download-url: http://www.soimort.org/translate-shell/trans
 download-checksum-type: SHA1SUM
-download-checksum-data: aa7d6ca2b55893571208234eb81ab76378ecccc1
+download-checksum-data: d7bd8acebd883800b66964231acf84fa5d06597a
 download-signature: http://www.soimort.org/translate-shell/trans.sig
 
 ---
@@ -17,6 +17,7 @@ download-signature: http://www.soimort.org/translate-shell/trans.sig
 [![Build Status](https://travis-ci.org/soimort/translate-shell.png)](https://travis-ci.org/soimort/translate-shell)
 [![Version](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-release.png)](https://github.com/soimort/translate-shell/releases)
 [![Download](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png)](http://www.soimort.org/translate-shell/trans)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/soimort/translate-shell?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [Translate Shell](http://www.soimort.org/translate-shell) (previously _Google Translate CLI_) is a command-line interface and interactive shell for [Google Translate](https://translate.google.com/). It works just the way you want it to be.
 
@@ -77,7 +78,7 @@ Any POSIX-compliant system should work, including but not limited to:
     * You can use Translate Shell from any modern Unix shell of your choice (bash, zsh, ksh, tcsh, fish, etc.); however, it requires either bash or zsh installed for interpreting the wrapper script.
 * [GNU FriBidi](http://fribidi.org/): an implementation of the Unicode Bidirectional Algorithm (bidi)
     * needed for displaying right-to-left (RTL) languages
-* [MPlayer](http://www.mplayerhq.hu/), [mplayer2](http://www.mplayer2.org/), [mpg123](http://mpg123.org/), or [eSpeak](http://espeak.sourceforge.net/)
+* [MPlayer](http://www.mplayerhq.hu/), [mplayer2](http://www.mplayer2.org/), [mpv](http://mpv.io/), [mpg123](http://mpg123.org/), or [eSpeak](http://espeak.sourceforge.net/)
     * needed for the Text-to-Speech functionality
 * [rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/#rlwrap): a GNU readline wrapper
     * needed for readline-style editing and history in the interactive mode
@@ -138,6 +139,14 @@ Available in FreeBSD Ports collection:
 Available in Debian Testing (Jessie):
 
     $ apt-get install translate-shell
+
+#### Arch Linux
+
+Available in the [Arch User Repository](https://aur.archlinux.org/packages/translate-shell/):
+
+    $ cower -d translate-shell
+    $ cd translate-shell/
+    $ makepkg -si
 
 ### From Git (For Developers and Advanced Users)
 
@@ -277,9 +286,7 @@ Start an interactive shell, using the `-interactive` option:
 
 ## Text Editors
 
-`trans` is just a command-line program which you can easily integrate with your favorite text editor. Any way you want.
-
-Below are some might-be-useful tips. Feel free to roll your own Emacs mode or Vim script!
+`trans` is a command-line program which can be easily integrated with your favorite text editor. Below are some useful tips.
 
 ### Emacs
 
@@ -294,6 +301,14 @@ You can, of course, use Emacs as a front-end of Translate Shell, in the same way
 When editing a text file, viewing the translation of a region is just one single command: (translating any language to Japanese, for example)
 
 <kbd>M-| trans :ja</kbd>
+
+#### Emacs mode
+
+There is a simple minor mode for Emacs: [google-translate-mode.el](https://github.com/soimort/translate-shell/raw/develop/google-translate-mode.el)
+
+* <kbd>C-c -</kbd> Show translation of the current word in message buffer.
+* <kbd>C-c =</kbd> View verbose translation of the current word in popup dialog.
+* <kbd>C-c +</kbd> Insert translation of the current word right after.
 
 ### Vim
 
@@ -477,11 +492,13 @@ Use `$ trans -R` to view the list of language codes.
 
 * **A**: Translate Shell uses ANSI escape sequences to display colors and other effects. You can disable them by either using the option `-no-ansi`, or telling Translate Shell that your terminal type is dumb via the environment variable `TERM`: `$ TERM=dumb trans ...`
 
+## Reporting Bugs
+
+**Please review the [guidelines for contributing](https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md) before reporting an issue.**
+
 ## Contributing
 
-Report an issue: <https://github.com/soimort/translate-shell/issues>
-
-Please review the [guidelines for contributing](https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md) before reporting an issue or sending a pull request.
+**Please review the [guidelines for contributing](https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md) before sending a pull request.**
 
 ## Licensing
 
