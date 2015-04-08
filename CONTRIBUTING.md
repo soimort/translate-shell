@@ -7,8 +7,8 @@
 2. **Always test with the latest released version before reporting an issue.**
 
 3. In your bug report, please be specific about:
-* The exact command you entered
-* The output of `trans -version` on your system
+   * The exact command you entered
+   * The output of `trans -version` on your system
 
 ## Sending a Pull Request
 
