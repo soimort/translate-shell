@@ -272,9 +272,7 @@ Start an interactive shell, using the `-interactive` option:
 
 ## Text Editors
 
-`trans` is just a command-line program which you can easily integrate with your favorite text editor. Any way you want.
-
-Below are some might-be-useful tips. Feel free to roll your own Emacs mode or Vim script!
+`trans` is a command-line program which can be easily integrated with your favorite text editor. Below are some useful tips.
 
 ### Emacs
 
@@ -289,6 +287,14 @@ You can, of course, use Emacs as a front-end of Translate Shell, in the same way
 When editing a text file, viewing the translation of a region is just one single command: (translating any language to Japanese, for example)
 
 <kbd>M-| trans :ja</kbd>
+
+#### Emacs mode
+
+There is a simple minor mode for Emacs: [google-translate-mode.el](https://github.com/soimort/translate-shell/raw/develop/google-translate-mode.el)
+
+* <kbd>C-c -</kbd> Show translation of the current word in message buffer.
+* <kbd>C-c =</kbd> View verbose translation of the current word in popup dialog.
+* <kbd>C-c +</kbd> Insert translation of the current word right after.
 
 ### Vim
 
