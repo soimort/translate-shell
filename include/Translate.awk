@@ -51,9 +51,10 @@ function postprocess(text) {
 
 # Send an HTTP request and get response from Google Translate.
 function getResponse(text, sl, tl, hl,    content, url) {
-    url = HttpPathPrefix "/translate_a/t?client=t"              \
-        "&ie=UTF-8&oe=UTF-8"                                    \
-        "&text=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl
+    url = HttpPathPrefix "/translate_a/single?client=t"                 \
+        "&ie=UTF-8&oe=UTF-8"                                            \
+        "&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at"  \
+        "&q=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl
 
     print "GET " url " HTTP/1.1\n"             \
           "Host: " HttpHost "\n"               \
@@ -108,7 +109,7 @@ function getTranslation(text, sl, tl, hl,
 
     # Debug mode
     if (Option["debug"]) {
-        d(sprintf("content='%s'", content))
+        d(content)
         da(tokens, "tokens[%s]='%s'")
         da(ast, "ast[%s]='%s'")
     }
