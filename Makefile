@@ -1,10 +1,10 @@
-NAME     = "Translate Shell"
+NAME     = "translate-shell"
 COMMAND  = trans
 BUILDDIR = build
 MANDIR   = man
 
 TARGET   = bash
-INSTDIR  = /usr/bin
+PREFIX   = /usr/local
 
 .PHONY: clean uninstall
 
@@ -22,7 +22,10 @@ test: build
 	[ "`$(BUILDDIR)/$(COMMAND) -b 忍者`" = 'Ninja' ]
 
 install: build
-	@install $(BUILDDIR)/$(COMMAND) $(INSTDIR)/$(COMMAND) && echo "[$(NAME)] Successfully installed."
+	@install $(BUILDDIR)/$(COMMAND) $(PREFIX)/bin/$(COMMAND) &&\
+	cp $(MANDIR)/$(COMMAND).1 $(PREFIX)/share/man/man1/$(COMMAND).1 &&\
+	echo "[OK] $(NAME) installed."
 
 uninstall:
-	@rm $(INSTDIR)/$(COMMAND) && echo "[$(NAME)] Successfully uninstalled."
+	@rm $(PREFIX)/bin/$(COMMAND) $(PREFIX)/share/man/man1/$(COMMAND).1 &&\
+	echo "[OK] $(NAME) uninstalled."
