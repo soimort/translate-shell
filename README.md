@@ -105,13 +105,31 @@ Additionally, you may verify [this signature](http://www.soimort.org/translate-s
 
     $ gpg --verify trans.sig trans
 
-### From Your OS
+### From Git
 
-#### OS X
+    $ git clone https://github.com/soimort/translate-shell
+    $ cd translate-shell/
+    $ sudo make install
 
-Available as a self-hosted Homebrew formula: (always the latest release since it's maintained by the author)
+The default `PREFIX` of installation is `/usr/local`. If you wish to install it to another path (e.g. `/usr`, `~/.local`), use:
+
+    $ sudo make PREFIX=/usr install
+
+If you prefer zsh, specify zsh as the build target: (normally you don't need to worry about that if both bash and zsh are installed on your system)
+
+    $ sudo make TARGET=zsh install
+
+### From Your Package Manager
+
+#### OS X (via Homebrew) / Linux (via Linuxbrew)
+
+Available as a self-hosted Homebrew formula:
 
     $ brew install http://www.soimort.org/translate-shell/translate-shell.rb
+
+On Linux, you may ignore its dependencies (e.g. gawk) if you already have them in your system:
+
+    $ brew install --ignore-dependencies http://www.soimort.org/translate-shell/translate-shell.rb
 
 #### FreeBSD
 
@@ -122,7 +140,7 @@ Available in FreeBSD Ports collection:
 
 #### Debian
 
-Available in Debian Testing (Jessie):
+Available in Debian Unstable:
 
     $ apt-get install translate-shell
 
@@ -133,20 +151,6 @@ Available in the [Arch User Repository](https://aur.archlinux.org/packages/trans
     $ cower -d translate-shell
     $ cd translate-shell/
     $ makepkg -si
-
-### From Git (For Developers and Advanced Users)
-
-    $ git clone https://github.com/soimort/translate-shell
-    $ cd translate-shell/
-    $ make install
-
-By default, a bash script `trans` will be installed to your `/usr/bin`. If you prefer to use zsh, you can specify zsh as the build target:
-
-    $ make TARGET=zsh install
-
-You can specify the installation path too:
-
-    $ make INSTDIR=~/bin install
 
 ## Examples
 
