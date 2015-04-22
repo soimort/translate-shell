@@ -199,97 +199,114 @@ function getTranslation(text, sl, tl, hl,
     } else {
         # Verbose mode
 
-        r = AnsiCode["bold"] show(join(original), il) AnsiCode["no bold"]
-        if (anything(oPhonetics))
-            r = r "\n" AnsiCode["bold"] "/" join(oPhonetics) "/" AnsiCode["no bold"]
-        r = r "\n"
-        # Dictionary mode
-        if (isarray(oWordClasses) && anything(oWordClasses)) {
-            for (i = 0; i < length(oWordClasses); i++) {
-                r = r "\n" AnsiCode["negative"] AnsiCode["bold"]        \
-                    show(oWordClasses[i], hl) AnsiCode["no bold"] AnsiCode["positive"]
-                if (isarray(oWords[i])) {
-                    # Detailed explanation
-                    for (j = 0; j < length(oWords[i]); j++) {
-                        explanation = oWords[i][j][0]
-                        ref = oWords[i][j][1]
-                        example = oWords[i][j][2]
+        if (isarray(wordClasses) && anything(wordClasses))
+            wordMode = 1
+        if (il == tl)
+            wordMode = dictMode = 1
 
-                        r = r "\n    " AnsiCode["bold"] show(explanation, il) AnsiCode["no bold"]
-                        if (example)
-                            r = r "\n    - \"" show(example, il) "\""
-                        if (ref && isarray(oRefs[ref])) {
-                            r = r "\n    * synonyms: " AnsiCode["underline"] \
-                                show(oSynonyms[oRefs[ref][1]][oRefs[ref][2]][0], il) AnsiCode["no underline"]
-                            for (k = 1; k < length(oSynonyms[oRefs[ref][1]][oRefs[ref][2]]); k++)
-                                r = r ", " AnsiCode["underline"]        \
-                                    show(oSynonyms[oRefs[ref][1]][oRefs[ref][2]][k], il) AnsiCode["no underline"]
+        if (wordMode) {
+            r = AnsiCode["bold"] show(join(original), il) AnsiCode["no bold"]
+            if (anything(oPhonetics))
+                r = r "\n" AnsiCode["bold"] "/" join(oPhonetics) "/" AnsiCode["no bold"]
+            r = r "\n"
+        }
+        if (dictMode) {
+            # Dictionary mode
+            if (isarray(oWordClasses) && anything(oWordClasses)) {
+                for (i = 0; i < length(oWordClasses); i++) {
+                    r = r "\n" AnsiCode["negative"] AnsiCode["bold"]    \
+                        show(oWordClasses[i], hl) AnsiCode["no bold"] AnsiCode["positive"]
+                    if (isarray(oWords[i])) {
+                        # Detailed explanation
+                        for (j = 0; j < length(oWords[i]); j++) {
+                            explanation = oWords[i][j][0]
+                            ref = oWords[i][j][1]
+                            example = oWords[i][j][2]
+
+                            r = r "\n    " AnsiCode["bold"] show(explanation, il) AnsiCode["no bold"]
+                            if (example)
+                                r = r "\n    - \"" show(example, il) "\""
+                            if (ref && isarray(oRefs[ref])) {
+                                r = r "\n    * synonyms: " AnsiCode["underline"] \
+                                    show(oSynonyms[oRefs[ref][1]][oRefs[ref][2]][0], il) AnsiCode["no underline"]
+                                for (k = 1; k < length(oSynonyms[oRefs[ref][1]][oRefs[ref][2]]); k++)
+                                    r = r ", " AnsiCode["underline"]    \
+                                        show(oSynonyms[oRefs[ref][1]][oRefs[ref][2]][k], il) AnsiCode["no underline"]
+                            }
+                            r = r "\n"
+                        }
+                    } else {
+                        # Synonyms only
+                        for (j = 0; j < length(oSynonyms[i]); j++) {
+                            r = r "\n  * " show(oSynonyms[i][j][0], il)
+                            for (k = 1; k < length(oSynonyms[i][j]); k++)
+                                r = r ", " show(oSynonyms[i][j][k], il)
                         }
                         r = r "\n"
                     }
-                } else {
-                    # Synonyms only
-                    for (j = 0; j < length(oSynonyms[i]); j++) {
-                        r = r "\n  * " show(oSynonyms[i][j][0], il)
-                        for (k = 1; k < length(oSynonyms[i][j]); k++)
-                            r = r ", " show(oSynonyms[i][j][k], il)
-                    }
+                }
+            }
+            # Examples
+            if (isarray(oExamples) && anything(oExamples)) {
+                r = r "\n" "Examples:"
+                for (i = 0; i < length(oExamples); i++) {
+                    example = oExamples[i]
+                    sub(/\u003cb\u003e/, AnsiCode["negative"], example)
+                    sub(/\u003c\/b\u003e/, AnsiCode["positive"], example)
+                    r = r "\n  - " show(example, il)
                     r = r "\n"
                 }
             }
-        }
-        # Examples
-        if (isarray(oExamples) && anything(oExamples)) {
-            r = r "\n" "Examples:"
-            for (i = 0; i < length(oExamples); i++) {
-                example = oExamples[i]
-                sub(/\u003cb\u003e/, AnsiCode["negative"], example)
-                sub(/\u003c\/b\u003e/, AnsiCode["positive"], example)
-                r = r "\n  - " show(example, il)
+            # See also
+            if (isarray(oSeeAlso) && anything(oSeeAlso)) {
+                r = r "\n" "See also:"
+                r = r "\n" AnsiCode["underline"] show(oSeeAlso[0], il) AnsiCode["no underline"]
+                for (k = 1; k < length(oSeeAlso); k++)
+                    r = r ", " AnsiCode["underline"] show(oSeeAlso[k], il) AnsiCode["no underline"]
                 r = r "\n"
             }
         }
-        # See also
-        if (isarray(oSeeAlso) && anything(oSeeAlso)) {
-            r = r "\n" "See also:"
-            r = r "\n" AnsiCode["underline"] show(oSeeAlso[0], il) AnsiCode["no underline"]
-            for (k = 1; k < length(oSeeAlso); k++)
-                r = r ", " AnsiCode["underline"] show(oSeeAlso[k], il) AnsiCode["no underline"]
+
+        if (!wordMode) {
+            r = r AnsiCode["bold"] s(translation, tl) AnsiCode["no bold"] # target language
+            if (anything(phonetics))
+                r = r "\n" AnsiCode["bold"] "/" join(phonetics) "/" AnsiCode["no bold"] # phonetic transcription
             r = r "\n"
         }
-
-
-
-        r = r "\n" AnsiCode["bold"] s(translation, tl) AnsiCode["no bold"] # target language
-        if (anything(phonetics))
-            r = r "\n" AnsiCode["bold"] join(phonetics) AnsiCode["no bold"] # phonetic transcription
 
         if (isarray(altTranslations[0]) && anything(altTranslations[0])) {
             # List alternative translations
 
             if (Locale[getCode(hl)]["rtl"] || Locale[getCode(il)]["rtl"])
-                r = r "\n\n" s(sprintf(Locale[getCode(hl)]["message"], join(original))) # caution: mixed languages, BiDi invoked must be implemented correctly (i.e. FriBidi is required)
+                r = r "\n" s(sprintf(Locale[getCode(hl)]["message"], "\"" join(original) "\"")) ":" # caution: mixed languages, BiDi invoked must be implemented correctly (i.e. FriBidi is required)
             else
-                r = r "\n\n" sprintf(Locale[getCode(hl)]["message"], join(original))
-            if (Locale[getCode(il)]["rtl"] || Locale[getCode(tl)]["rtl"])
-                r = r "\n" s("(" Locale[getCode(il)]["endonym"] " ➔ " Locale[getCode(tl)]["endonym"] ")") # caution: mixed languages
-            else
-                r = r "\n" "(" Locale[getCode(il)]["endonym"] " ➔ " Locale[getCode(tl)]["endonym"] ")"
+                r = r "\n" sprintf(Locale[getCode(hl)]["message"], "\"" join(original) "\"") ":"
 
-            temp = segments[0] "(" join(altTranslations[0], "/") ")"
-            for (i = 1; i < length(altTranslations); i++)
-                temp = temp " " segments[i] "(" join(altTranslations[i], "/") ")"
             if (Locale[getCode(il)]["rtl"] || Locale[getCode(tl)]["rtl"])
-                r = r "\n" AnsiCode["bold"] s(temp) AnsiCode["no bold"] # caution: mixed languages
+                r = r "\n" s("(" Locale[getCode(il)]["endonym"] " -> " Locale[getCode(tl)]["endonym"] ")") # caution: mixed languages
             else
-                r = r "\n" AnsiCode["bold"] temp AnsiCode["no bold"]
+                r = r "\n" "(" Locale[getCode(il)]["endonym"] " -> " Locale[getCode(tl)]["endonym"] ")"
+
+            if (wordMode) {
+                r = r "\n" AnsiCode["bold"] s(translation, tl) AnsiCode["no bold"] # target language
+                if (anything(phonetics))
+                    r = r "\n" AnsiCode["bold"] "/" join(phonetics) "/" AnsiCode["no bold"] # phonetic transcription
+            } else {
+                temp = segments[0] "(" join(altTranslations[0], "/") ")"
+                for (i = 1; i < length(altTranslations); i++)
+                    temp = temp " " segments[i] "(" join(altTranslations[i], "/") ")"
+                if (Locale[getCode(il)]["rtl"] || Locale[getCode(tl)]["rtl"])
+                    r = r "\n" AnsiCode["bold"] s(temp) AnsiCode["no bold"] # caution: mixed languages
+                else
+                    r = r "\n" AnsiCode["bold"] temp AnsiCode["no bold"]
+            }
         }
 
         if (isarray(wordClasses) && anything(wordClasses)) {
             # List dictionary entries
 
-            for (i = 0; i < length(words); i++) {
-                r = r "\n\n" s("[" wordClasses[i] "]", hl) # home language
+            for (i = 0; i < length(wordClasses); i++) {
+                r = r "\n\n" s(AnsiCode["negative"] wordClasses[i] AnsiCode["positive"], hl) # home language
                 for (j = 0; j < length(words[i]); j++) {
                     word = words[i][j][0]
                     explanation = join(words[i][j][1], ", ")
