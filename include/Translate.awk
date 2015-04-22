@@ -207,7 +207,7 @@ function getTranslation(text, sl, tl, hl,
         if (wordMode) {
             r = AnsiCode["bold"] show(join(original), il) AnsiCode["no bold"]
             if (anything(oPhonetics))
-                r = r "\n" AnsiCode["bold"] "/" join(oPhonetics) "/" AnsiCode["no bold"]
+                r = r "\n" AnsiCode["bold"] showPhonetics(join(oPhonetics), il) AnsiCode["no bold"]
         }
         if (dictMode) {
             # Dictionary mode
@@ -271,7 +271,7 @@ function getTranslation(text, sl, tl, hl,
         if (!wordMode) {
             r = r AnsiCode["bold"] s(translation, tl) AnsiCode["no bold"] # target language
             if (anything(phonetics))
-                r = r "\n" AnsiCode["bold"] "/" join(phonetics) "/" AnsiCode["no bold"] # phonetic transcription
+                r = r "\n" AnsiCode["bold"] showPhonetics(join(phonetics), tl) AnsiCode["no bold"] # phonetic transcription
         }
 
         if (isarray(altTranslations[0]) && anything(altTranslations[0])) {
@@ -291,7 +291,7 @@ function getTranslation(text, sl, tl, hl,
             if (wordMode) {
                 r = r "\n" AnsiCode["bold"] s(translation, tl) AnsiCode["no bold"] # target language
                 if (anything(phonetics))
-                    r = r "\n" AnsiCode["bold"] "/" join(phonetics) "/" AnsiCode["no bold"] # phonetic transcription
+                    r = r "\n" AnsiCode["bold"] showPhonetics(join(phonetics), tl) AnsiCode["no bold"] # phonetic transcription
             } else {
                 temp = segments[0] "(" join(altTranslations[0], "/") ")"
                 for (i = 1; i < length(altTranslations); i++)

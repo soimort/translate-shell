@@ -503,6 +503,16 @@ function initBiDi() {
     BiDi = FriBidi ? "fribidi --width %s" : "rev | sed \"s/'/\\\\\\'/\" | xargs printf '%%s '"
 }
 
+# Add /slashes/ for IPA phonemic notations
+# Parameters:
+#     code
+function showPhonetics(phonetics, code) {
+    if (code && getCode(code) == "en")
+        return "/" phonetics "/"
+    else
+        return phonetics
+}
+
 # Convert a logical string to visual; don't right justify RTL lines.
 # Parameters:
 #     code: ignore to apply bidirectional algorithm on every string
