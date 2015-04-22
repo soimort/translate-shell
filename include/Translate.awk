@@ -199,19 +199,20 @@ function getTranslation(text, sl, tl, hl,
     } else {
         # Verbose mode
 
-        if (isarray(wordClasses) && anything(wordClasses))
+        if (isarray(wordClasses))
             wordMode = 1
-        if (il == tl)
+        if (il == tl && isarray(oWordClasses))
             wordMode = dictMode = 1
 
         if (wordMode) {
             r = AnsiCode["bold"] show(join(original), il) AnsiCode["no bold"]
             if (anything(oPhonetics))
                 r = r "\n" AnsiCode["bold"] "/" join(oPhonetics) "/" AnsiCode["no bold"]
-            r = r "\n"
         }
         if (dictMode) {
             # Dictionary mode
+            r = r "\n"
+
             if (isarray(oWordClasses) && anything(oWordClasses)) {
                 for (i = 0; i < length(oWordClasses); i++) {
                     r = r "\n" AnsiCode["negative"] AnsiCode["bold"]    \
@@ -271,11 +272,11 @@ function getTranslation(text, sl, tl, hl,
             r = r AnsiCode["bold"] s(translation, tl) AnsiCode["no bold"] # target language
             if (anything(phonetics))
                 r = r "\n" AnsiCode["bold"] "/" join(phonetics) "/" AnsiCode["no bold"] # phonetic transcription
-            r = r "\n"
         }
 
         if (isarray(altTranslations[0]) && anything(altTranslations[0])) {
             # List alternative translations
+            r = r "\n"
 
             if (Locale[getCode(hl)]["rtl"] || Locale[getCode(il)]["rtl"])
                 r = r "\n" s(sprintf(Locale[getCode(hl)]["message"], "\"" join(original) "\"")) ":" # caution: mixed languages, BiDi invoked must be implemented correctly (i.e. FriBidi is required)
