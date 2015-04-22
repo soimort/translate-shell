@@ -307,7 +307,8 @@ function getTranslation(text, sl, tl, hl,
             # List dictionary entries
 
             for (i = 0; i < length(wordClasses); i++) {
-                r = r "\n\n" s(AnsiCode["negative"] wordClasses[i] AnsiCode["positive"], hl) # home language
+                r = r "\n\n" s(AnsiCode["negative"] AnsiCode["bold"]    \
+                               wordClasses[i] AnsiCode["no bold"] AnsiCode["positive"], hl) # home language
                 for (j = 0; j < length(words[i]); j++) {
                     word = words[i][j][0]
                     explanation = join(words[i][j][1], ", ")
