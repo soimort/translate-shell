@@ -79,10 +79,11 @@ function play(text, tl,    url) {
 function getTranslation(text, sl, tl, hl,
                         isVerbose, toSpeech, returnPlaylist,
                         ####
-                        altTranslations, article, ast, content,
-                        explanation, group, i, il, ils,
-                        isPhonetic, j, original, phonetics,
-                        r, rtl, saveSortedIn, segments,
+                        altTranslations, article, ast, content, example,
+                        explanation, group, i, il, ils, isPhonetic, j, k,
+                        oExamples, oPhonetics, oRefs, oSeeAlso, oSynonyms,
+                        oWords, oWordClasses, original, phonetics,
+                        r, ref, rtl, saveSortedIn, segments,
                         temp, tokens, translation, translations,
                         word, words, wordClasses) {
     isPhonetic = match(tl, /^@/)
@@ -123,27 +124,58 @@ function getTranslation(text, sl, tl, hl,
             append(original, literal(ast[i]))
         if (i ~ "^0" SUBSEP "0" SUBSEP "[[:digit:]]+" SUBSEP "2$")
             append(phonetics, literal(ast[i]))
+        if (i ~ "^0" SUBSEP "0" SUBSEP "[[:digit:]]+" SUBSEP "3$")
+            append(oPhonetics, literal(ast[i]))
 
+        # 1 - word classes and explanations
         if (match(i, "^0" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
             wordClasses[group[1]] = literal(ast[i])
-
         if (match(i, "^0" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "2" SUBSEP "([[:digit:]]+)" SUBSEP "([[:digit:]]+)$", group))
             words[group[1]][group[2]][group[3]] = literal(ast[i])
         if (match(i, "^0" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "2" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)$", group))
             words[group[1]][group[2]]["1"][group[3]] = literal(ast[i])
 
+        # 5 - alternative translations
         if (match(i, "^0" SUBSEP "5" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group)) {
             segments[group[1]] = literal(ast[i])
             altTranslations[group[1]][0] = ""
         }
-
         if (match(i, "^0" SUBSEP "5" SUBSEP "([[:digit:]]+)" SUBSEP "2" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
             altTranslations[group[1]][group[2]] = postprocess(literal(ast[i]))
 
-        # Identified source languages
+        # 8 - identified source languages
         if (i ~ "^0" SUBSEP "8" SUBSEP "0" SUBSEP "[[:digit:]]+$" ||
             i ~ "^0" SUBSEP "2$")
             append(ils, literal(ast[i]))
+
+        # 11 - (original) word classes and synonyms
+        if (match(i, "^0" SUBSEP "11" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
+            oWordClasses[group[1]] = literal(ast[i])
+        if (match(i, "^0" SUBSEP "11" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "1$", group))
+            if (ast[i]) {
+                oRefs[literal(ast[i])][1] = group[1]
+                oRefs[literal(ast[i])][2] = group[2]
+            }
+        if (match(i, "^0" SUBSEP "11" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "0" SUBSEP "([[:digit:]]+)$", group))
+            oSynonyms[group[1]][group[2]][group[3]] = literal(ast[i])
+
+        # 12 - (original) word classes and explanations
+        if (match(i, "^0" SUBSEP "12" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
+            oWordClasses[group[1]] = literal(ast[i])
+        if (match(i, "^0" SUBSEP "12" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
+            oWords[group[1]][group[2]][0] = literal(ast[i])
+        if (match(i, "^0" SUBSEP "12" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "1$", group))
+            oWords[group[1]][group[2]][1] = literal(ast[i])
+        if (match(i, "^0" SUBSEP "12" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "2$", group))
+            oWords[group[1]][group[2]][2] = postprocess(literal(ast[i]))
+
+        # 13 - (original) examples
+        if (match(i, "^0" SUBSEP "13" SUBSEP "0" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
+            oExamples[group[1]] = postprocess(literal(ast[i]))
+
+        # 14 - (original) see also
+        if (match(i, "^0" SUBSEP "14" SUBSEP "0" SUBSEP "([[:digit:]]+)$", group))
+            oSeeAlso[group[1]] = literal(ast[i])
     }
     PROCINFO["sorted_in"] = saveSortedIn
 
@@ -167,7 +199,68 @@ function getTranslation(text, sl, tl, hl,
     } else {
         # Verbose mode
 
-        r = AnsiCode["bold"] s(translation, tl) AnsiCode["no bold"] # target language
+        r = AnsiCode["bold"] show(join(original), il) AnsiCode["no bold"]
+        if (anything(oPhonetics))
+            r = r "\n" AnsiCode["bold"] "/" join(oPhonetics) "/" AnsiCode["no bold"]
+        r = r "\n"
+        # Dictionary mode
+        if (isarray(oWordClasses) && anything(oWordClasses)) {
+            for (i = 0; i < length(oWordClasses); i++) {
+                r = r "\n" AnsiCode["negative"] AnsiCode["bold"]        \
+                    show(oWordClasses[i], hl) AnsiCode["no bold"] AnsiCode["positive"]
+                if (isarray(oWords[i])) {
+                    # Detailed explanation
+                    for (j = 0; j < length(oWords[i]); j++) {
+                        explanation = oWords[i][j][0]
+                        ref = oWords[i][j][1]
+                        example = oWords[i][j][2]
+
+                        r = r "\n    " AnsiCode["bold"] show(explanation, il) AnsiCode["no bold"]
+                        if (example)
+                            r = r "\n    - \"" show(example, il) "\""
+                        if (ref && isarray(oRefs[ref])) {
+                            r = r "\n    * synonyms: " AnsiCode["underline"] \
+                                show(oSynonyms[oRefs[ref][1]][oRefs[ref][2]][0], il) AnsiCode["no underline"]
+                            for (k = 1; k < length(oSynonyms[oRefs[ref][1]][oRefs[ref][2]]); k++)
+                                r = r ", " AnsiCode["underline"]        \
+                                    show(oSynonyms[oRefs[ref][1]][oRefs[ref][2]][k], il) AnsiCode["no underline"]
+                        }
+                        r = r "\n"
+                    }
+                } else {
+                    # Synonyms only
+                    for (j = 0; j < length(oSynonyms[i]); j++) {
+                        r = r "\n  * " show(oSynonyms[i][j][0], il)
+                        for (k = 1; k < length(oSynonyms[i][j]); k++)
+                            r = r ", " show(oSynonyms[i][j][k], il)
+                    }
+                    r = r "\n"
+                }
+            }
+        }
+        # Examples
+        if (isarray(oExamples) && anything(oExamples)) {
+            r = r "\n" "Examples:"
+            for (i = 0; i < length(oExamples); i++) {
+                example = oExamples[i]
+                sub(/\u003cb\u003e/, AnsiCode["negative"], example)
+                sub(/\u003c\/b\u003e/, AnsiCode["positive"], example)
+                r = r "\n  - " show(example, il)
+                r = r "\n"
+            }
+        }
+        # See also
+        if (isarray(oSeeAlso) && anything(oSeeAlso)) {
+            r = r "\n" "See also:"
+            r = r "\n" AnsiCode["underline"] show(oSeeAlso[0], il) AnsiCode["no underline"]
+            for (k = 1; k < length(oSeeAlso); k++)
+                r = r ", " AnsiCode["underline"] show(oSeeAlso[k], il) AnsiCode["no underline"]
+            r = r "\n"
+        }
+
+
+
+        r = r "\n" AnsiCode["bold"] s(translation, tl) AnsiCode["no bold"] # target language
         if (anything(phonetics))
             r = r "\n" AnsiCode["bold"] join(phonetics) AnsiCode["no bold"] # phonetic transcription
 
