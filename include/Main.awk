@@ -25,6 +25,7 @@ function preInit() {
     initUserLang()      #<< Locale
 
     RS = "\n"
+    I  = "  "
 
     ExitCode = 0
 
