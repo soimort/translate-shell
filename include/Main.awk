@@ -116,8 +116,8 @@ BEGIN {
             exit
         }
 
-        # -d, -debug
-        match(ARGV[pos], /^--?d(e(b(ug?)?)?)?$/)
+        # -D, -debug
+        match(ARGV[pos], /^--?(debug|D)$/)
         if (RSTART) {
             Option["debug"] = 1
             continue
