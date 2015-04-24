@@ -248,19 +248,33 @@ function initAnsiCode() {
     AnsiCode["white"]         = "\33[97m"
 }
 
+# Return ANSI escaped string.
+function ansi(code, text) {
+    switch (code) {
+    case "bold":
+        return AnsiCode[code] text AnsiCode["no bold"]
+    case "underline":
+        return AnsiCode[code] text AnsiCode["no underline"]
+    case "negative":
+        return AnsiCode[code] text AnsiCode["positive"]
+    default:
+        return AnsiCode[code] text AnsiCode[0]
+    }
+}
+
 # Print warning message.
 function w(text) {
-    print AnsiCode["yellow"] text AnsiCode[0] > "/dev/stderr"
+    print ansi("yellow", text) > "/dev/stderr"
 }
 
 # Print error message.
 function e(text) {
-    print AnsiCode["red"] AnsiCode["bold"] text AnsiCode[0] > "/dev/stderr"
+    print ansi("red", text) > "/dev/stderr"
 }
 
 # Print debugging message.
 function d(text) {
-    print AnsiCode["gray"] text AnsiCode[0] > "/dev/stderr"
+    print ansi("gray", text) > "/dev/stderr"
 }
 
 # Log an array.
