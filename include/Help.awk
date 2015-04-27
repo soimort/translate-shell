@@ -95,10 +95,10 @@ function getReference(displayName) {
             Locale["mr"]["name"] "        - " ansi("bold", "mr") "  │ " \
             Locale["yi"]["name"] "    - " ansi("bold", "yi") " │" RS \
             "│ " Locale["de"]["name"] "              - " ansi("bold", "de") "    │ " \
-            Locale["my"]["name"] "        - " ansi("bold", "my") "  │ " \
+            Locale["mn"]["name"] "      - " ansi("bold", "mn") "  │ " \
             Locale["yo"]["name"] "     - " ansi("bold", "yo") " │" RS \
             "│ " Locale["el"]["name"] "               - " ansi("bold", "el") "    │ " \
-            Locale["mn"]["name"] "      - " ansi("bold", "mn") "  │ " \
+            Locale["my"]["name"] "        - " ansi("bold", "my") "  │ " \
             Locale["zu"]["name"] "       - " ansi("bold", "zu") " │" RS \
             "│ " Locale["gu"]["name"] "            - " ansi("bold", "gu") "    │ " \
             Locale["ne"]["name"] "         - " ansi("bold", "ne") "  │ " \
