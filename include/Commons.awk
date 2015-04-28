@@ -269,7 +269,7 @@ function w(text) {
 
 # Print error message.
 function e(text) {
-    print ansi("red", text) > "/dev/stderr"
+    print ansi("bold", ansi("red", text)) > "/dev/stderr"
 }
 
 # Print debugging message.
