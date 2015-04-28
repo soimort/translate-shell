@@ -79,40 +79,48 @@ function play(text, tl,    url) {
 function getTranslation(text, sl, tl, hl,
                         isVerbose, toSpeech, returnPlaylist,
                         ####
-                        altTranslations, article, ast, content, example,
-                        explanation, group, i, il, ils, isPhonetic, j, k,
-                        oExamples, oPhonetics, oRefs, oSeeAlso, oSynonyms,
-                        oWords, oWordClasses, original, phonetics,
-                        r, ref, rtl, saveSortedIn, segments,
-                        temp, tokens, translation, translations,
-                        word, words, wordClasses) {
+                        r,
+                        content, tokens, ast,
+                        il, ils, isPhonetic,
+                        article, example, explanation, ref, word,
+                        translation, translations, phonetics,
+                        wordClasses, words, segments, altTranslations,
+                        original, oPhonetics, oWordClasses, oWords,
+                        oRefs, oSynonyms, oExamples, oSeeAlso,
+                        wShowOriginal, wShowOriginalPhonetics,
+                        wShowTranslation, wShowTranslationPhonetics,
+                        wShowPromptMessage, wShowLanguages,
+                        wShowOriginalDictionary, wShowDictionary,
+                        wShowAlternatives,
+                        hasWordClasses, hasAltTranslations,
+                        i, j, k, group, temp, saveSortedIn) {
     isPhonetic = match(tl, /^@/)
     tl = substr(tl, 1 + isPhonetic)
 
     if (!getCode(tl)) {
         # Check if target language is supported
         w("[WARNING] Unknown target language code: " tl)
-    } else if (getCode(tl) != "auto" && rtl = Locale[getCode(tl)]["rtl"]) {
-        # Check if target language is RTL
+    } else if (isRTL(tl)) {
+        # Check if target language is R-to-L
         if (!FriBidi)
-            w("[WARNING] " Locale[getCode(tl)]["name"] " is a right-to-left language, but GNU FriBidi is not found on your system.\nText might be displayed incorrectly.")
+            w("[WARNING] " getName(tl) " is a right-to-left language, but FriBidi cannot be found.")
     }
 
     content = getResponse(text, sl, tl, hl)
-
     plTokenize(tokens, content)
     plParse(ast, tokens)
-
-    if (!anything(ast)) {
-        e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
-        ExitCode = 1
-    }
 
     # Debug mode
     if (Option["debug"]) {
         d(content)
         da(tokens, "tokens[%s]='%s'")
         da(ast, "ast[%s]='%s'")
+    }
+
+    if (!anything(ast)) {
+        e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
+        ExitCode = 1
+        return
     }
 
     saveSortedIn = PROCINFO["sorted_in"]
@@ -199,24 +207,76 @@ function getTranslation(text, sl, tl, hl,
     } else {
         # Verbose mode
 
-        if (isarray(wordClasses))
-            wordMode = 1
-        if (il == tl && isarray(oWordClasses))
-            wordMode = dictMode = 1
+        wShowOriginal = 1
+        wShowOriginalPhonetics = 1
+        wShowTranslation = 1
+        wShowTranslationPhonetics = 1
+        wShowPromptMessage = 1
+        wShowLanguages = 1
+        wShowOriginalDictionary = 0
+        wShowDictionary = 1
+        wShowAlternatives = 1
 
-        if (wordMode) {
-            r = AnsiCode["bold"] show(join(original), il) AnsiCode["no bold"]
-            if (anything(oPhonetics))
-                r = r "\n" AnsiCode["bold"] showPhonetics(join(oPhonetics), il) AnsiCode["no bold"]
+        if (!anything(oPhonetics)) wShowOriginalPhonetics = 0
+        if (!anything(phonetics)) wShowTranslationPhonetics = 0
+        if (il == tl && isarray(oWordClasses)) {
+            wShowOriginalDictionary = 1 ###FIXME
+            wShowTranslation = 0        ###FIXME
         }
-        if (dictMode) {
-            # Dictionary mode
-            r = r "\n"
+        hasWordClasses = isarray(wordClasses) && anything(wordClasses)
+        hasAltTranslations = isarray(altTranslations[0]) && anything(altTranslations[0])
+        if (!hasWordClasses) wShowDictionary = 0
+        if (hasWordClasses || !hasAltTranslations) wShowAlternatives = 0
 
+        if (wShowOriginal) {
+            # Display: original text
+            if (r) r = r RS RS
+            r = r ansi("negative", ansi("bold", s(join(original), il)))
+            if (wShowOriginalPhonetics)
+                r = r RS showPhonetics(join(oPhonetics), il)
+        }
+
+        if (wShowTranslation) {
+            # Display: major translation & phonetics
+            if (r) r = r RS RS
+            r = r ansi("bold", s(translation, tl))
+            if (wShowTranslationPhonetics)
+                r = r RS showPhonetics(join(phonetics), tl)
+        }
+
+        if (wShowPromptMessage) {
+            # Display: prompt message
+            if (hasWordClasses) {
+                # Definitions of
+                if (r) r = r RS RS
+                if (isRTL(hl)) # home language is R-to-L
+                    r = r s(showDefinitionsOf(hl, join(original)))
+                else # home language is L-to-R
+                    r = r showDefinitionsOf(hl, ansi("underline", show(join(original), il)))
+            } else if (hasAltTranslations) {
+                # Translations of
+                if (r) r = r RS RS
+                if (isRTL(hl)) # home language is R-to-L
+                    r = r s(showTranslationsOf(hl, join(original)))
+                else # home language is L-to-R
+                    r = r showTranslationsOf(hl, ansi("underline", show(join(original), il)))
+            }
+        }
+
+        if (wShowLanguages) {
+            # Display: source language -> target language
+            if (hasWordClasses || hasAltTranslations) {
+                if (r) r = r RS
+                r = r s(sprintf("[ %s -> %s ]", getEndonym(il), getEndonym(tl)))
+            }
+        }
+
+        if (wShowOriginalDictionary) {
+            # Display: original dictionary
+            if (r) r = r RS
             if (isarray(oWordClasses) && anything(oWordClasses)) {
                 for (i = 0; i < length(oWordClasses); i++) {
-                    r = r "\n" AnsiCode["negative"] AnsiCode["bold"]    \
-                        show(oWordClasses[i], hl) AnsiCode["no bold"] AnsiCode["positive"]
+                    r = (i > 0 ? r RS : r) RS s(oWordClasses[i], hl)
                     if (isarray(oWords[i])) {
                         # Detailed explanation
                         for (j = 0; j < length(oWords[i]); j++) {
@@ -224,121 +284,90 @@ function getTranslation(text, sl, tl, hl,
                             ref = oWords[i][j][1]
                             example = oWords[i][j][2]
 
-                            r = r "\n    " AnsiCode["bold"] show(explanation, il) AnsiCode["no bold"]
+                            r = (j > 0 ? r RS : r) RS ansi("bold", ins(1, explanation, il))
                             if (example)
-                                r = r "\n    - \"" show(example, il) "\""
+                                r = r RS ins(2, "- \"" example "\"", il)
                             if (ref && isarray(oRefs[ref])) {
-                                r = r "\n    * synonyms: " AnsiCode["underline"] \
-                                    show(oSynonyms[oRefs[ref][1]][oRefs[ref][2]][0], il) AnsiCode["no underline"]
+                                temp = showSynonyms(hl) ": " oSynonyms[oRefs[ref][1]][oRefs[ref][2]][0]
                                 for (k = 1; k < length(oSynonyms[oRefs[ref][1]][oRefs[ref][2]]); k++)
-                                    r = r ", " AnsiCode["underline"]    \
-                                        show(oSynonyms[oRefs[ref][1]][oRefs[ref][2]][k], il) AnsiCode["no underline"]
+                                    temp = temp ", " oSynonyms[oRefs[ref][1]][oRefs[ref][2]][k]
+                                r = r RS ins(1, temp)
                             }
-                            r = r "\n"
                         }
                     } else {
                         # Synonyms only
                         for (j = 0; j < length(oSynonyms[i]); j++) {
-                            r = r "\n  * " show(oSynonyms[i][j][0], il)
+                            temp = "* " oSynonyms[i][j][0]
                             for (k = 1; k < length(oSynonyms[i][j]); k++)
-                                r = r ", " show(oSynonyms[i][j][k], il)
+                                temp = temp ", " oSynonyms[i][j][k]
+                            r = r RS ins(1, temp)
                         }
-                        r = r "\n"
                     }
                 }
             }
             # Examples
             if (isarray(oExamples) && anything(oExamples)) {
-                r = r "\n" "Examples:"
+                r = r RS RS s(showExamples(hl), hl)
                 for (i = 0; i < length(oExamples); i++) {
                     example = oExamples[i]
-                    sub(/\u003cb\u003e/, AnsiCode["negative"], example)
-                    sub(/\u003c\/b\u003e/, AnsiCode["positive"], example)
-                    r = r "\n  - " show(example, il)
-                    r = r "\n"
+
+                    if (isRTL(il)) { # target language is R-to-L
+                        sub(/\u003cb\u003e/, "", example)
+                        sub(/\u003c\/b\u003e/, "", example)
+                    } else { # target language is L-to-R
+                        sub(/\u003cb\u003e/, AnsiCode["negative"] AnsiCode["bold"], example)
+                        sub(/\u003c\/b\u003e/, AnsiCode["positive"] AnsiCode["no bold"], example)
+                    }
+                    r = (i > 0 ? r RS : r) RS ins(1, "- " example, il)
                 }
             }
             # See also
             if (isarray(oSeeAlso) && anything(oSeeAlso)) {
-                r = r "\n" "See also:"
-                r = r "\n" AnsiCode["underline"] show(oSeeAlso[0], il) AnsiCode["no underline"]
+                r = r RS RS s(showSeeAlso(hl), hl)
+                temp = isRTL(il) ? oSeeAlso[0] : ansi("underline", oSeeAlso[0])
                 for (k = 1; k < length(oSeeAlso); k++)
-                    r = r ", " AnsiCode["underline"] show(oSeeAlso[k], il) AnsiCode["no underline"]
-                r = r "\n"
+                    temp = temp ", " (isRTL(il) ? oSeeAlso[k] : ansi("underline", oSeeAlso[k]))
+                r = r RS ins(1, temp, il)
             }
         }
 
-        if (!wordMode) {
-            r = r AnsiCode["bold"] s(translation, tl) AnsiCode["no bold"] # target language
-            if (anything(phonetics))
-                r = r "\n" AnsiCode["bold"] showPhonetics(join(phonetics), tl) AnsiCode["no bold"] # phonetic transcription
-        }
-
-        if (isarray(altTranslations[0]) && anything(altTranslations[0])) {
-            # List alternative translations
-            r = r "\n"
-
-            if (Locale[getCode(hl)]["rtl"] || Locale[getCode(il)]["rtl"])
-                r = r "\n" s(sprintf(Locale[getCode(hl)]["message"], "\"" join(original) "\"")) ":" # caution: mixed languages, BiDi invoked must be implemented correctly (i.e. FriBidi is required)
-            else
-                r = r "\n" sprintf(Locale[getCode(hl)]["message"], "\"" join(original) "\"") ":"
-
-            if (Locale[getCode(il)]["rtl"] || Locale[getCode(tl)]["rtl"])
-                r = r "\n" s("(" Locale[getCode(il)]["endonym"] " -> " Locale[getCode(tl)]["endonym"] ")") # caution: mixed languages
-            else
-                r = r "\n" "(" Locale[getCode(il)]["endonym"] " -> " Locale[getCode(tl)]["endonym"] ")"
-
-            if (wordMode) {
-                r = r "\n" AnsiCode["bold"] s(translation, tl) AnsiCode["no bold"] # target language
-                if (anything(phonetics))
-                    r = r "\n" AnsiCode["bold"] showPhonetics(join(phonetics), tl) AnsiCode["no bold"] # phonetic transcription
-            } else {
-                temp = segments[0] "(" join(altTranslations[0], "/") ")"
-                for (i = 1; i < length(altTranslations); i++)
-                    temp = temp " " segments[i] "(" join(altTranslations[i], "/") ")"
-                if (Locale[getCode(il)]["rtl"] || Locale[getCode(tl)]["rtl"])
-                    r = r "\n" AnsiCode["bold"] s(temp) AnsiCode["no bold"] # caution: mixed languages
-                else
-                    r = r "\n" AnsiCode["bold"] temp AnsiCode["no bold"]
-            }
-        }
-
-        if (isarray(wordClasses) && anything(wordClasses)) {
-            # List dictionary entries
-
+        if (wShowDictionary) {
+            # Display: dictionary entries
             for (i = 0; i < length(wordClasses); i++) {
-                r = r "\n\n" s(AnsiCode["negative"] AnsiCode["bold"]    \
-                               wordClasses[i] AnsiCode["no bold"] AnsiCode["positive"], hl) # home language
+                r = (i > 0 ? r RS : r) RS s(wordClasses[i], hl)
                 for (j = 0; j < length(words[i]); j++) {
                     word = words[i][j][0]
                     explanation = join(words[i][j][1], ", ")
                     article = words[i][j][4]
 
-                    if (rtl) {
-                        r = r "\n" AnsiCode["bold"] sprintf("%" Option["width"] - 4 "s", s((article ?
-                                                                                            "(" article ")" :
-                                                                                            "") " " word, tl, Option["width"] - 4)) AnsiCode["no bold"] # target language
-                        r = r "\n" s(explanation, il, Option["width"] - 8) # identified source language
-                    } else {
-                        r = r "\n" "    " AnsiCode["bold"] show((article ?
-                                                                 "(" article ") " :
-                                                                 "") word, tl) AnsiCode["no bold"] # target language
-                        r = r "\n" "        " s(explanation, il, Option["width"] - 8) # identified source language
-                    }
+                    r = r RS ansi("bold", ins(1, (article ? "(" article ") " : "") word, tl))
+                    r = r RS ins(2, explanation, il)
                 }
             }
         }
 
+        if (wShowAlternatives) {
+            # Display: alternative translations
+            if (r) r = r RS
+            for (i = 0; i < length(altTranslations); i++) {
+                r = (i > 0 ? r RS : r) ansi("underline", show(segments[i]))
+                temp = isRTL(tl) ? altTranslations[i][0] : ansi("bold", altTranslations[i][0])
+                for (j = 1; j < length(altTranslations[i]); j++)
+                    temp = temp ", " (isRTL(tl) ? altTranslations[i][j] : ansi("bold", altTranslations[i][j]))
+                r = r RS ins(1, temp)
+            }
+        }
+
         if (toSpeech) {
-            if (index(Locale[getCode(hl)]["message"], "%s") > 2) {
-                returnPlaylist[0]["text"] = sprintf(Locale[getCode(hl)]["message"], "")
+            if (index(showTranslationsOf(hl, "%s"), "%s") > 2) {
+                returnPlaylist[0]["text"] = showTranslationsOf(hl)
                 returnPlaylist[0]["tl"] = hl
                 returnPlaylist[1]["text"] = join(original)
                 returnPlaylist[1]["tl"] = il
             } else {
                 returnPlaylist[0]["text"] = join(original)
                 returnPlaylist[0]["tl"] = il
-                returnPlaylist[1]["text"] = sprintf(Locale[getCode(hl)]["message"], "")
+                returnPlaylist[1]["text"] = showTranslationsOf(hl)
                 returnPlaylist[1]["tl"] = hl
             }
             returnPlaylist[2]["text"] = translation
@@ -379,19 +408,19 @@ function translate(text, inline,
         # Check if home language is supported
         w("[WARNING] Unknown language code: " Option["hl"] ", fallback to English: en")
         Option["hl"] = "en" # fallback to English
-    } else if (getCode(Option["hl"]) != "auto" && Locale[getCode(Option["hl"])]["rtl"]) {
-        # Check if home language is RTL
+    } else if (isRTL(Option["hl"])) {
+        # Check if home language is R-to-L
         if (!FriBidi)
-            w("[WARNING] " Locale[getCode(Option["hl"])]["name"] " is a right-to-left language, but GNU FriBidi is not found on your system.\nText might be displayed incorrectly.")
+            w("[WARNING] " getName(Option["hl"]) " is a right-to-left language, but FriBidi cannot be found.")
     }
 
     if (!getCode(Option["sl"])) {
         # Check if source language is supported
         w("[WARNING] Unknown source language code: " Option["sl"])
-    } else if (getCode(Option["sl"]) != "auto" && Locale[getCode(Option["sl"])]["rtl"]) {
-        # Check if source language is RTL
+    } else if (isRTL(Option["sl"])) {
+        # Check if source language is R-to-L
         if (!FriBidi)
-            w("[WARNING] " Locale[getCode(Option["sl"])]["name"] " is a right-to-left language, but GNU FriBidi is not found on your system.\nText might be displayed incorrectly.")
+            w("[WARNING] " getName(Option["sl"]) " is a right-to-left language, but FriBidi cannot be found.")
     }
 
     saveSortedIn = PROCINFO["sorted_in"]

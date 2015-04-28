@@ -8,19 +8,24 @@
 [Translate Shell](http://www.soimort.org/translate-shell) (previously _Google Translate CLI_) is a command-line interface and interactive shell for [Google Translate](https://translate.google.com/). It works just the way you want it to be.
 
 ```
-$ trans "Saluton, Mondo"
-Hello, World
+$ trans 'Saluton, Mondo!'
+Saluton, Mondo!
 
-Translations of Saluton, Mondo
-(Esperanto -> English)
-Saluton(Hello/Hail/Hi/A greeting/Saluton) , Mondo(, World)
+Hello, World!
+
+Translations of Saluton, Mondo!
+[ Esperanto -> English ]
+Saluton ,
+    Hello,
+Mondo !
+    World!
 ```
 
 Translations with detailed explanations are shown by default. You can also translate the text briefly, i.e., only the most relevant translation is shown: (this will give you the same result as in [Google Translate CLI Legacy](https://github.com/soimort/translate-shell/tree/legacy))
 
 ```
-$ trans -b "Saluton, Mondo"
-Hello, World
+$ trans -b 'Saluton, Mondo!'
+Hello, World!
 ```
 
 Translations can be done interactively; input your text line by line:
