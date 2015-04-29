@@ -210,51 +210,51 @@ function getHelp() {
     return "Usage:\t" Command " [options] [source]:[target] [" ansi("underline", "text") "] ..." RS \
         "\t" Command " [options] [source]:[target1]+[target2]+... [" ansi("underline", "text") "] ..." RS RS \
         "Options:" RS                                                   \
-        I ansi("bold", "-V, -version") RS                               \
-        I I "Print version and exit." RS                                \
-        I ansi("bold", "-H, -h, -help") RS                              \
-        I I "Print this help message and exit." RS                      \
-        I ansi("bold", "-M, -m, -manual") RS                            \
-        I I "Show the manual." RS                                       \
-        I ansi("bold", "-r, -reference") RS                             \
-        I I "Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit." RS \
-        I ansi("bold", "-R, -reference-english") RS                     \
-        I I "Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit." RS \
-        I ansi("bold", "-v, -verbose") RS                               \
-        I I "Verbose mode. (default)" RS                                \
-        I ansi("bold", "-b, -brief") RS                                 \
-        I I "Brief mode." RS                                            \
-        I ansi("bold", "-no-ansi") RS                                   \
-        I I "Don't use ANSI escape codes in the translation." RS        \
-        I ansi("bold", "-w [num], -width [num]") RS                     \
-        I I "Specify the screen width for padding when displaying right-to-left languages." RS \
-        I ansi("bold", "-browser [program]") RS                         \
-        I I "Specify the web browser to use." RS                        \
-        I ansi("bold", "-p, -play") RS                                  \
-        I I "Listen to the translation." RS                             \
-        I ansi("bold", "-player [program]") RS                          \
-        I I "Specify the command-line audio player to use, and listen to the translation." RS \
-        I ansi("bold", "-x [proxy], -proxy [proxy]") RS                 \
-        I I "Use proxy on given port." RS                               \
-        I ansi("bold", "-I, -interactive") RS                           \
-        I I "Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified)." RS \
-        I ansi("bold", "-no-rlwrap") RS                                 \
-        I I "Don't invoke `rlwrap` when starting an interactive shell with `-I`." RS \
-        I ansi("bold", "-E, -emacs") RS                                 \
-        I I "Start an interactive shell within GNU Emacs, invoking `emacs`." RS \
-        I ansi("bold", "-prompt [prompt_string]") RS                    \
-        I I "Customize your prompt string in the interactive shell." RS \
-        I ansi("bold", "-prompt-color [color_code]") RS                 \
-        I I "Customize your prompt color in the interactive shell." RS  \
-        I ansi("bold", "-i [file], -input [file]") RS                   \
-        I I "Specify the input file name." RS                           \
-        I ansi("bold", "-o [file], -output [file]") RS                  \
-        I I "Specify the output file name." RS                          \
-        I ansi("bold", "-l [code], -lang [code]") RS                    \
-        I I "Specify your own, native language (\"home/host language\")." RS \
-        I ansi("bold", "-s [code], -source [code]") RS                  \
-        I I "Specify the source language (language of the original text)." RS \
-        I ansi("bold", "-t [codes], -target [codes]") RS                \
-        I I "Specify the target language(s) (language(s) of the translated text)." RS RS \
-        "See the man page " Command "(1) for more information."
+        ansi("bold", "-V, -version") RS                                 \
+        ins(1, "Print version and exit.") RS                            \
+        ansi("bold", "-H, -h, -help") RS                                \
+        ins(1, "Print this help message and exit.") RS                  \
+        ansi("bold", "-M, -m, -manual") RS                              \
+        ins(1, "Show the manual.") RS                                   \
+        ansi("bold", "-r, -reference") RS                               \
+        ins(1, "Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.") RS \
+        ansi("bold", "-R, -reference-english") RS                       \
+        ins(1, "Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.") RS \
+        ansi("bold", "-v, -verbose") RS                                 \
+        ins(1, "Verbose mode. (default)") RS                            \
+        ansi("bold", "-b, -brief") RS                                   \
+        ins(1, "Brief mode.") RS                                        \
+        ansi("bold", "-no-ansi") RS                                     \
+        ins(1, "Don't use ANSI escape codes in the translation.") RS    \
+        ansi("bold", "-w [num], -width [num]") RS                       \
+        ins(1, "Specify the screen width for padding when displaying right-to-left languages.") RS \
+        ansi("bold", "-browser [program]") RS                           \
+        ins(1, "Specify the web browser to use.") RS                    \
+        ansi("bold", "-p, -play") RS                                    \
+        ins(1, "Listen to the translation.") RS                         \
+        ansi("bold", "-player [program]") RS                            \
+        ins(1, "Specify the command-line audio player to use, and listen to the translation.") RS \
+        ansi("bold", "-x [proxy], -proxy [proxy]") RS                   \
+        ins(1, "Use proxy on given port.") RS                           \
+        ansi("bold", "-I, -interactive") RS                             \
+        ins(1, "Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).") RS \
+        ansi("bold", "-no-rlwrap") RS                                   \
+        ins(1, "Don't invoke `rlwrap` when starting an interactive shell with `-I`.") RS \
+        ansi("bold", "-E, -emacs") RS                                   \
+        ins(1, "Start an interactive shell within GNU Emacs, invoking `emacs`.") RS \
+        ansi("bold", "-prompt [prompt_string]") RS                      \
+        ins(1, "Customize your prompt string in the interactive shell.") RS \
+        ansi("bold", "-prompt-color [color_code]") RS                   \
+        ins(1, "Customize your prompt color in the interactive shell.") RS \
+        ansi("bold", "-i [file], -input [file]") RS                     \
+        ins(1, "Specify the input file name.") RS                       \
+        ansi("bold", "-o [file], -output [file]") RS                    \
+        ins(1, "Specify the output file name.") RS                      \
+        ansi("bold", "-l [code], -lang [code]") RS                      \
+        ins(1, "Specify your own, native language (\"home/host language\").") RS \
+        ansi("bold", "-s [code], -source [code]") RS                    \
+        ins(1, "Specify the source language (language of the original text).") RS \
+        ansi("bold", "-t [codes], -target [codes]") RS                  \
+        ins(1, "Specify the target language(s) (language(s) of the translated text).") RS \
+        RS "See the man page " Command "(1) for more information."
 }
