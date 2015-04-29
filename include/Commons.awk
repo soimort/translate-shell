@@ -138,6 +138,7 @@ function squeeze(line) {
     gsub(/#[^"]*$/, "", line)
     # Remove trailing spaces
     gsub(/[[:space:]]+$/, "", line)
+    gsub(/[[:space:]]+\\$/, "\\", line)
 
     return line
 }
