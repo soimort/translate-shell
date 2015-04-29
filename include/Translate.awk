@@ -207,15 +207,15 @@ function getTranslation(text, sl, tl, hl,
     } else {
         # Verbose mode
 
-        wShowOriginal = 1
-        wShowOriginalPhonetics = 1
-        wShowTranslation = 1
-        wShowTranslationPhonetics = 1
-        wShowPromptMessage = 1
-        wShowLanguages = 1
-        wShowOriginalDictionary = 0
-        wShowDictionary = 1
-        wShowAlternatives = 1
+        wShowOriginal = Option["show-original"]
+        wShowOriginalPhonetics = Option["show-original-phonetics"]
+        wShowTranslation = Option["show-translation"]
+        wShowTranslationPhonetics = Option["show-translation-phonetics"]
+        wShowPromptMessage = Option["show-prompt-message"]
+        wShowLanguages = Option["show-languages"]
+        wShowOriginalDictionary = Option["show-original-dictionary"]
+        wShowDictionary = Option["show-dictionary"]
+        wShowAlternatives = Option["show-alternatives"]
 
         if (!anything(oPhonetics)) wShowOriginalPhonetics = 0
         if (!anything(phonetics)) wShowTranslationPhonetics = 0
@@ -244,25 +244,26 @@ function getTranslation(text, sl, tl, hl,
                 r = r RS showPhonetics(join(phonetics), tl)
         }
 
+        if (wShowPromptMessage || wShowLanguages)
+            if (r) r = r RS
         if (wShowPromptMessage) {
             # Display: prompt message
             if (hasWordClasses) {
                 # Definitions of
-                if (r) r = r RS RS
+                if (r) r = r RS
                 if (isRTL(hl)) # home language is R-to-L
                     r = r s(showDefinitionsOf(hl, join(original)))
                 else # home language is L-to-R
                     r = r showDefinitionsOf(hl, ansi("underline", show(join(original), il)))
             } else if (hasAltTranslations) {
                 # Translations of
-                if (r) r = r RS RS
+                if (r) r = r RS
                 if (isRTL(hl)) # home language is R-to-L
                     r = r s(showTranslationsOf(hl, join(original)))
                 else # home language is L-to-R
                     r = r showTranslationsOf(hl, ansi("underline", show(join(original), il)))
             }
         }
-
         if (wShowLanguages) {
             # Display: source language -> target language
             if (hasWordClasses || hasAltTranslations) {
@@ -333,6 +334,7 @@ function getTranslation(text, sl, tl, hl,
 
         if (wShowDictionary) {
             # Display: dictionary entries
+            if (r) r = r RS
             for (i = 0; i < length(wordClasses); i++) {
                 r = (i > 0 ? r RS : r) RS s(wordClasses[i], hl)
                 for (j = 0; j < length(words[i]); j++) {
@@ -348,7 +350,7 @@ function getTranslation(text, sl, tl, hl,
 
         if (wShowAlternatives) {
             # Display: alternative translations
-            if (r) r = r RS
+            if (r) r = r RS RS
             for (i = 0; i < length(altTranslations); i++) {
                 r = (i > 0 ? r RS : r) ansi("underline", show(segments[i]))
                 temp = isRTL(tl) ? altTranslations[i][0] : ansi("bold", altTranslations[i][0])

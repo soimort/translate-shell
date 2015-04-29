@@ -31,6 +31,16 @@ function preInit() {
     Option["debug"] = 0
 
     Option["verbose"] = 1
+    Option["show-original"] = 1
+    Option["show-original-phonetics"] = 1
+    Option["show-translation"] = 1
+    Option["show-translation-phonetics"] = 1
+    Option["show-prompt-message"] = 1
+    Option["show-languages"] = 1
+    Option["show-original-dictionary"] = 0
+    Option["show-dictionary"] = 1
+    Option["show-alternatives"] = 1
+
     Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] : 64
     Option["indent"] = 4
 
@@ -135,6 +145,69 @@ BEGIN {
         match(ARGV[pos], /^--?b(r(i(ef?)?)?)?$/)
         if (RSTART) {
             Option["verbose"] = 0
+            continue
+        }
+
+        # -show-original [yes|no]
+        match(ARGV[pos], /^--?show-original(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-original"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
+
+        # -show-original-phonetics [yes|no]
+        match(ARGV[pos], /^--?show-original-phonetics(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-original-phonetics"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
+
+        # -show-translation [yes|no]
+        match(ARGV[pos], /^--?show-translation(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-translation"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
+
+        # -show-translation-phonetics [yes|no]
+        match(ARGV[pos], /^--?show-translation-phonetics(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-translation-phonetics"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
+
+        # -show-prompt-message [yes|no]
+        match(ARGV[pos], /^--?show-prompt-message(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-prompt-message"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
+
+        # -show-languages [yes|no]
+        match(ARGV[pos], /^--?show-languages(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-languages"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
+
+        # -show-original-dictionary [yes|no]
+        match(ARGV[pos], /^--?show-original-dictionary(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-original-dictionary"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
+
+        # -show-dictionary [yes|no]
+        match(ARGV[pos], /^--?show-dictionary(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-dictionary"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
+
+        # -show-alternatives [yes|no]
+        match(ARGV[pos], /^--?show-alternatives(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-alternatives"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 

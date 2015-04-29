@@ -347,12 +347,30 @@ Options:
     Verbose mode. (default)
 -b, -brief
     Brief mode.
+-show-original [yes|no]
+    Show original text or not. (default: yes)
+-show-original-phonetics [yes|no]
+    Show phonetic notation of original text or not. (default: yes)
+-show-translation [yes|no]
+    Show translation or not. (default: yes)
+-show-translation-phonetics [yes|no]
+    Show phonetic notation of translation or not. (default: yes)
+-show-prompt-message [yes|no]
+    Show prompt message or not. (default: yes)
+-show-languages [yes|no]
+    Show source and target languages or not. (default: yes)
+-show-original-dictionary [yes|no]
+    Show dictionary entry of original text or not. (default: no)
+-show-dictionary [yes|no]
+    Show dictionary entry of translation or not. (default: yes)
+-show-alternatives [yes|no]
+    Show alternative translations or not. (default: yes)
 -no-ansi
     Don't use ANSI escape codes in the translation.
 -w [num], -width [num]
     Specify the screen width for padding when displaying right-to-left languages.
 -indent [num]
-    Specify the size of indent (in terms of spaces).
+    Specify the size of indent (in terms of spaces). (default: 4)
 -browser [program]
     Specify the web browser to use.
 -p, -play

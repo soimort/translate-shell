@@ -224,12 +224,30 @@ function getHelp() {
         ins(1, "Verbose mode. (default)") RS                            \
         ansi("bold", "-b, -brief") RS                                   \
         ins(1, "Brief mode.") RS                                        \
+        ansi("bold", "-show-original [yes|no]") RS                      \
+        ins(1, "Show original text or not. (default: yes)") RS          \
+        ansi("bold", "-show-original-phonetics [yes|no]") RS            \
+        ins(1, "Show phonetic notation of original text or not. (default: yes)") RS \
+        ansi("bold", "-show-translation [yes|no]") RS                   \
+        ins(1, "Show translation or not. (default: yes)") RS            \
+        ansi("bold", "-show-translation-phonetics [yes|no]") RS         \
+        ins(1, "Show phonetic notation of translation or not. (default: yes)") RS \
+        ansi("bold", "-show-prompt-message [yes|no]") RS                \
+        ins(1, "Show prompt message or not. (default: yes)") RS         \
+        ansi("bold", "-show-languages [yes|no]") RS                     \
+        ins(1, "Show source and target languages or not. (default: yes)") RS \
+        ansi("bold", "-show-original-dictionary [yes|no]") RS           \
+        ins(1, "Show dictionary entry of original text or not. (default: no)") RS \
+        ansi("bold", "-show-dictionary [yes|no]") RS                    \
+        ins(1, "Show dictionary entry of translation or not. (default: yes)") RS \
+        ansi("bold", "-show-alternatives [yes|no]") RS                  \
+        ins(1, "Show alternative translations or not. (default: yes)") RS \
         ansi("bold", "-no-ansi") RS                                     \
         ins(1, "Don't use ANSI escape codes in the translation.") RS    \
         ansi("bold", "-w [num], -width [num]") RS                       \
         ins(1, "Specify the screen width for padding when displaying right-to-left languages.") RS \
         ansi("bold", "-indent [num]") RS                                \
-        ins(1, "Specify the size of indent (in terms of spaces).") RS   \
+        ins(1, "Specify the size of indent (in terms of spaces). (default: 4)") RS \
         ansi("bold", "-browser [program]") RS                           \
         ins(1, "Specify the web browser to use.") RS                    \
         ansi("bold", "-p, -play") RS                                    \
