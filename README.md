@@ -435,8 +435,8 @@ Use `$ trans -R` to view the list of language codes.
 │ French              - fr    │ Maltese        - mt  │ Vietnamese - vi │
 │ Galician            - gl    │ Maori          - mi  │ Welsh      - cy │
 │ Georgian            - ka    │ Marathi        - mr  │ Yiddish    - yi │
-│ German              - de    │ Myanmar        - my  │ Yoruba     - yo │
-│ Greek               - el    │ Mongolian      - mn  │ Zulu       - zu │
+│ German              - de    │ Mongolian      - mn  │ Yoruba     - yo │
+│ Greek               - el    │ Myanmar        - my  │ Zulu       - zu │
 │ Gujarati            - gu    │ Nepali         - ne  │                 │
 │ Haitian Creole      - ht    │ Norwegian      - no  │                 │
 └─────────────────────────────┴──────────────────────┴─────────────────┘
