@@ -1358,12 +1358,8 @@ function ins(level, text, code, width,    i, temp) {
     if (code && Locale[getCode(code)]["rtl"]) {
         if (!width) width = Option["width"]
         return s(text, code, width - level * length(I))
-    } else {
-        temp = ""
-        for (i = 0; i < level; i++)
-            temp = temp I
-        return temp text
-    }
+    } else
+        return replicate(I, level) text
 }
 
 # Initialize strings for displaying endonyms of locales.
