@@ -35,6 +35,6 @@
 @include "include/PLTokenizer"
 @include "include/PLParser"
 @include "include/Translate"
-@include "include/Shell"
+@include "include/REPL"
 
 @include "include/Main"
