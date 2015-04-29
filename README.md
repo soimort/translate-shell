@@ -329,55 +329,57 @@ Use <kbd>Shift-K</kbd> to view the translation of the word under the cursor.
 Use `$ trans -H` to view the [detailed man page](http://www.soimort.org/translate-shell/trans.1.html).
 
 ```
-Usage: trans [options] [source]:[target] [text] ...
-       trans [options] [source]:[target1]+[target2]+... [text] ...
+Usage:  trans [options] [source]:[target] [text] ...
+        trans [options] [source]:[target1]+[target2]+... [text] ...
 
 Options:
-  -V, -version
+-V, -version
     Print version and exit.
-  -H, -h, -help
-    Print the help message and exit.
-  -M, -m, -manual
+-H, -h, -help
+    Print this help message and exit.
+-M, -m, -manual
     Show the manual.
-  -r, -reference
+-r, -reference
     Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.
-  -R, -reference-english
+-R, -reference-english
     Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.
-  -v, -verbose
+-v, -verbose
     Verbose mode. (default)
-  -b, -brief
+-b, -brief
     Brief mode.
-  -no-ansi
+-no-ansi
     Don't use ANSI escape codes in the translation.
-  -w [num], -width [num]
+-w [num], -width [num]
     Specify the screen width for padding when displaying right-to-left languages.
-  -browser [program]
+-indent [num]
+    Specify the size of indent (in terms of spaces).
+-browser [program]
     Specify the web browser to use.
-  -p, -play
+-p, -play
     Listen to the translation.
-  -player [program]
+-player [program]
     Specify the command-line audio player to use, and listen to the translation.
-  -x [proxy], -proxy [proxy]
+-x [proxy], -proxy [proxy]
     Use proxy on given port.
-  -I, -interactive
+-I, -interactive
     Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).
-  -no-rlwrap
+-no-rlwrap
     Don't invoke `rlwrap` when starting an interactive shell with `-I`.
-  -E, -emacs
+-E, -emacs
     Start an interactive shell within GNU Emacs, invoking `emacs`.
-  -prompt [prompt_string]
+-prompt [prompt_string]
     Customize your prompt string in the interactive shell.
-  -prompt-color [color_code]
+-prompt-color [color_code]
     Customize your prompt color in the interactive shell.
-  -i [file], -input [file]
+-i [file], -input [file]
     Specify the input file name.
-  -o [file], -output [file]
+-o [file], -output [file]
     Specify the output file name.
-  -l [code], -lang [code]
+-l [code], -lang [code]
     Specify your own, native language ("home/host language").
-  -s [code], -source [code]
+-s [code], -source [code]
     Specify the source language (language of the original text).
-  -t [codes], -target [codes]
+-t [codes], -target [codes]
     Specify the target language(s) (language(s) of the translated text).
 
 See the man page trans(1) for more information.

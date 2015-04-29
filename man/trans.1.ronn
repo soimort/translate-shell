@@ -67,6 +67,12 @@ Specify the screen width for padding when displaying right-to-left languages.
 
 This option overrides the setting of environment variable `COLUMNS`.
 
+### -indent [num]
+
+Specify the size of indent (in terms of spaces).
+
+The default size of indent is 4.
+
 ### -browser [program]
 
 Specify the web browser to use.

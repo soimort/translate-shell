@@ -25,7 +25,6 @@ function preInit() {
     initUserLang()      #<< Locale
 
     RS = "\n"
-    I  = "    "
 
     ExitCode = 0
 
@@ -33,6 +32,7 @@ function preInit() {
 
     Option["verbose"] = 1
     Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] : 64
+    Option["indent"] = 4
 
     Option["browser"] = ENVIRON["BROWSER"]
 
@@ -150,6 +150,15 @@ BEGIN {
         if (RSTART) {
             Option["width"] = group[4] ?
                 (group[5] ? group[5] : Option["width"]) :
+                ARGV[++pos]
+            continue
+        }
+
+        # -indent [num]
+        match(ARGV[pos], /^--?indent(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["indent"] = group[1] ?
+                (group[2] ? group[2] : Option["indent"]) :
                 ARGV[++pos]
             continue
         }

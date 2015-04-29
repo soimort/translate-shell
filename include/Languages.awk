@@ -1359,7 +1359,7 @@ function ins(level, text, code, width,    i, temp) {
         if (!width) width = Option["width"]
         return s(text, code, width - level * length(I))
     } else
-        return replicate(I, level) text
+        return replicate(" ", Option["indent"] * level) text
 }
 
 # Initialize strings for displaying endonyms of locales.

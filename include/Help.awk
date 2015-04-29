@@ -228,6 +228,8 @@ function getHelp() {
         ins(1, "Don't use ANSI escape codes in the translation.") RS    \
         ansi("bold", "-w [num], -width [num]") RS                       \
         ins(1, "Specify the screen width for padding when displaying right-to-left languages.") RS \
+        ansi("bold", "-indent [num]") RS                                \
+        ins(1, "Specify the size of indent (in terms of spaces).") RS   \
         ansi("bold", "-browser [program]") RS                           \
         ins(1, "Specify the web browser to use.") RS                    \
         ansi("bold", "-p, -play") RS                                    \
