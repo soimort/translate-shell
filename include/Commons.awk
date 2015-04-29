@@ -212,6 +212,12 @@ function join(array, separator, sortedIn, preserveNull,
     return temp
 }
 
+# Return 0 if the string starts with '0', 'f' or 'n';
+# Otherwise, return 1.
+function yn(string) {
+    return (tolower(string) ~ /^[0fn]/) ? 0 : 1
+}
+
 # Initialize ANSI escape codes (ANSI X3.64 Standard Control Sequences).
 # See: <https://en.wikipedia.org/wiki/ANSI_escape_code>
 function initAnsiCode() {
