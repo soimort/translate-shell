@@ -220,8 +220,8 @@ function getTranslation(text, sl, tl, hl,
         if (!anything(oPhonetics)) wShowOriginalPhonetics = 0
         if (!anything(phonetics)) wShowTranslationPhonetics = 0
         if (il == tl && isarray(oWordClasses)) {
-            wShowOriginalDictionary = 1 ###FIXME
-            wShowTranslation = 0        ###FIXME
+            wShowOriginalDictionary = 1
+            wShowTranslation = 0
         }
         hasWordClasses = isarray(wordClasses) && anything(wordClasses)
         hasAltTranslations = isarray(altTranslations[0]) && anything(altTranslations[0])
@@ -483,7 +483,7 @@ function translateMain(    i, line) {
                 translate(line)
 
                 # Interactive verbose mode: newline after each translation
-                if (Option["verbose"]) printf "\n"
+                if (Option["verbose"]) printf RS
             }
 
             prompt()
