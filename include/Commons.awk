@@ -134,6 +134,8 @@ function replicate(string, len,
 function squeeze(line) {
     # Remove preceding spaces
     gsub(/^[[:space:]]+/, "", line)
+    # Remove comment
+    gsub(/^#.*$/, "", line)
     # Remove in-line comment
     gsub(/#[^"]*$/, "", line)
     # Remove trailing spaces

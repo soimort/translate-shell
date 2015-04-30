@@ -46,10 +46,9 @@ function build(target,    group, inline, line, temp) {
                 if (RSTART) {
                     # Include file
                     if (fileExists(group[1] ".awk"))
-                        while (getline inline < (group[1] ".awk")) {
+                        while (getline inline < (group[1] ".awk"))
                             if (inline = squeeze(inline))
                                 print inline > Trans # effective LOC
-                        }
                 } else {
                     if (line && line !~ /^[[:space:]]*#!/) {
                         # Remove preceding spaces
@@ -86,7 +85,8 @@ function build(target,    group, inline, line, temp) {
                     # Include file
                     if (fileExists(group[1] ".awk"))
                         while (getline inline < (group[1] ".awk"))
-                            print inline > Trans".awk"
+                            if (inline = squeeze(inline))
+                                print inline > Trans".awk"
                 } else {
                     if (temp == "Darwin" && line == "#!/usr/bin/gawk -f")
                         # OS X: gawk not in /usr/bin, use a better shebang
