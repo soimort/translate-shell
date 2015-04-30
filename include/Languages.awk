@@ -1233,6 +1233,11 @@ function getEndonym(code) {
     return Locale[getCode(code)]["endonym"]
 }
 
+# Return the string for displaying the endonym of a language.
+function getDisplay(code) {
+    return Locale[getCode(code)]["display"]
+}
+
 # Return formatted text for "translations of".
 function showTranslationsOf(code, text,    fmt) {
     fmt = Locale[getCode(code)]["translations-of"]
