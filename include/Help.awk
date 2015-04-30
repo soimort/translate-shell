@@ -13,195 +13,195 @@ function getVersion() {
 function getReference(displayName) {
     if (displayName == "name")
         return "┌─────────────────────────────┬──────────────────────┬─────────────────┐" RS \
-            "│ " Locale["af"]["name"] "           - " ansi("bold", "af") "    │ " \
-            Locale["ha"]["name"] "          - " ansi("bold", "ha") "  │ " \
-            Locale["fa"]["name"] "    - " ansi("bold", "fa") " │" RS    \
-            "│ " Locale["sq"]["name"] "            - " ansi("bold", "sq") "    │ " \
-            Locale["he"]["name"] "         - " ansi("bold", "he") "  │ " \
-            Locale["pl"]["name"] "     - " ansi("bold", "pl") " │" RS   \
-            "│ " Locale["ar"]["name"] "              - " ansi("bold", "ar") "    │ " \
-            Locale["hi"]["name"] "          - " ansi("bold", "hi") "  │ " \
-            Locale["pt"]["name"] " - " ansi("bold", "pt") " │" RS       \
-            "│ " Locale["hy"]["name"] "            - " ansi("bold", "hy") "    │ " \
-            Locale["hmn"]["name"] "          - " ansi("bold", "hmn") " │ " \
-            Locale["pa"]["name"] "    - " ansi("bold", "pa") " │" RS    \
-            "│ " Locale["az"]["name"] "         - " ansi("bold", "az") "    │ " \
-            Locale["hu"]["name"] "      - " ansi("bold", "hu") "  │ "   \
-            Locale["ro"]["name"] "   - " ansi("bold", "ro") " │" RS     \
-            "│ " Locale["eu"]["name"] "              - " ansi("bold", "eu") "    │ " \
-            Locale["is"]["name"] "      - " ansi("bold", "is") "  │ "   \
-            Locale["ru"]["name"] "    - " ansi("bold", "ru") " │" RS    \
-            "│ " Locale["be"]["name"] "          - " ansi("bold", "be") "    │ " \
-            Locale["ig"]["name"] "           - " ansi("bold", "ig") "  │ " \
-            Locale["sr"]["name"] "    - " ansi("bold", "sr") " │" RS    \
-            "│ " Locale["bn"]["name"] "             - " ansi("bold", "bn") "    │ " \
-            Locale["id"]["name"] "     - " ansi("bold", "id") "  │ "    \
-            Locale["st"]["name"] "    - " ansi("bold", "st") " │" RS    \
-            "│ " Locale["bs"]["name"] "             - " ansi("bold", "bs") "    │ " \
-            Locale["ga"]["name"] "          - " ansi("bold", "ga") "  │ " \
-            Locale["si"]["name"] "    - " ansi("bold", "si") " │" RS    \
-            "│ " Locale["bg"]["name"] "           - " ansi("bold", "bg") "    │ " \
-            Locale["it"]["name"] "        - " ansi("bold", "it") "  │ " \
-            Locale["sk"]["name"] "     - " ansi("bold", "sk") " │" RS   \
-            "│ " Locale["ca"]["name"] "             - " ansi("bold", "ca") "    │ " \
-            Locale["ja"]["name"] "       - " ansi("bold", "ja") "  │ "  \
-            Locale["sl"]["name"] "  - " ansi("bold", "sl") " │" RS      \
-            "│ " Locale["ceb"]["name"] "             - " ansi("bold", "ceb") "   │ " \
-            Locale["jv"]["name"] "       - " ansi("bold", "jv") "  │ "  \
-            Locale["so"]["name"] "     - " ansi("bold", "so") " │" RS   \
-            "│ " Locale["ny"]["name"] "            - " ansi("bold", "ny") "    │ " \
-            Locale["kn"]["name"] "        - " ansi("bold", "kn") "  │ " \
-            Locale["es"]["name"] "    - " ansi("bold", "es") " │" RS    \
-            "│ " Locale["zh-CN"]["name"] "  - " ansi("bold", "zh-CN") " │ " \
-            Locale["kk"]["name"] "         - " ansi("bold", "kk") "  │ " \
-            Locale["su"]["name"] "  - " ansi("bold", "su") " │" RS      \
-            "│ " Locale["zh-TW"]["name"] " - " ansi("bold", "zh-TW") " │ " \
-            Locale["km"]["name"] "          - " ansi("bold", "km") "  │ " \
-            Locale["sw"]["name"] "    - " ansi("bold", "sw") " │" RS    \
-            "│ " Locale["hr"]["name"] "            - " ansi("bold", "hr") "    │ " \
-            Locale["ko"]["name"] "         - " ansi("bold", "ko") "  │ " \
-            Locale["sv"]["name"] "    - " ansi("bold", "sv") " │" RS    \
-            "│ " Locale["cs"]["name"] "               - " ansi("bold", "cs") "    │ " \
-            Locale["lo"]["name"] "            - " ansi("bold", "lo") "  │ " \
-            Locale["tg"]["name"] "      - " ansi("bold", "tg") " │" RS  \
-            "│ " Locale["da"]["name"] "              - " ansi("bold", "da") "    │ " \
-            Locale["la"]["name"] "          - " ansi("bold", "la") "  │ " \
-            Locale["ta"]["name"] "      - " ansi("bold", "ta") " │" RS \
-            "│ " Locale["nl"]["name"] "               - " ansi("bold", "nl") "    │ " \
-            Locale["lv"]["name"] "        - " ansi("bold", "lv") "  │ " \
-            Locale["te"]["name"] "     - " ansi("bold", "te") " │" RS   \
-            "│ " Locale["en"]["name"] "             - " ansi("bold", "en") "    │ " \
-            Locale["lt"]["name"] "     - " ansi("bold", "lt") "  │ "    \
-            Locale["th"]["name"] "       - " ansi("bold", "th") " │" RS \
-            "│ " Locale["eo"]["name"] "           - " ansi("bold", "eo") "    │ " \
-            Locale["mk"]["name"] "     - " ansi("bold", "mk") "  │ "    \
-            Locale["tr"]["name"] "    - " ansi("bold", "tr") " │" RS    \
-            "│ " Locale["et"]["name"] "            - " ansi("bold", "et") "    │ " \
-            Locale["mg"]["name"] "       - " ansi("bold", "mg") "  │ " \
-            Locale["uk"]["name"] "  - " ansi("bold", "uk") " │" RS      \
-            "│ " Locale["tl"]["name"] "            - " ansi("bold", "tl") "    │ " \
-            Locale["ms"]["name"] "          - " ansi("bold", "ms") "  │ " \
-            Locale["ur"]["name"] "       - " ansi("bold", "ur") " │" RS \
-            "│ " Locale["fi"]["name"] "             - " ansi("bold", "fi") "    │ " \
-            Locale["ml"]["name"] "      - " ansi("bold", "ml") "  │ " \
-            Locale["uz"]["name"] "      - " ansi("bold", "uz") " │" RS \
-            "│ " Locale["fr"]["name"] "              - " ansi("bold", "fr") "    │ " \
-            Locale["mt"]["name"] "        - " ansi("bold", "mt") "  │ " \
-            Locale["vi"]["name"] " - " ansi("bold", "vi") " │" RS \
-            "│ " Locale["gl"]["name"] "            - " ansi("bold", "gl") "    │ " \
-            Locale["mi"]["name"] "          - " ansi("bold", "mi") "  │ " \
-            Locale["cy"]["name"] "      - " ansi("bold", "cy") " │" RS \
-            "│ " Locale["ka"]["name"] "            - " ansi("bold", "ka") "    │ " \
-            Locale["mr"]["name"] "        - " ansi("bold", "mr") "  │ " \
-            Locale["yi"]["name"] "    - " ansi("bold", "yi") " │" RS \
-            "│ " Locale["de"]["name"] "              - " ansi("bold", "de") "    │ " \
-            Locale["mn"]["name"] "      - " ansi("bold", "mn") "  │ " \
-            Locale["yo"]["name"] "     - " ansi("bold", "yo") " │" RS \
-            "│ " Locale["el"]["name"] "               - " ansi("bold", "el") "    │ " \
-            Locale["my"]["name"] "        - " ansi("bold", "my") "  │ " \
-            Locale["zu"]["name"] "       - " ansi("bold", "zu") " │" RS \
-            "│ " Locale["gu"]["name"] "            - " ansi("bold", "gu") "    │ " \
-            Locale["ne"]["name"] "         - " ansi("bold", "ne") "  │ " \
-            "                │" RS \
-            "│ " Locale["ht"]["name"] "      - " ansi("bold", "ht") "    │ " \
-            Locale["no"]["name"] "      - " ansi("bold", "no") "  │ " \
-            "                │" RS \
+            "│ " getName("af") "           - " ansi("bold", "af") "    │ " \
+            getName("ha") "          - " ansi("bold", "ha") "  │ "      \
+            getName("fa") "    - " ansi("bold", "fa") " │" RS           \
+            "│ " getName("sq") "            - " ansi("bold", "sq") "    │ " \
+            getName("he") "         - " ansi("bold", "he") "  │ "       \
+            getName("pl") "     - " ansi("bold", "pl") " │" RS          \
+            "│ " getName("ar") "              - " ansi("bold", "ar") "    │ " \
+            getName("hi") "          - " ansi("bold", "hi") "  │ "      \
+            getName("pt") " - " ansi("bold", "pt") " │" RS              \
+            "│ " getName("hy") "            - " ansi("bold", "hy") "    │ " \
+            getName("hmn") "          - " ansi("bold", "hmn") " │ "     \
+            getName("pa") "    - " ansi("bold", "pa") " │" RS           \
+            "│ " getName("az") "         - " ansi("bold", "az") "    │ " \
+            getName("hu") "      - " ansi("bold", "hu") "  │ "          \
+            getName("ro") "   - " ansi("bold", "ro") " │" RS            \
+            "│ " getName("eu") "              - " ansi("bold", "eu") "    │ " \
+            getName("is") "      - " ansi("bold", "is") "  │ "          \
+            getName("ru") "    - " ansi("bold", "ru") " │" RS           \
+            "│ " getName("be") "          - " ansi("bold", "be") "    │ " \
+            getName("ig") "           - " ansi("bold", "ig") "  │ "     \
+            getName("sr") "    - " ansi("bold", "sr") " │" RS           \
+            "│ " getName("bn") "             - " ansi("bold", "bn") "    │ " \
+            getName("id") "     - " ansi("bold", "id") "  │ "           \
+            getName("st") "    - " ansi("bold", "st") " │" RS           \
+            "│ " getName("bs") "             - " ansi("bold", "bs") "    │ " \
+            getName("ga") "          - " ansi("bold", "ga") "  │ "      \
+            getName("si") "    - " ansi("bold", "si") " │" RS           \
+            "│ " getName("bg") "           - " ansi("bold", "bg") "    │ " \
+            getName("it") "        - " ansi("bold", "it") "  │ "        \
+            getName("sk") "     - " ansi("bold", "sk") " │" RS          \
+            "│ " getName("ca") "             - " ansi("bold", "ca") "    │ " \
+            getName("ja") "       - " ansi("bold", "ja") "  │ "         \
+            getName("sl") "  - " ansi("bold", "sl") " │" RS             \
+            "│ " getName("ceb") "             - " ansi("bold", "ceb") "   │ " \
+            getName("jv") "       - " ansi("bold", "jv") "  │ "         \
+            getName("so") "     - " ansi("bold", "so") " │" RS          \
+            "│ " getName("ny") "            - " ansi("bold", "ny") "    │ " \
+            getName("kn") "        - " ansi("bold", "kn") "  │ "        \
+            getName("es") "    - " ansi("bold", "es") " │" RS           \
+            "│ " getName("zh-CN") "  - " ansi("bold", "zh-CN") " │ "    \
+            getName("kk") "         - " ansi("bold", "kk") "  │ "       \
+            getName("su") "  - " ansi("bold", "su") " │" RS             \
+            "│ " getName("zh-TW") " - " ansi("bold", "zh-TW") " │ "     \
+            getName("km") "          - " ansi("bold", "km") "  │ "      \
+            getName("sw") "    - " ansi("bold", "sw") " │" RS           \
+            "│ " getName("hr") "            - " ansi("bold", "hr") "    │ " \
+            getName("ko") "         - " ansi("bold", "ko") "  │ "       \
+            getName("sv") "    - " ansi("bold", "sv") " │" RS           \
+            "│ " getName("cs") "               - " ansi("bold", "cs") "    │ " \
+            getName("lo") "            - " ansi("bold", "lo") "  │ "    \
+            getName("tg") "      - " ansi("bold", "tg") " │" RS         \
+            "│ " getName("da") "              - " ansi("bold", "da") "    │ " \
+            getName("la") "          - " ansi("bold", "la") "  │ "      \
+            getName("ta") "      - " ansi("bold", "ta") " │" RS         \
+            "│ " getName("nl") "               - " ansi("bold", "nl") "    │ " \
+            getName("lv") "        - " ansi("bold", "lv") "  │ "        \
+            getName("te") "     - " ansi("bold", "te") " │" RS          \
+            "│ " getName("en") "             - " ansi("bold", "en") "    │ " \
+            getName("lt") "     - " ansi("bold", "lt") "  │ "           \
+            getName("th") "       - " ansi("bold", "th") " │" RS        \
+            "│ " getName("eo") "           - " ansi("bold", "eo") "    │ " \
+            getName("mk") "     - " ansi("bold", "mk") "  │ "           \
+            getName("tr") "    - " ansi("bold", "tr") " │" RS           \
+            "│ " getName("et") "            - " ansi("bold", "et") "    │ " \
+            getName("mg") "       - " ansi("bold", "mg") "  │ "         \
+            getName("uk") "  - " ansi("bold", "uk") " │" RS             \
+            "│ " getName("tl") "            - " ansi("bold", "tl") "    │ " \
+            getName("ms") "          - " ansi("bold", "ms") "  │ "      \
+            getName("ur") "       - " ansi("bold", "ur") " │" RS        \
+            "│ " getName("fi") "             - " ansi("bold", "fi") "    │ " \
+            getName("ml") "      - " ansi("bold", "ml") "  │ "          \
+            getName("uz") "      - " ansi("bold", "uz") " │" RS         \
+            "│ " getName("fr") "              - " ansi("bold", "fr") "    │ " \
+            getName("mt") "        - " ansi("bold", "mt") "  │ "        \
+            getName("vi") " - " ansi("bold", "vi") " │" RS              \
+            "│ " getName("gl") "            - " ansi("bold", "gl") "    │ " \
+            getName("mi") "          - " ansi("bold", "mi") "  │ "      \
+            getName("cy") "      - " ansi("bold", "cy") " │" RS         \
+            "│ " getName("ka") "            - " ansi("bold", "ka") "    │ " \
+            getName("mr") "        - " ansi("bold", "mr") "  │ "        \
+            getName("yi") "    - " ansi("bold", "yi") " │" RS           \
+            "│ " getName("de") "              - " ansi("bold", "de") "    │ " \
+            getName("mn") "      - " ansi("bold", "mn") "  │ "          \
+            getName("yo") "     - " ansi("bold", "yo") " │" RS          \
+            "│ " getName("el") "               - " ansi("bold", "el") "    │ " \
+            getName("my") "        - " ansi("bold", "my") "  │ "        \
+            getName("zu") "       - " ansi("bold", "zu") " │" RS        \
+            "│ " getName("gu") "            - " ansi("bold", "gu") "    │ " \
+            getName("ne") "         - " ansi("bold", "ne") "  │ "       \
+            "                │" RS                                      \
+            "│ " getName("ht") "      - " ansi("bold", "ht") "    │ "   \
+            getName("no") "      - " ansi("bold", "no") "  │ "          \
+            "                │" RS                                      \
             "└─────────────────────────────┴──────────────────────┴─────────────────┘"
     else
         return "┌──────────────────────┬───────────────────────┬─────────────────────┐" RS \
-            "│ " Locale["af"]["display"] "      - " ansi("bold", "af") "  │ " \
-            Locale["hu"]["display"] "           - " ansi("bold", "hu") " │ " \
-            Locale["pl"]["display"] "      - " ansi("bold", "pl") "    │" RS \
-            "│ " Locale["ar"]["display"] "        - " ansi("bold", "ar") "  │ " \
-            Locale["hy"]["display"] "          - " ansi("bold", "hy") " │ " \
-            Locale["pt"]["display"] "   - " ansi("bold", "pt") "    │" RS \
-            "│ " Locale["az"]["display"] "   - " ansi("bold", "az") "  │ " \
-            Locale["id"]["display"] " - " ansi("bold", "id") " │ " \
-            Locale["ro"]["display"] "      - " ansi("bold", "ro") "    │" RS \
-            "│ " Locale["be"]["display"] "     - " ansi("bold", "be") "  │ " \
-            Locale["ig"]["display"] "             - " ansi("bold", "ig") " │ " \
-            Locale["ru"]["display"] "     - " ansi("bold", "ru") "    │" RS \
-            "│ " Locale["bg"]["display"] "      - " ansi("bold", "bg") "  │ " \
-            Locale["is"]["display"] "         - " ansi("bold", "is") " │ " \
-            Locale["si"]["display"] "        - " ansi("bold", "si") "    │" RS \
-            "│ " Locale["bn"]["display"] "          - " ansi("bold", "bn") "  │ " \
-            Locale["it"]["display"] "         - " ansi("bold", "it") " │ " \
-            Locale["sk"]["display"] "  - " ansi("bold", "sk") "    │" RS \
-            "│ " Locale["bs"]["display"] "       - " ansi("bold", "bs") "  │ " \
-            Locale["ja"]["display"] "           - " ansi("bold", "ja") " │ " \
-            Locale["sl"]["display"] " - " ansi("bold", "sl") "    │" RS \
-            "│ " Locale["ca"]["display"] "         - " ansi("bold", "ca") "  │ " \
-            Locale["jv"]["display"] "        - " ansi("bold", "jv") " │ " \
-            Locale["so"]["display"] "    - " ansi("bold", "so") "    │" RS \
-            "│ " Locale["ceb"]["display"] "        - " ansi("bold", "ceb") " │ " \
-            Locale["ka"]["display"] "          - " ansi("bold", "ka") " │ " \
-            Locale["sq"]["display"] "       - " ansi("bold", "sq") "    │" RS \
-            "│ " Locale["cs"]["display"] "        - " ansi("bold", "cs") "  │ " \
-            Locale["kk"]["display"] "       - " ansi("bold", "kk") " │ " \
-            Locale["sr"]["display"] "      - " ansi("bold", "sr") "    │" RS \
-            "│ " Locale["cy"]["display"] "        - " ansi("bold", "cy") "  │ " \
-            Locale["km"]["display"] "         - " ansi("bold", "km") " │ " \
-            Locale["st"]["display"] "     - " ansi("bold", "st") "    │" RS \
-            "│ " Locale["da"]["display"] "          - " ansi("bold", "da") "  │ " \
-            Locale["kn"]["display"] "             - " ansi("bold", "kn") " │ " \
-            Locale["su"]["display"] "  - " ansi("bold", "su") "    │" RS \
-            "│ " Locale["de"]["display"] "        - " ansi("bold", "de") "  │ " \
-            Locale["ko"]["display"] "           - " ansi("bold", "ko") " │ " \
-            Locale["sv"]["display"] "     - " ansi("bold", "sv") "    │" RS \
-            "│ " Locale["el"]["display"] "       - " ansi("bold", "el") "  │ " \
-            Locale["la"]["display"] "           - " ansi("bold", "la") " │ " \
-            Locale["sw"]["display"] "   - " ansi("bold", "sw") "    │" RS \
-            "│ " Locale["en"]["display"] "        - " ansi("bold", "en") "  │ " \
-            Locale["lo"]["display"] "              - " ansi("bold", "lo") " │ " \
-            Locale["ta"]["display"] "        - " ansi("bold", "ta") "    │" RS \
-            "│ " Locale["eo"]["display"] "      - " ansi("bold", "eo") "  │ " \
-            Locale["lt"]["display"] "         - " ansi("bold", "lt") " │ " \
-            Locale["te"]["display"] "       - " ansi("bold", "te") "    │" RS \
-            "│ " Locale["es"]["display"] "        - " ansi("bold", "es") "  │ " \
-            Locale["lv"]["display"] "         - " ansi("bold", "lv") " │ " \
-            Locale["tg"]["display"] "      - " ansi("bold", "tg") "    │" RS \
-            "│ " Locale["et"]["display"] "          - " ansi("bold", "et") "  │ " \
-            Locale["mg"]["display"] "         - " ansi("bold", "mg") " │ " \
-            Locale["th"]["display"] "         - " ansi("bold", "th") "    │" RS \
-            "│ " Locale["eu"]["display"] "        - " ansi("bold", "eu") "  │ " \
-            Locale["mi"]["display"] "            - " ansi("bold", "mi") " │ " \
-            Locale["tl"]["display"] "     - " ansi("bold", "tl") "    │" RS \
-            "│ " Locale["fa"]["display"] "          - " ansi("bold", "fa") "  │ " \
-            Locale["mk"]["display"] "       - " ansi("bold", "mk") " │ " \
-            Locale["tr"]["display"] "      - " ansi("bold", "tr") "    │" RS \
-            "│ " Locale["fi"]["display"] "          - " ansi("bold", "fi") "  │ " \
-            Locale["ml"]["display"] "           - " ansi("bold", "ml") " │ " \
-            Locale["uk"]["display"] "  - " ansi("bold", "uk") "    │" RS \
-            "│ " Locale["fr"]["display"] "       - " ansi("bold", "fr") "  │ " \
-            Locale["mn"]["display"] "           - " ansi("bold", "mn") " │ " \
-            Locale["ur"]["display"] "        - " ansi("bold", "ur") "    │" RS \
-            "│ " Locale["ga"]["display"] "        - " ansi("bold", "ga") "  │ " \
-            Locale["mr"]["display"] "            - " ansi("bold", "mr") " │ " \
-            Locale["uz"]["display"] " - " ansi("bold", "uz") "    │" RS \
-            "│ " Locale["gl"]["display"] "         - " ansi("bold", "gl") "  │ " \
-            Locale["ms"]["display"] "    - " ansi("bold", "ms") " │ " \
-            Locale["vi"]["display"] "  - " ansi("bold", "vi") "    │" RS \
-            "│ " Locale["gu"]["display"] "         - " ansi("bold", "gu") "  │ " \
-            Locale["mt"]["display"] "            - " ansi("bold", "mt") " │ " \
-            Locale["yi"]["display"] "       - " ansi("bold", "yi") "    │" RS \
-            "│ " Locale["ha"]["display"] "          - " ansi("bold", "ha") "  │ " \
-            Locale["my"]["display"] "          - " ansi("bold", "my") " │ " \
-            Locale["yo"]["display"] "      - " ansi("bold", "yo") "    │" RS \
-            "│ " Locale["he"]["display"] "          - " ansi("bold", "he") "  │ " \
-            Locale["ne"]["display"] "            - " ansi("bold", "ne") " │ " \
-            Locale["zh-CN"]["display"] "    - " ansi("bold", "zh-CN") " │" RS \
-            "│ " Locale["hi"]["display"] "          - " ansi("bold", "hi") "  │ " \
-            Locale["nl"]["display"] "       - " ansi("bold", "nl") " │ " \
-            Locale["zh-TW"]["display"] "    - " ansi("bold", "zh-TW") " │" RS \
-            "│ " Locale["hmn"]["display"] "          - " ansi("bold", "hmn") " │ " \
-            Locale["no"]["display"] "            - " ansi("bold", "no") " │ " \
-            Locale["zu"]["display"] "     - " ansi("bold", "zu") "    │" RS \
-            "│ " Locale["hr"]["display"] "       - " ansi("bold", "hr") "  │ " \
-            Locale["ny"]["display"] "           - " ansi("bold", "ny") " │ " \
-            "                    │" RS \
-            "│ " Locale["ht"]["display"] " - " ansi("bold", "ht") "  │ " \
-            Locale["pa"]["display"] "            - " ansi("bold", "pa") " │ " \
-            "                    │" RS \
+            "│ " getDisplay("af") "      - " ansi("bold", "af") "  │ "  \
+            getDisplay("hu") "           - " ansi("bold", "hu") " │ "   \
+            getDisplay("pl") "      - " ansi("bold", "pl") "    │" RS   \
+            "│ " getDisplay("ar") "        - " ansi("bold", "ar") "  │ " \
+            getDisplay("hy") "          - " ansi("bold", "hy") " │ "    \
+            getDisplay("pt") "   - " ansi("bold", "pt") "    │" RS      \
+            "│ " getDisplay("az") "   - " ansi("bold", "az") "  │ "     \
+            getDisplay("id") " - " ansi("bold", "id") " │ "             \
+            getDisplay("ro") "      - " ansi("bold", "ro") "    │" RS   \
+            "│ " getDisplay("be") "     - " ansi("bold", "be") "  │ "   \
+            getDisplay("ig") "             - " ansi("bold", "ig") " │ " \
+            getDisplay("ru") "     - " ansi("bold", "ru") "    │" RS    \
+            "│ " getDisplay("bg") "      - " ansi("bold", "bg") "  │ "  \
+            getDisplay("is") "         - " ansi("bold", "is") " │ "     \
+            getDisplay("si") "        - " ansi("bold", "si") "    │" RS \
+            "│ " getDisplay("bn") "          - " ansi("bold", "bn") "  │ " \
+            getDisplay("it") "         - " ansi("bold", "it") " │ "     \
+            getDisplay("sk") "  - " ansi("bold", "sk") "    │" RS       \
+            "│ " getDisplay("bs") "       - " ansi("bold", "bs") "  │ " \
+            getDisplay("ja") "           - " ansi("bold", "ja") " │ "   \
+            getDisplay("sl") " - " ansi("bold", "sl") "    │" RS        \
+            "│ " getDisplay("ca") "         - " ansi("bold", "ca") "  │ " \
+            getDisplay("jv") "        - " ansi("bold", "jv") " │ "      \
+            getDisplay("so") "    - " ansi("bold", "so") "    │" RS     \
+            "│ " getDisplay("ceb") "        - " ansi("bold", "ceb") " │ " \
+            getDisplay("ka") "          - " ansi("bold", "ka") " │ "    \
+            getDisplay("sq") "       - " ansi("bold", "sq") "    │" RS  \
+            "│ " getDisplay("cs") "        - " ansi("bold", "cs") "  │ " \
+            getDisplay("kk") "       - " ansi("bold", "kk") " │ "       \
+            getDisplay("sr") "      - " ansi("bold", "sr") "    │" RS   \
+            "│ " getDisplay("cy") "        - " ansi("bold", "cy") "  │ " \
+            getDisplay("km") "         - " ansi("bold", "km") " │ "     \
+            getDisplay("st") "     - " ansi("bold", "st") "    │" RS    \
+            "│ " getDisplay("da") "          - " ansi("bold", "da") "  │ " \
+            getDisplay("kn") "             - " ansi("bold", "kn") " │ " \
+            getDisplay("su") "  - " ansi("bold", "su") "    │" RS       \
+            "│ " getDisplay("de") "        - " ansi("bold", "de") "  │ " \
+            getDisplay("ko") "           - " ansi("bold", "ko") " │ "   \
+            getDisplay("sv") "     - " ansi("bold", "sv") "    │" RS    \
+            "│ " getDisplay("el") "       - " ansi("bold", "el") "  │ " \
+            getDisplay("la") "           - " ansi("bold", "la") " │ "   \
+            getDisplay("sw") "   - " ansi("bold", "sw") "    │" RS      \
+            "│ " getDisplay("en") "        - " ansi("bold", "en") "  │ " \
+            getDisplay("lo") "              - " ansi("bold", "lo") " │ " \
+            getDisplay("ta") "        - " ansi("bold", "ta") "    │" RS \
+            "│ " getDisplay("eo") "      - " ansi("bold", "eo") "  │ "  \
+            getDisplay("lt") "         - " ansi("bold", "lt") " │ "     \
+            getDisplay("te") "       - " ansi("bold", "te") "    │" RS  \
+            "│ " getDisplay("es") "        - " ansi("bold", "es") "  │ " \
+            getDisplay("lv") "         - " ansi("bold", "lv") " │ "     \
+            getDisplay("tg") "      - " ansi("bold", "tg") "    │" RS   \
+            "│ " getDisplay("et") "          - " ansi("bold", "et") "  │ " \
+            getDisplay("mg") "         - " ansi("bold", "mg") " │ "     \
+            getDisplay("th") "         - " ansi("bold", "th") "    │" RS \
+            "│ " getDisplay("eu") "        - " ansi("bold", "eu") "  │ " \
+            getDisplay("mi") "            - " ansi("bold", "mi") " │ "  \
+            getDisplay("tl") "     - " ansi("bold", "tl") "    │" RS    \
+            "│ " getDisplay("fa") "          - " ansi("bold", "fa") "  │ " \
+            getDisplay("mk") "       - " ansi("bold", "mk") " │ "       \
+            getDisplay("tr") "      - " ansi("bold", "tr") "    │" RS   \
+            "│ " getDisplay("fi") "          - " ansi("bold", "fi") "  │ " \
+            getDisplay("ml") "           - " ansi("bold", "ml") " │ "   \
+            getDisplay("uk") "  - " ansi("bold", "uk") "    │" RS       \
+            "│ " getDisplay("fr") "       - " ansi("bold", "fr") "  │ " \
+            getDisplay("mn") "           - " ansi("bold", "mn") " │ "   \
+            getDisplay("ur") "        - " ansi("bold", "ur") "    │" RS \
+            "│ " getDisplay("ga") "        - " ansi("bold", "ga") "  │ " \
+            getDisplay("mr") "            - " ansi("bold", "mr") " │ "  \
+            getDisplay("uz") " - " ansi("bold", "uz") "    │" RS        \
+            "│ " getDisplay("gl") "         - " ansi("bold", "gl") "  │ " \
+            getDisplay("ms") "    - " ansi("bold", "ms") " │ "          \
+            getDisplay("vi") "  - " ansi("bold", "vi") "    │" RS       \
+            "│ " getDisplay("gu") "         - " ansi("bold", "gu") "  │ " \
+            getDisplay("mt") "            - " ansi("bold", "mt") " │ "  \
+            getDisplay("yi") "       - " ansi("bold", "yi") "    │" RS  \
+            "│ " getDisplay("ha") "          - " ansi("bold", "ha") "  │ " \
+            getDisplay("my") "          - " ansi("bold", "my") " │ "    \
+            getDisplay("yo") "      - " ansi("bold", "yo") "    │" RS   \
+            "│ " getDisplay("he") "          - " ansi("bold", "he") "  │ " \
+            getDisplay("ne") "            - " ansi("bold", "ne") " │ "  \
+            getDisplay("zh-CN") "    - " ansi("bold", "zh-CN") " │" RS  \
+            "│ " getDisplay("hi") "          - " ansi("bold", "hi") "  │ " \
+            getDisplay("nl") "       - " ansi("bold", "nl") " │ "       \
+            getDisplay("zh-TW") "    - " ansi("bold", "zh-TW") " │" RS  \
+            "│ " getDisplay("hmn") "          - " ansi("bold", "hmn") " │ " \
+            getDisplay("no") "            - " ansi("bold", "no") " │ "  \
+            getDisplay("zu") "     - " ansi("bold", "zu") "    │" RS    \
+            "│ " getDisplay("hr") "       - " ansi("bold", "hr") "  │ " \
+            getDisplay("ny") "           - " ansi("bold", "ny") " │ "   \
+            "                    │" RS                                  \
+            "│ " getDisplay("ht") " - " ansi("bold", "ht") "  │ "       \
+            getDisplay("pa") "            - " ansi("bold", "pa") " │ "  \
+            "                    │" RS                                  \
             "└──────────────────────┴───────────────────────┴─────────────────────┘"
 }
 

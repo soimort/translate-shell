@@ -88,7 +88,7 @@ BEGIN {
             print
             printf("%-22s%s\n", "gawk (GNU Awk)", PROCINFO["version"])
             printf("%s\n", FriBidi ? FriBidi : "fribidi (GNU FriBidi) [NOT INSTALLED]")
-            printf("%-22s%s\n", "User Language", Locale[getCode(UserLang)]["name"] " (" show(Locale[getCode(UserLang)]["endonym"]) ")")
+            printf("%-22s%s\n", "User Language", getName(UserLang) " (" getDisplay(UserLang) ")")
             exit
         }
 

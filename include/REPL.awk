@@ -52,71 +52,71 @@ function prompt(    i, p, temp) {
 
     # %_ : prompt message
     if (p ~ /%_/)
-        gsub(/%_/, sprintf(Locale[getCode(Option["hl"])]["message"], ""), p)
+        gsub(/%_/, showTranslationsOf(Option["hl"]), p)
 
     # %l : home language
     if (p ~ /%l/)
-        gsub(/%l/, Locale[getCode(Option["hl"])]["display"], p)
+        gsub(/%l/, getDisplay(Option["hl"]), p)
 
     # %L : home language (English name)
     if (p ~ /%L/)
-        gsub(/%L/, Locale[getCode(Option["hl"])]["name"], p)
+        gsub(/%L/, getName(Option["hl"]), p)
 
     # %s : source language
     # 's' is the format-control character for string
 
     # %S : source language (English name)
     if (p ~ /%S/)
-        gsub(/%S/, Locale[getCode(Option["sl"])]["name"], p)
+        gsub(/%S/, getName(Option["sl"]), p)
 
     # %t : target languages, separated by "+"
     if (p ~ /%t/) {
-        temp = Locale[getCode(Option["tl"][1])]["display"]
+        temp = getDisplay(Option["tl"][1])
         for (i = 2; i <= length(Option["tl"]); i++)
-            temp = temp "+" Locale[getCode(Option["tl"][i])]["display"]
+            temp = temp "+" getDisplay(Option["tl"][i])
         gsub(/%t/, temp, p)
     }
 
     # %T : target languages (English names), separated by "+"
     if (p ~ /%T/) {
-        temp = Locale[getCode(Option["tl"][1])]["name"]
+        temp = getName(Option["tl"][1])
         for (i = 2; i <= length(Option["tl"]); i++)
-            temp = temp "+" Locale[getCode(Option["tl"][i])]["name"]
+            temp = temp "+" getName(Option["tl"][i])
         gsub(/%T/, temp, p)
     }
 
     # %, : target languages, separated by ","
     if (p ~ /%,/) {
-        temp = Locale[getCode(Option["tl"][1])]["display"]
+        temp = getDisplay(Option["tl"][1])
         for (i = 2; i <= length(Option["tl"]); i++)
-            temp = temp "," Locale[getCode(Option["tl"][i])]["display"]
+            temp = temp "," getDisplay(Option["tl"][i])
         gsub(/%,/, temp, p)
     }
 
     # %< : target languages (English names), separated by ","
     if (p ~ /%</) {
-        temp = Locale[getCode(Option["tl"][1])]["name"]
+        temp = getName(Option["tl"][1])
         for (i = 2; i <= length(Option["tl"]); i++)
-            temp = temp "," Locale[getCode(Option["tl"][i])]["name"]
+            temp = temp "," getName(Option["tl"][i])
         gsub(/%</, temp, p)
     }
 
     # %/ : target languages, separated by "/"
     if (p ~ /%\//) {
-        temp = Locale[getCode(Option["tl"][1])]["display"]
+        temp = getDisplay(Option["tl"][1])
         for (i = 2; i <= length(Option["tl"]); i++)
-            temp = temp "/" Locale[getCode(Option["tl"][i])]["display"]
+            temp = temp "/" getDisplay(Option["tl"][i])
         gsub(/%\//, temp, p)
     }
 
     # %? : target languages (English names), separated by "/"
     if (p ~ /%\?/) {
-        temp = Locale[getCode(Option["tl"][1])]["name"]
+        temp = getName(Option["tl"][1])
         for (i = 2; i <= length(Option["tl"]); i++)
-            temp = temp "/" Locale[getCode(Option["tl"][i])]["name"]
+            temp = temp "/" getName(Option["tl"][i])
         gsub(/%\?/, temp, p)
     }
 
     # %s : source language
-    printf(AnsiCode["bold"] AnsiCode[tolower(Option["prompt-color"])] p AnsiCode[0] " ", Locale[getCode(Option["sl"])]["display"]) > "/dev/stderr"
+    printf(AnsiCode["bold"] AnsiCode[tolower(Option["prompt-color"])] p AnsiCode[0] " ", getDisplay(Option["sl"])) > "/dev/stderr"
 }
