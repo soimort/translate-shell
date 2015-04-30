@@ -83,20 +83,6 @@ Any POSIX-compliant system should work, including but not limited to:
 It is strongly recommended that you use UTF-8 codeset for your default locale, as it potentially supports all languages. You can check whether your codeset is UTF-8 using:
 
     $ locale
-    LANG=en_US.UTF-8
-    LC_CTYPE=en_US.UTF-8
-    LC_NUMERIC="en_US.UTF-8"
-    LC_TIME="en_US.UTF-8"
-    LC_COLLATE="en_US.UTF-8"
-    LC_MONETARY="en_US.UTF-8"
-    LC_MESSAGES="en_US.UTF-8"
-    LC_PAPER="en_US.UTF-8"
-    LC_NAME="en_US.UTF-8"
-    LC_ADDRESS="en_US.UTF-8"
-    LC_TELEPHONE="en_US.UTF-8"
-    LC_MEASUREMENT="en_US.UTF-8"
-    LC_IDENTIFICATION="en_US.UTF-8"
-    LC_ALL=
 
 And you need to have necessary Unicode fonts installed for the languages you want to display.
 
