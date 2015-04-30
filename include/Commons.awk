@@ -136,7 +136,7 @@ function squeeze(line, preserveIndent) {
     if (!preserveIndent)
         gsub(/^[[:space:]]+/, "", line)
     # Remove comment
-    gsub(/^#.*$/, "", line)
+    gsub(/^[[:space:]]*#.*$/, "", line)
     # Remove in-line comment
     gsub(/#[^"]*$/, "", line)
     # Remove trailing spaces
