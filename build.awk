@@ -85,7 +85,7 @@ function build(target,    group, inline, line, temp) {
                     # Include file
                     if (fileExists(group[1] ".awk"))
                         while (getline inline < (group[1] ".awk"))
-                            if (inline = squeeze(inline))
+                            if (inline = squeeze(inline, 1))
                                 print inline > Trans".awk"
                 } else {
                     if (temp == "Darwin" && line == "#!/usr/bin/gawk -f")

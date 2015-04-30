@@ -1,7 +1,7 @@
 ####################################################################
 # Commons.awk                                                      #
 #                                                                  #
-# Commonly used functions for string and array operations, logging.#
+# Commonly used functions.                                         #
 ####################################################################
 
 # Initialize `UrlEncoding`.
@@ -131,9 +131,10 @@ function replicate(string, len,
 }
 
 # Squeeze a source line of AWK code.
-function squeeze(line) {
-    # Remove preceding spaces
-    gsub(/^[[:space:]]+/, "", line)
+function squeeze(line, preserveIndent) {
+    # Remove preceding spaces if indentation not preserved
+    if (!preserveIndent)
+        gsub(/^[[:space:]]+/, "", line)
     # Remove comment
     gsub(/^#.*$/, "", line)
     # Remove in-line comment
@@ -210,7 +211,7 @@ function join(array, separator, sortedIn, preserveNull,
                 temp = j++ ? temp separator array[i] : array[i]
         PROCINFO["sorted_in"] = saveSortedIn
     } else
-        temp = array # array == ""
+        temp = array # array is empty string
 
     return temp
 }
