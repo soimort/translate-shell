@@ -1,5 +1,7 @@
 #!/usr/bin/gawk -f
 
+# Not all 4.x versions of gawk can handle @include without ".awk" extension
+# But the build.awk script and the single build should support gawk 4.0+.
 @include "include/Commons.awk"
 @include "metainfo.awk"
 
@@ -8,22 +10,23 @@ function init() {
     Trans     = BuildPath Command
 
     ManPath   = "man/"
-    Ronn      = ManPath Command ".1.ronn"
-    RonnStyle = ManPath "styles/night.css"
     Man       = ManPath Command ".1"
+    Ronn      = Man ".ronn"
+    RonnStyle = ManPath "styles/night.css"
 }
 
 # Task: clean
 function clean() {
-    ("rm -fr " parameterize(BuildPath)) | getline
+    ("rm -f " BuildPath Command "*") | getline
     return 0
 }
 
 # Task: man
 function man() {
-    return system("ronn --manual=" parameterize(toupper(Command) " MANUAL") \
-                  " --organization=" parameterize(Version) \
-                  " --style=" parameterize(RonnStyle) \
+    return system("ronn "                                               \
+                  "--manual=" parameterize(toupper(Command) " MANUAL")  \
+                  " --organization=" parameterize(Version)              \
+                  " --style=" parameterize(RonnStyle)                   \
                   " " Ronn)
 }
 
@@ -101,11 +104,11 @@ function build(target,    group, inline, line, temp) {
 
     } else {
 
-        w("[FAILED] Unknown target: " AnsiCode["underline"] target AnsiCode["no underline"])
-        w("         Supported targets: " \
-          AnsiCode["underline"] "bash" AnsiCode["no underline"] ", " \
-          AnsiCode["underline"] "zsh" AnsiCode["no underline"] ", " \
-          AnsiCode["underline"] "gawk" AnsiCode["no underline"])
+        w("[FAILED] Unknown target: " ansi("underline", target))
+        w("         Supported targets: "                                \
+          ansi("underline", "bash") ", "                                \
+          ansi("underline", "zsh") ", "                                 \
+          ansi("underline", "gawk"))
         return 1
 
     }
@@ -156,12 +159,12 @@ BEGIN {
         }
 
         if (status == 0) {
-            d("[OK] Task " AnsiCode["bold"] task AnsiCode["no bold"] " completed.")
+            d("[OK] Task " ansi("bold", task) " completed.")
         } else if (status < 0) {
-            w("[FAILED] Unknown task: " AnsiCode["bold"] task AnsiCode["no bold"])
+            w("[FAILED] Unknown task: " ansi("bold", task))
             exit 1
         } else {
-            w("[FAILED] Task " AnsiCode["bold"] task AnsiCode["no bold"] " failed.")
+            w("[FAILED] Task " ansi("bold", task) " failed.")
             exit 1
         }
     }
