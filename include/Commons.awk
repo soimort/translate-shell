@@ -6,9 +6,11 @@
 
 # Initialize constants.
 function initConst() {
-    STDIN = "/dev/stdin"
+    STDIN  = "/dev/stdin"
     STDOUT = "/dev/stdout"
     STDERR = "/dev/stderr"
+
+    SUPERR = " 2> /dev/null" # suppress errors
 }
 
 # Initialize `UrlEncoding`.
@@ -229,7 +231,8 @@ function yn(string) {
     return (tolower(string) ~ /^[0fn]/) ? 0 : 1
 }
 
-# Initialize ANSI escape codes (ANSI X3.64 Standard Control Sequences).
+# Initialize ANSI escape codes for SGR (Select Graphic Rendition).
+# (ANSI X3.64 Standard Control Sequences)
 # See: <https://en.wikipedia.org/wiki/ANSI_escape_code>
 function initAnsiCode() {
     # Dumb terminal: no ANSI escape code whatsoever
