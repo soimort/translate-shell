@@ -294,6 +294,7 @@ BEGIN {
         # -pager [program]
         match(ARGV[pos], /^--?pager(=(.*)?)?$/, group)
         if (RSTART) {
+            Option["view"] = 1
             Option["pager"] = group[1] ?
                 (group[2] ? group[2] : Option["pager"]) :
                 ARGV[++pos]
