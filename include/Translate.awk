@@ -2,6 +2,17 @@
 # Translate.awk                                                    #
 ####################################################################
 
+# Detect external terminal pager (less, more, most).
+function initPager() {
+    Pager = !system("less -V" SUPOUT SUPERR) ?
+        "less" :
+        (!system("more -V" SUPOUT SUPERR) ?
+         "more" :
+         (!system("most" SUPOUT SUPERR) ?
+          "most" :
+          ""))
+}
+
 # Detect external audio player (mplayer, mpv, mpg123).
 function initAudioPlayer() {
     AudioPlayer = !system("mplayer" SUPOUT SUPERR) ?
@@ -64,6 +75,14 @@ function getResponse(text, sl, tl, hl,    content, url) {
     close(HttpService)
 
     return assert(content, "[ERROR] Null response.")
+}
+
+# Print a string (to output file or terminal pager).
+function p(string) {
+    if (Option["view"])
+        print string | Option["pager"]
+    else
+        print string > Option["output"]
 }
 
 # Play using Google Text-to-Speech engine.
@@ -404,7 +423,7 @@ function webTranslation(uri, sl, tl, hl) {
 # Translate the source text (into all target languages).
 function translate(text, inline,
                    ####
-                   i, j, r, playlist, saveSortedIn) {
+                   i, j, playlist, saveSortedIn) {
 
     if (!getCode(Option["hl"])) {
         # Check if home language is supported
@@ -431,7 +450,7 @@ function translate(text, inline,
         # Non-interactive verbose mode: separator between targets
         if (!Option["interactive"])
             if (Option["verbose"] && i > 1)
-                print replicate("─", Option["width"])
+                p(replicate("─", Option["width"]))
 
         if (inline &&
             startsWithAny(text, UriSchemes) == "file://") {
@@ -443,8 +462,7 @@ function translate(text, inline,
             # translate URL only from command-line parameters (inline)
             webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
         } else {
-            r = getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist)
-            print r > Option["output"]
+            p(getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist))
 
             if (Option["play"])
                 if (Option["player"])
@@ -468,7 +486,7 @@ function translateMain(    i, line) {
         # Non-interactive verbose mode: separator between sources
         if (!Option["interactive"])
             if (Option["verbose"] && i++ > 0)
-                print replicate("═", Option["width"])
+                p(replicate("═", Option["width"]))
 
         if (Option["interactive"]) {
             if (line ~ /:(q|quit)/)

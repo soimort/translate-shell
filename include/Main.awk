@@ -46,6 +46,9 @@ function init1() {
     Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] : 64
     Option["indent"] = 4
 
+    Option["view"] = 0
+    Option["pager"] = ENVIRON["PAGER"]
+
     Option["browser"] = ENVIRON["BROWSER"]
 
     Option["play"] = 0
@@ -79,6 +82,19 @@ function init3(    group) {
     # Translate.awk
     initHttpService()
 
+    # Initialize pager
+    if (Option["view"]) {
+        if (!Option["pager"]) {
+            initPager()
+            Option["pager"] = Pager
+        }
+
+        if (!Option["pager"]) {
+            w("[WARNING] No available terminal pager.")
+            Option["view"] = 0
+        }
+    }
+
     # Initialize browser
     if (!Option["browser"]) {
         "xdg-mime query default text/html" SUPERR |& getline Option["browser"]
@@ -96,7 +112,7 @@ function init3(    group) {
         }
 
         if (!Option["player"] && !SpeechSynthesizer) {
-            w("[WARNING] No available audio player or speech synthesizer is found.")
+            w("[WARNING] No available audio player or speech synthesizer.")
             Option["play"] = 0
         }
     }
@@ -166,8 +182,8 @@ BEGIN {
             continue
         }
 
-        # -v, -verbose
-        match(ARGV[pos], /^--?v(e(r(b(o(se?)?)?)?)?)?$/)
+        # -verbose
+        match(ARGV[pos], /^--?verbose$/)
         if (RSTART) {
             Option["verbose"] = 1 # default value
             continue
@@ -264,6 +280,22 @@ BEGIN {
         if (RSTART) {
             Option["indent"] = group[1] ?
                 (group[2] ? group[2] : Option["indent"]) :
+                ARGV[++pos]
+            continue
+        }
+
+        # -v, -view
+        match(ARGV[pos], /^--?v(i(ew?)?)?$/)
+        if (RSTART) {
+            Option["view"] = 1
+            continue
+        }
+
+        # -pager [program]
+        match(ARGV[pos], /^--?pager(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["pager"] = group[1] ?
+                (group[2] ? group[2] : Option["pager"]) :
                 ARGV[++pos]
             continue
         }
@@ -472,7 +504,7 @@ BEGIN {
         for (i = pos; i < ARGC; i++) {
             # Verbose mode: separator between sources
             if (Option["verbose"] && i > pos)
-                print replicate("═", Option["width"])
+                p(replicate("═", Option["width"]))
 
             translate(ARGV[i], 1) # inline mode
         }
