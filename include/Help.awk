@@ -222,6 +222,8 @@ function getHelp() {
         ins(1, "Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.") RS \
         ansi("bold", "-verbose") RS                                     \
         ins(1, "Verbose mode. (default)") RS                            \
+        ansi("bold", "-d, -dictionary") RS                              \
+        ins(1, "Dictionary mode.") RS                                   \
         ansi("bold", "-b, -brief") RS                                   \
         ins(1, "Brief mode.") RS                                        \
         ansi("bold", "-show-original [yes|no]") RS                      \

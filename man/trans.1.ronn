@@ -51,6 +51,12 @@ Show the most relevant translation, then its phonetic notation (if any), then it
 
 This option is unnecessary since verbose mode is enabled by default.
 
+### -d, -dictionary
+
+Dictionary mode.
+
+Show the dictionary entry of the original word only.
+
 ### -b, -brief
 
 Brief mode.

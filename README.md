@@ -331,6 +331,8 @@ Options:
     Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.
 -verbose
     Verbose mode. (default)
+-d, -dictionary
+    Dictionary mode.
 -b, -brief
     Brief mode.
 -show-original [yes|no]
