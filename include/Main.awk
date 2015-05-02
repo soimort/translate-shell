@@ -9,16 +9,18 @@ function initGawk(    group) {
 
     split(PROCINFO["version"], group, ".")
     if (group[1] < 4) {
-        e("[ERROR] Oops! Your gawk (version " GawkVersion ") appears to be too old.\nYou need at least gawk 4.0.0 to run this program.")
+        e("[ERROR] Oops! Your gawk (version " GawkVersion ") "          \
+          "appears to be too old.\n"                                    \
+          "        You need at least gawk 4.0.0 to run this program.")
         exit 1
     }
 }
 
-# Pre-initialization (before option parsing).
-function preInit() {
-    initGawk()          #<< AnsiCode
+# Initialization #1. (prior to option parsing)
+function init1() {
+    initGawk()          #<< Commons.awk/AnsiCode
 
-    # Languages
+    # Languages.awk
     initBiDi()
     initLocale()
     initLocaleDisplay() #<< Locale, BiDi
@@ -58,23 +60,53 @@ function preInit() {
     Option["prompt-color"] = ENVIRON["TRANS_PS_COLOR"] ? ENVIRON["TRANS_PS_COLOR"] : "default"
 
     Option["input"] = ""
-    Option["output"] = "/dev/stdout"
+    Option["output"] = STDOUT
 
     Option["hl"] = ENVIRON["HOME_LANG"] ? ENVIRON["HOME_LANG"] : UserLang
     Option["sl"] = ENVIRON["SOURCE_LANG"] ? ENVIRON["SOURCE_LANG"] : "auto"
     Option["tl"][1] = ENVIRON["TARGET_LANG"] ? ENVIRON["TARGET_LANG"] : UserLang
 }
 
-# Post-initialization (after option parsing).
-function postInit() {
-    # Translate
+# Initialization #2. (prior to interactive mode handling)
+function init2() {
+    # Disable ANSI escape codes if required
+    if (Option["no-ansi"])
+        delete AnsiCode
+}
+
+# Initialization #3.
+function init3(    group) {
+    # Translate.awk
     initHttpService()
+
+    # Initialize browser
+    if (!Option["browser"]) {
+        "xdg-mime query default text/html" SUPERR |& getline Option["browser"]
+        match(Option["browser"], "(.*).desktop$", group)
+        Option["browser"] = group[1]
+    }
+
+    # Initialize audio player or speech synthesizer
+    if (Option["play"]) {
+        if (!Option["player"]) {
+            initAudioPlayer()
+            Option["player"] = AudioPlayer ? AudioPlayer : Option["player"]
+            if (!Option["player"])
+                initSpeechSynthesizer()
+        }
+
+        if (!Option["player"] && !SpeechSynthesizer) {
+            w("[WARNING] No available audio player or speech synthesizer is found.")
+            Option["play"] = 0
+        }
+    }
 }
 
 # Main entry point.
 BEGIN {
-    preInit()
+    init1() # initialization #1
 
+    # Option parsing
     pos = 0
     while (ARGV[++pos]) {
         # -, -no-op
@@ -105,7 +137,7 @@ BEGIN {
             if (ENVIRON["TRANS_MANPAGE"])
                 system("echo -E \"${TRANS_MANPAGE}\" | " \
                        "groff -Wall -mtty-char -mandoc -Tutf8 -rLL=${COLUMNS}n -rLT=${COLUMNS}n | " \
-                       (system("most 2>/dev/null") ?
+                       (system("most" SUPERR) ?
                         "less -s -P\"\\ \\Manual page " Command "(1) line %lt (press h for help or q to quit)\"" :
                         "most -Cs"))
             else
@@ -375,8 +407,7 @@ BEGIN {
         break # no more option from here
     }
 
-    # Option parsing finished
-    postInit()
+    init2() # initialization #2
 
     if (Option["interactive"] && !Option["no-rlwrap"]) {
         # Interactive mode
@@ -427,41 +458,17 @@ BEGIN {
             Option["interactive"] = 1 # skip
     }
 
-    if (Option["play"]) {
-        # Initialize audio player or speech synthesizer
-        if (!Option["player"]) {
-            initAudioPlayer()
-            Option["player"] = AudioPlayer ? AudioPlayer : Option["player"]
-            if (!Option["player"])
-                initSpeechSynthesizer()
-        }
-
-        if (!Option["player"] && !SpeechSynthesizer) {
-            w("[WARNING] No available audio player or speech synthesizer is found.")
-            Option["play"] = 0
-        }
-    }
-
     if (Option["interactive"]) {
-        print AnsiCode["bold"] AnsiCode[tolower(Option["prompt-color"])] getVersion() AnsiCode[0] > "/dev/stderr"
-        print AnsiCode[tolower(Option["prompt-color"])] "(:q to quit)" AnsiCode[0] > "/dev/stderr"
+        print AnsiCode["bold"] AnsiCode[tolower(Option["prompt-color"])] getVersion() AnsiCode[0] > STDERR
+        print AnsiCode[tolower(Option["prompt-color"])] "(:q to quit)" AnsiCode[0] > STDERR
     }
 
-    # Initialize browser
-    if (!Option["browser"]) {
-        "xdg-mime query default text/html 2>/dev/null" |& getline Option["browser"]
-        match(Option["browser"], "(.*).desktop$", group)
-        Option["browser"] = group[1]
-    }
-
-    # Disable ANSI SGR (Select Graphic Rendition) codes if required
-    if (Option["no-ansi"])
-        delete AnsiCode
+    init3() # initialization #3
 
     if (pos < ARGC) {
         # More parameters
 
-        # Translate the remaining parameters
+        # Translate remaining parameters
         for (i = pos; i < ARGC; i++) {
             # Verbose mode: separator between sources
             if (Option["verbose"] && i > pos)
@@ -475,7 +482,7 @@ BEGIN {
         # No more parameter besides options
 
         # If input not specified, use stdin
-        if (!Option["input"]) Option["input"] = "/dev/stdin"
+        if (!Option["input"]) Option["input"] = STDIN
     }
 
     # If input specified, start translating
