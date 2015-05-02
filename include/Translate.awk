@@ -111,7 +111,8 @@ function getTranslation(text, sl, tl, hl,
                         translation, translations, phonetics,
                         wordClasses, words, segments, altTranslations,
                         original, oPhonetics, oWordClasses, oWords,
-                        oRefs, oSynonyms, oExamples, oSeeAlso,
+                        oRefs, oSynonymClasses, oSynonyms,
+                        oExamples, oSeeAlso,
                         wShowOriginal, wShowOriginalPhonetics,
                         wShowTranslation, wShowTranslationPhonetics,
                         wShowPromptMessage, wShowLanguages,
@@ -183,7 +184,7 @@ function getTranslation(text, sl, tl, hl,
 
         # 11 - (original) word classes and synonyms
         if (match(i, "^0" SUBSEP "11" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
-            oWordClasses[group[1]] = literal(ast[i])
+            oSynonymClasses[group[1]] = literal(ast[i])
         if (match(i, "^0" SUBSEP "11" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "1$", group))
             if (ast[i]) {
                 oRefs[literal(ast[i])][1] = group[1]
@@ -244,7 +245,7 @@ function getTranslation(text, sl, tl, hl,
 
         if (!anything(oPhonetics)) wShowOriginalPhonetics = 0
         if (!anything(phonetics)) wShowTranslationPhonetics = 0
-        if (il == tl && isarray(oWordClasses)) {
+        if (il == tl && (isarray(oWordClasses) || isarray(oSynonymClasses))) {
             wShowOriginalDictionary = 1
             wShowTranslation = 0
         }
@@ -256,9 +257,9 @@ function getTranslation(text, sl, tl, hl,
         if (hasWordClasses || !hasAltTranslations) wShowAlternatives = 0
 
         if (wShowOriginal) {
-            # Display: original text
+            # Display: original text & phonetics
             if (r) r = r RS RS
-            r = r m("-- display original text")
+            r = r m("-- display original text & phonetics")
             r = r ansi("negative", ansi("bold", s(join(original), il)))
             if (wShowOriginalPhonetics)
                 r = r RS showPhonetics(join(oPhonetics), il)
@@ -276,9 +277,8 @@ function getTranslation(text, sl, tl, hl,
         if (wShowPromptMessage || wShowLanguages)
             if (r) r = r RS
         if (wShowPromptMessage) {
-            # Display: prompt message
             if (hasWordClasses) {
-                # Definitions of
+                # Display: prompt message (Definitions of ...)
                 if (r) r = r RS
                 r = r m("-- display prompt message (Definitions of ...)")
                 if (isRTL(hl)) # home language is R-to-L
@@ -286,7 +286,7 @@ function getTranslation(text, sl, tl, hl,
                 else # home language is L-to-R
                     r = r showDefinitionsOf(hl, ansi("underline", show(join(original), il)))
             } else if (hasAltTranslations) {
-                # Translations of
+                # Display: prompt message (Translations of ...)
                 if (r) r = r RS
                 r = r m("-- display prompt message (Translations of ...)")
                 if (isRTL(hl)) # home language is R-to-L
@@ -297,51 +297,56 @@ function getTranslation(text, sl, tl, hl,
         }
         if (wShowLanguages) {
             # Display: source language -> target language
-            if (hasWordClasses || hasAltTranslations) {
-                if (r) r = r RS
-                r = r m("-- display source language -> target language")
-                r = r s(sprintf("[ %s -> %s ]", getEndonym(il), getEndonym(tl)))
-            }
+            if (r) r = r RS
+            r = r m("-- display source language -> target language")
+            r = r s(sprintf("[ %s -> %s ]", getEndonym(il), getEndonym(tl)))
         }
 
         if (wShowOriginalDictionary) {
             # Display: original dictionary
-            if (r) r = r RS
-            r = r m("-- display original dictionary")
             if (isarray(oWordClasses) && anything(oWordClasses)) {
+                # Detailed explanations
+                if (r) r = r RS
+                r = r m("-- display original dictionary (detailed explanations)")
                 for (i = 0; i < length(oWordClasses); i++) {
                     r = (i > 0 ? r RS : r) RS s(oWordClasses[i], hl)
-                    if (isarray(oWords[i])) {
-                        # Detailed explanation
-                        for (j = 0; j < length(oWords[i]); j++) {
-                            explanation = oWords[i][j][0]
-                            ref = oWords[i][j][1]
-                            example = oWords[i][j][2]
+                    for (j = 0; j < length(oWords[i]); j++) {
+                        explanation = oWords[i][j][0]
+                        ref = oWords[i][j][1]
+                        example = oWords[i][j][2]
 
-                            r = (j > 0 ? r RS : r) RS ansi("bold", ins(1, explanation, il))
-                            if (example)
-                                r = r RS ins(2, "- \"" example "\"", il)
-                            if (ref && isarray(oRefs[ref])) {
-                                temp = showSynonyms(hl) ": " oSynonyms[oRefs[ref][1]][oRefs[ref][2]][0]
-                                for (k = 1; k < length(oSynonyms[oRefs[ref][1]][oRefs[ref][2]]); k++)
-                                    temp = temp ", " oSynonyms[oRefs[ref][1]][oRefs[ref][2]][k]
-                                r = r RS ins(1, temp)
-                            }
-                        }
-                    } else {
-                        # Synonyms only
-                        for (j = 0; j < length(oSynonyms[i]); j++) {
-                            temp = "* " oSynonyms[i][j][0]
-                            for (k = 1; k < length(oSynonyms[i][j]); k++)
-                                temp = temp ", " oSynonyms[i][j][k]
+                        r = (j > 0 ? r RS : r) RS ansi("bold", ins(1, explanation, il))
+                        if (example)
+                            r = r RS ins(2, "- \"" example "\"", il)
+                        if (ref && isarray(oRefs[ref])) {
+                            temp = showSynonyms(hl) ": " oSynonyms[oRefs[ref][1]][oRefs[ref][2]][0]
+                            for (k = 1; k < length(oSynonyms[oRefs[ref][1]][oRefs[ref][2]]); k++)
+                                temp = temp ", " oSynonyms[oRefs[ref][1]][oRefs[ref][2]][k]
                             r = r RS ins(1, temp)
                         }
                     }
                 }
             }
-            # Examples
+            if (isarray(oSynonymClasses) && anything(oSynonymClasses)) {
+                # Synonyms
+                r = r RS RS
+                r = r m("-- display original dictionary (synonyms)")
+                r = r s(showSynonyms(hl), hl)
+                for (i = 0; i < length(oSynonymClasses); i++) {
+                    r = (i > 0 ? r RS : r) RS ins(1, oSynonymClasses[i], hl)
+                    for (j = 0; j < length(oSynonyms[i]); j++) {
+                        temp = "* " oSynonyms[i][j][0]
+                        for (k = 1; k < length(oSynonyms[i][j]); k++)
+                            temp = temp ", " oSynonyms[i][j][k]
+                        r = r RS ins(2, temp)
+                    }
+                }
+            }
             if (isarray(oExamples) && anything(oExamples)) {
-                r = r RS RS s(showExamples(hl), hl)
+                # Examples
+                r = r RS RS
+                r = r m("-- display original dictionary (examples)")
+                r = r s(showExamples(hl), hl)
                 for (i = 0; i < length(oExamples); i++) {
                     example = oExamples[i]
 
@@ -355,9 +360,11 @@ function getTranslation(text, sl, tl, hl,
                     r = (i > 0 ? r RS : r) RS ins(1, "- " example, il)
                 }
             }
-            # See also
             if (isarray(oSeeAlso) && anything(oSeeAlso)) {
-                r = r RS RS s(showSeeAlso(hl), hl)
+                # See also
+                r = r RS RS
+                r = r m("-- display original dictionary (see also)")
+                r = r s(showSeeAlso(hl), hl)
                 temp = isRTL(il) ? oSeeAlso[0] : ansi("underline", oSeeAlso[0])
                 for (k = 1; k < length(oSeeAlso); k++)
                     temp = temp ", " (isRTL(il) ? oSeeAlso[k] : ansi("underline", oSeeAlso[k]))
