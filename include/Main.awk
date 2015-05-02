@@ -338,8 +338,8 @@ BEGIN {
             continue
         }
 
-        # -I, -interactive
-        match(ARGV[pos], /^--?(int(e(r(a(c(t(i(ve?)?)?)?)?)?)?)?|I)$/)
+        # -I, -interactive, -shell
+        match(ARGV[pos], /^--?(int(e(r(a(c(t(i(ve?)?)?)?)?)?)?)?|shell|I)$/)
         if (RSTART) {
             Option["interactive"] = 1
             continue
