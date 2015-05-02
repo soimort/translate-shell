@@ -1301,7 +1301,7 @@ function isRTL(code) {
 # Detect external bidirectional algorithm utility (fribidi);
 # Fallback to Unix `rev` if not found.
 function initBiDi() {
-    "fribidi --version 2>/dev/null" |& getline FriBidi
+    "fribidi --version" SUPERR |& getline FriBidi
     BiDiNoPad = FriBidi ? "fribidi --nopad" : "rev"
     BiDi = FriBidi ? "fribidi --width %s" : "rev | sed \"s/'/\\\\\\'/\" | xargs printf '%%s '"
 }
