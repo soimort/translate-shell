@@ -357,6 +357,10 @@ Options:
     Specify the screen width for padding when displaying right-to-left languages.
 -indent [num]
     Specify the size of indent (in terms of spaces). (default: 4)
+-v, -view
+    View the translation in a terminal pager.
+-pager [program]
+    Specify the terminal pager to use, and view the translation.
 -browser [program]
     Specify the web browser to use.
 -p, -play
@@ -393,6 +397,7 @@ See the man page trans(1) for more information.
 
 You can export some environment variables as your default configuration. This will save you from typing the same command-line options each time.
 
+* `PAGER`: for option `-pager`
 * `BROWSER`: for option `-browser`
 * `PLAYER`: for option `-player`
 * `HTTP_PROXY` and `http_proxy`: for option `-proxy`

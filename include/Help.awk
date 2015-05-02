@@ -248,6 +248,10 @@ function getHelp() {
         ins(1, "Specify the screen width for padding when displaying right-to-left languages.") RS \
         ansi("bold", "-indent [num]") RS                                \
         ins(1, "Specify the size of indent (in terms of spaces). (default: 4)") RS \
+        ansi("bold", "-v, -view") RS                                    \
+        ins(1, "View the translation in a terminal pager.") RS          \
+        ansi("bold", "-pager [program]") RS                             \
+        ins(1, "Specify the terminal pager to use, and view the translation.") RS \
         ansi("bold", "-browser [program]") RS                           \
         ins(1, "Specify the web browser to use.") RS                    \
         ansi("bold", "-p, -play") RS                                    \

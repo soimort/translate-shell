@@ -107,6 +107,16 @@ This option overrides the setting of environment variable `COLUMNS`.
 
 Specify the size of indent (in terms of spaces). (default: 4)
 
+### -v, -view
+
+View the translation in a terminal pager (`less`, `more` pr `most`).
+
+### -pager [program]
+
+Specify the terminal pager to use, and view the translation.
+
+This option overrides the setting of environment variable `PAGER`.
+
 ### -browser [program]
 
 Specify the web browser to use.
