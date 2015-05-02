@@ -10,7 +10,8 @@ function initConst() {
     STDOUT = "/dev/stdout"
     STDERR = "/dev/stderr"
 
-    SUPERR = " 2> /dev/null" # suppress errors
+    SUPOUT = " > /dev/null "  # suppress output
+    SUPERR = " 2> /dev/null " # suppress error
 }
 
 # Initialize `UrlEncoding`.
