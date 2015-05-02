@@ -24,14 +24,14 @@ Mondo !
 Translations with detailed explanations are shown by default. You can also translate the text briefly, i.e., only the most relevant translation is shown: (this will give you the same result as in [Google Translate CLI Legacy](https://github.com/soimort/translate-shell/tree/legacy))
 
 ```
-$ trans -b 'Saluton, Mondo!'
+$ trans -brief 'Saluton, Mondo!'
 Hello, World!
 ```
 
 Translations can be done interactively; input your text line by line:
 
 ```
-$ trans -b -I
+$ trans -shell -brief
 > Was mich nicht umbringt, macht mich stärker.
 What does not kill me makes me stronger.
 > Юмор есть остроумие глубокого чувства.
@@ -371,7 +371,7 @@ Options:
     Specify the command-line audio player to use, and listen to the translation.
 -x [proxy], -proxy [proxy]
     Use proxy on given port.
--I, -interactive
+-I, -interactive, -shell
     Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).
 -no-rlwrap
     Don't invoke `rlwrap` when starting an interactive shell with `-I`.

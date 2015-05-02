@@ -155,7 +155,7 @@ Use proxy on given port. String format:
 
 This option overrides the setting of environment variables `HTTP_PROXY` and `http_proxy`.
 
-### -I, -interactive
+### -I, -interactive, -shell
 
 Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).
 
