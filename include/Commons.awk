@@ -1,8 +1,15 @@
 ####################################################################
 # Commons.awk                                                      #
 #                                                                  #
-# Commonly used functions.                                         #
+# Commonly used constants and functions.                           #
 ####################################################################
+
+# Initialize constants.
+function initConst() {
+    STDIN = "/dev/stdin"
+    STDOUT = "/dev/stdout"
+    STDERR = "/dev/stderr"
+}
 
 # Initialize `UrlEncoding`.
 # See: <https://en.wikipedia.org/wiki/Percent-encoding>
@@ -274,17 +281,17 @@ function ansi(code, text) {
 
 # Print warning message.
 function w(text) {
-    print ansi("yellow", text) > "/dev/stderr"
+    print ansi("yellow", text) > STDERR
 }
 
 # Print error message.
 function e(text) {
-    print ansi("bold", ansi("red", text)) > "/dev/stderr"
+    print ansi("bold", ansi("red", text)) > STDERR
 }
 
 # Print debugging message.
 function d(text) {
-    print ansi("gray", text) > "/dev/stderr"
+    print ansi("gray", text) > STDERR
 }
 
 # Log an array.
@@ -330,6 +337,8 @@ function initUriSchemes() {
 }
 
 BEGIN {
+    initConst()
+
     initUrlEncoding()
     initAnsiCode()
     initUriSchemes()
