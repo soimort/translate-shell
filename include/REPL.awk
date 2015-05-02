@@ -4,7 +4,7 @@
 
 # Detect external readline wrapper (rlwrap).
 function initRlwrap() {
-    Rlwrap = ("rlwrap --version 2>/dev/null" | getline) ? "rlwrap" : ""
+    Rlwrap = ("rlwrap --version" SUPERR | getline) ? "rlwrap" : ""
 }
 
 # Prompt for interactive session.
@@ -118,5 +118,5 @@ function prompt(    i, p, temp) {
     }
 
     # %s : source language
-    printf(AnsiCode["bold"] AnsiCode[tolower(Option["prompt-color"])] p AnsiCode[0] " ", getDisplay(Option["sl"])) > "/dev/stderr"
+    printf(AnsiCode["bold"] AnsiCode[tolower(Option["prompt-color"])] p AnsiCode[0] " ", getDisplay(Option["sl"])) > STDERR
 }
