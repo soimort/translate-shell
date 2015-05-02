@@ -4,20 +4,20 @@
 
 # Detect external audio player (mplayer, mpv, mpg123).
 function initAudioPlayer() {
-    AudioPlayer = !system("mplayer >/dev/null 2>/dev/null") ?
+    AudioPlayer = !system("mplayer" SUPOUT SUPERR) ?
         "mplayer" :
-        (!system("mpv >/dev/null 2>/dev/null") ?
+        (!system("mpv" SUPOUT SUPERR) ?
          "mpv" :
-         (!system("mpg123 >/dev/null 2>/dev/null") ?
+         (!system("mpg123 --version" SUPOUT SUPERR) ?
           "mpg123" :
           ""))
 }
 
 # Detect external speech synthesizer (say, espeak).
 function initSpeechSynthesizer() {
-    SpeechSynthesizer = !system("say '' >/dev/null 2>/dev/null") ?
+    SpeechSynthesizer = !system("say ''" SUPOUT SUPERR) ?
         "say" :
-        (!system("espeak '' >/dev/null 2>/dev/null") ?
+        (!system("espeak ''" SUPOUT SUPERR) ?
          "espeak" :
          "")
 }
@@ -72,7 +72,7 @@ function play(text, tl,    url) {
         "&tl=" tl "&q=" preprocess(text)
 
     # Don't use getline from pipe here - the same pipe will be run only once for each AWK script!
-    system(Option["player"] " '" url "' >/dev/null 2>/dev/null")
+    system(Option["player"] " " parameterize(url) SUPOUT SUPERR)
 }
 
 # Get the translation of a string.
@@ -404,7 +404,7 @@ function webTranslation(uri, sl, tl, hl) {
 # Translate the source text (into all target languages).
 function translate(text, inline,
                    ####
-                   i, j, playlist, saveSortedIn) {
+                   i, j, r, playlist, saveSortedIn) {
 
     if (!getCode(Option["hl"])) {
         # Check if home language is supported
@@ -435,13 +435,16 @@ function translate(text, inline,
 
         if (inline &&
             startsWithAny(text, UriSchemes) == "file://") {
+            # translate URL only from command-line parameters (inline)
             fileTranslation(text)
         } else if (inline &&
                    startsWithAny(text, UriSchemes) == "http://" ||
                    startsWithAny(text, UriSchemes) == "https://") {
+            # translate URL only from command-line parameters (inline)
             webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
         } else {
-            print getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist) > Option["output"]
+            r = getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist)
+            print r > Option["output"]
 
             if (Option["play"])
                 if (Option["player"])
