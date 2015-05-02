@@ -182,6 +182,13 @@ BEGIN {
             continue
         }
 
+        # -d, -dictionary
+        match(ARGV[pos], /^--?d(i(c(t(i(o(n(a(ry?)?)?)?)?)?)?)?)?$/)
+        if (RSTART) {
+            Option["show-original-dictionary"] = 1
+            continue
+        }
+
         # -b, -brief
         match(ARGV[pos], /^--?b(r(i(ef?)?)?)?$/)
         if (RSTART) {
