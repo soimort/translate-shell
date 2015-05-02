@@ -48,6 +48,12 @@ function initHttpService() {
     }
 }
 
+# Return a message for debugging.
+function m(string) {
+    if (Option["debug"])
+        return ansi("blue", string) RS
+}
+
 # Pre-process string (URL-encode before send).
 function preprocess(text) {
     return quote(text)
@@ -250,6 +256,7 @@ function getTranslation(text, sl, tl, hl,
         if (wShowOriginal) {
             # Display: original text
             if (r) r = r RS RS
+            r = r m("-- display original text")
             r = r ansi("negative", ansi("bold", s(join(original), il)))
             if (wShowOriginalPhonetics)
                 r = r RS showPhonetics(join(oPhonetics), il)
@@ -258,6 +265,7 @@ function getTranslation(text, sl, tl, hl,
         if (wShowTranslation) {
             # Display: major translation & phonetics
             if (r) r = r RS RS
+            r = r m("-- display major translation & phonetics")
             r = r ansi("bold", s(translation, tl))
             if (wShowTranslationPhonetics)
                 r = r RS showPhonetics(join(phonetics), tl)
@@ -270,6 +278,7 @@ function getTranslation(text, sl, tl, hl,
             if (hasWordClasses) {
                 # Definitions of
                 if (r) r = r RS
+                r = r m("-- display prompt message (Definitions of ...)")
                 if (isRTL(hl)) # home language is R-to-L
                     r = r s(showDefinitionsOf(hl, join(original)))
                 else # home language is L-to-R
@@ -277,6 +286,7 @@ function getTranslation(text, sl, tl, hl,
             } else if (hasAltTranslations) {
                 # Translations of
                 if (r) r = r RS
+                r = r m("-- display prompt message (Translations of ...)")
                 if (isRTL(hl)) # home language is R-to-L
                     r = r s(showTranslationsOf(hl, join(original)))
                 else # home language is L-to-R
@@ -287,6 +297,7 @@ function getTranslation(text, sl, tl, hl,
             # Display: source language -> target language
             if (hasWordClasses || hasAltTranslations) {
                 if (r) r = r RS
+                r = r m("-- display source language -> target language")
                 r = r s(sprintf("[ %s -> %s ]", getEndonym(il), getEndonym(tl)))
             }
         }
@@ -294,6 +305,7 @@ function getTranslation(text, sl, tl, hl,
         if (wShowOriginalDictionary) {
             # Display: original dictionary
             if (r) r = r RS
+            r = r m("-- display original dictionary")
             if (isarray(oWordClasses) && anything(oWordClasses)) {
                 for (i = 0; i < length(oWordClasses); i++) {
                     r = (i > 0 ? r RS : r) RS s(oWordClasses[i], hl)
@@ -354,6 +366,7 @@ function getTranslation(text, sl, tl, hl,
         if (wShowDictionary) {
             # Display: dictionary entries
             if (r) r = r RS
+            r = r m("-- display dictionary entries")
             for (i = 0; i < length(wordClasses); i++) {
                 r = (i > 0 ? r RS : r) RS s(wordClasses[i], hl)
                 for (j = 0; j < length(words[i]); j++) {
@@ -370,6 +383,7 @@ function getTranslation(text, sl, tl, hl,
         if (wShowAlternatives) {
             # Display: alternative translations
             if (r) r = r RS RS
+            r = r m("-- display alternative translations")
             for (i = 0; i < length(altTranslations); i++) {
                 r = (i > 0 ? r RS : r) ansi("underline", show(segments[i]))
                 temp = isRTL(tl) ? altTranslations[i][0] : ansi("bold", altTranslations[i][0])
