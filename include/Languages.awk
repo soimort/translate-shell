@@ -1320,11 +1320,11 @@ function showPhonetics(phonetics, code) {
 # Parameters:
 #     code: ignore to apply bidirectional algorithm on every string
 function show(text, code,    temp) {
-    if (!code || Locale[getCode(code)]["rtl"]) {
+    if (!code || isRTL(code)) {
         if (Cache[text][0])
             return Cache[text][0]
         else {
-            if (FriBidi || (code && Locale[getCode(code)]["rtl"]))
+            if (FriBidi || (code && isRTL(code)))
                 ("echo " parameterize(text) " | " BiDiNoPad) | getline temp
             else # non-RTL language, or FriBidi not installed
                 temp = text
@@ -1339,12 +1339,12 @@ function show(text, code,    temp) {
 #     code: ignore to apply bidirectional algorithm on every string
 #     width: ignore to use default width for padding
 function s(text, code, width,    temp) {
-    if (!code || Locale[getCode(code)]["rtl"]) {
+    if (!code || isRTL(code)) {
         if (!width) width = Option["width"]
         if (Cache[text][width])
             return Cache[text][width]
         else {
-            if (FriBidi || (code && Locale[getCode(code)]["rtl"]))
+            if (FriBidi || (code && isRTL(code)))
                 ("echo " parameterize(text) " | " sprintf(BiDi, width)) | getline temp
             else # non-RTL language, or FriBidi not installed
                 temp = text
@@ -1360,9 +1360,9 @@ function s(text, code, width,    temp) {
 #     code: ignore to apply left indentation
 #     width: ignore to use default width for padding
 function ins(level, text, code, width,    i, temp) {
-    if (code && Locale[getCode(code)]["rtl"]) {
+    if (code && isRTL(code)) {
         if (!width) width = Option["width"]
-        return s(text, code, width - level * length(I))
+        return s(text, code, width - Option["indent"] * level)
     } else
         return replicate(" ", Option["indent"] * level) text
 }
