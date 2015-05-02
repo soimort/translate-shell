@@ -186,6 +186,8 @@ BEGIN {
         match(ARGV[pos], /^--?d(i(c(t(i(o(n(a(ry?)?)?)?)?)?)?)?)?$/)
         if (RSTART) {
             Option["show-original-dictionary"] = 1
+            Option["show-dictionary"] = 0
+            Option["show-alternatives"] = 0
             continue
         }
 
