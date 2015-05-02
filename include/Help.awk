@@ -220,7 +220,7 @@ function getHelp() {
         ins(1, "Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.") RS \
         ansi("bold", "-R, -reference-english") RS                       \
         ins(1, "Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.") RS \
-        ansi("bold", "-v, -verbose") RS                                 \
+        ansi("bold", "-verbose") RS                                     \
         ins(1, "Verbose mode. (default)") RS                            \
         ansi("bold", "-b, -brief") RS                                   \
         ins(1, "Brief mode.") RS                                        \

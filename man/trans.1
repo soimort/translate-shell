@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "TRANS" "1" "April 2015" "0.9-dev" "TRANS MANUAL"
+.TH "TRANS" "1" "May 2015" "0.9-dev" "TRANS MANUAL"
 .
 .SH "NAME"
 \fBtrans\fR \- Google Translate served as a command\-line tool
@@ -44,7 +44,7 @@ Print a list of languages (displayed in endonyms) and their ISO 639 codes for re
 .SS "\-R, \-reference\-english"
 Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit\.
 .
-.SS "\-v, \-verbose"
+.SS "\-verbose"
 Verbose mode\. (default)
 .
 .P
@@ -97,6 +97,15 @@ This option overrides the setting of environment variable \fBCOLUMNS\fR\.
 .
 .SS "\-indent [num]"
 Specify the size of indent (in terms of spaces)\. (default: 4)
+.
+.SS "\-v, \-view"
+View the translation in a terminal pager (\fBless\fR, \fBmore\fR pr \fBmost\fR)\.
+.
+.SS "\-pager [program]"
+Specify the terminal pager to use, and view the translation\.
+.
+.P
+This option overrides the setting of environment variable \fBPAGER\fR\.
 .
 .SS "\-browser [program]"
 Specify the web browser to use\.

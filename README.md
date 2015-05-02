@@ -329,7 +329,7 @@ Options:
     Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.
 -R, -reference-english
     Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.
--v, -verbose
+-verbose
     Verbose mode. (default)
 -b, -brief
     Brief mode.
