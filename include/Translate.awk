@@ -250,6 +250,8 @@ function getTranslation(text, sl, tl, hl,
         }
         hasWordClasses = isarray(wordClasses) && anything(wordClasses)
         hasAltTranslations = isarray(altTranslations[0]) && anything(altTranslations[0])
+        if (!hasWordClasses && !hasAltTranslations)
+            wShowPromptMessage = wShowLanguages = 0
         if (!hasWordClasses) wShowDictionary = 0
         if (hasWordClasses || !hasAltTranslations) wShowAlternatives = 0
 
