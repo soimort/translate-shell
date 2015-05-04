@@ -67,15 +67,18 @@ function postprocess(text) {
 }
 
 # Send an HTTP request and get response from Google Translate.
-function getResponse(text, sl, tl, hl,    content, url) {
+function getResponse(text, sl, tl, hl,    content, header, url) {
     url = HttpPathPrefix "/translate_a/single?client=t"                 \
         "&ie=UTF-8&oe=UTF-8"                                            \
         "&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at"  \
         "&q=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl
+    header = "GET " url " HTTP/1.1\n"           \
+        "Host: " HttpHost "\n"                  \
+        "Connection: close\n"
+    if (Option["user-agent"])
+        header = header "User-Agent: " Option["user-agent"] "\n"
 
-    print "GET " url " HTTP/1.1\n"             \
-          "Host: " HttpHost "\n"               \
-          "Connection: close\n" |& HttpService
+    print header |& HttpService
     while ((HttpService |& getline) > 0)
         content = $0
     close(HttpService)

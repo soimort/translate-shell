@@ -55,6 +55,7 @@ function init1() {
     Option["player"] = ENVIRON["PLAYER"]
 
     Option["proxy"] = ENVIRON["HTTP_PROXY"] ? ENVIRON["HTTP_PROXY"] : ENVIRON["http_proxy"]
+    Option["user-agent"] = NULLSTR
 
     Option["interactive"] = 0
     Option["no-rlwrap"] = 0
@@ -62,7 +63,7 @@ function init1() {
     Option["prompt"] = ENVIRON["TRANS_PS"] ? ENVIRON["TRANS_PS"] : "%s>"
     Option["prompt-color"] = ENVIRON["TRANS_PS_COLOR"] ? ENVIRON["TRANS_PS_COLOR"] : "default"
 
-    Option["input"] = ""
+    Option["input"] = NULLSTR
     Option["output"] = STDOUT
 
     Option["hl"] = ENVIRON["HOME_LANG"] ? ENVIRON["HOME_LANG"] : UserLang
@@ -262,7 +263,7 @@ BEGIN {
         }
 
         # -no-ansi
-        match(ARGV[pos], /^--?no-ansi/)
+        match(ARGV[pos], /^--?no-ansi$/)
         if (RSTART) {
             Option["no-ansi"] = 1
             continue
@@ -338,6 +339,15 @@ BEGIN {
             continue
         }
 
+        # -U [agent], -user-agent [agent]
+        match(ARGV[pos], /^--?(user-agent|U)(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["user-agent"] = group[2] ?
+                (group[3] ? group[3] : Option["user-agent"]) :
+                ARGV[++pos]
+            continue
+        }
+
         # -I, -interactive, -shell
         match(ARGV[pos], /^--?(int(e(r(a(c(t(i(ve?)?)?)?)?)?)?)?|shell|I)$/)
         if (RSTART) {
@@ -346,7 +356,7 @@ BEGIN {
         }
 
         # -no-rlwrap
-        match(ARGV[pos], /^--?no-rlwrap/)
+        match(ARGV[pos], /^--?no-rlwrap$/)
         if (RSTART) {
             Option["no-rlwrap"] = 1
             continue
