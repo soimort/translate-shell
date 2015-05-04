@@ -371,6 +371,8 @@ Options:
     Specify the command-line audio player to use, and listen to the translation.
 -x [proxy], -proxy [proxy]
     Use proxy on given port.
+-u [agent], -user-agent [agent]
+    Specify the User-Agent to identify as.
 -I, -interactive, -shell
     Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).
 -no-rlwrap
@@ -403,6 +405,7 @@ You can export some environment variables as your default configuration. This wi
 * `BROWSER`: for option `-browser`
 * `PLAYER`: for option `-player`
 * `HTTP_PROXY` and `http_proxy`: for option `-proxy`
+* `USER_AGENT`: for option `-user-agent`
 * `TRANS_PS`: for option `-prompt`
 * `TRANS_PS_COLOR`: for option `-prompt-color`
 * `HOME_LANG`: for option `-l`

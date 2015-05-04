@@ -262,6 +262,8 @@ function getHelp() {
         ins(1, "Specify the command-line audio player to use, and listen to the translation.") RS \
         ansi("bold", "-x [proxy], -proxy [proxy]") RS                   \
         ins(1, "Use proxy on given port.") RS                           \
+        ansi("bold", "-u [agent], -user-agent [agent]") RS              \
+        ins(1, "Specify the User-Agent to identify as.") RS             \
         ansi("bold", "-I, -interactive, -shell") RS                     \
         ins(1, "Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).") RS \
         ansi("bold", "-no-rlwrap") RS                                   \
