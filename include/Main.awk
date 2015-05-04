@@ -55,7 +55,7 @@ function init1() {
     Option["player"] = ENVIRON["PLAYER"]
 
     Option["proxy"] = ENVIRON["HTTP_PROXY"] ? ENVIRON["HTTP_PROXY"] : ENVIRON["http_proxy"]
-    Option["user-agent"] = NULLSTR
+    Option["user-agent"] = ENVIRON["USER_AGENT"]
 
     Option["interactive"] = 0
     Option["no-rlwrap"] = 0
