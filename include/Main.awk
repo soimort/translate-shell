@@ -339,8 +339,8 @@ BEGIN {
             continue
         }
 
-        # -U [agent], -user-agent [agent]
-        match(ARGV[pos], /^--?(user-agent|U)(=(.*)?)?$/, group)
+        # -u [agent], -user-agent [agent]
+        match(ARGV[pos], /^--?(user-agent|u)(=(.*)?)?$/, group)
         if (RSTART) {
             Option["user-agent"] = group[2] ?
                 (group[3] ? group[3] : Option["user-agent"]) :
