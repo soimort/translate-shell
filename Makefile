@@ -6,7 +6,7 @@ MANDIR   = man
 TARGET   = bash
 PREFIX   = /usr/local
 
-.PHONY: clean uninstall
+.PHONY: default clean build test install uninstall
 
 default: build
 
