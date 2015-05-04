@@ -1,32 +1,32 @@
 ####################################################################
-# PLTokenizer.awk                                                  #
+# Tokenizer.awk                                                    #
 ####################################################################
 
-# Tokenize a string.
-function plTokenize(returnTokens, string,
-                    delimiters,
-                    newlines,
-                    quotes,
-                    escapeChars,
-                    leftBlockComments,
-                    rightBlockComments,
-                    lineComments,
-                    reservedOperators,
-                    reservedPatterns,
-                    ####
-                    blockCommenting,
-                    c,
-                    currentToken,
-                    escaping,
-                    i,
-                    lineCommenting,
-                    p,
-                    quoting,
-                    r,
-                    s,
-                    tempGroup,
-                    tempPattern,
-                    tempString) {
+# Tokenize a string and return a token list.
+function tokenize(returnTokens, string,
+                  delimiters,
+                  newlines,
+                  quotes,
+                  escapeChars,
+                  leftBlockComments,
+                  rightBlockComments,
+                  lineComments,
+                  reservedOperators,
+                  reservedPatterns,
+                  ####
+                  blockCommenting,
+                  c,
+                  currentToken,
+                  escaping,
+                  i,
+                  lineCommenting,
+                  p,
+                  quoting,
+                  r,
+                  s,
+                  tempGroup,
+                  tempPattern,
+                  tempString) {
     # Default parameters
     if (!delimiters[0]) {
         delimiters[0] = " "  # whitespace

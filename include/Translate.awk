@@ -136,8 +136,8 @@ function getTranslation(text, sl, tl, hl,
     }
 
     content = getResponse(text, sl, tl, hl)
-    plTokenize(tokens, content)
-    plParse(ast, tokens)
+    tokenize(tokens, content)
+    parseJsonArray(ast, tokens)
 
     # Debug mode
     if (Option["debug"]) {

@@ -32,8 +32,8 @@
 
 @include "include/Languages"
 @include "include/Help"
-@include "include/PLTokenizer"
-@include "include/PLParser"
+@include "include/Tokenizer"
+@include "include/Parser"
 @include "include/Translate"
 @include "include/REPL"
 

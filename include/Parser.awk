@@ -1,14 +1,14 @@
 ####################################################################
-# PLParser.awk                                                     #
+# Parser.awk                                                       #
 ####################################################################
 
-# Parse a list of tokens and return an AST.
-function plParse(returnAST, tokens,
-                 leftBrackets,
-                 rightBrackets,
-                 separators,
-                 ####
-                 i, j, key, p, stack, token) {
+# Parse a token list of JSON array and return an AST.
+function parseJsonArray(returnAST, tokens,
+                        leftBrackets,
+                        rightBrackets,
+                        separators,
+                        ####
+                        i, j, key, p, stack, token) {
     # Default parameters
     if (!leftBrackets[0]) {
         leftBrackets[0] = "(" # left parenthesis
