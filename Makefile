@@ -6,7 +6,7 @@ MANDIR   = man
 TARGET   = bash
 PREFIX   = /usr/local
 
-.PHONY: default clean build test install uninstall
+.PHONY: default clean build test check install uninstall
 
 default: build
 
@@ -19,6 +19,9 @@ $(COMMAND):
 build: $(COMMAND)
 
 test: build
+	@gawk -f test.awk
+
+check: test
 	[ "`$(BUILDDIR)/$(COMMAND) -b 忍者`" = 'Ninja' ]
 
 install: build

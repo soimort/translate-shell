@@ -6,4 +6,4 @@ before_install: |
   sudo apt-get update -q
   sudo apt-get install gawk
 
-script: make test
+script: make check
