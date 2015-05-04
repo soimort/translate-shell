@@ -229,10 +229,10 @@ function join(array, separator, sortedIn, preserveNull,
     return temp
 }
 
-# Return 0 if the string starts with '0', 'f' or 'n';
+# Return 0 if the string starts with '0', 'f', 'n' or 'off';
 # Otherwise, return 1.
 function yn(string) {
-    return (tolower(string) ~ /^[0fn]/) ? 0 : 1
+    return (tolower(string) ~ /^([0fn]|off)/) ? 0 : 1
 }
 
 # Initialize ANSI escape codes for SGR (Select Graphic Rendition).
