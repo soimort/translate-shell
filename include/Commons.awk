@@ -13,6 +13,8 @@ function initConst() {
     SUPOUT = " > /dev/null "  # suppress output
     SUPERR = " 2> /dev/null " # suppress error
     PIPE = " | "
+
+    NULLSTR = ""
 }
 
 # Initialize `UrlEncoding`.
