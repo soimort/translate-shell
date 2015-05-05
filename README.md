@@ -393,6 +393,8 @@ Options:
     Specify the source language (language of the original text).
 -t [codes], -target [codes]
     Specify the target language(s) (language(s) of the translated text).
+-no-init
+    Load neither /etc/transcript or ~/.transcript.
 
 See the man page trans(1) for more information.
 ```

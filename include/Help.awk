@@ -284,6 +284,8 @@ function getHelp() {
         ins(1, "Specify the source language (language of the original text).") RS \
         ansi("bold", "-t [codes], -target [codes]") RS                  \
         ins(1, "Specify the target language(s) (language(s) of the translated text).") RS \
+        ansi("bold", "-no-init") RS                                     \
+        ins(1, "Load neither /etc/transcript or ~/.transcript.") RS     \
         RS "See the man page " Command "(1) for more information."
 }
 

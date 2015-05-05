@@ -306,6 +306,10 @@ More than one target language can be specified at the same time, concatenated by
 
 This option overrides the setting of environment variables `LC_TYPE`, `LANG` and `TARGET_LANG`.
 
+### -no-init
+
+Load neither /etc/transcript or ~/.transcript.
+
 ### --
 
 End-of-options.
