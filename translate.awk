@@ -35,6 +35,7 @@
 @include "include/Tokenizer"
 @include "include/Parser"
 @include "include/Translate"
+@include "include/Script"
 @include "include/REPL"
 
 @include "include/Main"

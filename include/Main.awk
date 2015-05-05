@@ -16,8 +16,8 @@ function initGawk(    group) {
     }
 }
 
-# Initialization #1. (prior to option parsing)
-function init1() {
+# Initialization #0. (prior to option parsing)
+function init0() {
     initGawk()          #<< Commons.awk/AnsiCode
 
     # Languages.awk
@@ -42,6 +42,8 @@ function init1() {
     Option["show-original-dictionary"] = 0
     Option["show-dictionary"] = 1
     Option["show-alternatives"] = 1
+
+    Option["no-ansi"] = 0
 
     Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] : 64
     Option["indent"] = 4
@@ -69,6 +71,23 @@ function init1() {
     Option["hl"] = ENVIRON["HOME_LANG"] ? ENVIRON["HOME_LANG"] : UserLang
     Option["sl"] = ENVIRON["SOURCE_LANG"] ? ENVIRON["SOURCE_LANG"] : "auto"
     Option["tl"][1] = ENVIRON["TARGET_LANG"] ? ENVIRON["TARGET_LANG"] : UserLang
+}
+
+# Initialization script.
+function initScript(    file, line, script) {
+    if (belongsTo("-no-init", ARGV) || belongsTo("--no-init", ARGV))
+        return
+
+    file = "transcript"
+    if (!fileExists(file)) file = ENVIRON["HOME"] "/.transcript"
+    if (!fileExists(file)) file = "/etc/transcript"
+    if (!fileExists(file))
+        return
+
+    script = NULLSTR
+    while (getline line < file)
+        script = script "\n" line
+    loadOptions(script)
 }
 
 # Initialization #2. (prior to interactive mode handling)
@@ -121,7 +140,8 @@ function init3(    group) {
 
 # Main entry point.
 BEGIN {
-    init1() # initialization #1
+    init0() # initialization #0
+    initScript() # initialization script
 
     # Option parsing
     pos = 0
@@ -441,6 +461,10 @@ BEGIN {
             if (group[4]) split(group[4], Option["tl"], "+")
             continue
         }
+
+        # -no-init
+        match(ARGV[pos], /^--?no-init/)
+        if (RSTART) continue
 
         # --
         match(ARGV[pos], /^--$/)
