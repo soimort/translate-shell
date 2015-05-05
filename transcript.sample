@@ -1,0 +1,10 @@
+;# This file is part of translate-shell
+;#
+{
+ :verbose true
+ :show-original false
+ :indent 2
+ :view true
+ :hl "en"
+ :tl ["de" "fr"]
+}
