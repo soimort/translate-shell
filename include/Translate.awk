@@ -263,18 +263,18 @@ function getTranslation(text, sl, tl, hl,
             # Display: original text & phonetics
             if (r) r = r RS RS
             r = r m("-- display original text & phonetics")
-            r = r ansi("negative", ansi("bold", s(join(original), il)))
+            r = r prettify("original", s(join(original), il))
             if (wShowOriginalPhonetics)
-                r = r RS showPhonetics(join(oPhonetics), il)
+                r = r RS prettify("original-phonetics", showPhonetics(join(oPhonetics), il))
         }
 
         if (wShowTranslation) {
             # Display: major translation & phonetics
             if (r) r = r RS RS
             r = r m("-- display major translation & phonetics")
-            r = r ansi("bold", s(translation, tl))
+            r = r prettify("translation", s(translation, tl))
             if (wShowTranslationPhonetics)
-                r = r RS showPhonetics(join(phonetics), tl)
+                r = r RS prettify("translation-phonetics", showPhonetics(join(phonetics), tl))
         }
 
         if (wShowPromptMessage || wShowLanguages)
@@ -285,24 +285,24 @@ function getTranslation(text, sl, tl, hl,
                 if (r) r = r RS
                 r = r m("-- display prompt message (Definitions of ...)")
                 if (isRTL(hl)) # home language is R-to-L
-                    r = r s(showDefinitionsOf(hl, join(original)))
+                    r = r prettify("prompt-message", s(showDefinitionsOf(hl, join(original))))
                 else # home language is L-to-R
-                    r = r showDefinitionsOf(hl, ansi("underline", show(join(original), il)))
+                    r = r prettify("prompt-message", showDefinitionsOf(hl, prettify("prompt-message-original", show(join(original), il))))
             } else if (hasAltTranslations) {
                 # Display: prompt message (Translations of ...)
                 if (r) r = r RS
                 r = r m("-- display prompt message (Translations of ...)")
                 if (isRTL(hl)) # home language is R-to-L
-                    r = r s(showTranslationsOf(hl, join(original)))
+                    r = r prettify("prompt-message", s(showTranslationsOf(hl, join(original))))
                 else # home language is L-to-R
-                    r = r showTranslationsOf(hl, ansi("underline", show(join(original), il)))
+                    r = r prettify("prompt-message", showTranslationsOf(hl, prettify("prompt-message-original", show(join(original), il))))
             }
         }
         if (wShowLanguages) {
             # Display: source language -> target language
             if (r) r = r RS
             r = r m("-- display source language -> target language")
-            r = r s(sprintf("[ %s -> %s ]", getEndonym(il), getEndonym(tl)))
+            r = r prettify("languages", s(sprintf("[ %s -> %s ]", getEndonym(il), getEndonym(tl))))
         }
 
         if (wShowOriginalDictionary) {
@@ -312,20 +312,20 @@ function getTranslation(text, sl, tl, hl,
                 if (r) r = r RS
                 r = r m("-- display original dictionary (detailed explanations)")
                 for (i = 0; i < length(oWordClasses); i++) {
-                    r = (i > 0 ? r RS : r) RS s(oWordClasses[i], hl)
+                    r = (i > 0 ? r RS : r) RS prettify("original-dictionary-detailed-word-class", s(oWordClasses[i], hl))
                     for (j = 0; j < length(oWords[i]); j++) {
                         explanation = oWords[i][j][0]
                         ref = oWords[i][j][1]
                         example = oWords[i][j][2]
 
-                        r = (j > 0 ? r RS : r) RS ansi("bold", ins(1, explanation, il))
+                        r = (j > 0 ? r RS : r) RS prettify("original-dictionary-detailed-explanation", ins(1, explanation, il))
                         if (example)
-                            r = r RS ins(2, "- \"" example "\"", il)
+                            r = r RS prettify("original-dictionary-detailed-example", ins(2, "- \"" example "\"", il))
                         if (ref && isarray(oRefs[ref])) {
                             temp = showSynonyms(hl) ": " oSynonyms[oRefs[ref][1]][oRefs[ref][2]][0]
                             for (k = 1; k < length(oSynonyms[oRefs[ref][1]][oRefs[ref][2]]); k++)
                                 temp = temp ", " oSynonyms[oRefs[ref][1]][oRefs[ref][2]][k]
-                            r = r RS ins(1, temp)
+                            r = r RS prettify("original-dictionary-detailed-synonyms", ins(1, temp))
                         }
                     }
                 }
@@ -334,14 +334,14 @@ function getTranslation(text, sl, tl, hl,
                 # Synonyms
                 r = r RS RS
                 r = r m("-- display original dictionary (synonyms)")
-                r = r s(showSynonyms(hl), hl)
+                r = r prettify("original-dictionary-synonyms", s(showSynonyms(hl), hl))
                 for (i = 0; i < length(oSynonymClasses); i++) {
-                    r = (i > 0 ? r RS : r) RS ins(1, oSynonymClasses[i], hl)
+                    r = (i > 0 ? r RS : r) RS prettify("original-dictionary-synonyms-word-class", ins(1, oSynonymClasses[i], hl))
                     for (j = 0; j < length(oSynonyms[i]); j++) {
                         temp = "* " oSynonyms[i][j][0]
                         for (k = 1; k < length(oSynonyms[i][j]); k++)
                             temp = temp ", " oSynonyms[i][j][k]
-                        r = r RS ins(2, temp)
+                        r = r RS prettify("original-dictionary-synonyms-synonyms", ins(2, temp))
                     }
                 }
             }
@@ -349,29 +349,27 @@ function getTranslation(text, sl, tl, hl,
                 # Examples
                 r = r RS RS
                 r = r m("-- display original dictionary (examples)")
-                r = r s(showExamples(hl), hl)
+                r = r prettify("original-dictionary-examples", s(showExamples(hl), hl))
                 for (i = 0; i < length(oExamples); i++) {
                     example = oExamples[i]
 
-                    if (isRTL(il)) { # target language is R-to-L
-                        sub(/\u003cb\u003e/, "", example)
-                        sub(/\u003c\/b\u003e/, "", example)
-                    } else { # target language is L-to-R
-                        sub(/\u003cb\u003e/, AnsiCode["negative"] AnsiCode["bold"], example)
-                        sub(/\u003c\/b\u003e/, AnsiCode["positive"] AnsiCode["no bold"], example)
-                    }
-                    r = (i > 0 ? r RS : r) RS ins(1, "- " example, il)
+                    split(example, group, /(\u003cb\u003e|\u003c\/b\u003e)/)
+                    if (isRTL(il)) # target language is R-to-L
+                        example = group[1] group[2] group[3]
+                    else # target language is L-to-R
+                        example = group[1] prettify("original-dictionary-examples-original", group[2]) group[3]
+                    r = (i > 0 ? r RS : r) RS prettify("original-dictionary-examples-content", ins(1, "- " example, il))
                 }
             }
             if (isarray(oSeeAlso) && anything(oSeeAlso)) {
                 # See also
                 r = r RS RS
                 r = r m("-- display original dictionary (see also)")
-                r = r s(showSeeAlso(hl), hl)
-                temp = isRTL(il) ? oSeeAlso[0] : ansi("underline", oSeeAlso[0])
+                r = r prettify("original-dictionary-see-also", s(showSeeAlso(hl), hl))
+                temp = isRTL(il) ? oSeeAlso[0] : prettify("original-dictionary-see-also-item", oSeeAlso[0])
                 for (k = 1; k < length(oSeeAlso); k++)
-                    temp = temp ", " (isRTL(il) ? oSeeAlso[k] : ansi("underline", oSeeAlso[k]))
-                r = r RS ins(1, temp, il)
+                    temp = temp ", " (isRTL(il) ? oSeeAlso[k] : prettify("original-dictionary-see-also-item", oSeeAlso[k]))
+                r = r RS prettify("original-dictionary-see-also-content", ins(1, temp, il))
             }
         }
 
@@ -380,14 +378,14 @@ function getTranslation(text, sl, tl, hl,
             if (r) r = r RS
             r = r m("-- display dictionary entries")
             for (i = 0; i < length(wordClasses); i++) {
-                r = (i > 0 ? r RS : r) RS s(wordClasses[i], hl)
+                r = (i > 0 ? r RS : r) RS prettify("dictionary-word-class", s(wordClasses[i], hl))
                 for (j = 0; j < length(words[i]); j++) {
                     word = words[i][j][0]
                     explanation = join(words[i][j][1], ", ")
                     article = words[i][j][4]
 
-                    r = r RS ansi("bold", ins(1, (article ? "(" article ") " : "") word, tl))
-                    r = r RS ins(2, explanation, il)
+                    r = r RS prettify("dictionary-word", ins(1, (article ? "(" article ") " : "") word, tl))
+                    r = r RS prettify("dictionary-explanation", ins(2, explanation, il))
                 }
             }
         }
@@ -397,11 +395,11 @@ function getTranslation(text, sl, tl, hl,
             if (r) r = r RS RS
             r = r m("-- display alternative translations")
             for (i = 0; i < length(altTranslations); i++) {
-                r = (i > 0 ? r RS : r) ansi("underline", show(segments[i]))
-                temp = isRTL(tl) ? altTranslations[i][0] : ansi("bold", altTranslations[i][0])
+                r = (i > 0 ? r RS : r) prettify("alternatives-original", show(segments[i]))
+                temp = isRTL(tl) ? altTranslations[i][0] : prettify("alternatives-translation", altTranslations[i][0])
                 for (j = 1; j < length(altTranslations[i]); j++)
-                    temp = temp ", " (isRTL(tl) ? altTranslations[i][j] : ansi("bold", altTranslations[i][j]))
-                r = r RS ins(1, temp)
+                    temp = temp ", " (isRTL(tl) ? altTranslations[i][j] : prettify("alternatives-translation", altTranslations[i][j]))
+                r = r RS prettify("alternatives-content", ins(1, temp))
             }
         }
 
