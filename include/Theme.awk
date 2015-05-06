@@ -28,16 +28,20 @@ function setTheme(    file, line, script) {
         loadOptions(script)
     } else {
         # Default theme
-        Option["sgr-original"][1] = "bold"
-        Option["sgr-original"][2] = "negative"
         Option["sgr-translation"] = "bold"
+        Option["sgr-translation-phonetics"] = "bold"
         Option["sgr-prompt-message-original"] = "underline"
+        Option["sgr-languages-sl"] = "underline"
+        Option["sgr-languages-tl"] = "bold"
+        Option["fmt-languages"] = "[ %s -> %t ]"
         Option["sgr-original-dictionary-detailed-explanation"] = "bold"
+        Option["sgr-original-dictionary-detailed-synonyms-item"] = "bold"
+        Option["sgr-original-dictionary-synonyms-synonyms-item"] = "bold"
         Option["sgr-original-dictionary-examples-original"][1] = "bold"
-        Option["sgr-original-dictionary-examples-original"][2] = "negative"
-        Option["sgr-original-dictionary-see-also-item"] = "underline"
+        Option["sgr-original-dictionary-examples-original"][2] = "underline"
+        Option["sgr-original-dictionary-see-also-phrases-item"] = "bold"
         Option["sgr-dictionary-word"] = "bold"
         Option["sgr-alternatives-original"] = "underline"
-        Option["sgr-alternatives-translation"] = "bold"
+        Option["sgr-alternatives-translations-item"] = "bold"
     }
 }
