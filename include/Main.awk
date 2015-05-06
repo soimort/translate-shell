@@ -72,7 +72,7 @@ function init0() {
     Option["sl"] = ENVIRON["SOURCE_LANG"] ? ENVIRON["SOURCE_LANG"] : "auto"
     Option["tl"][1] = ENVIRON["TARGET_LANG"] ? ENVIRON["TARGET_LANG"] : UserLang
 
-    setDefaultTheme()
+    Option["theme"] = "default"
 }
 
 # Initialization script.
@@ -80,11 +80,24 @@ function initScript(    file, line, script) {
     if (belongsTo("-no-init", ARGV) || belongsTo("--no-init", ARGV))
         return
 
-    file = "transcript"
-    if (!fileExists(file)) file = ENVIRON["HOME"] "/.transcript"
-    if (!fileExists(file)) file = "/etc/transcript"
-    if (!fileExists(file))
-        return
+    # Find the initialization file
+    file = "init.trans"
+    if (!fileExists(file)) {
+        file = "translate-shell"
+        if (!fileExists(file)) {
+            file = ENVIRON["HOME"] "/.init.trans"
+            if (!fileExists(file)) {
+                file = ENVIRON["HOME"] "/.translate-shell"
+                if (!fileExists(file)) {
+                    file = ENVIRON["HOME"] "/.translate-shell/init.trans"
+                    if (!fileExists(file)) {
+                        file = "/etc/translate-shell"
+                        if (!fileExists(file)) return
+                    }
+                }
+            }
+        }
+    }
 
     script = NULLSTR
     while (getline line < file)
@@ -94,6 +107,9 @@ function initScript(    file, line, script) {
 
 # Initialization #2. (prior to interactive mode handling)
 function init2() {
+    # Set theme
+    setTheme()
+
     # Disable ANSI escape codes if required
     if (Option["no-ansi"])
         delete AnsiCode
@@ -281,6 +297,15 @@ BEGIN {
         match(ARGV[pos], /^--?show-alternatives(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-alternatives"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
+
+        # -theme [default|dark|light]
+        match(ARGV[pos], /^--?theme(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["theme"] = group[1] ?
+                (group[2] ? group[2] : Option["theme"]) :
+                ARGV[++pos]
             continue
         }
 

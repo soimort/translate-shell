@@ -10,7 +10,8 @@ function prettify(name, string,    i, temp) {
     return temp
 }
 
-function setDefaultTheme() {
+function setTheme() {
+    # Default theme
     Option["sgr-original"][1] = "bold"
     Option["sgr-original"][2] = "negative"
     Option["sgr-translation"][1] = "bold"
