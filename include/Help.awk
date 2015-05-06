@@ -247,7 +247,7 @@ function getHelp() {
         ansi("bold", "-theme [theme]") RS                               \
         ins(1, "Specify the theme to use. (default: default)") RS       \
         ansi("bold", "-no-ansi") RS                                     \
-        ins(1, "Don't use ANSI escape codes in the translation.") RS    \
+        ins(1, "Do not use ANSI escape codes in the translation.") RS    \
         ansi("bold", "-w [num], -width [num]") RS                       \
         ins(1, "Specify the screen width for padding when displaying right-to-left languages.") RS \
         ansi("bold", "-indent [num]") RS                                \
@@ -269,7 +269,7 @@ function getHelp() {
         ansi("bold", "-I, -interactive, -shell") RS                     \
         ins(1, "Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).") RS \
         ansi("bold", "-no-rlwrap") RS                                   \
-        ins(1, "Don't invoke `rlwrap` when starting an interactive shell with `-I`.") RS \
+        ins(1, "Do not invoke `rlwrap` when starting an interactive shell with `-I`.") RS \
         ansi("bold", "-E, -emacs") RS                                   \
         ins(1, "Start an interactive shell within GNU Emacs, invoking `emacs`.") RS \
         ansi("bold", "-prompt [prompt_string]") RS                      \

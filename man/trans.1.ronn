@@ -105,7 +105,7 @@ Specify the theme to use. (default: default)
 
 ### -no-ansi
 
-Don't use ANSI escape codes in the translation.
+Do not use ANSI escape codes in the translation.
 
 ### -w [num], -width [num]
 
@@ -171,7 +171,7 @@ Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlw
 
 ### -no-rlwrap
 
-Don't invoke `rlwrap` when starting an interactive shell with `-I`.
+Do not invoke `rlwrap` when starting an interactive shell with `-I`.
 
 This option is useful when the terminal type is not supported by `rlwrap` (e.g. Emacs).
 

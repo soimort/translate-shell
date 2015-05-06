@@ -356,7 +356,7 @@ Options:
 -theme [theme]
   Specify the theme to use. (default: default)
 -no-ansi
-    Don't use ANSI escape codes in the translation.
+    Do not use ANSI escape codes in the translation.
 -w [num], -width [num]
     Specify the screen width for padding when displaying right-to-left languages.
 -indent [num]
@@ -378,7 +378,7 @@ Options:
 -I, -interactive, -shell
     Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).
 -no-rlwrap
-    Don't invoke `rlwrap` when starting an interactive shell with `-I`.
+    Do not invoke `rlwrap` when starting an interactive shell with `-I`.
 -E, -emacs
     Start an interactive shell within GNU Emacs, invoking `emacs`.
 -prompt [prompt_string]
