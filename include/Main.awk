@@ -300,7 +300,7 @@ BEGIN {
             continue
         }
 
-        # -theme [default|dark|light]
+        # -theme [theme]
         match(ARGV[pos], /^--?theme(=(.*)?)?$/, group)
         if (RSTART) {
             Option["theme"] = group[1] ?

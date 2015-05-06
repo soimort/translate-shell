@@ -244,6 +244,8 @@ function getHelp() {
         ins(1, "Show dictionary entry of translation or not. (default: yes)") RS \
         ansi("bold", "-show-alternatives [yes|no]") RS                  \
         ins(1, "Show alternative translations or not. (default: yes)") RS \
+        ansi("bold", "-theme [theme]") RS                               \
+        ins(1, "Specify the theme to use. (default: default)") RS       \
         ansi("bold", "-no-ansi") RS                                     \
         ins(1, "Don't use ANSI escape codes in the translation.") RS    \
         ansi("bold", "-w [num], -width [num]") RS                       \
@@ -285,7 +287,7 @@ function getHelp() {
         ansi("bold", "-t [codes], -target [codes]") RS                  \
         ins(1, "Specify the target language(s) (language(s) of the translated text).") RS \
         ansi("bold", "-no-init") RS                                     \
-        ins(1, "Load neither /etc/transcript or ~/.transcript.") RS     \
+        ins(1, "Do not load any initialization script.") RS     \
         RS "See the man page " Command "(1) for more information."
 }
 

@@ -99,6 +99,10 @@ Show dictionary entry of translation or not. (default: yes)
 
 Show alternative translations or not. (default: yes)
 
+### -theme [theme]
+
+Specify the theme to use. (default: default)
+
 ### -no-ansi
 
 Don't use ANSI escape codes in the translation.
@@ -308,7 +312,7 @@ This option overrides the setting of environment variables `LC_TYPE`, `LANG` and
 
 ### -no-init
 
-Load neither /etc/transcript or ~/.transcript.
+Do not load any initialization script.
 
 ### --
 

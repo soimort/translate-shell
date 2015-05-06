@@ -353,6 +353,8 @@ Options:
     Show dictionary entry of translation or not. (default: yes)
 -show-alternatives [yes|no]
     Show alternative translations or not. (default: yes)
+-theme [theme]
+  Specify the theme to use. (default: default)
 -no-ansi
     Don't use ANSI escape codes in the translation.
 -w [num], -width [num]
@@ -394,7 +396,7 @@ Options:
 -t [codes], -target [codes]
     Specify the target language(s) (language(s) of the translated text).
 -no-init
-    Load neither /etc/transcript or ~/.transcript.
+    Do not load any initialization script.
 
 See the man page trans(1) for more information.
 ```
