@@ -302,7 +302,20 @@ function getTranslation(text, sl, tl, hl,
             # Display: source language -> target language
             if (r) r = r RS
             r = r m("-- display source language -> target language")
-            r = r prettify("languages", s(sprintf("[ %s -> %s ]", getEndonym(il), getEndonym(tl))))
+            temp = Option["fmt-languages"]
+            if (!temp) temp = "[ %s -> %t ]"
+            split(temp, group, /(%s|%S|%t|%T)/)
+            r = r prettify("languages", group[1])
+            if (temp ~ /%s/)
+                r = r prettify("languages-sl", getDisplay(il))
+            if (temp ~ /%S/)
+                r = r prettify("languages-sl", getName(il))
+            r = r prettify("languages", group[2])
+            if (temp ~ /%t/)
+                r = r prettify("languages-tl", getDisplay(tl))
+            if (temp ~ /%T/)
+                r = r prettify("languages-tl", getName(tl))
+            r = r prettify("languages", group[3])
         }
 
         if (wShowOriginalDictionary) {
@@ -322,10 +335,12 @@ function getTranslation(text, sl, tl, hl,
                         if (example)
                             r = r RS prettify("original-dictionary-detailed-example", ins(2, "- \"" example "\"", il))
                         if (ref && isarray(oRefs[ref])) {
-                            temp = showSynonyms(hl) ": " oSynonyms[oRefs[ref][1]][oRefs[ref][2]][0]
+                            temp = prettify("original-dictionary-detailed-synonyms", ins(1, show(showSynonyms(hl), hl) ": "))
+                            temp = temp prettify("original-dictionary-detailed-synonyms-item", show(oSynonyms[oRefs[ref][1]][oRefs[ref][2]][0], il))
                             for (k = 1; k < length(oSynonyms[oRefs[ref][1]][oRefs[ref][2]]); k++)
-                                temp = temp ", " oSynonyms[oRefs[ref][1]][oRefs[ref][2]][k]
-                            r = r RS prettify("original-dictionary-detailed-synonyms", ins(1, temp))
+                                temp = temp prettify("original-dictionary-detailed-synonyms", ", ") \
+                                    prettify("original-dictionary-detailed-synonyms-item", show(oSynonyms[oRefs[ref][1]][oRefs[ref][2]][k], il))
+                            r = r RS temp
                         }
                     }
                 }
@@ -338,10 +353,12 @@ function getTranslation(text, sl, tl, hl,
                 for (i = 0; i < length(oSynonymClasses); i++) {
                     r = (i > 0 ? r RS : r) RS prettify("original-dictionary-synonyms-word-class", ins(1, oSynonymClasses[i], hl))
                     for (j = 0; j < length(oSynonyms[i]); j++) {
-                        temp = "* " oSynonyms[i][j][0]
+                        temp = prettify("original-dictionary-synonyms-synonyms", ins(2, "- "))
+                        temp = temp prettify("original-dictionary-synonyms-synonyms-item", show(oSynonyms[i][j][0], il))
                         for (k = 1; k < length(oSynonyms[i][j]); k++)
-                            temp = temp ", " oSynonyms[i][j][k]
-                        r = r RS prettify("original-dictionary-synonyms-synonyms", ins(2, temp))
+                            temp = temp prettify("original-dictionary-synonyms-synonyms", ", ") \
+                                prettify("original-dictionary-synonyms-synonyms-item", show(oSynonyms[i][j][k], il))
+                        r = r RS temp
                     }
                 }
             }
@@ -353,12 +370,15 @@ function getTranslation(text, sl, tl, hl,
                 for (i = 0; i < length(oExamples); i++) {
                     example = oExamples[i]
 
+                    temp = prettify("original-dictionary-examples-example", ins(1, "- "))
                     split(example, group, /(\u003cb\u003e|\u003c\/b\u003e)/)
                     if (isRTL(il)) # target language is R-to-L
-                        example = group[1] group[2] group[3]
+                        temp = temp show(group[1] group[2] group[3], il)
                     else # target language is L-to-R
-                        example = group[1] prettify("original-dictionary-examples-original", group[2]) group[3]
-                    r = (i > 0 ? r RS : r) RS prettify("original-dictionary-examples-content", ins(1, "- " example, il))
+                        temp = temp prettify("original-dictionary-examples-example", group[1]) \
+                            prettify("original-dictionary-examples-original", group[2]) \
+                            prettify("original-dictionary-examples-example", group[3])
+                    r = (i > 0 ? r RS : r) RS temp
                 }
             }
             if (isarray(oSeeAlso) && anything(oSeeAlso)) {
@@ -366,10 +386,11 @@ function getTranslation(text, sl, tl, hl,
                 r = r RS RS
                 r = r m("-- display original dictionary (see also)")
                 r = r prettify("original-dictionary-see-also", s(showSeeAlso(hl), hl))
-                temp = isRTL(il) ? oSeeAlso[0] : prettify("original-dictionary-see-also-item", oSeeAlso[0])
+                temp = ins(1, prettify("original-dictionary-see-also-phrases-item", show(oSeeAlso[0], il)))
                 for (k = 1; k < length(oSeeAlso); k++)
-                    temp = temp ", " (isRTL(il) ? oSeeAlso[k] : prettify("original-dictionary-see-also-item", oSeeAlso[k]))
-                r = r RS prettify("original-dictionary-see-also-content", ins(1, temp, il))
+                    temp = temp prettify("original-dictionary-see-also-phrases", ", ") \
+                        prettify("original-dictionary-see-also-phrases-item", show(oSeeAlso[k], il))
+                r = r RS temp
             }
         }
 
@@ -381,11 +402,21 @@ function getTranslation(text, sl, tl, hl,
                 r = (i > 0 ? r RS : r) RS prettify("dictionary-word-class", s(wordClasses[i], hl))
                 for (j = 0; j < length(words[i]); j++) {
                     word = words[i][j][0]
-                    explanation = join(words[i][j][1], ", ")
                     article = words[i][j][4]
+                    if (isRTL(il))
+                        explanation = join(words[i][j][1], ", ")
+                    else {
+                        explanation = prettify("dictionary-explanation-item", words[i][j][1][0])
+                        for (k = 1; k < length(words[i][j][1]); k++)
+                            explanation = explanation prettify("dictionary-explanation", ", ") \
+                                prettify("dictionary-explanation-item", words[i][j][1][k])
+                    }
 
                     r = r RS prettify("dictionary-word", ins(1, (article ? "(" article ") " : "") word, tl))
-                    r = r RS prettify("dictionary-explanation", ins(2, explanation, il))
+                    if (isRTL(il))
+                        r = r RS prettify("dictionary-explanation-item", ins(2, explanation, il))
+                    else
+                        r = r RS ins(2, explanation)
                 }
             }
         }
@@ -395,11 +426,17 @@ function getTranslation(text, sl, tl, hl,
             if (r) r = r RS RS
             r = r m("-- display alternative translations")
             for (i = 0; i < length(altTranslations); i++) {
-                r = (i > 0 ? r RS : r) prettify("alternatives-original", show(segments[i]))
-                temp = isRTL(tl) ? altTranslations[i][0] : prettify("alternatives-translation", altTranslations[i][0])
-                for (j = 1; j < length(altTranslations[i]); j++)
-                    temp = temp ", " (isRTL(tl) ? altTranslations[i][j] : prettify("alternatives-translation", altTranslations[i][j]))
-                r = r RS prettify("alternatives-content", ins(1, temp))
+                r = (i > 0 ? r RS : r) prettify("alternatives-original", show(segments[i], il))
+                if (isRTL(tl)) {
+                    temp = join(altTranslations[i], ", ")
+                    r = r RS prettify("alternatives-translations-item", ins(1, temp, tl))
+                } else {
+                    temp = prettify("alternatives-translations-item", altTranslations[i][0])
+                    for (j = 1; j < length(altTranslations[i]); j++)
+                        temp = temp prettify("alternatives-translations", ", ") \
+                            prettify("alternatives-translations-item", altTranslations[i][j])
+                    r = r RS ins(1, temp)
+                }
             }
         }
 
