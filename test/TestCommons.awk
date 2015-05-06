@@ -115,5 +115,10 @@ BEGIN {
         assertTrue(fileExists("README.md"))
     }
 
+    TEST = "dirExists()"; TOTAL = 2; COUNTER = 0; {
+        assertFalse(dirExists("README.md"))
+        assertTrue(dirExists("."))
+    }
+
     END_TEST()
 }

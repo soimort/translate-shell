@@ -336,6 +336,11 @@ function fileExists(file) {
     return !system("test -f " parameterize(file))
 }
 
+# Return non-zero if file exists and is a directory, otherwise return 0.
+function dirExists(file) {
+    return !system("test -d " parameterize(file))
+}
+
 # Initialize `UriSchemes`.
 function initUriSchemes() {
     UriSchemes[0] = "file://"
