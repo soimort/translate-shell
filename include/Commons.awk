@@ -333,7 +333,7 @@ function assert(x, message) {
 
 # Return non-zero if file exists, otherwise return 0.
 function fileExists(file) {
-    return !system("test -f " file)
+    return !system("test -f " parameterize(file))
 }
 
 # Initialize `UriSchemes`.

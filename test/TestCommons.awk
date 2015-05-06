@@ -109,8 +109,9 @@ BEGIN {
         assertTrue(yn("ON"))
     }
 
-    TEST = "fileExists()"; TOTAL = 2; COUNTER = 0; {
+    TEST = "fileExists()"; TOTAL = 3; COUNTER = 0; {
         assertFalse(fileExists("README"))
+        assertFalse(fileExists("README .md"))
         assertTrue(fileExists("README.md"))
     }
 
