@@ -109,15 +109,18 @@ BEGIN {
         assertTrue(yn("ON"))
     }
 
-    TEST = "fileExists()"; TOTAL = 3; COUNTER = 0; {
+    TEST = "fileExists()"; TOTAL = 4; COUNTER = 0; {
         assertFalse(fileExists("README"))
         assertFalse(fileExists("README .md"))
         assertTrue(fileExists("README.md"))
+        assertFalse(fileExists("."))
     }
 
-    TEST = "dirExists()"; TOTAL = 2; COUNTER = 0; {
+    TEST = "dirExists()"; TOTAL = 4; COUNTER = 0; {
+        assertFalse(dirExists("README"))
         assertFalse(dirExists("README.md"))
         assertTrue(dirExists("."))
+        assertFalse(dirExists(" ."))
     }
 
     END_TEST()
