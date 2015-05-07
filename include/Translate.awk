@@ -248,7 +248,9 @@ function getTranslation(text, sl, tl, hl,
 
         if (!anything(oPhonetics)) wShowOriginalPhonetics = 0
         if (!anything(phonetics)) wShowTranslationPhonetics = 0
-        if (il == tl && (isarray(oWordClasses) || isarray(oSynonymClasses))) {
+        if (getCode(il) == getCode(tl) &&                               \
+            (isarray(oWordClasses) || isarray(oSynonymClasses) ||       \
+             isarray(oExamples) || isarray(oSeeAlso))) {
             wShowOriginalDictionary = 1
             wShowTranslation = 0
         }
