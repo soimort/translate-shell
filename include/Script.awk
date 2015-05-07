@@ -13,18 +13,19 @@ function loadOptions(script,    i, j, tokens, name, value) {
 
             if (value ~ /^[+-]?((0|[1-9][0-9]*)|[.][0-9]*|(0|[1-9][0-9]*)[.][0-9]*)([Ee][+-]?[0-9]+)?$/) {
                 # Decimal number
+                delete Option[name]
                 Option[name] = value
             } else if (value == "false" || value == "true") {
                 # Boolean
+                delete Option[name]
                 Option[name] = yn(value)
             } else if (value ~ /^".*"$/) {
                 # String
-                if (name == "tl")
-                    Option[name][1] = literal(value) # special case
-                else
-                    Option[name] = literal(value)
+                delete Option[name]
+                Option[name] = literal(value)
             } else if (value == "[") {
                 # List of strings
+                delete Option[name]
                 for (j = 1; tokens[i + j + 1] && tokens[i + j + 1] != "]"; j++) {
                     if (tokens[i + j + 1] ~ /^".*"$/)
                         Option[name][j] = literal(tokens[i + j + 1])

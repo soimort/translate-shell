@@ -76,7 +76,7 @@ function init0() {
 }
 
 # Initialization script.
-function initScript(    file, line, script) {
+function initScript(    file, line, script, temp) {
     if (belongsTo("-no-init", ARGV) || belongsTo("--no-init", ARGV))
         return
 
@@ -103,6 +103,13 @@ function initScript(    file, line, script) {
     while (getline line < file)
         script = script "\n" line
     loadOptions(script)
+
+    # Hack: Option["tl"] must be an array
+    if (!isarray(Option["tl"])) {
+        temp = Option["tl"]
+        delete Option["tl"]
+        Option["tl"][1] = temp
+    }
 }
 
 # Initialization #2. (prior to interactive mode handling)
