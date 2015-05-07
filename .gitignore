@@ -1,4 +1,5 @@
 /build
+*.mk
 *.html
 *.css
 *.emacs*
