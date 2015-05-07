@@ -6,8 +6,6 @@ MANDIR   = man
 TARGET   = bash
 PREFIX   = /usr/local
 
--include *.mk
-
 .PHONY: default clean build test check install uninstall
 
 default: build
