@@ -301,23 +301,26 @@ function d(text) {
     print ansi("gray", text) > STDERR
 }
 
-# Log an array.
-function da(array, formatString, sortedIn,
+# Debug any value.
+function da(value, name, sortedIn,
             ####
             i, j, saveSortedIn) {
     # Default parameters
-    if (!formatString)
-        formatString = "_[%s]='%s'"
+    if (!name)
+        name = "_"
     if (!sortedIn)
         sortedIn = "@ind_num_asc"
 
-    saveSortedIn = PROCINFO["sorted_in"]
-    PROCINFO["sorted_in"] = sortedIn
-    for (i in array) {
-        split(i, j, SUBSEP)
-        d(sprintf(formatString, join(j, ","), array[i]))
-    }
-    PROCINFO["sorted_in"] = saveSortedIn
+    if (isarray(value)) {
+        saveSortedIn = PROCINFO["sorted_in"]
+        PROCINFO["sorted_in"] = sortedIn
+        for (i in value) {
+            split(i, j, SUBSEP)
+            da(value[i], sprintf(name "[%s]", join(j, ",")), sortedIn)
+        }
+        PROCINFO["sorted_in"] = saveSortedIn
+    } else
+        d(name " = " value)
 }
 
 # Naive assertion.

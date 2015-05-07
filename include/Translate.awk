@@ -141,9 +141,9 @@ function getTranslation(text, sl, tl, hl,
 
     # Debug mode
     if (Option["debug"]) {
-        d(content)
-        da(tokens, "tokens[%s]='%s'")
-        da(ast, "ast[%s]='%s'")
+        da(content, "content")
+        da(tokens, "tokens")
+        da(ast, "ast")
     }
 
     if (!anything(ast)) {
