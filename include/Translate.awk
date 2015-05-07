@@ -48,12 +48,6 @@ function initHttpService() {
     }
 }
 
-# Return a message for debugging.
-function m(string) {
-    if (Option["debug"])
-        return ansi("blue", string) RS
-}
-
 # Pre-process string (URL-encode before send).
 function preprocess(text) {
     return quote(text)
@@ -139,12 +133,9 @@ function getTranslation(text, sl, tl, hl,
     tokenize(tokens, content)
     parseJsonArray(ast, tokens)
 
-    # Debug mode
-    if (Option["debug"]) {
-        da(content, "content")
-        da(tokens, "tokens")
-        da(ast, "ast")
-    }
+    l(content, "content")
+    l(tokens, "tokens")
+    l(ast, "ast")
 
     if (!anything(ast)) {
         e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")

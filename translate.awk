@@ -29,6 +29,7 @@
 @include "metainfo"
 
 @include "include/Commons"
+@include "include/Utils"
 
 @include "include/Languages"
 @include "include/Help"
