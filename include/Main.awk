@@ -81,21 +81,12 @@ function initScript(    file, line, script, temp) {
         return
 
     # Find the initialization file
-    file = "init.trans"
+    file = ".trans"
     if (!fileExists(file)) {
-        file = "translate-shell"
+        file = ENVIRON["HOME"] "/.translate-shell/init.trans"
         if (!fileExists(file)) {
-            file = ENVIRON["HOME"] "/.init.trans"
-            if (!fileExists(file)) {
-                file = ENVIRON["HOME"] "/.translate-shell"
-                if (!fileExists(file)) {
-                    file = ENVIRON["HOME"] "/.translate-shell/init.trans"
-                    if (!fileExists(file)) {
-                        file = "/etc/translate-shell"
-                        if (!fileExists(file)) return
-                    }
-                }
-            }
+            file = "/etc/translate-shell"
+            if (!fileExists(file)) return
         }
     }
 
