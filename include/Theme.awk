@@ -2,6 +2,7 @@
 # Theme.awk                                                        #
 ####################################################################
 
+# Prettify a string using corresponding SGR option.
 function prettify(name, string,    i, temp) {
     temp = string
     if ("sgr-" name in Option)
@@ -13,6 +14,7 @@ function prettify(name, string,    i, temp) {
     return temp
 }
 
+# Return a string representing a random color.
 function randomColor(    i) {
     i = int(5 * rand())
     switch (i) {
@@ -25,6 +27,7 @@ function randomColor(    i) {
     }
 }
 
+# Set theme to: random.
 function setRandomTheme(    i, n, temp) {
     srand(systime())
     for (i = 0; i < 3; i++) {
@@ -82,6 +85,7 @@ function setRandomTheme(    i, n, temp) {
     Option["sgr-brief-translation"][2] = Option["sgr-brief-translation-phonetics"][2] = "bold"
 }
 
+# Set theme to: default.
 function setDefaultTheme() {
     Option["sgr-translation"] = Option["sgr-translation-phonetics"] = "bold"
     Option["sgr-prompt-message-original"] = "underline"
@@ -98,6 +102,7 @@ function setDefaultTheme() {
     Option["sgr-alternatives-translations-item"] = "bold"
 }
 
+# Set theme using corresponding option.
 function setTheme(    file, line, script) {
     if (Option["theme"] && Option["theme"] != "default") {
         file = Option["theme"]
