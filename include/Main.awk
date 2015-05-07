@@ -562,8 +562,9 @@ BEGIN {
     }
 
     if (Option["interactive"]) {
-        print AnsiCode["bold"] AnsiCode[tolower(Option["prompt-color"])] getVersion() AnsiCode[0] > STDERR
-        print AnsiCode[tolower(Option["prompt-color"])] "(:q to quit)" AnsiCode[0] > STDERR
+        l(">> starting interactive shell")
+        print ansi("bold", ansi(tolower(Option["prompt-color"]), getVersion())) > STDERR
+        print ansi(tolower(Option["prompt-color"]), "(:q to quit)") > STDERR
     }
 
     init3() # initialization #3
