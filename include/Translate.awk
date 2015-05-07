@@ -225,8 +225,8 @@ function getTranslation(text, sl, tl, hl,
         # Brief mode
 
         r = isPhonetic && anything(phonetics) ?
-            join(phonetics) :  # phonetic transcription
-            s(translation, tl) # target language
+            prettify("brief-translation-phonetics", join(phonetics)) :
+            prettify("brief-translation", s(translation, tl))
 
         if (toSpeech) {
             returnPlaylist[0]["text"] = translation
