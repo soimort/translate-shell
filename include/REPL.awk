@@ -4,8 +4,10 @@
 
 # Welcome message.
 function welcome() {
-    print ansi("bold", ansi(tolower(Option["prompt-color"]), getVersion())) > STDERR
-    print ansi(tolower(Option["prompt-color"]), "(:q to quit)") > STDERR
+    if (Option["fmt-welcome-message"])
+        print prettify("welcome-message", Option["fmt-welcome-message"]) > STDERR
+    if (Option["fmt-welcome-submessage"])
+        print prettify("welcome-submessage", Option["fmt-welcome-submessage"]) > STDERR
 }
 
 # Prompt for interactive session.
@@ -119,5 +121,5 @@ function prompt(    i, p, temp) {
     }
 
     # %s : source language
-    printf(AnsiCode["bold"] AnsiCode[tolower(Option["prompt-color"])] p AnsiCode[0] " ", getDisplay(Option["sl"])) > STDERR
+    printf(ansi("bold", ansi(tolower(Option["prompt-color"]), p " ")), getDisplay(Option["sl"])) > STDERR
 }
