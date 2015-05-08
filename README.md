@@ -406,8 +406,6 @@ You can export some environment variables as your default configuration. This wi
 * `PLAYER`: for option `-player`
 * `HTTP_PROXY` and `http_proxy`: for option `-proxy`
 * `USER_AGENT`: for option `-user-agent`
-* `TRANS_PS`: for option `-prompt`
-* `TRANS_PS_COLOR`: for option `-prompt-color`
 * `HOME_LANG`: for option `-l`
 * `SOURCE_LANG`: for option `-s`
 * `TARGET_LANG`: for option `-t`
