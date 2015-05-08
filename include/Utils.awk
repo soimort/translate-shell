@@ -62,10 +62,11 @@ function rlwrapMe(    i, command) {
                 command = command " " parameterize(ARGV[i])
 
         l(">> forking: " command)
-        if (!system(command))
-            exit ExitCode # child process finished
-        else {
-            l(">> non-zero code returned from process")
+        if (!system(command)) {
+            l(">> process exited with code 0")
+            exit ExitCode
+        } else {
+            l(">> process exited with non-zero return code")
             return 1
         }
     }
@@ -99,9 +100,12 @@ function emacsMe(    i, params, el, command) {
         command = Emacs " --eval " parameterize(el)
 
         l(">> forking: " command)
-        if (!system(command))
-            exit ExitCode # child process finished
-        else
+        if (!system(command)) {
+            l(">> process exited with code 0")
+            exit ExitCode
+        } else {
+            l(">> process exited with non-zero return code")
             return 1
+        }
     }
 }
