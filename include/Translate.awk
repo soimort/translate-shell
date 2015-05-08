@@ -126,7 +126,7 @@ function getTranslation(text, sl, tl, hl,
     } else if (isRTL(tl)) {
         # Check if target language is R-to-L
         if (!FriBidi)
-            w("[WARNING] " getName(tl) " is a right-to-left language, but FriBidi cannot be found.")
+            w("[WARNING] " getName(tl) " is a right-to-left language, but FriBidi is not found.")
     }
 
     content = getResponse(text, sl, tl, hl)
@@ -245,8 +245,8 @@ function getTranslation(text, sl, tl, hl,
             wShowOriginalDictionary = 1
             wShowTranslation = 0
         }
-        hasWordClasses = isarray(wordClasses) && anything(wordClasses)
-        hasAltTranslations = isarray(altTranslations[0]) && anything(altTranslations[0])
+        hasWordClasses = exists(wordClasses)
+        hasAltTranslations = exists(altTranslations[0])
         if (!hasWordClasses && !hasAltTranslations)
             wShowPromptMessage = wShowLanguages = 0
         if (!hasWordClasses) wShowDictionary = 0
@@ -313,7 +313,7 @@ function getTranslation(text, sl, tl, hl,
 
         if (wShowOriginalDictionary) {
             # Display: original dictionary
-            if (isarray(oWordClasses) && anything(oWordClasses)) {
+            if (exists(oWordClasses)) {
                 # Detailed explanations
                 if (r) r = r RS
                 r = r m("-- display original dictionary (detailed explanations)")
@@ -338,7 +338,7 @@ function getTranslation(text, sl, tl, hl,
                     }
                 }
             }
-            if (isarray(oSynonymClasses) && anything(oSynonymClasses)) {
+            if (exists(oSynonymClasses)) {
                 # Synonyms
                 r = r RS RS
                 r = r m("-- display original dictionary (synonyms)")
@@ -355,7 +355,7 @@ function getTranslation(text, sl, tl, hl,
                     }
                 }
             }
-            if (isarray(oExamples) && anything(oExamples)) {
+            if (exists(oExamples)) {
                 # Examples
                 r = r RS RS
                 r = r m("-- display original dictionary (examples)")
@@ -374,7 +374,7 @@ function getTranslation(text, sl, tl, hl,
                     r = (i > 0 ? r RS : r) RS temp
                 }
             }
-            if (isarray(oSeeAlso) && anything(oSeeAlso)) {
+            if (exists(oSeeAlso)) {
                 # See also
                 r = r RS RS
                 r = r m("-- display original dictionary (see also)")
