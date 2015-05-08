@@ -2,25 +2,10 @@
 # Main.awk                                                         #
 ####################################################################
 
-# Detect gawk version.
-function initGawk(    group) {
-    Gawk = "gawk"
-    GawkVersion = PROCINFO["version"]
-
-    split(PROCINFO["version"], group, ".")
-    if (group[1] < 4) {
-        e("[ERROR] Oops! Your gawk (version " GawkVersion ") "          \
-          "appears to be too old.\n"                                    \
-          "        You need at least gawk 4.0.0 to run this program.")
-        exit 1
-    }
-}
-
 # Initialization #0. (prior to option parsing)
 function init0() {
-    initGawk()          #<< Commons.awk/AnsiCode
+    initGawk()
 
-    # Languages.awk
     initBiDi()
     initLocale()
     initLocaleDisplay() #<< Locale, BiDi
@@ -503,54 +488,11 @@ BEGIN {
 
     init2() # initialization #2
 
-    if (Option["interactive"] && !Option["no-rlwrap"]) {
-        # Interactive mode
-        initRlwrap() # initialize Rlwrap
-
-        if (Rlwrap && (ENVIRON["TRANS_PROGRAM"] || fileExists(EntryPoint))) {
-            command = Rlwrap " " Gawk " " (ENVIRON["TRANS_PROGRAM"] ?
-                                           "\"${TRANS_PROGRAM}\"" :
-                                           "-f " EntryPoint) " -" \
-                " -no-rlwrap" # be careful - never fork Rlwrap recursively!
-            for (i = 1; i < length(ARGV); i++)
-                if (ARGV[i])
-                    command = command " " parameterize(ARGV[i])
-
-            if (!system(command))
-                exit # child process finished, exit
-            else
-                ; # skip
-        } else
-            ; # skip
-
-    } else if (!Option["interactive"] && !Option["no-rlwrap"] && Option["emacs"]) {
-        # Emacs interface
-        Emacs = "emacs"
-
-        if (ENVIRON["TRANS_PROGRAM"] || fileExists(EntryPoint)) {
-            params = ""
-            for (i = 1; i < length(ARGV); i++)
-                if (ARGV[i])
-                    params = params " " (parameterize(ARGV[i], "\""))
-            if (ENVIRON["TRANS_PROGRAM"]) {
-                el = "(progn (setq trans-program (getenv \"TRANS_PROGRAM\")) " \
-                    "(setq explicit-shell-file-name \"" Gawk "\") " \
-                    "(setq explicit-" Gawk "-args (cons trans-program '(\"-\" \"-I\" \"-no-rlwrap\"" params "))) " \
-                    "(command-execute 'shell) (rename-buffer \"" Name "\"))"
-            } else {
-                el = "(progn (setq explicit-shell-file-name \"" Gawk "\") " \
-                    "(setq explicit-" Gawk "-args '(\"-f\" \"" EntryPoint "\" \"--\" \"-I\" \"-no-rlwrap\"" params ")) " \
-                    "(command-execute 'shell) (rename-buffer \"" Name "\"))"
-            }
-            command = Emacs " --eval " parameterize(el)
-
-            if (!system(command))
-                exit # child process finished, exit
-            else
-                Option["interactive"] = 1 # skip
-        } else
-            Option["interactive"] = 1 # skip
-    }
+    if (Option["interactive"] && !Option["no-rlwrap"])
+        rlwrapMe() # interactive mode
+    else if (Option["emacs"] && !Option["interactive"] && !Option["no-rlwrap"])
+        if (emacsMe()) # emacs front-end
+            Option["interactive"] = 1 # fallback to interactive mode
 
     if (Option["interactive"]) {
         l(">> starting interactive shell")

@@ -2,11 +2,6 @@
 # REPL.awk                                                         #
 ####################################################################
 
-# Detect external readline wrapper (rlwrap).
-function initRlwrap() {
-    Rlwrap = detectProgram("rlwrap", "--version")
-}
-
 # Prompt for interactive session.
 function prompt(    i, p, temp) {
     p = Option["prompt"]
