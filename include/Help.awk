@@ -3,8 +3,11 @@
 ####################################################################
 
 # Return version as a string.
-function getVersion() {
-    return sprintf(ansi("bold", "%-22s%s") "\n\n", Name, Version)       \
+function getVersion(    gitHead) {
+    gitHead = ENVIRON["GITHEAD"] ? ENVIRON["GITHEAD"] : getGitHead()
+
+    return sprintf(ansi("bold", "%-22s%s%s") "\n\n", Name, Version,     \
+                   gitHead ? "-git:" gitHead : "")                      \
         sprintf("%-22s%s\n", "gawk (GNU Awk)", PROCINFO["version"])     \
         sprintf("%s\n", FriBidi ? FriBidi : "fribidi (GNU FriBidi) [NOT INSTALLED]") \
         sprintf("%-22s%s\n", "terminal type", ENVIRON["TERM"])          \

@@ -72,6 +72,10 @@ function build(target,    group, inline, line, temp) {
 
         print "export COLUMNS" > Trans
 
+        temp = getGitHead()
+        if (temp)
+            print "export GITHEAD=" temp > Trans
+
         print "gawk \"$TRANS_PROGRAM\" - \"$@\"" > Trans
 
         ("chmod +x " parameterize(Trans)) | getline
