@@ -381,10 +381,6 @@ Options:
     Do not invoke `rlwrap` when starting an interactive shell with `-I`.
 -E, -emacs
     Start an interactive shell within GNU Emacs, invoking `emacs`.
--prompt [prompt_string]
-    Customize your prompt string in the interactive shell.
--prompt-color [color_code]
-    Customize your prompt color in the interactive shell.
 -i [file], -input [file]
     Specify the input file name.
 -o [file], -output [file]

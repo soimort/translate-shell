@@ -272,10 +272,6 @@ function getHelp() {
         ins(1, "Do not invoke `rlwrap` when starting an interactive shell with `-I`.") RS \
         ansi("bold", "-E, -emacs") RS                                   \
         ins(1, "Start an interactive shell within GNU Emacs, invoking `emacs`.") RS \
-        ansi("bold", "-prompt [prompt_string]") RS                      \
-        ins(1, "Customize your prompt string in the interactive shell.") RS \
-        ansi("bold", "-prompt-color [color_code]") RS                   \
-        ins(1, "Customize your prompt color in the interactive shell.") RS \
         ansi("bold", "-i [file], -input [file]") RS                     \
         ins(1, "Specify the input file name.") RS                       \
         ansi("bold", "-o [file], -output [file]") RS                    \
