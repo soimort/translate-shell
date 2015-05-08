@@ -4,7 +4,7 @@
 
 # Detect external readline wrapper (rlwrap).
 function initRlwrap() {
-    Rlwrap = ("rlwrap --version" SUPERR | getline) ? "rlwrap" : ""
+    Rlwrap = detectProgram("rlwrap", "--version")
 }
 
 # Prompt for interactive session.
