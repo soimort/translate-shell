@@ -63,9 +63,6 @@ function init() {
 
 # Initialization script.
 function initScript(    file, line, script, temp) {
-    if (belongsTo("-no-init", ARGV) || belongsTo("--no-init", ARGV))
-        return
-
     # Find the initialization file
     file = ".trans"
     if (!fileExists(file)) {
@@ -136,65 +133,71 @@ function initMisc(    group) {
 # Main entry point.
 BEGIN {
     init()
-    initScript() # initialization script overrides default setting
+
+    if (!(belongsTo("-no-init", ARGV) || belongsTo("--no-init", ARGV)))
+        initScript() # initialization script overrides default setting
 
     # Command-line options override initialization script
     pos = 0
     while (ARGV[++pos]) {
-        # -, -no-op
-        match(ARGV[pos], /^-(-?no-op)?$/)
-        if (RSTART) continue
+        ## Information options
 
         # -V, -version
-        match(ARGV[pos], /^--?(vers(i(on?)?)?|V)$/)
+        match(ARGV[pos], /^--?(V|vers(i(on?)?)?)$/)
         if (RSTART) {
-            print getVersion()
-            print
-            printf("%-22s%s\n", "gawk (GNU Awk)", PROCINFO["version"])
-            printf("%s\n", FriBidi ? FriBidi : "fribidi (GNU FriBidi) [NOT INSTALLED]")
-            printf("%-22s%s\n", "User Language", getName(UserLang) " (" getDisplay(UserLang) ")")
-            exit
+            InfoOnly = "version"
+            continue
         }
 
-        # -H, -h, -help
-        match(ARGV[pos], /^--?(h(e(lp?)?)?|H)$/)
+        # -H, -help
+        match(ARGV[pos], /^--?(H|h(e(lp?)?)?)$/)
         if (RSTART) {
-            print getHelp()
-            exit
+            InfoOnly = "help"
+            continue
         }
 
-        # -M, -m, -manual
-        match(ARGV[pos], /^--?(m(a(n(u(al?)?)?)?)?|M)$/)
+        # -M, -manual
+        match(ARGV[pos], /^--?(M|m(a(n(u(al?)?)?)?)?)$/)
         if (RSTART) {
-            man()
-            exit
+            InfoOnly = "manual"
+            continue
         }
 
-        # -r, -reference
-        match(ARGV[pos], /^--?r(e(f(e(r(e(n(ce?)?)?)?)?)?)?)?$/)
+        # -T, -reference
+        match(ARGV[pos], /^--?(T|ref(e(r(e(n(ce?)?)?)?)?)?)$/)
         if (RSTART) {
-            print getReference("endonym")
-            exit
+            InfoOnly = "reference"
+            continue
+        }
+
+        # FIXME[1.0]: to be removed
+        match(ARGV[pos], /^--?r$/)
+        if (RSTART) {
+            w("[WARNING] Option '-r' has been deprecated since version 0.9.\n" \
+              "          Use option '-T' or '-reference' instead.")
+            exit 1
         }
 
         # -R, -reference-english
-        match(ARGV[pos], /^--?(reference-(e(n(g(l(i(sh?)?)?)?)?)?)?|R)$/)
+        match(ARGV[pos], /^--?(R|reference-e(n(g(l(i(sh?)?)?)?)?)?)$/)
         if (RSTART) {
-            print getReference("name")
-            exit
-        }
-
-        # -D, -debug
-        match(ARGV[pos], /^--?(debug|D)$/)
-        if (RSTART) {
-            Option["debug"] = 1
+            InfoOnly = "reference-english"
             continue
         }
+
+        ## Display options
 
         # -verbose
         match(ARGV[pos], /^--?verbose$/)
         if (RSTART) {
             Option["verbose"] = 1 # default value
+            continue
+        }
+
+        # -b, -brief
+        match(ARGV[pos], /^--?b(r(i(ef?)?)?)?$/)
+        if (RSTART) {
+            Option["verbose"] = 0
             continue
         }
 
@@ -207,81 +210,83 @@ BEGIN {
             continue
         }
 
-        # -b, -brief
-        match(ARGV[pos], /^--?b(r(i(ef?)?)?)?$/)
-        if (RSTART) {
-            Option["verbose"] = 0
-            continue
-        }
-
-        # -show-original [yes|no]
+        # -show-original Y|n
         match(ARGV[pos], /^--?show-original(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-original"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # -show-original-phonetics [yes|no]
+        # -show-original-phonetics Y|n
         match(ARGV[pos], /^--?show-original-phonetics(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-original-phonetics"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # -show-translation [yes|no]
+        # -show-translation Y|n
         match(ARGV[pos], /^--?show-translation(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-translation"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # -show-translation-phonetics [yes|no]
+        # -show-translation-phonetics Y|n
         match(ARGV[pos], /^--?show-translation-phonetics(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-translation-phonetics"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # -show-prompt-message [yes|no]
+        # -show-prompt-message Y|n
         match(ARGV[pos], /^--?show-prompt-message(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-prompt-message"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # -show-languages [yes|no]
+        # -show-languages Y|n
         match(ARGV[pos], /^--?show-languages(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-languages"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # -show-original-dictionary [yes|no]
+        # -show-original-dictionary y|N
         match(ARGV[pos], /^--?show-original-dictionary(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-original-dictionary"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # -show-dictionary [yes|no]
+        # -show-dictionary Y|n
         match(ARGV[pos], /^--?show-dictionary(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-dictionary"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # -show-alternatives [yes|no]
+        # -show-alternatives Y|n
         match(ARGV[pos], /^--?show-alternatives(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-alternatives"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # -theme [theme]
-        match(ARGV[pos], /^--?theme(=(.*)?)?$/, group)
+        # -w NUM, -width NUM
+        match(ARGV[pos], /^--?w(i(d(th?)?)?)?(=(.*)?)?$/, group)
         if (RSTART) {
-            Option["theme"] = group[1] ?
-                (group[2] ? group[2] : Option["theme"]) :
+            Option["width"] = group[4] ?
+                (group[5] ? group[5] : Option["width"]) :
+                ARGV[++pos]
+            continue
+        }
+
+        # -indent NUM
+        match(ARGV[pos], /^--?indent(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["indent"] = group[1] ?
+                (group[2] ? group[2] : Option["indent"]) :
                 ARGV[++pos]
             continue
         }
@@ -293,47 +298,28 @@ BEGIN {
             continue
         }
 
-        # -w [num], -width [num]
-        match(ARGV[pos], /^--?w(i(d(th?)?)?)?(=(.*)?)?$/, group)
+        # -no-theme
+        match(ARGV[pos], /^--?no-theme$/)
         if (RSTART) {
-            Option["width"] = group[4] ?
-                (group[5] ? group[5] : Option["width"]) :
+            Option["theme"] = NULLSTR
+            continue
+        }
+
+        # -theme FILENAME
+        match(ARGV[pos], /^--?theme(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["theme"] = group[1] ?
+                (group[2] ? group[2] : Option["theme"]) :
                 ARGV[++pos]
             continue
         }
 
-        # -indent [num]
-        match(ARGV[pos], /^--?indent(=(.*)?)?$/, group)
-        if (RSTART) {
-            Option["indent"] = group[1] ?
-                (group[2] ? group[2] : Option["indent"]) :
-                ARGV[++pos]
-            continue
-        }
+        ## Audio options
 
-        # -v, -view
-        match(ARGV[pos], /^--?v(i(ew?)?)?$/)
+        # -no-play
+        match(ARGV[pos], /^--?no-play$/)
         if (RSTART) {
-            Option["view"] = 1
-            continue
-        }
-
-        # -pager [program]
-        match(ARGV[pos], /^--?pager(=(.*)?)?$/, group)
-        if (RSTART) {
-            Option["view"] = 1
-            Option["pager"] = group[1] ?
-                (group[2] ? group[2] : Option["pager"]) :
-                ARGV[++pos]
-            continue
-        }
-
-        # -browser [program]
-        match(ARGV[pos], /^--?browser(=(.*)?)?$/, group)
-        if (RSTART) {
-            Option["browser"] = group[1] ?
-                (group[2] ? group[2] : Option["browser"]) :
-                ARGV[++pos]
+            Option["play"] = 0
             continue
         }
 
@@ -344,7 +330,7 @@ BEGIN {
             continue
         }
 
-        # -player [program]
+        # -player PROGRAM
         match(ARGV[pos], /^--?player(=(.*)?)?$/, group)
         if (RSTART) {
             Option["play"] = 1
@@ -354,8 +340,45 @@ BEGIN {
             continue
         }
 
-        # -x [proxy], -proxy [proxy]
-        match(ARGV[pos], /^--?(proxy|x)(=(.*)?)?$/, group)
+        ## Terminal paging and web options
+
+        # -no-view
+        match(ARGV[pos], /^--?no-view$/)
+        if (RSTART) {
+            Option["view"] = 0
+            continue
+        }
+
+        # -v, -view
+        match(ARGV[pos], /^--?v(i(ew?)?)?$/)
+        if (RSTART) {
+            Option["view"] = 1
+            continue
+        }
+
+        # -pager PROGRAM
+        match(ARGV[pos], /^--?pager(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["view"] = 1
+            Option["pager"] = group[1] ?
+                (group[2] ? group[2] : Option["pager"]) :
+                ARGV[++pos]
+            continue
+        }
+
+        # -browser PROGRAM
+        match(ARGV[pos], /^--?browser(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["browser"] = group[1] ?
+                (group[2] ? group[2] : Option["browser"]) :
+                ARGV[++pos]
+            continue
+        }
+
+        ## Networking options
+
+        # -x HOST:PORT, -proxy HOST:PORT
+        match(ARGV[pos], /^--?(x|proxy)(=(.*)?)?$/, group)
         if (RSTART) {
             Option["proxy"] = group[2] ?
                 (group[3] ? group[3] : Option["proxy"]) :
@@ -363,8 +386,8 @@ BEGIN {
             continue
         }
 
-        # -u [agent], -user-agent [agent]
-        match(ARGV[pos], /^--?(user-agent|u)(=(.*)?)?$/, group)
+        # -u STRING, -user-agent STRING
+        match(ARGV[pos], /^--?(u|user-agent)(=(.*)?)?$/, group)
         if (RSTART) {
             Option["user-agent"] = group[2] ?
                 (group[3] ? group[3] : Option["user-agent"]) :
@@ -372,12 +395,7 @@ BEGIN {
             continue
         }
 
-        # -I, -interactive, -shell
-        match(ARGV[pos], /^--?(int(e(r(a(c(t(i(ve?)?)?)?)?)?)?)?|shell|I)$/)
-        if (RSTART) {
-            Option["interactive"] = 1
-            continue
-        }
+        ## Interactive shell options
 
         # -no-rlwrap
         match(ARGV[pos], /^--?no-rlwrap$/)
@@ -386,15 +404,22 @@ BEGIN {
             continue
         }
 
+        # -I, -interactive, -shell
+        match(ARGV[pos], /^--?(I|int(e(r(a(c(t(i(ve?)?)?)?)?)?)?)?|shell)$/)
+        if (RSTART) {
+            Option["interactive"] = 1
+            continue
+        }
+
         # -E, -emacs
-        match(ARGV[pos], /^--?(emacs|E)$/)
+        match(ARGV[pos], /^--?(E|emacs)$/)
         if (RSTART) {
             Option["emacs"] = 1
             continue
         }
 
         # FIXME[1.0]: to be removed
-        # -prompt [prompt_string]
+        # -prompt PROMPT_STRING
         match(ARGV[pos], /^--?prompt(=(.*)?)?$/, group)
         if (RSTART) {
             w("[ERROR] Option '-prompt' has been deprecated since version 0.9.\n" \
@@ -403,7 +428,7 @@ BEGIN {
         }
 
         # FIXME[1.0]: to be removed
-        # -prompt-color [color_code]
+        # -prompt-color COLOR_CODE
         match(ARGV[pos], /^--?prompt-color(=(.*)?)?$/, group)
         if (RSTART) {
             w("[ERROR] Option '-prompt-color' has been deprecated since version 0.9.\n" \
@@ -411,7 +436,9 @@ BEGIN {
             exit 1
         }
 
-        # -i [file], -input [file]
+        ## I/O options
+
+        # -i FILENAME, -input FILENAME
         match(ARGV[pos], /^--?i(n(p(ut?)?)?)?(=(.*)?)?$/, group)
         if (RSTART) {
             Option["input"] = group[4] ?
@@ -420,7 +447,7 @@ BEGIN {
             continue
         }
 
-        # -o [file], -output [file]
+        # -o FILENAME, -output FILENAME
         match(ARGV[pos], /^--?o(u(t(p(ut?)?)?)?)?(=(.*)?)?$/, group)
         if (RSTART) {
             Option["output"] = group[5] ?
@@ -429,7 +456,9 @@ BEGIN {
             continue
         }
 
-        # -l [code], -lang [code]
+        ## Language preference options
+
+        # -l CODE, -lang CODE
         match(ARGV[pos], /^--?l(a(ng?)?)?(=(.*)?)?$/, group)
         if (RSTART) {
             Option["hl"] = group[3] ?
@@ -438,7 +467,7 @@ BEGIN {
             continue
         }
 
-        # -s [code], -source [code]
+        # -s CODE, -source CODE
         match(ARGV[pos], /^--?s(o(u(r(ce?)?)?)?)?(=(.*)?)?$/, group)
         if (RSTART) {
             Option["sl"] = group[5] ?
@@ -447,7 +476,7 @@ BEGIN {
             continue
         }
 
-        # -t [codes], -target [codes]
+        # -t CODE(S), -target CODE(S)
         match(ARGV[pos], /^--?t(a(r(g(et?)?)?)?)?(=(.*)?)?$/, group)
         if (RSTART) {
             if (group[5]) {
@@ -458,7 +487,7 @@ BEGIN {
         }
 
         # Shortcut format
-        # '[code]:[code]+...' or '[code]=[code]+...'
+        # 'CODE:CODE+...' or 'CODE=CODE+...'
         match(ARGV[pos], /^[{(\[]?([[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?)?)[})\]]?$/, group)
         if (RSTART) {
             if (group[1]) Option["sl"] = group[1]
@@ -466,9 +495,22 @@ BEGIN {
             continue
         }
 
+        ## Other options
+
+        # -D, -debug
+        match(ARGV[pos], /^--?(D|debug)$/)
+        if (RSTART) {
+            Option["debug"] = 1
+            continue
+        }
+
         # -no-init
         match(ARGV[pos], /^--?no-init/)
-        if (RSTART) continue
+        if (RSTART) continue # skip
+
+        # -, -no-op
+        match(ARGV[pos], /^-(-?no-op)?$/)
+        if (RSTART) continue # no operation, skip
 
         # --
         match(ARGV[pos], /^--$/)
@@ -482,6 +524,7 @@ BEGIN {
 
     setTheme() # theme overrides command-line options
 
+    # Handle interactive shell
     if (Option["interactive"] && !Option["no-rlwrap"])
         rlwrapMe() # interactive mode
     else if (Option["emacs"] && !Option["interactive"] && !Option["no-rlwrap"])
@@ -491,6 +534,29 @@ BEGIN {
     # Get started
 
     initMisc()
+
+    # Handle information options
+    switch (InfoOnly) {
+    case "version":
+        print getVersion()
+        print
+        printf("%-22s%s\n", "gawk (GNU Awk)", PROCINFO["version"])
+        printf("%s\n", FriBidi ? FriBidi : "fribidi (GNU FriBidi) [NOT INSTALLED]")
+        printf("%-22s%s\n", "User Language", getName(UserLang) " (" getDisplay(UserLang) ")")
+        exit
+    case "help":
+        print getHelp()
+        exit
+    case "manual":
+        man()
+        exit
+    case "reference":
+        print getReference("endonym")
+        exit
+    case "reference-english":
+        print getReference("name")
+        exit
+    }
 
     if (Option["interactive"])
         welcome()
