@@ -121,5 +121,8 @@ function prompt(    i, p, temp) {
     }
 
     # %s : source language
-    printf(ansi("bold", ansi(tolower(Option["prompt-color"]), p " ")), getDisplay(Option["sl"])) > STDERR
+    if (exists(Option["sgr-prompt"]))
+        printf(prettify("prompt", p), getDisplay(Option["sl"])) > STDERR
+    else
+        printf(ansi("bold", ansi(tolower(Option["prompt-color"]), p)), getDisplay(Option["sl"])) > STDERR
 }

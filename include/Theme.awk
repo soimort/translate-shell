@@ -85,8 +85,12 @@ function setRandomTheme(    i, n, temp) {
     Option["sgr-brief-translation"][2] = Option["sgr-brief-translation-phonetics"][2] = "bold"
 
     Option["fmt-welcome-message"] = Name
-    Option["sgr-welcome-message"] = "bold"
+    Option["sgr-welcome-message"][1] = n[0]
+    Option["sgr-welcome-message"][2] = "bold"
     Option["fmt-welcome-submessage"] = "(:q to quit)"
+    Option["sgr-welcome-submessage"] = n[0]
+    Option["sgr-prompt"][1] = n[1]
+    Option["sgr-prompt"][2] = "bold"
 }
 
 # Set theme to: default.
@@ -107,6 +111,7 @@ function setDefaultTheme() {
     Option["fmt-welcome-message"] = Name
     Option["sgr-welcome-message"] = "bold"
     Option["fmt-welcome-submessage"] = "(:q to quit)"
+    Option["sgr-prompt"] = "bold"
 }
 
 # Set theme using corresponding option.
