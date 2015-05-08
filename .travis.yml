@@ -6,5 +6,6 @@ before_install: |
   sudo apt-get update -q
   sudo apt-get install gawk
   sudo apt-get install rlwrap
+  sudo apt-get install emacs
 
 script: make check
