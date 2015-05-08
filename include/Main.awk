@@ -548,7 +548,7 @@ BEGIN {
         print getHelp()
         exit
     case "manual":
-        man()
+        showMan()
         exit
     case "reference":
         print getReference("endonym")

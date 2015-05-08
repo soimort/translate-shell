@@ -207,88 +207,113 @@ function getReference(displayName) {
 
 # Return help message as a string.
 function getHelp() {
-    return "Usage:\t" Command " [options] [source]:[target] [" ansi("underline", "text") "] ..." RS \
-        "\t" Command " [options] [source]:[target1]+[target2]+... [" ansi("underline", "text") "] ..." RS RS \
-        "Options:" RS                                                   \
-        ansi("bold", "-V, -version") RS                                 \
-        ins(1, "Print version and exit.") RS                            \
-        ansi("bold", "-H, -h, -help") RS                                \
-        ins(1, "Print this help message and exit.") RS                  \
-        ansi("bold", "-M, -m, -manual") RS                              \
-        ins(1, "Show the manual.") RS                                   \
-        ansi("bold", "-r, -reference") RS                               \
-        ins(1, "Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.") RS \
-        ansi("bold", "-R, -reference-english") RS                       \
-        ins(1, "Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.") RS \
-        ansi("bold", "-verbose") RS                                     \
-        ins(1, "Verbose mode. (default)") RS                            \
-        ansi("bold", "-d, -dictionary") RS                              \
-        ins(1, "Dictionary mode.") RS                                   \
-        ansi("bold", "-b, -brief") RS                                   \
-        ins(1, "Brief mode.") RS                                        \
-        ansi("bold", "-show-original [yes|no]") RS                      \
-        ins(1, "Show original text or not. (default: yes)") RS          \
-        ansi("bold", "-show-original-phonetics [yes|no]") RS            \
-        ins(1, "Show phonetic notation of original text or not. (default: yes)") RS \
-        ansi("bold", "-show-translation [yes|no]") RS                   \
-        ins(1, "Show translation or not. (default: yes)") RS            \
-        ansi("bold", "-show-translation-phonetics [yes|no]") RS         \
-        ins(1, "Show phonetic notation of translation or not. (default: yes)") RS \
-        ansi("bold", "-show-prompt-message [yes|no]") RS                \
-        ins(1, "Show prompt message or not. (default: yes)") RS         \
-        ansi("bold", "-show-languages [yes|no]") RS                     \
-        ins(1, "Show source and target languages or not. (default: yes)") RS \
-        ansi("bold", "-show-original-dictionary [yes|no]") RS           \
-        ins(1, "Show dictionary entry of original text or not. (default: no)") RS \
-        ansi("bold", "-show-dictionary [yes|no]") RS                    \
-        ins(1, "Show dictionary entry of translation or not. (default: yes)") RS \
-        ansi("bold", "-show-alternatives [yes|no]") RS                  \
-        ins(1, "Show alternative translations or not. (default: yes)") RS \
-        ansi("bold", "-theme [theme]") RS                               \
-        ins(1, "Specify the theme to use. (default: default)") RS       \
-        ansi("bold", "-no-ansi") RS                                     \
-        ins(1, "Do not use ANSI escape codes in the translation.") RS   \
-        ansi("bold", "-w [num], -width [num]") RS                       \
-        ins(1, "Specify the screen width for padding when displaying right-to-left languages.") RS \
-        ansi("bold", "-indent [num]") RS                                \
-        ins(1, "Specify the size of indent (in terms of spaces). (default: 4)") RS \
-        ansi("bold", "-v, -view") RS                                    \
-        ins(1, "View the translation in a terminal pager.") RS          \
-        ansi("bold", "-pager [program]") RS                             \
-        ins(1, "Specify the terminal pager to use, and view the translation.") RS \
-        ansi("bold", "-browser [program]") RS                           \
-        ins(1, "Specify the web browser to use.") RS                    \
-        ansi("bold", "-p, -play") RS                                    \
-        ins(1, "Listen to the translation.") RS                         \
-        ansi("bold", "-player [program]") RS                            \
-        ins(1, "Specify the command-line audio player to use, and listen to the translation.") RS \
-        ansi("bold", "-x [proxy], -proxy [proxy]") RS                   \
-        ins(1, "Use proxy on given port.") RS                           \
-        ansi("bold", "-u [agent], -user-agent [agent]") RS              \
-        ins(1, "Specify the User-Agent to identify as.") RS             \
-        ansi("bold", "-I, -interactive, -shell") RS                     \
-        ins(1, "Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).") RS \
-        ansi("bold", "-no-rlwrap") RS                                   \
-        ins(1, "Do not invoke `rlwrap` when starting an interactive shell with `-I`.") RS \
-        ansi("bold", "-E, -emacs") RS                                   \
-        ins(1, "Start an interactive shell within GNU Emacs, invoking `emacs`.") RS \
-        ansi("bold", "-i [file], -input [file]") RS                     \
-        ins(1, "Specify the input file name.") RS                       \
-        ansi("bold", "-o [file], -output [file]") RS                    \
-        ins(1, "Specify the output file name.") RS                      \
-        ansi("bold", "-l [code], -lang [code]") RS                      \
-        ins(1, "Specify your own, native language (\"home/host language\").") RS \
-        ansi("bold", "-s [code], -source [code]") RS                    \
-        ins(1, "Specify the source language (language of the original text).") RS \
-        ansi("bold", "-t [codes], -target [codes]") RS                  \
-        ins(1, "Specify the target language(s) (language(s) of the translated text).") RS \
-        ansi("bold", "-no-init") RS                                     \
-        ins(1, "Do not load any initialization script.") RS             \
+    return "Usage:   " ansi("bold", Command " " ansi("negative", "[OPTIONS]") \
+                            " " ansi("negative", "[SOURCE]")            \
+                            ":" ansi("negative", "[TARGET(S)]")         \
+                            " " ansi("negative", "[TEXT]") " ...") RS   \
+        "Example: " ansi("underline", "trans -brief la:en 'per aspera ad astra'") RS \
+        RS "Information Options:" RS                                    \
+        ins(1, ansi("bold", "-V, -version")) RS                         \
+        ins(2, "Print version and exit.") RS                            \
+        ins(1, ansi("bold", "-H, -help")) RS                            \
+        ins(2, "Print help message and exit.") RS                       \
+        ins(1, ansi("bold", "-M, -manual")) RS                          \
+        ins(2, "Show man page and exit.") RS                            \
+        ins(1, ansi("bold", "-T, -reference")) RS                       \
+        ins(2, "Print a reference table of languages and exit.") RS     \
+        ins(1, ansi("bold", "-R, -reference-english")) RS               \
+        ins(2, "Print a reference table of languages (in English names) and exit.") RS \
+        RS "Display Options:" RS                                        \
+        ins(1, ansi("bold", "-verbose")) RS                             \
+        ins(2, "Verbose mode. (default)") RS                            \
+        ins(1, ansi("bold", "-b, -brief")) RS                           \
+        ins(2, "Brief mode.") RS                                        \
+        ins(1, ansi("bold", "-d, -dictionary")) RS                      \
+        ins(2, "Dictionary mode.") RS                                   \
+        ins(1, ansi("bold", "-show-original " ansi("negative", "Y|n"))) RS \
+        ins(2, "Show original text or not.") RS                         \
+        ins(1, ansi("bold", "-show-original-phonetics " ansi("negative", "Y|n"))) RS \
+        ins(2, "Show phonetic notation of original text or not.") RS    \
+        ins(1, ansi("bold", "-show-translation " ansi("negative", "Y|n"))) RS \
+        ins(2, "Show translation or not.") RS                           \
+        ins(1, ansi("bold", "-show-translation-phonetics " ansi("negative", "Y|n"))) RS \
+        ins(2, "Show phonetic notation of translation or not.") RS      \
+        ins(1, ansi("bold", "-show-prompt-message " ansi("negative", "Y|n"))) RS \
+        ins(2, "Show prompt message or not.") RS                        \
+        ins(1, ansi("bold", "-show-languages " ansi("negative", "Y|n"))) RS \
+        ins(2, "Show source and target languages or not.") RS           \
+        ins(1, ansi("bold", "-show-original-dictionary " ansi("negative", "y|N"))) RS \
+        ins(2, "Show dictionary entry of original text or not.") RS     \
+        ins(1, ansi("bold", "-show-dictionary " ansi("negative", "Y|n"))) RS \
+        ins(2, "Show dictionary entry of translation or not.") RS       \
+        ins(1, ansi("bold", "-show-alternatives " ansi("negative", "Y|n"))) RS \
+        ins(2, "Show alternative translations or not.") RS              \
+        ins(1, ansi("bold", "-w " ansi("negative", "NUM")               \
+                    ", -width " ansi("negative", "NUM"))) RS            \
+        ins(2, "Specify the screen width for padding.") RS              \
+        ins(1, ansi("bold", "-indent " ansi("negative", "NUM"))) RS     \
+        ins(2, "Specify the size of indent (number of spaces).") RS     \
+        ins(1, ansi("bold", "-no-ansi")) RS                             \
+        ins(2, "Do not use ANSI escape codes.") RS                      \
+        ins(1, ansi("bold", "-no-theme")) RS                            \
+        ins(2, "Do not use any other theme than default.") RS           \
+        ins(1, ansi("bold", "-theme " ansi("negative", "FILENAME"))) RS \
+        ins(2, "Specify the theme to use.") RS                          \
+        RS "Audio Options:" RS                                          \
+        ins(1, ansi("bold", "-no-play")) RS                             \
+        ins(2, "Do not listen to the translation.") RS                  \
+        ins(1, ansi("bold", "-p, -play")) RS                            \
+        ins(2, "Listen to the translation.") RS                         \
+        ins(1, ansi("bold", "-player " ansi("negative", "PROGRAM"))) RS \
+        ins(2, "Specify the audio player to use, and listen to the translation.") RS \
+        RS "Terminal Paging and Web Options:" RS                        \
+        ins(1, ansi("bold", "-no-view")) RS                             \
+        ins(2, "Do not view the translation in a terminal pager.") RS   \
+        ins(1, ansi("bold", "-v, -view")) RS                            \
+        ins(2, "View the translation in a terminal pager.") RS          \
+        ins(1, ansi("bold", "-pager " ansi("negative", "PROGRAM"))) RS  \
+        ins(2, "Specify the terminal pager to use, and view the translation.") RS \
+        ins(1, ansi("bold", "-browser " ansi("negative", "PROGRAM"))) RS \
+        ins(2, "Specify the web browser to use.") RS                    \
+        RS "Networking Options:" RS                                     \
+        ins(1, ansi("bold", "-x " ansi("negative", "HOST:PORT")         \
+                    ", -proxy " ansi("negative", "HOST:PORT"))) RS      \
+        ins(2, "Use HTTP proxy on given port.") RS                      \
+        ins(1, ansi("bold", "-u " ansi("negative", "STRING")            \
+                    ", -user-agent " ansi("negative", "STRING"))) RS    \
+        ins(2, "Specify the User-Agent to identify as.") RS             \
+        RS "Interactive Shell Options:" RS                              \
+        ins(1, ansi("bold", "-no-rlwrap")) RS                           \
+        ins(2, "Do not invoke rlwrap when starting an interactive shell.") RS \
+        ins(1, ansi("bold", "-I, -interactive, -shell")) RS             \
+        ins(2, "Start an interactive shell.") RS                        \
+        ins(1, ansi("bold", "-E, -emacs")) RS                           \
+        ins(2, "Start the GNU Emacs front-end for an interactive shell.") RS \
+        RS "I/O Options:" RS                                            \
+        ins(1, ansi("bold", "-i " ansi("negative", "FILENAME")          \
+                    ", -input " ansi("negative", "FILENAME"))) RS       \
+        ins(2, "Specify the input file.") RS                            \
+        ins(1, ansi("bold", "-o " ansi("negative", "FILENAME")          \
+                    ", -output " ansi("negative", "FILENAME"))) RS      \
+        ins(2, "Specify the output file.") RS                           \
+        RS "Language Preference Options:" RS                            \
+        ins(1, ansi("bold", "-l " ansi("negative", "CODE")              \
+                    ", -lang " ansi("negative", "CODE"))) RS            \
+        ins(2, "Specify your home language.") RS                        \
+        ins(1, ansi("bold", "-s " ansi("negative", "CODE")              \
+                    ", -source " ansi("negative", "CODE"))) RS          \
+        ins(2, "Specify the source language.") RS                       \
+        ins(1, ansi("bold", "-t " ansi("negative", "CODE(S)")           \
+                    ", -target " ansi("negative", "CODE(S)"))) RS       \
+        ins(2, "Specify the target language(s), joined by '+'.") RS     \
+        RS "Other Options:" RS                                          \
+        ins(1, ansi("bold", "-no-init")) RS                             \
+        ins(2, "Do not load any initialization script.") RS             \
         RS "See the man page " Command "(1) for more information."
 }
 
 # Display man page.
-function man(    temp) {
+function showMan(    temp) {
     if (ENVIRON["TRANS_MANPAGE"]) {
         initPager()
         temp = "echo -E \"${TRANS_MANPAGE}\""
