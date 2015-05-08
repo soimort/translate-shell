@@ -350,14 +350,29 @@ function detectProgram(prog, arg) {
     return (prog " " arg SUPERR | getline) ? prog : NULLSTR
 }
 
-# Return non-zero if file exists, otherwise return 0.
+# Return non-zero if file exists; otherwise return 0.
 function fileExists(file) {
     return !system("test -f " parameterize(file))
 }
 
-# Return non-zero if file exists and is a directory, otherwise return 0.
+# Return non-zero if file exists and is a directory; otherwise return 0.
 function dirExists(file) {
     return !system("test -d " parameterize(file))
+}
+
+# Return the HEAD revision if the current directory is a git repo;
+# Otherwise return a null string.
+function getGitHead(    line, group) {
+    if (fileExists(".git/HEAD")) {
+        getline line < ".git/HEAD"
+        match(line, /^ref: (.*)$/, group)
+        if (fileExists(".git/" group[1])) {
+            getline line < (".git/" group[1])
+            return substr(line, 1, 7)
+        } else
+            return NULLSTR
+    } else
+        return NULLSTR
 }
 
 # Initialize `UriSchemes`.
