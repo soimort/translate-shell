@@ -1,6 +1,6 @@
 #!/usr/bin/gawk -f
 @include "include/Commons"
-@include "include/REPL"
+@include "include/Utils"
 
 function pass(string, ansiCode) {
     if (!ansiCode) ansiCode = "green"
