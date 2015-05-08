@@ -109,6 +109,11 @@ BEGIN {
         assertTrue(yn("ON"))
     }
 
+    TEST = "detectProgram()"; TOTAL = 2; COUNTER = 0; {
+        assertTrue(detectProgram("ls"))
+        assertTrue(detectProgram("gawk", "--version"))
+    }
+
     TEST = "fileExists()"; TOTAL = 4; COUNTER = 0; {
         assertFalse(fileExists("README"))
         assertFalse(fileExists("README .md"))
