@@ -2,6 +2,12 @@
 # REPL.awk                                                         #
 ####################################################################
 
+# Welcome message.
+function welcome() {
+    print ansi("bold", ansi(tolower(Option["prompt-color"]), getVersion())) > STDERR
+    print ansi(tolower(Option["prompt-color"]), "(:q to quit)") > STDERR
+}
+
 # Prompt for interactive session.
 function prompt(    i, p, temp) {
     p = Option["prompt"]

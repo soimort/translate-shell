@@ -494,11 +494,8 @@ BEGIN {
         if (emacsMe()) # emacs front-end
             Option["interactive"] = 1 # fallback to interactive mode
 
-    if (Option["interactive"]) {
-        l(">> starting interactive shell")
-        print ansi("bold", ansi(tolower(Option["prompt-color"]), getVersion())) > STDERR
-        print ansi(tolower(Option["prompt-color"]), "(:q to quit)") > STDERR
-    }
+    if (Option["interactive"])
+        welcome()
 
     init3() # initialization #3
 
