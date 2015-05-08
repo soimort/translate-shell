@@ -183,6 +183,15 @@ function belongsTo(element, array,
     return ""
 }
 
+# Return 1 if the value is non-empty or an array that contains anything;
+# Otherwise, return 0.
+function exists(value) {
+    if (isarray(value))
+        return anything(value)
+    else
+        return value ? 1 : 0
+}
+
 # Return one of the substrings if the string starts with it;
 # Otherwise, return a null string.
 function startsWithAny(string, substrings,

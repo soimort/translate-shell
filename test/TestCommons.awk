@@ -69,6 +69,7 @@ BEGIN {
 
     T("anything()", 3)
     {
+        delete something
         assertFalse(anything(nothing))
         something[0] = 0; assertFalse(anything(something)) # edge case
         something[0] = 1; assertTrue(anything(something))
@@ -76,15 +77,24 @@ BEGIN {
 
     T("belongsTo()", 3)
     {
-        array[0] = "foo"; array[1] = "bar"
+        delete array; array[0] = "foo"; array[1] = "bar"
         assertTrue(belongsTo("foo", array))
         assertTrue(belongsTo("bar", array))
         assertFalse(belongsTo("world", array))
     }
 
+    T("exists()", 4)
+    {
+        delete something
+        assertFalse(exists(something))
+        something[0] = 0; assertFalse(exists(something)) # edge case
+        something[0] = 1; assertTrue(exists(something))
+        assertTrue(exists(something[0]))
+    }
+
     T("startsWithAny()", 3)
     {
-        substrings[0] = "A"; substrings[1] = "a"
+        delete substrings; substrings[0] = "A"; substrings[1] = "a"
         assertTrue(startsWithAny("absolute", substrings))
         assertTrue(startsWithAny("ABSOLUTE", substrings))
         assertFalse(startsWithAny("ZOO", substrings))
@@ -92,7 +102,7 @@ BEGIN {
 
     T("matchesAny()", 4)
     {
-        patterns[0] = "[[:space:]]"; patterns[1] = "[0Oo]"
+        delete patterns; patterns[0] = "[[:space:]]"; patterns[1] = "[0Oo]"
         assertTrue(matchesAny("  ", patterns))
         assertTrue(matchesAny("obsolete", patterns))
         assertTrue(matchesAny("0.0", patterns))
@@ -101,7 +111,7 @@ BEGIN {
 
     T("join()", 2)
     {
-        array[0] = "foo"; array[1] = "bar"
+        delete array; array[0] = "foo"; array[1] = "bar"
         assertEqual(join(array, " "), "foo bar")
         assertEqual(join(array, ","), "foo,bar")
     }
