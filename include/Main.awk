@@ -539,10 +539,6 @@ BEGIN {
     switch (InfoOnly) {
     case "version":
         print getVersion()
-        print
-        printf("%-22s%s\n", "gawk (GNU Awk)", PROCINFO["version"])
-        printf("%s\n", FriBidi ? FriBidi : "fribidi (GNU FriBidi) [NOT INSTALLED]")
-        printf("%-22s%s\n", "User Language", getName(UserLang) " (" getDisplay(UserLang) ")")
         exit
     case "help":
         print getHelp()
