@@ -47,8 +47,6 @@ function init() {
     Option["interactive"] = 0
     Option["no-rlwrap"] = 0
     Option["emacs"] = 0
-    Option["prompt"] = ENVIRON["TRANS_PS"] ? ENVIRON["TRANS_PS"] : "%s> "
-    Option["prompt-color"] = ENVIRON["TRANS_PS_COLOR"] ? ENVIRON["TRANS_PS_COLOR"] : "default"
 
     Option["input"] = NULLSTR
     Option["output"] = STDOUT
@@ -398,22 +396,22 @@ BEGIN {
             continue
         }
 
+        # FIXME[1.0]: to be removed
         # -prompt [prompt_string]
         match(ARGV[pos], /^--?prompt(=(.*)?)?$/, group)
         if (RSTART) {
-            Option["prompt"] = group[1] ?
-                (group[2] ? group[2] : Option["prompt"]) :
-                ARGV[++pos]
-            continue
+            w("[ERROR] Option '-prompt' has been deprecated since version 0.9.\n" \
+              "        Use configuration variable 'fmt-prompt' instead.")
+            exit 1
         }
 
+        # FIXME[1.0]: to be removed
         # -prompt-color [color_code]
         match(ARGV[pos], /^--?prompt-color(=(.*)?)?$/, group)
         if (RSTART) {
-            Option["prompt-color"] = group[1] ?
-                (group[2] ? group[2] : Option["prompt-color"]) :
-                ARGV[++pos]
-            continue
+            w("[ERROR] Option '-prompt-color' has been deprecated since version 0.9.\n" \
+              "        Use configuration variable 'sgr-prompt' instead.")
+            exit 1
         }
 
         # -i [file], -input [file]

@@ -12,7 +12,7 @@ function welcome() {
 
 # Prompt for interactive session.
 function prompt(    i, p, temp) {
-    p = Option["prompt"]
+    p = Option["fmt-prompt"]
 
     # Format specifiers supported by strftime().
     # Roughly following ISO 8601:1988, with the notable exception of "%S", "%t" and "%T".
@@ -121,8 +121,5 @@ function prompt(    i, p, temp) {
     }
 
     # %s : source language
-    if (exists(Option["sgr-prompt"]))
-        printf(prettify("prompt", p), getDisplay(Option["sl"])) > STDERR
-    else
-        printf(ansi("bold", ansi(tolower(Option["prompt-color"]), p)), getDisplay(Option["sl"])) > STDERR
+    printf(prettify("prompt", p), getDisplay(Option["sl"])) > STDERR
 }
