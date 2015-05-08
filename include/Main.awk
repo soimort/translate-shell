@@ -17,6 +17,7 @@ function init() {
 
     Option["debug"] = 0
 
+    # Display
     Option["verbose"] = 1
     Option["show-original"] = 1
     Option["show-original-phonetics"] = 1
@@ -27,35 +28,37 @@ function init() {
     Option["show-original-dictionary"] = 0
     Option["show-dictionary"] = 1
     Option["show-alternatives"] = 1
-
-    Option["no-ansi"] = 0
-
     Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] : 64
     Option["indent"] = 4
+    Option["no-ansi"] = 0
+    Option["theme"] = "default"
 
-    Option["view"] = 0
-    Option["pager"] = ENVIRON["PAGER"]
-
-    Option["browser"] = ENVIRON["BROWSER"]
-
+    # Audio
     Option["play"] = 0
     Option["player"] = ENVIRON["PLAYER"]
 
+    # Terminal paging and web
+    Option["view"] = 0
+    Option["pager"] = ENVIRON["PAGER"]
+    Option["browser"] = ENVIRON["BROWSER"]
+
+    # Networking
     Option["proxy"] = ENVIRON["HTTP_PROXY"] ? ENVIRON["HTTP_PROXY"] : ENVIRON["http_proxy"]
     Option["user-agent"] = ENVIRON["USER_AGENT"]
 
-    Option["interactive"] = 0
+    # Interactive shell
     Option["no-rlwrap"] = 0
+    Option["interactive"] = 0
     Option["emacs"] = 0
 
+    # I/O
     Option["input"] = NULLSTR
     Option["output"] = STDOUT
 
+    # Language preference
     Option["hl"] = ENVIRON["HOME_LANG"] ? ENVIRON["HOME_LANG"] : UserLang
     Option["sl"] = ENVIRON["SOURCE_LANG"] ? ENVIRON["SOURCE_LANG"] : "auto"
     Option["tl"][1] = ENVIRON["TARGET_LANG"] ? ENVIRON["TARGET_LANG"] : UserLang
-
-    Option["theme"] = "default"
 }
 
 # Initialization script.
@@ -86,19 +89,28 @@ function initScript(    file, line, script, temp) {
     }
 }
 
-# Theme initialization.
-function initTheme() {
-    # Set theme
-    setTheme()
+# Miscellany initialization.
+function initMisc(    group) {
+    initHttpService()
 
     # Disable ANSI escape codes if required
     if (Option["no-ansi"])
         delete AnsiCode
-}
 
-# Miscellany initialization.
-function initMisc(    group) {
-    initHttpService()
+    # Initialize audio player or speech synthesizer
+    if (Option["play"]) {
+        if (!Option["player"]) {
+            initAudioPlayer()
+            Option["player"] = AudioPlayer ? AudioPlayer : Option["player"]
+            if (!Option["player"])
+                initSpeechSynthesizer()
+        }
+
+        if (!Option["player"] && !SpeechSynthesizer) {
+            w("[WARNING] No available audio player or speech synthesizer.")
+            Option["play"] = 0
+        }
+    }
 
     # Initialize pager
     if (Option["view"]) {
@@ -119,29 +131,14 @@ function initMisc(    group) {
         match(Option["browser"], "(.*).desktop$", group)
         Option["browser"] = group[1]
     }
-
-    # Initialize audio player or speech synthesizer
-    if (Option["play"]) {
-        if (!Option["player"]) {
-            initAudioPlayer()
-            Option["player"] = AudioPlayer ? AudioPlayer : Option["player"]
-            if (!Option["player"])
-                initSpeechSynthesizer()
-        }
-
-        if (!Option["player"] && !SpeechSynthesizer) {
-            w("[WARNING] No available audio player or speech synthesizer.")
-            Option["play"] = 0
-        }
-    }
 }
 
 # Main entry point.
 BEGIN {
     init()
-    initScript()
+    initScript() # initialization script overrides default setting
 
-    # Option parsing
+    # Command-line options override initialization script
     pos = 0
     while (ARGV[++pos]) {
         # -, -no-op
@@ -483,7 +480,7 @@ BEGIN {
         break # no more option from here
     }
 
-    initTheme()
+    setTheme() # theme overrides command-line options
 
     if (Option["interactive"] && !Option["no-rlwrap"])
         rlwrapMe() # interactive mode
@@ -491,10 +488,12 @@ BEGIN {
         if (emacsMe()) # emacs front-end
             Option["interactive"] = 1 # fallback to interactive mode
 
-    if (Option["interactive"])
-        welcome()
+    # Get started
 
     initMisc()
+
+    if (Option["interactive"])
+        welcome()
 
     if (pos < ARGC) {
         # More parameters
