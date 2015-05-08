@@ -2,8 +2,8 @@
 # Main.awk                                                         #
 ####################################################################
 
-# Initialization #0. (prior to option parsing)
-function init0() {
+# Initialization.
+function init() {
     initGawk()
 
     initBiDi()
@@ -88,8 +88,8 @@ function initScript(    file, line, script, temp) {
     }
 }
 
-# Initialization #2. (prior to interactive mode handling)
-function init2() {
+# Theme initialization.
+function initTheme() {
     # Set theme
     setTheme()
 
@@ -98,9 +98,8 @@ function init2() {
         delete AnsiCode
 }
 
-# Initialization #3.
-function init3(    group) {
-    # Translate.awk
+# Miscellany initialization.
+function initMisc(    group) {
     initHttpService()
 
     # Initialize pager
@@ -141,8 +140,8 @@ function init3(    group) {
 
 # Main entry point.
 BEGIN {
-    init0() # initialization #0
-    initScript() # initialization script
+    init()
+    initScript()
 
     # Option parsing
     pos = 0
@@ -486,7 +485,7 @@ BEGIN {
         break # no more option from here
     }
 
-    init2() # initialization #2
+    initTheme()
 
     if (Option["interactive"] && !Option["no-rlwrap"])
         rlwrapMe() # interactive mode
@@ -497,7 +496,7 @@ BEGIN {
     if (Option["interactive"])
         welcome()
 
-    init3() # initialization #3
+    initMisc()
 
     if (pos < ARGC) {
         # More parameters
