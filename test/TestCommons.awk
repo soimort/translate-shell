@@ -1,7 +1,8 @@
 BEGIN {
     START_TEST("Commons.awk")
 
-    TEST = "escapeChar()"; TOTAL = 8; COUNTER = 0; {
+    T("escapeChar()", 8)
+    {
         assertEqual(escapeChar("b"), "\b")
         assertEqual(escapeChar("f"), "\f")
         assertEqual(escapeChar("n"), "\n")
@@ -12,21 +13,24 @@ BEGIN {
         assertNotEqual(escapeChar("_"), "\\_")
     }
 
-    TEST = "literal()"; TOTAL = 4; COUNTER = 0; {
+    T("literal()", 4)
+    {
         assertEqual(literal(""), "")
         assertEqual(literal("foo"), "foo")
         assertEqual(literal("\"foo\""), "foo")
         assertEqual(literal("\"\\\"foo\\\"\""), "\"foo\"")
     }
 
-    TEST = "escape()"; TOTAL = 4; COUNTER = 0; {
+    T("escape()", 4)
+    {
         assertEqual(escape(""), "")
         assertEqual(escape("foo"), "foo")
         assertEqual(escape("\""), "\\\\\"")
         assertEqual(escape("\"foo\""), "\\\\\"foo\\\\\"")
     }
 
-    TEST = "parameterize()"; TOTAL = 10; COUNTER = 0; {
+    T("parameterize()", 10)
+    {
         assertEqual(parameterize(""), "''")
         assertEqual(parameterize("foo"), "'foo'")
         assertEqual(parameterize("foo bar"), "'foo bar'")
@@ -39,48 +43,55 @@ BEGIN {
         assertEqual(parameterize("foo \"bar\"", "\""), "\"foo \\\\\"bar\\\\\"\"")
     }
 
-    TEST = "quote()"; TOTAL = 4; COUNTER = 0; {
+    T("quote()", 4)
+    {
         assertEqual(quote(""), "")
         assertEqual(quote("foo"), "foo")
         assertEqual(quote("foo bar"), "foo%20bar")
         assertEqual(quote("\"hello, world!\""), "%22hello%2C%20world%21%22")
     }
 
-    TEST = "replicate()"; TOTAL = 4; COUNTER = 0; {
+    T( "replicate()", 4)
+    {
         assertEqual(replicate("", 0), "")
         assertEqual(replicate("", 2), "")
         assertEqual(replicate("foo bar", 1), "foo bar")
         assertEqual(replicate("foo bar", 3), "foo barfoo barfoo bar")
     }
 
-    TEST = "squeeze()"; TOTAL = 4; COUNTER = 0; {
+    T("squeeze()", 4)
+    {
         assertEqual(squeeze(""), "")
         assertEqual(squeeze(" "), "")
         assertEqual(squeeze("	"), "")
         assertEqual(squeeze("  foo = bar #comments"), "foo = bar")
     }
 
-    TEST = "anything()"; TOTAL = 3; COUNTER = 0; {
+    T("anything()", 3)
+    {
         assertFalse(anything(nothing))
         something[0] = 0; assertFalse(anything(something)) # edge case
         something[0] = 1; assertTrue(anything(something))
     }
 
-    TEST = "belongsTo()"; TOTAL = 3; COUNTER = 0; {
+    T("belongsTo()", 3)
+    {
         array[0] = "foo"; array[1] = "bar"
         assertTrue(belongsTo("foo", array))
         assertTrue(belongsTo("bar", array))
         assertFalse(belongsTo("world", array))
     }
 
-    TEST = "startsWithAny()"; TOTAL = 3; COUNTER = 0; {
+    T("startsWithAny()", 3)
+    {
         substrings[0] = "A"; substrings[1] = "a"
         assertTrue(startsWithAny("absolute", substrings))
         assertTrue(startsWithAny("ABSOLUTE", substrings))
         assertFalse(startsWithAny("ZOO", substrings))
     }
 
-    TEST = "matchesAny()"; TOTAL = 4; COUNTER = 0; {
+    T("matchesAny()", 4)
+    {
         patterns[0] = "[[:space:]]"; patterns[1] = "[0Oo]"
         assertTrue(matchesAny("  ", patterns))
         assertTrue(matchesAny("obsolete", patterns))
@@ -88,13 +99,15 @@ BEGIN {
         assertFalse(matchesAny("1.0", patterns))
     }
 
-    TEST = "join()"; TOTAL = 2; COUNTER = 0; {
+    T("join()", 2)
+    {
         array[0] = "foo"; array[1] = "bar"
         assertEqual(join(array, " "), "foo bar")
         assertEqual(join(array, ","), "foo,bar")
     }
 
-    TEST = "yn()"; TOTAL = 12; COUNTER = 0; {
+    T("yn()", 12)
+    {
         assertFalse(yn(0))
         assertFalse(yn("0"))
         assertFalse(yn("false"))
@@ -109,19 +122,22 @@ BEGIN {
         assertTrue(yn("ON"))
     }
 
-    TEST = "detectProgram()"; TOTAL = 2; COUNTER = 0; {
+    T("detectProgram()", 2)
+    {
         assertTrue(detectProgram("ls"))
         assertTrue(detectProgram("gawk", "--version"))
     }
 
-    TEST = "fileExists()"; TOTAL = 4; COUNTER = 0; {
+    T("fileExists()", 4)
+    {
         assertFalse(fileExists("README"))
         assertFalse(fileExists("README .md"))
         assertTrue(fileExists("README.md"))
         assertFalse(fileExists("."))
     }
 
-    TEST = "dirExists()"; TOTAL = 4; COUNTER = 0; {
+    T("dirExists()", 4)
+    {
         assertFalse(dirExists("README"))
         assertFalse(dirExists("README.md"))
         assertTrue(dirExists("."))

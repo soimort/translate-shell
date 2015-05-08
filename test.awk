@@ -1,5 +1,6 @@
 #!/usr/bin/gawk -f
 @include "include/Commons"
+@include "include/REPL"
 
 function pass(string, ansiCode) {
     if (!ansiCode) ansiCode = "green"
@@ -41,6 +42,12 @@ function assertNotEqual(x, y, name, message, ansiCode) {
     assertFalse(x == y, name, message, ansiCode)
 }
 
+function T(test, total) {
+    TEST = test
+    TOTAL = total
+    COUNTER = 0
+}
+
 function START_TEST(name) {
     print(ansi("negative", ansi("bold", "====== TESTING FOR "   \
                                 ansi("underline", name) " STARTED")))
@@ -58,4 +65,4 @@ function END_TEST() {
         assertEqual(G_COUNTER, G_SUCCESS, "COMPLETED. PERFECT!")
 }
 
-@include "test/TestCommons"
+@include "test/Test"
