@@ -103,7 +103,7 @@ function getTranslation(text, sl, tl, hl,
                         ####
                         r,
                         content, tokens, ast,
-                        il, ils, isPhonetic,
+                        _sl, _tl, _hl, il, ils, isPhonetic,
                         article, example, explanation, ref, word,
                         translation, translations, phonetics,
                         wordClasses, words, segments, altTranslations,
@@ -129,14 +129,18 @@ function getTranslation(text, sl, tl, hl,
             w("[WARNING] " getName(tl) " is a right-to-left language, but FriBidi is not found.")
     }
 
-    content = getResponse(text, sl, tl, hl)
+    # Convert codes or aliases to standard codes used by Google Translate
+    # If the code or alias cannot be found, use as it is
+    _sl = getCode(sl); if (!_sl) _sl = sl
+    _tl = getCode(tl); if (!_tl) _tl = tl
+    _hl = getCode(hl); if (!_hl) _hl = hl
+    content = getResponse(text, _sl, _tl, _hl)
     tokenize(tokens, content)
     parseJsonArray(ast, tokens)
 
     l(content, "content")
     l(tokens, "tokens")
     l(ast, "ast")
-
     if (!anything(ast)) {
         e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
         ExitCode = 1
@@ -486,7 +490,7 @@ function translate(text, inline,
     } else if (isRTL(Option["hl"])) {
         # Check if home language is R-to-L
         if (!FriBidi)
-            w("[WARNING] " getName(Option["hl"]) " is a right-to-left language, but FriBidi cannot be found.")
+            w("[WARNING] " getName(Option["hl"]) " is a right-to-left language, but FriBidi is not found.")
     }
 
     if (!getCode(Option["sl"])) {
@@ -495,7 +499,7 @@ function translate(text, inline,
     } else if (isRTL(Option["sl"])) {
         # Check if source language is R-to-L
         if (!FriBidi)
-            w("[WARNING] " getName(Option["sl"]) " is a right-to-left language, but FriBidi cannot be found.")
+            w("[WARNING] " getName(Option["sl"]) " is a right-to-left language, but FriBidi is not found.")
     }
 
     saveSortedIn = PROCINFO["sorted_in"]

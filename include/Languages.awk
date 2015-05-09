@@ -193,7 +193,7 @@ function initLocale(    i) {
     Locale["zh-CN"]["examples"]        = "示例"
     Locale["zh-CN"]["see-also"]        = "另请参阅"
     Locale["zh-CN"]["family"]          = "Sino-Tibetan"
-    Locale["zh-CN"]["iso"]             = "zho"
+    Locale["zh-CN"]["iso"]             = "zho-CN"
     Locale["zh-CN"]["glotto"]          = "mand1415"
     Locale["zh-CN"]["script"]          = "Hans"
 
@@ -206,7 +206,7 @@ function initLocale(    i) {
     Locale["zh-TW"]["examples"]        = "例句"
     Locale["zh-TW"]["see-also"]        = "另請參閱"
     Locale["zh-TW"]["family"]          = "Sino-Tibetan"
-    Locale["zh-TW"]["iso"]             = "zho"
+    Locale["zh-TW"]["iso"]             = "zho-TW"
     Locale["zh-TW"]["glotto"]          = "mand1415"
     Locale["zh-TW"]["script"]          = "Hant"
 
@@ -375,8 +375,8 @@ function initLocale(    i) {
     Locale["de"]["examples"]           = "Beispiele"
     Locale["de"]["see-also"]           = "Siehe auch"
     Locale["de"]["family"]             = "Indo-European"
-    Locale["de"]["iso"]                = "stan1295"
-    Locale["de"]["glotto"]             = "deu"
+    Locale["de"]["iso"]                = "deu"
+    Locale["de"]["glotto"]             = "stan1295"
     Locale["de"]["script"]             = "Latn"
 
     #28 Greek (Modern)
@@ -1202,11 +1202,15 @@ function initLocale(    i) {
     Locale["zu"]["glotto"]             = "zulu1248"
     Locale["zu"]["script"]             = "Latn"
 
-    # Initialize strings for displaying endonyms of locales
-    for (i in Locale)
+    for (i in Locale) {
+        # Initialize strings for displaying endonyms of locales
         Locale[i]["display"] = show(Locale[i]["endonym"], i)
 
-    # Aliases for some locales
+        # ISO 639-3 codes as aliases
+        LocaleAlias[Locale[i]["iso"]] = i
+    }
+
+    # Other aliases
     # See: <http://www.loc.gov/standards/iso639-2/php/code_changes.php>
     LocaleAlias["in"] = "id" # withdrawn language code for Indonesian
     LocaleAlias["iw"] = "he" # withdrawn language code for Hebrew
@@ -1215,6 +1219,8 @@ function initLocale(    i) {
     LocaleAlias["mo"] = "ro" # Moldavian or Moldovan considered a variant of the Romanian language
     LocaleAlias["sh"] = "sr" # Serbo-Croatian: default to Serbian
     LocaleAlias["zh"] = "zh-CN" # Chinese: default to Chinese Simplified
+    LocaleAlias["zho"] = "zh-CN"
+    # TODO: more aliases
 }
 
 # Get locale key by language code or alias.
