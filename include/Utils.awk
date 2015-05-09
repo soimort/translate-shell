@@ -16,6 +16,15 @@ function initGawk(    group) {
     }
 }
 
+# Detect external bidirectional algorithm utility (fribidi);
+# Fallback to Unix `rev` if not found.
+function initBiDi() {
+    FriBidi = detectProgram("fribidi", "--version", 1)
+    BiDiNoPad = FriBidi ? "fribidi --nopad" : "rev"
+    BiDi = FriBidi ? "fribidi --width %s" :
+        "rev | sed \"s/'/\\\\\\'/\" | xargs printf '%%s '"
+}
+
 # Detect external readline wrapper (rlwrap).
 function initRlwrap() {
     Rlwrap = detectProgram("rlwrap", "--version")

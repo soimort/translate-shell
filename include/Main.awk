@@ -5,11 +5,11 @@
 # Initialization.
 function init() {
     initGawk()
-
     initBiDi()
+
+    # Languages.awk
     initLocale()
-    initLocaleDisplay() #<< Locale, BiDi
-    initUserLang()      #<< Locale
+    initUserLang()
 
     RS = "\n"
 
@@ -89,6 +89,7 @@ function initScript(    file, line, script, temp) {
 
 # Miscellany initialization.
 function initMisc(    group) {
+    # Translate.awk
     initHttpService()
 
     # Disable ANSI escape codes if required

@@ -12,7 +12,7 @@
 #      <https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes>
 #      <https://en.wikipedia.org/wiki/ISO_15924#List_of_codes>
 #      <http://glottolog.org/>
-function initLocale() {
+function initLocale(    i) {
 
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
@@ -1202,6 +1202,10 @@ function initLocale() {
     Locale["zu"]["glotto"]             = "zulu1248"
     Locale["zu"]["script"]             = "Latn"
 
+    # Initialize strings for displaying endonyms of locales
+    for (i in Locale)
+        Locale[i]["display"] = show(Locale[i]["endonym"], i)
+
     # Aliases for some locales
     # See: <http://www.loc.gov/standards/iso639-2/php/code_changes.php>
     LocaleAlias["in"] = "id" # withdrawn language code for Indonesian
@@ -1298,14 +1302,6 @@ function isRTL(code) {
     return Locale[getCode(code)]["rtl"] ? 1 : 0
 }
 
-# Detect external bidirectional algorithm utility (fribidi);
-# Fallback to Unix `rev` if not found.
-function initBiDi() {
-    "fribidi --version" SUPERR |& getline FriBidi
-    BiDiNoPad = FriBidi ? "fribidi --nopad" : "rev"
-    BiDi = FriBidi ? "fribidi --width %s" : "rev | sed \"s/'/\\\\\\'/\" | xargs printf '%%s '"
-}
-
 # Add /slashes/ for IPA phonemic notations and (parentheses) for others.
 # Parameters:
 #     code
@@ -1365,12 +1361,6 @@ function ins(level, text, code, width,    i, temp) {
         return s(text, code, width - Option["indent"] * level)
     } else
         return replicate(" ", Option["indent"] * level) text
-}
-
-# Initialize strings for displaying endonyms of locales.
-function initLocaleDisplay(    i) {
-    for (i in Locale)
-        Locale[i]["display"] = show(Locale[i]["endonym"], i)
 }
 
 # Parse a POSIX locale identifier and return the language code;
