@@ -508,7 +508,7 @@ function translate(text, inline,
         # Non-interactive verbose mode: separator between targets
         if (!Option["interactive"])
             if (Option["verbose"] && i > 1)
-                p(replicate(Option["chr-target-seperator"], Option["width"]))
+                p(prettify("target-seperator", replicate(Option["chr-target-seperator"], Option["width"])))
 
         if (inline &&
             startsWithAny(text, UriSchemes) == "file://") {
@@ -544,7 +544,7 @@ function translateMain(    i, line) {
         # Non-interactive verbose mode: separator between sources
         if (!Option["interactive"])
             if (Option["verbose"] && i++ > 0)
-                p(replicate(Option["chr-source-seperator"], Option["width"]))
+                p(prettify("source-seperator", replicate(Option["chr-source-seperator"], Option["width"])))
 
         if (Option["interactive"]) {
             if (line ~ /:(q|quit)/)

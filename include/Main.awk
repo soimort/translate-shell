@@ -580,7 +580,7 @@ BEGIN {
         for (i = pos; i < ARGC; i++) {
             # Verbose mode: separator between sources
             if (Option["verbose"] && i > pos)
-                p(replicate(Option["chr-source-seperator"], Option["width"]))
+                p(prettify("source-seperator", replicate(Option["chr-source-seperator"], Option["width"])))
 
             translate(ARGV[i], 1) # inline mode
         }

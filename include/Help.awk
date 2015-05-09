@@ -363,14 +363,14 @@ function getList(codes,    code, i, r, saveSortedIn) {
         saveSortedIn = PROCINFO["sorted_in"]
         PROCINFO["sorted_in"] = "@ind_num_asc"
         for (i in codes)
-            r = (r ? r RS replicate(Option["chr-target-seperator"], Option["width"]) RS \
+            r = (r ? r RS prettify("target-seperator", replicate(Option["chr-target-seperator"], Option["width"])) RS \
                  : r) getDetails(codes[i])
         PROCINFO["sorted_in"] = saveSortedIn
     } else {
         saveSortedIn = PROCINFO["sorted_in"]
         PROCINFO["sorted_in"] = "@ind_num_asc"
         for (code in Locale)
-            r = (r ? r RS replicate(Option["chr-target-seperator"], Option["width"]) RS \
+            r = (r ? r RS prettify("target-seperator", replicate(Option["chr-target-seperator"], Option["width"])) RS \
                  : r) getDetails(code)
         PROCINFO["sorted_in"] = saveSortedIn
     }
