@@ -73,8 +73,9 @@ function initScript(    file, line, script, temp) {
         }
     }
 
+    InitScript = file
     script = NULLSTR
-    while (getline line < file)
+    while (getline line < InitScript)
         script = script "\n" line
     loadOptions(script)
 

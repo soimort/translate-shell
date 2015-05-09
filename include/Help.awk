@@ -20,6 +20,7 @@ function getVersion(    build, gitHead) {
         sprintf("%-22s%s\n", "source language", Option["sl"])           \
         sprintf("%-22s%s\n", "target language", join(Option["tl"], "+")) \
         sprintf("%-22s%s\n", "theme", Option["theme"])                  \
+        sprintf("%-22s%s\n", "init file", InitScript)                   \
         sprintf("\n%-22s%s", "Report bugs to:", "https://github.com/soimort/translate-shell/issues")
 }
 
