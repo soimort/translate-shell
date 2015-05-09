@@ -344,10 +344,14 @@ function assert(x, message) {
 }
 
 # Detect whether a program exists in path.
-# Return the name if the program call writes anything to stdout;
+# Return the name (or output) if the program call writes anything to stdout;
 # Otherwise return a null string.
-function detectProgram(prog, arg) {
-    return (prog " " arg SUPERR | getline) ? prog : NULLSTR
+function detectProgram(prog, arg, returnOutput) {
+    if (returnOutput) {
+        prog " " arg SUPERR | getline temp
+        return temp
+    } else
+        return (prog " " arg SUPERR | getline) ? prog : NULLSTR
 }
 
 # Return non-zero if file exists; otherwise return 0.
