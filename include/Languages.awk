@@ -1308,6 +1308,18 @@ function isRTL(code) {
     return Locale[getCode(code)]["rtl"] ? 1 : 0
 }
 
+# Return detailed information of a language as a string.
+function getDetails(code) {
+    return sprintf("%s\n", getName(code))                     \
+        sprintf("%s\n", getDisplay(code))                     \
+        sprintf("%-22s%s\n", "family", getFamily(code))       \
+        sprintf("%-22s%s\n", "code", getCode(code))           \
+        sprintf("%-22s%s\n", "iso", getISO(code))             \
+        sprintf("%-22s%s\n", "glotto", getGlotto(code))       \
+        sprintf("%-22s%s\n", "script", getScript(code))       \
+        sprintf("%-22s%s", "rtl", isRTL(code))
+}
+
 # Add /slashes/ for IPA phonemic notations and (parentheses) for others.
 # Parameters:
 #     code

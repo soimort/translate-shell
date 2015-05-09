@@ -187,6 +187,17 @@ BEGIN {
             continue
         }
 
+        # -L CODE(S), -list CODE(S)
+        match(ARGV[pos], /^--?(L|list)(=(.*)?)?$/, group)
+        if (RSTART) {
+            InfoOnly = "list"
+            if (group[2]) {
+                if (group[3]) split(group[3], Option["tl"], "+")
+            } else
+                split(ARGV[++pos], Option["tl"], "+")
+            continue
+        }
+
         ## Display options
 
         # -verbose
@@ -553,6 +564,9 @@ BEGIN {
         exit
     case "reference-english":
         print getReference("name")
+        exit
+    case "list":
+        print getList(Option["tl"])
         exit
     }
 

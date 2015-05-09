@@ -42,6 +42,9 @@ function getHelp() {
         ins(2, "Print a reference table of languages and exit.") RS     \
         ins(1, ansi("bold", "-R, -reference-english")) RS               \
         ins(2, "Print a reference table of languages (in English names) and exit.") RS \
+        ins(1, ansi("bold", "-L " ansi("negative", "CODE(S)")           \
+                    ", -list " ansi("negative", "CODE(S)"))) RS         \
+        ins(2, "Print detailed information of languages and exit.") RS  \
         RS "Display Options:" RS                                        \
         ins(1, ansi("bold", "-verbose")) RS                             \
         ins(2, "Verbose mode. (default)") RS                            \
@@ -131,7 +134,7 @@ function getHelp() {
         RS "See the man page " Command "(1) for more information."
 }
 
-# Display man page.
+# Show man page.
 function showMan(    temp) {
     if (ENVIRON["TRANS_MANPAGE"]) {
         initPager()
@@ -153,7 +156,7 @@ function showMan(    temp) {
         print getHelp()
 }
 
-# Return a list of language codes as a string.
+# Return a reference table of languages as a string.
 # Parameters:
 #     displayName = "endonym" or "name"
 function getReference(displayName) {
@@ -349,4 +352,27 @@ function getReference(displayName) {
             getDisplay("pa") "            - " ansi("bold", "pa") " │ "  \
             "                    │" RS                                  \
             "└──────────────────────┴───────────────────────┴─────────────────────┘"
+}
+
+# Return detailed information of languages as a string.
+function getList(codes,    code, i, r, saveSortedIn) {
+    r = NULLSTR
+    if (!isarray(codes))
+        r = getDetails(codes)
+    else if (anything(codes)) {
+        saveSortedIn = PROCINFO["sorted_in"]
+        PROCINFO["sorted_in"] = "@ind_num_asc"
+        for (i in codes)
+            r = (r ? r RS replicate(Option["chr-target-seperator"], Option["width"]) RS \
+                 : r) getDetails(codes[i])
+        PROCINFO["sorted_in"] = saveSortedIn
+    } else {
+        saveSortedIn = PROCINFO["sorted_in"]
+        PROCINFO["sorted_in"] = "@ind_num_asc"
+        for (code in Locale)
+            r = (r ? r RS replicate(Option["chr-target-seperator"], Option["width"]) RS \
+                 : r) getDetails(code)
+        PROCINFO["sorted_in"] = saveSortedIn
+    }
+    return r
 }
