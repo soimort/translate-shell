@@ -31,7 +31,7 @@ function man() {
 }
 
 # Task: build
-function build(target,    group, inline, line, temp) {
+function build(target, type,    group, inline, line, temp) {
     # Default target: bash
     if (!target) target = "bash"
 
@@ -72,9 +72,13 @@ function build(target,    group, inline, line, temp) {
 
         print "export COLUMNS" > Trans
 
-        temp = getGitHead()
-        if (temp)
-            print "export GITHEAD=" temp > Trans
+        if (type == "release")
+            print "export TRANS_BUILD=release" temp > Trans
+        else {
+            temp = getGitHead()
+            if (temp)
+                print "export TRANS_BUILD=git:" temp > Trans
+        }
 
         print "gawk \"$TRANS_PROGRAM\" - \"$@\"" > Trans
 
@@ -123,14 +127,21 @@ BEGIN {
 
     pos = 0
     while (ARGV[++pos]) {
-        # -target [target]
+        # -target TARGET
         match(ARGV[pos], /^--?target(=(.*)?)?$/, group)
         if (RSTART) {
             target = tolower(group[2] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # [task]
+        # -type TYPE
+        match(ARGV[pos], /^--?type(=(.*)?)?$/, group)
+        if (RSTART) {
+            type = tolower(group[2] ? group[2] : ARGV[++pos])
+            continue
+        }
+
+        # TASK
         match(ARGV[pos], /^[^\-]/, group)
         if (RSTART) {
             append(tasks, ARGV[pos])
@@ -155,7 +166,7 @@ BEGIN {
             break
 
         case "build":
-            status = build(target)
+            status = build(target, type)
             break
 
         default: # unknown task
