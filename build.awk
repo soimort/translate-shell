@@ -61,7 +61,6 @@ function build(target, type,    group, inline, line, temp) {
                 }
             }
         print "EOF" > Trans
-        print "export TRANS_PROGRAM" > Trans
 
         print "read -r -d '' TRANS_MANPAGE << 'EOF'" > Trans
         if (fileExists(Man))
@@ -69,8 +68,6 @@ function build(target, type,    group, inline, line, temp) {
                 print line > Trans
         print "EOF" > Trans
         print "export TRANS_MANPAGE" > Trans
-
-        print "export COLUMNS" > Trans
 
         if (type == "release")
             print "export TRANS_BUILD=release" temp > Trans
@@ -80,7 +77,7 @@ function build(target, type,    group, inline, line, temp) {
                 print "export TRANS_BUILD=git:" temp > Trans
         }
 
-        print "gawk \"$TRANS_PROGRAM\" - \"$@\"" > Trans
+        print "gawk -f <(echo -E \"$TRANS_PROGRAM\") - \"$@\"" > Trans
 
         ("chmod +x " parameterize(Trans)) | getline
         return 0
