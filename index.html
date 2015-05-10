@@ -26,11 +26,11 @@
   <a href="http://www.soimort.org/translate-shell/"><img src="images/avatar.jpg"/></a>
   <div id="desc">
     <h1>Translate Shell</h1>
-    <h2>version 0.8.23</h2>
+    <h2>version 0.8.24</h2>
     <a href="https://github.com/soimort/translate-shell">Star・<i class="fa fa-github-square fa-2x"></i></a>
     <a href="http://www.soimort.org/translate-shell/trans">Download・<i class="fa fa-download fa-2x"></i></a>
     <div id="msg">
-      <span id="checksum" onmouseover="this.innerHTML='d7bd8acebd883800b66964231acf84fa5d06597a'" onmouseout="this.innerHTML='SHA1SUM'">SHA1SUM</span>
+      <span id="checksum" onmouseover="this.innerHTML='77a116ecda749953019c9524efcbf8254208ff72'" onmouseout="this.innerHTML='SHA1SUM'">SHA1SUM</span>
       <a href="http://www.soimort.org/translate-shell/trans.sig">PGP SIGNATURE</a>
     </div>
   </div>
@@ -65,15 +65,20 @@
 <h1 id="translate-shell">Translate Shell</h1>
 <p><a href="https://travis-ci.org/soimort/translate-shell"><img src="https://travis-ci.org/soimort/translate-shell.png" alt="Build Status" /></a> <a href="https://github.com/soimort/translate-shell/releases"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-release.png" alt="Version" /></a> <a href="http://www.soimort.org/translate-shell/trans"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png" alt="Download" /></a> <a href="https://gitter.im/soimort/translate-shell?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter" /></a></p>
 <p><a href="http://www.soimort.org/translate-shell">Translate Shell</a> (previously <em>Google Translate CLI</em>) is a command-line interface and interactive shell for <a href="https://translate.google.com/">Google Translate</a>. It works just the way you want it to be.</p>
-<pre><code>$ trans &quot;Saluton, Mondo&quot;
-Hello, World
+<pre><code>$ trans &#39;Saluton, Mondo!&#39;
+Saluton, Mondo!
 
-Translations of Saluton, Mondo
-(Esperanto -&gt; English)
-Saluton(Hello/Hail/Hi/A greeting/Saluton) , Mondo(, World)</code></pre>
+Hello, World!
+
+Translations of Saluton, Mondo!
+[ Esperanto -&gt; English ]
+Saluton ,
+    Hello,
+Mondo !
+    World!</code></pre>
 <p>Translations with detailed explanations are shown by default. You can also translate the text briefly, i.e., only the most relevant translation is shown: (this will give you the same result as in <a href="https://github.com/soimort/translate-shell/tree/legacy">Google Translate CLI Legacy</a>)</p>
-<pre><code>$ trans -b &quot;Saluton, Mondo&quot;
-Hello, World</code></pre>
+<pre><code>$ trans -b &#39;Saluton, Mondo!&#39;
+Hello, World!</code></pre>
 <p>Translations can be done interactively; input your text line by line:</p>
 <pre><code>$ trans -b -I
 &gt; Was mich nicht umbringt, macht mich stärker.
@@ -133,9 +138,6 @@ In order to be happy, the shortest way is from being loved by the people.</code>
 </ul>
 <h3 id="environment-and-encoding">Environment and Encoding</h3>
 <p>It is strongly recommended that you use UTF-8 codeset for your default locale, as it potentially supports all languages. You can check whether your codeset is UTF-8 using:</p>
-<pre><code>$ echo $LC_CTYPE
-en_US.UTF-8</code></pre>
-<p>Or:</p>
 <pre><code>$ locale</code></pre>
 <p>And you need to have necessary Unicode fonts installed for the languages you want to display.</p>
 <h2 id="try-it-out">Try It Out</h2>
@@ -148,30 +150,32 @@ en_US.UTF-8</code></pre>
 $ chmod +x ./trans</code></pre>
 <p>Additionally, you may verify <a href="http://www.soimort.org/translate-shell/trans.sig">this signature</a> if you want:</p>
 <pre><code>$ gpg --verify trans.sig trans</code></pre>
-<h3 id="from-your-os">From Your OS</h3>
-<h4 id="os-x">OS X</h4>
-<p>Available as a self-hosted Homebrew formula: (always the latest release since it's maintained by the author)</p>
+<h3 id="from-git">From Git</h3>
+<pre><code>$ git clone https://github.com/soimort/translate-shell
+$ cd translate-shell/
+$ sudo make install</code></pre>
+<p>The default <code>PREFIX</code> of installation is <code>/usr/local</code>. If you wish to install it to another path (e.g. <code>/usr</code>, <code>~/.local</code>), use:</p>
+<pre><code>$ sudo make PREFIX=/usr install</code></pre>
+<p>If you prefer zsh, specify zsh as the build target: (normally you don't need to worry about that if both bash and zsh are installed on your system)</p>
+<pre><code>$ sudo make TARGET=zsh install</code></pre>
+<h3 id="from-your-package-manager">From Your Package Manager</h3>
+<h4 id="os-x-via-homebrew-linux-via-linuxbrew">OS X (via Homebrew) / Linux (via Linuxbrew)</h4>
+<p>Available as a self-hosted Homebrew formula:</p>
 <pre><code>$ brew install http://www.soimort.org/translate-shell/translate-shell.rb</code></pre>
+<p>On Linux, you may ignore its dependencies (e.g. gawk) if you already have them in your system:</p>
+<pre><code>$ brew install --ignore-dependencies http://www.soimort.org/translate-shell/translate-shell.rb</code></pre>
 <h4 id="freebsd">FreeBSD</h4>
 <p>Available in FreeBSD Ports collection:</p>
 <pre><code>$ cd /usr/ports/textproc/google-translate-cli
 $ make install</code></pre>
 <h4 id="debian">Debian</h4>
-<p>Available in Debian Testing (Jessie):</p>
+<p>Available in Debian Unstable:</p>
 <pre><code>$ apt-get install translate-shell</code></pre>
 <h4 id="arch-linux">Arch Linux</h4>
 <p>Available in the <a href="https://aur.archlinux.org/packages/translate-shell/">Arch User Repository</a>:</p>
 <pre><code>$ cower -d translate-shell
 $ cd translate-shell/
 $ makepkg -si</code></pre>
-<h3 id="from-git-for-developers-and-advanced-users">From Git (For Developers and Advanced Users)</h3>
-<pre><code>$ git clone https://github.com/soimort/translate-shell
-$ cd translate-shell/
-$ make install</code></pre>
-<p>By default, a bash script <code>trans</code> will be installed to your <code>/usr/bin</code>. If you prefer to use zsh, you can specify zsh as the build target:</p>
-<pre><code>$ make TARGET=zsh install</code></pre>
-<p>You can specify the installation path too:</p>
-<pre><code>$ make INSTDIR=~/bin install</code></pre>
 <h2 id="examples">Examples</h2>
 <h3 id="translate-a-word">Translate a Word</h3>
 <h4 id="from-any-language-to-your-language">From any language to your language</h4>
@@ -258,55 +262,75 @@ $ trans :fr -b -i input.txt</code></pre>
 <p>Use <kbd>Shift-K</kbd> to view the translation of the word under the cursor.</p>
 <h2 id="usage">Usage</h2>
 <p>Use <code>$ trans -H</code> to view the <a href="http://www.soimort.org/translate-shell/trans.1.html">detailed man page</a>.</p>
-<pre><code>Usage: trans [options] [source]:[target] [text] ...
-       trans [options] [source]:[target1]+[target2]+... [text] ...
+<pre><code>Usage:  trans [options] [source]:[target] [text] ...
+        trans [options] [source]:[target1]+[target2]+... [text] ...
 
 Options:
-  -V, -version
+-V, -version
     Print version and exit.
-  -H, -h, -help
-    Print the help message and exit.
-  -M, -m, -manual
+-H, -h, -help
+    Print this help message and exit.
+-M, -m, -manual
     Show the manual.
-  -r, -reference
+-r, -reference
     Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.
-  -R, -reference-english
+-R, -reference-english
     Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.
-  -v, -verbose
+-v, -verbose
     Verbose mode. (default)
-  -b, -brief
+-b, -brief
     Brief mode.
-  -no-ansi
+-show-original [yes|no]
+    Show original text or not. (default: yes)
+-show-original-phonetics [yes|no]
+    Show phonetic notation of original text or not. (default: yes)
+-show-translation [yes|no]
+    Show translation or not. (default: yes)
+-show-translation-phonetics [yes|no]
+    Show phonetic notation of translation or not. (default: yes)
+-show-prompt-message [yes|no]
+    Show prompt message or not. (default: yes)
+-show-languages [yes|no]
+    Show source and target languages or not. (default: yes)
+-show-original-dictionary [yes|no]
+    Show dictionary entry of original text or not. (default: no)
+-show-dictionary [yes|no]
+    Show dictionary entry of translation or not. (default: yes)
+-show-alternatives [yes|no]
+    Show alternative translations or not. (default: yes)
+-no-ansi
     Don&#39;t use ANSI escape codes in the translation.
-  -w [num], -width [num]
+-w [num], -width [num]
     Specify the screen width for padding when displaying right-to-left languages.
-  -browser [program]
+-indent [num]
+    Specify the size of indent (in terms of spaces). (default: 4)
+-browser [program]
     Specify the web browser to use.
-  -p, -play
+-p, -play
     Listen to the translation.
-  -player [program]
+-player [program]
     Specify the command-line audio player to use, and listen to the translation.
-  -x [proxy], -proxy [proxy]
+-x [proxy], -proxy [proxy]
     Use proxy on given port.
-  -I, -interactive
+-I, -interactive
     Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).
-  -no-rlwrap
+-no-rlwrap
     Don&#39;t invoke `rlwrap` when starting an interactive shell with `-I`.
-  -E, -emacs
+-E, -emacs
     Start an interactive shell within GNU Emacs, invoking `emacs`.
-  -prompt [prompt_string]
+-prompt [prompt_string]
     Customize your prompt string in the interactive shell.
-  -prompt-color [color_code]
+-prompt-color [color_code]
     Customize your prompt color in the interactive shell.
-  -i [file], -input [file]
+-i [file], -input [file]
     Specify the input file name.
-  -o [file], -output [file]
+-o [file], -output [file]
     Specify the output file name.
-  -l [code], -lang [code]
+-l [code], -lang [code]
     Specify your own, native language (&quot;home/host language&quot;).
-  -s [code], -source [code]
+-s [code], -source [code]
     Specify the source language (language of the original text).
-  -t [codes], -target [codes]
+-t [codes], -target [codes]
     Specify the target language(s) (language(s) of the translated text).
 
 See the man page trans(1) for more information.</code></pre>
@@ -356,8 +380,8 @@ $ trans word</code></pre>
 │ French              - fr    │ Maltese        - mt  │ Vietnamese - vi │
 │ Galician            - gl    │ Maori          - mi  │ Welsh      - cy │
 │ Georgian            - ka    │ Marathi        - mr  │ Yiddish    - yi │
-│ German              - de    │ Myanmar        - my  │ Yoruba     - yo │
-│ Greek               - el    │ Mongolian      - mn  │ Zulu       - zu │
+│ German              - de    │ Mongolian      - mn  │ Yoruba     - yo │
+│ Greek               - el    │ Myanmar        - my  │ Zulu       - zu │
 │ Gujarati            - gu    │ Nepali         - ne  │                 │
 │ Haitian Creole      - ht    │ Norwegian      - no  │                 │
 └─────────────────────────────┴──────────────────────┴─────────────────┘</code></pre>

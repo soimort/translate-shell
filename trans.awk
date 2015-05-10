@@ -29,19 +29,18 @@
 BEGIN {
     Name        = "Translate Shell"
     Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.8.23"
+    Version     = "0.8.24"
     Command     = "trans"
     EntryPoint  = "translate.awk"
 }
 
-####################################################################
-# Commons.awk                                                      #
-#                                                                  #
-# Commonly used functions for string and array operations, logging.#
-####################################################################
-
-# Initialize `UrlEncoding`.
-# See: <https://en.wikipedia.org/wiki/Percent-encoding>
+function initConst() {
+    STDIN  = "/dev/stdin"
+    STDOUT = "/dev/stdout"
+    STDERR = "/dev/stderr"
+    SUPOUT = " > /dev/null "
+    SUPERR = " 2> /dev/null "
+}
 function initUrlEncoding() {
     UrlEncoding["\n"] = "%0A"
     UrlEncoding[" "]  = "%20"
@@ -78,37 +77,28 @@ function initUrlEncoding() {
     UrlEncoding["}"]  = "%7D"
     UrlEncoding["~"]  = "%7E"
 }
-
-# Return the real character represented by an escape sequence.
-# Example: escapeChar("n") returns "\n".
-# See: <https://en.wikipedia.org/wiki/Escape_character>
-#      <https://en.wikipedia.org/wiki/Escape_sequences_in_C>
 function escapeChar(char) {
     switch (char) {
     case "b":
-        return "\b" # Backspace
+        return "\b"
     case "f":
-        return "\f" # Formfeed
+        return "\f"
     case "n":
-        return "\n" # Newline (Line Feed)
+        return "\n"
     case "r":
-        return "\r" # Carriage Return
+        return "\r"
     case "t":
-        return "\t" # Horizontal Tab
+        return "\t"
     case "v":
-        return "\v" # Vertical Tab
+        return "\v"
     default:
         return char
     }
 }
-
-# Convert a literal-formatted string into its original string.
 function literal(string,
-                 ####
                  c, escaping, i, s) {
     if (string !~ /^".*"$/)
         return string
-
     split(string, s, "")
     string = ""
     escaping = 0
@@ -116,29 +106,24 @@ function literal(string,
         c = s[i]
         if (escaping) {
             string = string escapeChar(c)
-            escaping = 0 # escape ends
+            escaping = 0
         } else {
             if (c == "\\")
-                escaping = 1 # escape begins
+                escaping = 1
             else
                 string = string c
         }
     }
     return string
 }
-
-# Return the escaped string.
 function escape(string) {
     gsub(/"/, "\\\"", string)
     gsub(/\\/, "\\\\", string)
     return string
 }
-
-# Return the escaped, quoted string.
 function parameterize(string, quotationMark) {
     if (!quotationMark)
         quotationMark = "'"
-
     if (quotationMark == "'") {
         gsub(/'/, "'\\''", string)
         return "'" string "'"
@@ -146,8 +131,6 @@ function parameterize(string, quotationMark) {
         return "\"" escape(string) "\""
     }
 }
-
-# Return the URL-encoded string.
 function quote(string,    i, r, s) {
     r = ""
     split(string, s, "")
@@ -155,84 +138,55 @@ function quote(string,    i, r, s) {
         r = r (s[i] in UrlEncoding ? UrlEncoding[s[i]] : s[i])
     return r
 }
-
-# Replicate a string.
 function replicate(string, len,
-                   ####
                    i, temp) {
     temp = ""
     for (i = 0; i < len; i++)
         temp = temp string
     return temp
 }
-
-# Squeeze a source line of AWK code.
-function squeeze(line) {
-    # Remove preceding spaces
-    gsub(/^[[:space:]]+/, "", line)
-    # Remove in-line comment
+function squeeze(line, preserveIndent) {
+    if (!preserveIndent)
+        gsub(/^[[:space:]]+/, "", line)
+    gsub(/^[[:space:]]*#.*$/, "", line)
     gsub(/#[^"]*$/, "", line)
-    # Remove trailing spaces
     gsub(/[[:space:]]+$/, "", line)
-
+    gsub(/[[:space:]]+\\$/, "\\", line)
     return line
 }
-
-# Return 1 if the array contains anything; otherwise return 0.
 function anything(array,
-                  ####
                   i) {
     for (i in array)
         if (array[i]) return 1
     return 0
 }
-
-# Append an element into an array (zero-based).
 function append(array, element) {
     array[anything(array) ? length(array) : 0] = element
 }
-
-# Return an element if it belongs to the array;
-# Otherwise, return a null string.
 function belongsTo(element, array,
-                   ####
                    i) {
     for (i in array)
         if (element == array[i]) return element
     return ""
 }
-
-# Return one of the substrings if the string starts with it;
-# Otherwise, return a null string.
 function startsWithAny(string, substrings,
-                       ####
                        i) {
     for (i in substrings)
         if (index(string, substrings[i]) == 1) return substrings[i]
     return ""
 }
-
-# Return one of the patterns if the string matches this pattern at the beginning;
-# Otherwise, return a null string.
 function matchesAny(string, patterns,
-                    ####
                     i) {
     for (i in patterns)
         if (string ~ "^" patterns[i]) return patterns[i]
     return ""
 }
-
-# Join an array into one string;
-# Return the string.
 function join(array, separator, sortedIn, preserveNull,
-              ####
               i, j, saveSortedIn, temp) {
-    # Default parameters
     if (!separator)
         separator = " "
     if (!sortedIn)
         sortedIn = "@ind_num_asc"
-
     temp = ""
     j = 0
     saveSortedIn = PROCINFO["sorted_in"]
@@ -243,26 +197,21 @@ function join(array, separator, sortedIn, preserveNull,
                 temp = j++ ? temp separator array[i] : array[i]
         PROCINFO["sorted_in"] = saveSortedIn
     } else
-        temp = array # array == ""
-
+        temp = array
     return temp
 }
-
-# Initialize ANSI escape codes (ANSI X3.64 Standard Control Sequences).
-# See: <https://en.wikipedia.org/wiki/ANSI_escape_code>
+function yn(string) {
+    return (tolower(string) ~ /^[0fn]/) ? 0 : 1
+}
 function initAnsiCode() {
-    # Dumb terminal: no ANSI escape code whatsoever
     if (ENVIRON["TERM"] == "dumb") return
-
     AnsiCode["reset"]         = AnsiCode[0] = "\33[0m"
-
     AnsiCode["bold"]          = "\33[1m"
     AnsiCode["underline"]     = "\33[4m"
     AnsiCode["negative"]      = "\33[7m"
-    AnsiCode["no bold"]       = "\33[22m" # SGR code 21 (bold off) not widely supported
+    AnsiCode["no bold"]       = "\33[22m"
     AnsiCode["no underline"]  = "\33[24m"
     AnsiCode["positive"]      = "\33[27m"
-
     AnsiCode["black"]         = "\33[30m"
     AnsiCode["red"]           = "\33[31m"
     AnsiCode["green"]         = "\33[32m"
@@ -271,9 +220,7 @@ function initAnsiCode() {
     AnsiCode["magenta"]       = "\33[35m"
     AnsiCode["cyan"]          = "\33[36m"
     AnsiCode["gray"]          = "\33[37m"
-
     AnsiCode["default"]       = "\33[39m"
-
     AnsiCode["dark gray"]     = "\33[90m"
     AnsiCode["light red"]     = "\33[91m"
     AnsiCode["light green"]   = "\33[92m"
@@ -283,32 +230,33 @@ function initAnsiCode() {
     AnsiCode["light cyan"]    = "\33[96m"
     AnsiCode["white"]         = "\33[97m"
 }
-
-# Print warning message.
+function ansi(code, text) {
+    switch (code) {
+    case "bold":
+        return AnsiCode[code] text AnsiCode["no bold"]
+    case "underline":
+        return AnsiCode[code] text AnsiCode["no underline"]
+    case "negative":
+        return AnsiCode[code] text AnsiCode["positive"]
+    default:
+        return AnsiCode[code] text AnsiCode[0]
+    }
+}
 function w(text) {
-    print AnsiCode["yellow"] text AnsiCode[0] > "/dev/stderr"
+    print ansi("yellow", text) > STDERR
 }
-
-# Print error message.
 function e(text) {
-    print AnsiCode["red"] AnsiCode["bold"] text AnsiCode[0] > "/dev/stderr"
+    print ansi("bold", ansi("red", text)) > STDERR
 }
-
-# Print debugging message.
 function d(text) {
-    print AnsiCode["gray"] text AnsiCode[0] > "/dev/stderr"
+    print ansi("gray", text) > STDERR
 }
-
-# Log an array.
 function da(array, formatString, sortedIn,
-            ####
             i, j, saveSortedIn) {
-    # Default parameters
     if (!formatString)
         formatString = "_[%s]='%s'"
     if (!sortedIn)
         sortedIn = "@ind_num_asc"
-
     saveSortedIn = PROCINFO["sorted_in"]
     PROCINFO["sorted_in"] = sortedIn
     for (i in array) {
@@ -317,544 +265,1102 @@ function da(array, formatString, sortedIn,
     }
     PROCINFO["sorted_in"] = saveSortedIn
 }
-
-# Naive assertion.
 function assert(x, message) {
     if (!message)
         message = "[ERROR] Assertion failed."
-
     if (x)
         return x
     else
         e(message)
 }
-
-# Return non-zero if file exists, otherwise return 0.
 function fileExists(file) {
     return !system("test -f " file)
 }
-
-# Initialize `UriSchemes`.
 function initUriSchemes() {
     UriSchemes[0] = "file://"
     UriSchemes[1] = "http://"
     UriSchemes[2] = "https://"
 }
-
 BEGIN {
+    initConst()
     initUrlEncoding()
     initAnsiCode()
     initUriSchemes()
 }
 
-####################################################################
-# Languages.awk                                                    #
-####################################################################
-
-# Initialize all supported locales.
-# Mostly ISO 639-1 codes, with a few ISO 639-2 codes (alpha-3).
-# See: <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>
-#      <http://www.loc.gov/standards/iso639-2/php/code_list.php>
 function initLocale() {
-
-    #1 Afrikaans
-    Locale["af"]["name"]       = "Afrikaans"
-    Locale["af"]["endonym"]    = "Afrikaans"
-    Locale["af"]["message"]    = "Vertalings van %s"
-
-    #2 Albanian
-    Locale["sq"]["name"]       = "Albanian"
-    Locale["sq"]["endonym"]    = "Shqip"
-    Locale["sq"]["message"]    = "Përkthimet e %s"
-
-    #3 Arabic
-    Locale["ar"]["name"]       = "Arabic"
-    Locale["ar"]["endonym"]    = "العربية"
-    Locale["ar"]["message"]    = "ترجمات %s"
-    Locale["ar"]["rtl"]        = "true" # RTL language
-
-    #4 Armenian
-    Locale["hy"]["name"]       = "Armenian"
-    Locale["hy"]["endonym"]    = "Հայերեն"
-    Locale["hy"]["message"]    = "%s-ի թարգմանությունները"
-
-    #5 Azerbaijani
-    Locale["az"]["name"]       = "Azerbaijani"
-    Locale["az"]["endonym"]    = "Azərbaycanca"
-    Locale["az"]["message"]    = "%s sözünün tərcüməsi"
-
-    #6 Basque
-    Locale["eu"]["name"]       = "Basque"
-    Locale["eu"]["endonym"]    = "Euskara"
-    Locale["eu"]["message"]    = "%s esapidearen itzulpena"
-
-    #7 Belarusian (Cyrillic alphabet)
-    Locale["be"]["name"]       = "Belarusian"
-    Locale["be"]["endonym"]    = "беларуская"
-    Locale["be"]["message"]    = "Пераклады %s"
-
-    #8 Bengali
-    Locale["bn"]["name"]       = "Bengali"
-    Locale["bn"]["endonym"]    = "বাংলা"
-    Locale["bn"]["message"]    = "%s এর অনুবাদ"
-
-    #9 Bosnian (Latin alphabet)
-    Locale["bs"]["name"]       = "Bosnian"
-    Locale["bs"]["endonym"]    = "Bosanski"
-    Locale["bs"]["message"]    = "Prijevod za: %s"
-
-    #10 Bulgarian
-    Locale["bg"]["name"]       = "Bulgarian"
-    Locale["bg"]["endonym"]    = "български"
-    Locale["bg"]["message"]    = "Преводи на %s"
-
-    #11 Catalan
-    Locale["ca"]["name"]       = "Catalan"
-    Locale["ca"]["endonym"]    = "Català"
-    Locale["ca"]["message"]    = "Traduccions per a %s"
-
-    #12 Cebuano
-    Locale["ceb"]["name"]      = "Cebuano"
-    Locale["ceb"]["endonym"]   = "Cebuano"
-    Locale["ceb"]["message"]   = "%s Mga Paghubad sa PULONG_O_HUGPONG SA PAMULONG"
-
-    #13a Chinese (Simplified)
-    Locale["zh-CN"]["name"]    = "Chinese Simplified"
-    Locale["zh-CN"]["endonym"] = "简体中文"
-    Locale["zh-CN"]["message"] = "%s 的翻译"
-
-    #13b Chinese (Traditional)
-    Locale["zh-TW"]["name"]    = "Chinese Traditional"
-    Locale["zh-TW"]["endonym"] = "正體中文"
-    Locale["zh-TW"]["message"] = "「%s」的翻譯"
-
-    #14 Chichewa
-    Locale["ny"]["name"]       = "Chichewa"
-    Locale["ny"]["endonym"]    = "Nyanja"
-    Locale["ny"]["message"]    = "Matanthauzidwe a %s"
-
-    #15 Croatian
-    Locale["hr"]["name"]       = "Croatian"
-    Locale["hr"]["endonym"]    = "Hrvatski"
-    Locale["hr"]["message"]    = "Prijevodi riječi ili izraza %s"
-
-    #16 Czech
-    Locale["cs"]["name"]       = "Czech"
-    Locale["cs"]["endonym"]    = "Čeština"
-    Locale["cs"]["message"]    = "Překlad výrazu %s"
-
-    #17 Danish
-    Locale["da"]["name"]       = "Danish"
-    Locale["da"]["endonym"]    = "Dansk"
-    Locale["da"]["message"]    = "Oversættelser af %s"
-
-    #18 Dutch
-    Locale["nl"]["name"]       = "Dutch"
-    Locale["nl"]["endonym"]    = "Nederlands"
-    Locale["nl"]["message"]    = "Vertalingen van %s"
-
-    #19 English
-    Locale["en"]["name"]       = "English"
-    Locale["en"]["endonym"]    = "English"
-    Locale["en"]["message"]    = "Translations of %s"
-
-    #20 Esperanto
-    Locale["eo"]["name"]       = "Esperanto"
-    Locale["eo"]["endonym"]    = "Esperanto"
-    Locale["eo"]["message"]    = "Tradukoj de %s"
-
-    #21 Estonian
-    Locale["et"]["name"]       = "Estonian"
-    Locale["et"]["endonym"]    = "Eesti"
-    Locale["et"]["message"]    = "Sõna(de) %s tõlked"
-
-    #22 Filipino
-    Locale["tl"]["name"]       = "Filipino"
-    Locale["tl"]["endonym"]    = "Tagalog"
-    Locale["tl"]["message"]    = "Mga pagsasalin ng %s"
-
-    #23 Finnish
-    Locale["fi"]["name"]       = "Finnish"
-    Locale["fi"]["endonym"]    = "Suomi"
-    Locale["fi"]["message"]    = "Käännökset tekstille %s"
-
-    #24 French
-    Locale["fr"]["name"]       = "French"
-    Locale["fr"]["endonym"]    = "Français"
-    Locale["fr"]["message"]    = "Traductions de %s"
-
-    #25 Galician
-    Locale["gl"]["name"]       = "Galician"
-    Locale["gl"]["endonym"]    = "Galego"
-    Locale["gl"]["message"]    = "Traducións de %s"
-
-    #26 Georgian
-    Locale["ka"]["name"]       = "Georgian"
-    Locale["ka"]["endonym"]    = "ქართული"
-    Locale["ka"]["message"]    = "%s-ის თარგმანები"
-
-    #27 German
-    Locale["de"]["name"]       = "German"
-    Locale["de"]["endonym"]    = "Deutsch"
-    Locale["de"]["message"]    = "Übersetzungen für %s"
-
-    #28 Greek
-    Locale["el"]["name"]       = "Greek"
-    Locale["el"]["endonym"]    = "Ελληνικά"
-    Locale["el"]["message"]    = "Μεταφράσεις του %s"
-
-    #29 Gujarati
-    Locale["gu"]["name"]       = "Gujarati"
-    Locale["gu"]["endonym"]    = "ગુજરાતી"
-    Locale["gu"]["message"]    = "%s ના અનુવાદ"
-
-    #30 Haitian Creole
-    Locale["ht"]["name"]       = "Haitian Creole"
-    Locale["ht"]["endonym"]    = "Kreyòl Ayisyen"
-    Locale["ht"]["message"]    = "Tradiksyon %s"
-
-    #31 Hausa (Latin / Boko alphabet)
-    Locale["ha"]["name"]       = "Hausa"
-    Locale["ha"]["endonym"]    = "Hausa"
-    Locale["ha"]["message"]    = "Fassarar %s"
-
-    #32 Hebrew
-    Locale["he"]["name"]       = "Hebrew"
-    Locale["he"]["endonym"]    = "עִבְרִית"
-    Locale["he"]["message"]    = "תרגומים של %s"
-    Locale["he"]["rtl"]        = "true" # RTL language
-
-    #33 Hindi
-    Locale["hi"]["name"]       = "Hindi"
-    Locale["hi"]["endonym"]    = "हिन्दी"
-    Locale["hi"]["message"]    = "%s के अनुवाद"
-
-    #34 Hmong
-    Locale["hmn"]["name"]      = "Hmong"
-    Locale["hmn"]["endonym"]   = "Hmoob"
-    Locale["hmn"]["message"]   = "Lus txhais: %s"
-
-    #35 Hungarian
-    Locale["hu"]["name"]       = "Hungarian"
-    Locale["hu"]["endonym"]    = "Magyar"
-    Locale["hu"]["message"]    = "%s fordításai"
-
-    #36 Icelandic
-    Locale["is"]["name"]       = "Icelandic"
-    Locale["is"]["endonym"]    = "Íslenska"
-    Locale["is"]["message"]    = "Þýðingar á %s"
-
-    #37 Igbo
-    Locale["ig"]["name"]       = "Igbo"
-    Locale["ig"]["endonym"]    = "Igbo"
-    Locale["ig"]["message"]    = "Ntụgharị asụsụ nke %s"
-
-    #38 Indonesian
-    Locale["id"]["name"]       = "Indonesian"
-    Locale["id"]["endonym"]    = "Bahasa Indonesia"
-    Locale["id"]["message"]    = "Terjemahan dari %s"
-
-    #39 Irish
-    Locale["ga"]["name"]       = "Irish"
-    Locale["ga"]["endonym"]    = "Gaeilge"
-    Locale["ga"]["message"]    = "Aistriúcháin ar %s"
-
-    #40 Italian
-    Locale["it"]["name"]       = "Italian"
-    Locale["it"]["endonym"]    = "Italiano"
-    Locale["it"]["message"]    = "Traduzioni di %s"
-
-    #41 Japanese
-    Locale["ja"]["name"]       = "Japanese"
-    Locale["ja"]["endonym"]    = "日本語"
-    Locale["ja"]["message"]    = "「%s」の翻訳"
-
-    #42 Javanese (Latin alphabet)
-    Locale["jv"]["name"]       = "Javanese"
-    Locale["jv"]["endonym"]    = "Basa Jawa"
-    Locale["jv"]["message"]    = "Terjemahan"
-
-    #43 Kannada
-    Locale["kn"]["name"]       = "Kannada"
-    Locale["kn"]["endonym"]    = "ಕನ್ನಡ"
-    Locale["kn"]["message"]    = "%s ನ ಅನುವಾದಗಳು"
-
-    #44 Kazakh (Cyrillic alphabet)
-    Locale["kk"]["name"]       = "Kazakh"
-    Locale["kk"]["endonym"]    = "Қазақ тілі"
-    Locale["kk"]["message"]    = "%s аудармалары"
-
-    #45 Khmer (Central Khmer)
-    Locale["km"]["name"]       = "Khmer"
-    Locale["km"]["endonym"]    = "ភាសាខ្មែរ"
-    Locale["km"]["message"]    = "ការ​បក​ប្រែ​នៃ %s"
-
-    #46 Korean
-    Locale["ko"]["name"]       = "Korean"
-    Locale["ko"]["endonym"]    = "한국어"
-    Locale["ko"]["message"]    = "%s의 번역"
-
-    #47 Lao
-    Locale["lo"]["name"]       = "Lao"
-    Locale["lo"]["endonym"]    = "ລາວ"
-    Locale["lo"]["message"]    = "ການ​ແປ​ພາ​ສາ​ຂອງ %s"
-
-    #48 Latin
-    Locale["la"]["name"]       = "Latin"
-    Locale["la"]["endonym"]    = "Latina"
-    Locale["la"]["message"]    = "Versio de %s"
-
-    #49 Latvian
-    Locale["lv"]["name"]       = "Latvian"
-    Locale["lv"]["endonym"]    = "Latviešu"
-    Locale["lv"]["message"]    = "%s tulkojumi"
-
-    #50 Lithuanian
-    Locale["lt"]["name"]       = "Lithuanian"
-    Locale["lt"]["endonym"]    = "Lietuvių"
-    Locale["lt"]["message"]    = "„%s“ vertimai"
-
-    #51 Macedonian
-    Locale["mk"]["name"]       = "Macedonian"
-    Locale["mk"]["endonym"]    = "Македонски"
-    Locale["mk"]["message"]    = "Преводи на %s"
-
-    #52 Malagasy
-    Locale["mg"]["name"]       = "Malagasy"
-    Locale["mg"]["endonym"]    = "Malagasy"
-    Locale["mg"]["message"]    = "Dikan'ny %s"
-
-    #53 Malay
-    Locale["ms"]["name"]       = "Malay"
-    Locale["ms"]["endonym"]    = "Bahasa Melayu"
-    Locale["ms"]["message"]    = "Terjemahan %s"
-
-    #54 Malayalam
-    Locale["ml"]["name"]       = "Malayalam"
-    Locale["ml"]["endonym"]    = "മലയാളം"
-    Locale["ml"]["message"]    = "%s എന്നതിന്റെ വിവർത്തനങ്ങൾ"
-
-    #55 Maltese
-    Locale["mt"]["name"]       = "Maltese"
-    Locale["mt"]["endonym"]    = "Malti"
-    Locale["mt"]["message"]    = "Traduzzjonijiet ta' %s"
-
-    #56 Maori
-    Locale["mi"]["name"]       = "Maori"
-    Locale["mi"]["endonym"]    = "Māori"
-    Locale["mi"]["message"]    = "Ngā whakamāoritanga o %s"
-
-    #57 Marathi
-    Locale["mr"]["name"]       = "Marathi"
-    Locale["mr"]["endonym"]    = "मराठी"
-    Locale["mr"]["message"]    = "%s ची भाषांतरे"
-
-    #58 Mongolian (Cyrillic alphabet)
-    Locale["mn"]["name"]       = "Mongolian"
-    Locale["mn"]["endonym"]    = "Монгол"
-    Locale["mn"]["message"]    = "%s-н орчуулга"
-
-    #59 Myanmar (Burmese)
-    Locale["my"]["name"]       = "Myanmar"
-    Locale["my"]["endonym"]    = "မြန်မာစာ"
-    Locale["my"]["message"]    = "%s၏ ဘာသာပြန်ဆိုချက်များ"
-
-    #60 Nepali
-    Locale["ne"]["name"]       = "Nepali"
-    Locale["ne"]["endonym"]    = "नेपाली"
-    Locale["ne"]["message"]    = "%sका अनुवाद"
-
-    #61 Norwegian
-    Locale["no"]["name"]       = "Norwegian"
-    Locale["no"]["endonym"]    = "Norsk"
-    Locale["no"]["message"]    = "Oversettelser av %s"
-
-    #62 Persian
-    Locale["fa"]["name"]       = "Persian"
-    Locale["fa"]["endonym"]    = "فارسی"
-    Locale["fa"]["message"]    = "ترجمه‌های %s"
-    Locale["fa"]["rtl"]        = "true" # RTL language
-
-    #63 Punjabi (Brahmic / Gurmukhī alphabet)
-    Locale["pa"]["name"]       = "Punjabi"
-    Locale["pa"]["endonym"]    = "ਪੰਜਾਬੀ"
-    Locale["pa"]["message"]    = "ਦੇ ਅਨੁਵਾਦ%s"
-
-    #64 Polish
-    Locale["pl"]["name"]       = "Polish"
-    Locale["pl"]["endonym"]    = "Polski"
-    Locale["pl"]["message"]    = "Tłumaczenia %s"
-
-    #65 Portuguese
-    Locale["pt"]["name"]       = "Portuguese"
-    Locale["pt"]["endonym"]    = "Português"
-    Locale["pt"]["message"]    = "Traduções de %s"
-
-    #66 Romanian
-    Locale["ro"]["name"]       = "Romanian"
-    Locale["ro"]["endonym"]    = "Română"
-    Locale["ro"]["message"]    = "Traduceri pentru %s"
-
-    #67 Russian
-    Locale["ru"]["name"]       = "Russian"
-    Locale["ru"]["endonym"]    = "Русский"
-    Locale["ru"]["message"]    = "%s: варианты перевода"
-
-    #68 Serbian (Cyrillic alphabet)
-    Locale["sr"]["name"]       = "Serbian"
-    Locale["sr"]["endonym"]    = "српски"
-    Locale["sr"]["message"]    = "Преводи за „%s“"
-
-    #69 Sesotho
-    Locale["st"]["name"]       = "Sesotho"
-    Locale["st"]["endonym"]    = "Sesotho"
-    Locale["st"]["message"]    = "Liphetolelo tsa %s"
-
-    #70 Sinhala
-    Locale["si"]["name"]       = "Sinhala"
-    Locale["si"]["endonym"]    = "සිංහල"
-    Locale["si"]["message"]    = "%s හි පරිවර්තන"
-
-    #71 Slovak
-    Locale["sk"]["name"]       = "Slovak"
-    Locale["sk"]["endonym"]    = "Slovenčina"
-    Locale["sk"]["message"]    = "Preklady výrazu: %s"
-
-    #72 Slovenian
-    Locale["sl"]["name"]       = "Slovenian"
-    Locale["sl"]["endonym"]    = "Slovenščina"
-    Locale["sl"]["message"]    = "Prevodi za %s"
-
-    #73 Somali
-    Locale["so"]["name"]       = "Somali"
-    Locale["so"]["endonym"]    = "Soomaali"
-    Locale["so"]["message"]    = "Turjumaada %s"
-
-    #74 Spanish
-    Locale["es"]["name"]       = "Spanish"
-    Locale["es"]["endonym"]    = "Español"
-    Locale["es"]["message"]    = "Traducciones de %s"
-
-    #75 Sundanese (Latin alphabet)
-    Locale["su"]["name"]       = "Sundanese"
-    Locale["su"]["endonym"]    = "Basa Sunda"
-    Locale["su"]["message"]    = "Tarjamahan tina %s"
-
-    #76 Swahili
-    Locale["sw"]["name"]       = "Swahili"
-    Locale["sw"]["endonym"]    = "Kiswahili"
-    Locale["sw"]["message"]    = "Tafsiri ya %s"
-
-    #77 Swedish
-    Locale["sv"]["name"]       = "Swedish"
-    Locale["sv"]["endonym"]    = "Svenska"
-    Locale["sv"]["message"]    = "Översättningar av %s"
-
-    #78 Tajik (Cyrillic alphabet)
-    Locale["tg"]["name"]       = "Tajik"
-    Locale["tg"]["endonym"]    = "Тоҷикӣ"
-    Locale["tg"]["message"]    = "Тарҷумаҳои %s"
-
-    #79 Tamil
-    Locale["ta"]["name"]       = "Tamil"
-    Locale["ta"]["endonym"]    = "தமிழ்"
-    Locale["ta"]["message"]    = "%s இன் மொழிபெயர்ப்புகள்"
-
-    #80 Telugu
-    Locale["te"]["name"]       = "Telugu"
-    Locale["te"]["endonym"]    = "తెలుగు"
-    Locale["te"]["message"]    = "%s యొక్క అనువాదాలు"
-
-    #81 Thai
-    Locale["th"]["name"]       = "Thai"
-    Locale["th"]["endonym"]    = "ไทย"
-    Locale["th"]["message"]    = "คำแปลของ %s"
-
-    #82 Turkish
-    Locale["tr"]["name"]       = "Turkish"
-    Locale["tr"]["endonym"]    = "Türkçe"
-    Locale["tr"]["message"]    = "%s çevirileri"
-
-    #83 Ukrainian
-    Locale["uk"]["name"]       = "Ukrainian"
-    Locale["uk"]["endonym"]    = "Українська"
-    Locale["uk"]["message"]    = "Переклади слова або виразу \"%s\""
-
-    #84 Urdu
-    Locale["ur"]["name"]       = "Urdu"
-    Locale["ur"]["endonym"]    = "اُردُو"
-    Locale["ur"]["message"]    = "کے ترجمے %s"
-    Locale["ur"]["rtl"]        = "true" # RTL language
-
-    #85 Uzbek (Latin alphabet)
-    Locale["uz"]["name"]       = "Uzbek"
-    Locale["uz"]["endonym"]    = "Oʻzbek tili"
-    Locale["uz"]["message"]    = "%s tarjimalari"
-
-    #86 Vietnamese
-    Locale["vi"]["name"]       = "Vietnamese"
-    Locale["vi"]["endonym"]    = "Tiếng Việt"
-    Locale["vi"]["message"]    = "Bản dịch của %s"
-
-    #87 Welsh
-    Locale["cy"]["name"]       = "Welsh"
-    Locale["cy"]["endonym"]    = "Cymraeg"
-    Locale["cy"]["message"]    = "Cyfieithiadau %s"
-
-    #88 Yiddish
-    Locale["yi"]["name"]       = "Yiddish"
-    Locale["yi"]["endonym"]    = "ייִדיש"
-    Locale["yi"]["message"]    = "איבערזעצונגען פון %s"
-    Locale["yi"]["rtl"]        = "true" # RTL language
-
-    #89 Yoruba
-    Locale["yo"]["name"]       = "Yoruba"
-    Locale["yo"]["endonym"]    = "Yorùbá"
-    Locale["yo"]["message"]    = "Awọn itumọ ti %s"
-
-    #90 Zulu
-    Locale["zu"]["name"]       = "Zulu"
-    Locale["zu"]["endonym"]    = "isiZulu"
-    Locale["zu"]["message"]    = "Ukuhumusha i-%s"
-
-    # Aliases for some locales
-    # See: <http://www.loc.gov/standards/iso639-2/php/code_changes.php>
-    LocaleAlias["in"] = "id" # withdrawn language code for Indonesian
-    LocaleAlias["iw"] = "he" # withdrawn language code for Hebrew
-    LocaleAlias["ji"] = "yi" # withdrawn language code for Yiddish
-
-    LocaleAlias["jw"] = "jv" # withdrawn language code for Javanese
-    LocaleAlias["mo"] = "ro" # Moldavian or Moldovan considered a variant of the Romanian language
-    LocaleAlias["sh"] = "sr" # Serbo-Croatian: prefer Serbian
-    LocaleAlias["zh"] = "zh-CN" # Chinese: prefer Chinese Simplified
-    LocaleAlias["zh-cn"] = "zh-CN" # lowercase
-    LocaleAlias["zh-tw"] = "zh-TW" # lowercase
-    # TODO: any more aliases supported by Google Translate?
+    Locale["af"]["name"]               = "Afrikaans"
+    Locale["af"]["endonym"]            = "Afrikaans"
+    Locale["af"]["translations-of"]    = "Vertalings van %s"
+    Locale["af"]["definitions-of"]     = "Definisies van %s"
+    Locale["af"]["synonyms"]           = "Sinonieme"
+    Locale["af"]["examples"]           = "Voorbeelde"
+    Locale["af"]["see-also"]           = "Sien ook"
+    Locale["af"]["family"]             = "Indo-European"
+    Locale["af"]["iso"]                = "afr"
+    Locale["af"]["glotto"]             = "afri1274"
+    Locale["af"]["script"]             = "Latn"
+    Locale["sq"]["name"]               = "Albanian"
+    Locale["sq"]["endonym"]            = "Shqip"
+    Locale["sq"]["translations-of"]    = "Përkthimet e %s"
+    Locale["sq"]["definitions-of"]     = "Përkufizime të %s"
+    Locale["sq"]["synonyms"]           = "Sinonime"
+    Locale["sq"]["examples"]           = "Shembuj"
+    Locale["sq"]["see-also"]           = "Shihni gjithashtu"
+    Locale["sq"]["family"]             = "Indo-European"
+    Locale["sq"]["iso"]                = "sqi"
+    Locale["sq"]["glotto"]             = "alba1267"
+    Locale["sq"]["script"]             = "Latn"
+    Locale["ar"]["name"]               = "Arabic"
+    Locale["ar"]["endonym"]            = "العربية"
+    Locale["ar"]["translations-of"]    = "ترجمات %s"
+    Locale["ar"]["definitions-of"]     = "تعريفات %s"
+    Locale["ar"]["synonyms"]           = "مرادفات"
+    Locale["ar"]["examples"]           = "أمثلة"
+    Locale["ar"]["see-also"]           = "انظر أيضًا"
+    Locale["ar"]["family"]             = "Afro-Asiatic"
+    Locale["ar"]["iso"]                = "ara"
+    Locale["ar"]["glotto"]             = "arab1395"
+    Locale["ar"]["script"]             = "Arab"
+    Locale["ar"]["rtl"]                = "true"
+    Locale["hy"]["name"]               = "Armenian"
+    Locale["hy"]["endonym"]            = "Հայերեն"
+    Locale["hy"]["translations-of"]    = "%s-ի թարգմանությունները"
+    Locale["hy"]["definitions-of"]     = "%s-ի սահմանումները"
+    Locale["hy"]["synonyms"]           = "Հոմանիշներ"
+    Locale["hy"]["examples"]           = "Օրինակներ"
+    Locale["hy"]["see-also"]           = "Տես նաև"
+    Locale["hy"]["family"]             = "Indo-European"
+    Locale["hy"]["iso"]                = "hye"
+    Locale["hy"]["glotto"]             = "arme1241"
+    Locale["hy"]["script"]             = "Armn"
+    Locale["az"]["name"]               = "Azerbaijani"
+    Locale["az"]["endonym"]            = "Azərbaycanca"
+    Locale["az"]["translations-of"]    = "%s sözünün tərcüməsi"
+    Locale["az"]["definitions-of"]     = "%s sözünün tərifləri"
+    Locale["az"]["synonyms"]           = "Sinonimlər"
+    Locale["az"]["examples"]           = "Nümunələr"
+    Locale["az"]["see-also"]           = "Həmçinin, baxın:"
+    Locale["az"]["family"]             = "Turkic"
+    Locale["az"]["iso"]                = "aze"
+    Locale["az"]["glotto"]             = "azer1255"
+    Locale["az"]["script"]             = "Latn"
+    Locale["eu"]["name"]               = "Basque"
+    Locale["eu"]["endonym"]            = "Euskara"
+    Locale["eu"]["translations-of"]    = "%s esapidearen itzulpena"
+    Locale["eu"]["definitions-of"]     = "Honen definizioak: %s"
+    Locale["eu"]["synonyms"]           = "Sinonimoak"
+    Locale["eu"]["examples"]           = "Adibideak"
+    Locale["eu"]["see-also"]           = "Ikusi hauek ere"
+    Locale["eu"]["iso"]                = "eus"
+    Locale["eu"]["glotto"]             = "basq1248"
+    Locale["eu"]["script"]             = "Latn"
+    Locale["be"]["name"]               = "Belarusian"
+    Locale["be"]["endonym"]            = "беларуская"
+    Locale["be"]["translations-of"]    = "Пераклады %s"
+    Locale["be"]["definitions-of"]     = "Вызначэннi %s"
+    Locale["be"]["synonyms"]           = "Сінонімы"
+    Locale["be"]["examples"]           = "Прыклады"
+    Locale["be"]["see-also"]           = "Гл. таксама"
+    Locale["be"]["family"]             = "Indo-European"
+    Locale["be"]["iso"]                = "bel"
+    Locale["be"]["glotto"]             = "bela1254"
+    Locale["be"]["script"]             = "Cyrl"
+    Locale["bn"]["name"]               = "Bengali"
+    Locale["bn"]["endonym"]            = "বাংলা"
+    Locale["bn"]["translations-of"]    = "%s এর অনুবাদ"
+    Locale["bn"]["definitions-of"]     = "%s এর সংজ্ঞা"
+    Locale["bn"]["synonyms"]           = "প্রতিশব্দ"
+    Locale["bn"]["examples"]           = "উদাহরণ"
+    Locale["bn"]["see-also"]           = "আরো দেখুন"
+    Locale["bn"]["family"]             = "Indo-European"
+    Locale["bn"]["iso"]                = "ben"
+    Locale["bn"]["glotto"]             = "beng1280"
+    Locale["bn"]["script"]             = "Beng"
+    Locale["bs"]["name"]               = "Bosnian"
+    Locale["bs"]["endonym"]            = "Bosanski"
+    Locale["bs"]["translations-of"]    = "Prijevod za: %s"
+    Locale["bs"]["definitions-of"]     = "Definicije za %s"
+    Locale["bs"]["synonyms"]           = "Sinonimi"
+    Locale["bs"]["examples"]           = "Primjeri"
+    Locale["bs"]["see-also"]           = "Pogledajte i"
+    Locale["bs"]["family"]             = "Indo-European"
+    Locale["bs"]["iso"]                = "bos"
+    Locale["bs"]["glotto"]             = "bosn1245"
+    Locale["bs"]["script"]             = "Latn"
+    Locale["bg"]["name"]               = "Bulgarian"
+    Locale["bg"]["endonym"]            = "български"
+    Locale["bg"]["translations-of"]    = "Преводи на %s"
+    Locale["bg"]["definitions-of"]     = "Дефиниции за %s"
+    Locale["bg"]["synonyms"]           = "Синоними"
+    Locale["bg"]["examples"]           = "Примери"
+    Locale["bg"]["see-also"]           = "Вижте също"
+    Locale["bg"]["family"]             = "Indo-European"
+    Locale["bg"]["iso"]                = "bul"
+    Locale["bg"]["glotto"]             = "bulg1262"
+    Locale["bg"]["script"]             = "Cyrl"
+    Locale["ca"]["name"]               = "Catalan"
+    Locale["ca"]["endonym"]            = "Català"
+    Locale["ca"]["translations-of"]    = "Traduccions per a %s"
+    Locale["ca"]["definitions-of"]     = "Definicions de: %s"
+    Locale["ca"]["synonyms"]           = "Sinònims"
+    Locale["ca"]["examples"]           = "Exemples"
+    Locale["ca"]["see-also"]           = "Vegeu també"
+    Locale["ca"]["family"]             = "Indo-European"
+    Locale["ca"]["iso"]                = "cat"
+    Locale["ca"]["glotto"]             = "stan1289"
+    Locale["ca"]["script"]             = "Latn"
+    Locale["ceb"]["name"]              = "Cebuano"
+    Locale["ceb"]["endonym"]           = "Cebuano"
+    Locale["ceb"]["translations-of"]   = "%s Mga Paghubad sa PULONG_O_HUGPONG SA PAMULONG"
+    Locale["ceb"]["definitions-of"]    = "Mga kahulugan sa %s"
+    Locale["ceb"]["synonyms"]          = "Mga Kapulong"
+    Locale["ceb"]["examples"]          = "Mga pananglitan:"
+    Locale["ceb"]["see-also"]          = "Kitaa pag-usab"
+    Locale["ceb"]["family"]            = "Austronesian"
+    Locale["ceb"]["iso"]               = "ceb"
+    Locale["ceb"]["glotto"]            = "cebu1242"
+    Locale["ceb"]["script"]            = "Latn"
+    Locale["ny"]["name"]               = "Chichewa"
+    Locale["ny"]["endonym"]            = "Nyanja"
+    Locale["ny"]["translations-of"]    = "Matanthauzidwe a %s"
+    Locale["ny"]["definitions-of"]     = "Mamasulidwe a %s"
+    Locale["ny"]["synonyms"]           = "Mau ofanana"
+    Locale["ny"]["examples"]           = "Zitsanzo"
+    Locale["ny"]["see-also"]           = "Onaninso"
+    Locale["ny"]["family"]             = "Atlantic-Congo"
+    Locale["ny"]["iso"]                = "nya"
+    Locale["ny"]["glotto"]             = "nyan1308"
+    Locale["ny"]["script"]             = "Latn"
+    Locale["zh-CN"]["name"]            = "Chinese Simplified"
+    Locale["zh-CN"]["endonym"]         = "简体中文"
+    Locale["zh-CN"]["translations-of"] = "%s 的翻译"
+    Locale["zh-CN"]["definitions-of"]  = "%s的定义"
+    Locale["zh-CN"]["synonyms"]        = "同义词"
+    Locale["zh-CN"]["examples"]        = "示例"
+    Locale["zh-CN"]["see-also"]        = "另请参阅"
+    Locale["zh-CN"]["family"]          = "Sino-Tibetan"
+    Locale["zh-CN"]["iso"]             = "zho"
+    Locale["zh-CN"]["glotto"]          = "mand1415"
+    Locale["zh-CN"]["script"]          = "Hans"
+    Locale["zh-TW"]["name"]            = "Chinese Traditional"
+    Locale["zh-TW"]["endonym"]         = "正體中文"
+    Locale["zh-TW"]["translations-of"] = "「%s」的翻譯"
+    Locale["zh-TW"]["definitions-of"]  = "「%s」的定義"
+    Locale["zh-TW"]["synonyms"]        = "同義詞"
+    Locale["zh-TW"]["examples"]        = "例句"
+    Locale["zh-TW"]["see-also"]        = "另請參閱"
+    Locale["zh-TW"]["family"]          = "Sino-Tibetan"
+    Locale["zh-TW"]["iso"]             = "zho"
+    Locale["zh-TW"]["glotto"]          = "mand1415"
+    Locale["zh-TW"]["script"]          = "Hant"
+    Locale["hr"]["name"]               = "Croatian"
+    Locale["hr"]["endonym"]            = "Hrvatski"
+    Locale["hr"]["translations-of"]    = "Prijevodi riječi ili izraza %s"
+    Locale["hr"]["definitions-of"]     = "Definicije riječi ili izraza %s"
+    Locale["hr"]["synonyms"]           = "Sinonimi"
+    Locale["hr"]["examples"]           = "Primjeri"
+    Locale["hr"]["see-also"]           = "Također pogledajte"
+    Locale["hr"]["family"]             = "Indo-European"
+    Locale["hr"]["iso"]                = "hrv"
+    Locale["hr"]["glotto"]             = "croa1245"
+    Locale["hr"]["script"]             = "Latn"
+    Locale["cs"]["name"]               = "Czech"
+    Locale["cs"]["endonym"]            = "Čeština"
+    Locale["cs"]["translations-of"]    = "Překlad výrazu %s"
+    Locale["cs"]["definitions-of"]     = "Definice výrazu %s"
+    Locale["cs"]["synonyms"]           = "Synonyma"
+    Locale["cs"]["examples"]           = "Příklady"
+    Locale["cs"]["see-also"]           = "Viz také"
+    Locale["cs"]["family"]             = "Indo-European"
+    Locale["cs"]["iso"]                = "ces"
+    Locale["cs"]["glotto"]             = "czec1258"
+    Locale["cs"]["script"]             = "Latn"
+    Locale["da"]["name"]               = "Danish"
+    Locale["da"]["endonym"]            = "Dansk"
+    Locale["da"]["translations-of"]    = "Oversættelser af %s"
+    Locale["da"]["definitions-of"]     = "Definitioner af %s"
+    Locale["da"]["synonyms"]           = "Synonymer"
+    Locale["da"]["examples"]           = "Eksempler"
+    Locale["da"]["see-also"]           = "Se også"
+    Locale["da"]["family"]             = "Indo-European"
+    Locale["da"]["iso"]                = "dan"
+    Locale["da"]["glotto"]             = "dani1285"
+    Locale["da"]["script"]             = "Latn"
+    Locale["nl"]["name"]               = "Dutch"
+    Locale["nl"]["endonym"]            = "Nederlands"
+    Locale["nl"]["translations-of"]    = "Vertalingen van %s"
+    Locale["nl"]["definitions-of"]     = "Definities van %s"
+    Locale["nl"]["synonyms"]           = "Synoniemen"
+    Locale["nl"]["examples"]           = "Voorbeelden"
+    Locale["nl"]["see-also"]           = "Zie ook"
+    Locale["nl"]["family"]             = "Indo-European"
+    Locale["nl"]["iso"]                = "nld"
+    Locale["nl"]["glotto"]             = "dutc1256"
+    Locale["nl"]["script"]             = "Latn"
+    Locale["en"]["name"]               = "English"
+    Locale["en"]["endonym"]            = "English"
+    Locale["en"]["translations-of"]    = "Translations of %s"
+    Locale["en"]["definitions-of"]     = "Definitions of %s"
+    Locale["en"]["synonyms"]           = "Synonyms"
+    Locale["en"]["examples"]           = "Examples"
+    Locale["en"]["see-also"]           = "See also"
+    Locale["en"]["family"]             = "Indo-European"
+    Locale["en"]["iso"]                = "eng"
+    Locale["en"]["glotto"]             = "stan1293"
+    Locale["en"]["script"]             = "Latn"
+    Locale["eo"]["name"]               = "Esperanto"
+    Locale["eo"]["endonym"]            = "Esperanto"
+    Locale["eo"]["translations-of"]    = "Tradukoj de %s"
+    Locale["eo"]["definitions-of"]     = "Difinoj de %s"
+    Locale["eo"]["synonyms"]           = "Sinonimoj"
+    Locale["eo"]["examples"]           = "Ekzemploj"
+    Locale["eo"]["see-also"]           = "Vidu ankaŭ"
+    Locale["eo"]["family"]             = "Artificial Language"
+    Locale["eo"]["iso"]                = "epo"
+    Locale["eo"]["glotto"]             = "espe1235"
+    Locale["eo"]["script"]             = "Latn"
+    Locale["et"]["name"]               = "Estonian"
+    Locale["et"]["endonym"]            = "Eesti"
+    Locale["et"]["translations-of"]    = "Sõna(de) %s tõlked"
+    Locale["et"]["definitions-of"]     = "Sõna(de) %s definitsioonid"
+    Locale["et"]["synonyms"]           = "Sünonüümid"
+    Locale["et"]["examples"]           = "Näited"
+    Locale["et"]["see-also"]           = "Vt ka"
+    Locale["et"]["family"]             = "Uralic"
+    Locale["et"]["iso"]                = "est"
+    Locale["et"]["glotto"]             = "esto1258"
+    Locale["et"]["script"]             = "Latn"
+    Locale["tl"]["name"]               = "Filipino"
+    Locale["tl"]["endonym"]            = "Tagalog"
+    Locale["tl"]["translations-of"]    = "Mga pagsasalin ng %s"
+    Locale["tl"]["definitions-of"]     = "Mga kahulugan ng %s"
+    Locale["tl"]["synonyms"]           = "Mga Kasingkahulugan"
+    Locale["tl"]["examples"]           = "Mga Halimbawa"
+    Locale["tl"]["see-also"]           = "Tingnan rin ang"
+    Locale["tl"]["family"]             = "Austronesian"
+    Locale["tl"]["iso"]                = "tgl"
+    Locale["tl"]["glotto"]             = "taga1270"
+    Locale["tl"]["script"]             = "Latn"
+    Locale["fi"]["name"]               = "Finnish"
+    Locale["fi"]["endonym"]            = "Suomi"
+    Locale["fi"]["translations-of"]    = "Käännökset tekstille %s"
+    Locale["fi"]["definitions-of"]     = "Määritelmät kohteelle %s"
+    Locale["fi"]["synonyms"]           = "Synonyymit"
+    Locale["fi"]["examples"]           = "Esimerkkejä"
+    Locale["fi"]["see-also"]           = "Katso myös"
+    Locale["fi"]["family"]             = "Uralic"
+    Locale["fi"]["iso"]                = "fin"
+    Locale["fi"]["glotto"]             = "finn1318"
+    Locale["fi"]["script"]             = "Latn"
+    Locale["fr"]["name"]               = "French"
+    Locale["fr"]["endonym"]            = "Français"
+    Locale["fr"]["translations-of"]    = "Traductions de %s"
+    Locale["fr"]["definitions-of"]     = "Définitions de %s"
+    Locale["fr"]["synonyms"]           = "Synonymes"
+    Locale["fr"]["examples"]           = "Exemples"
+    Locale["fr"]["see-also"]           = "Voir aussi"
+    Locale["fr"]["family"]             = "Indo-European"
+    Locale["fr"]["iso"]                = "fra"
+    Locale["fr"]["glotto"]             = "stan1290"
+    Locale["fr"]["script"]             = "Latn"
+    Locale["gl"]["name"]               = "Galician"
+    Locale["gl"]["endonym"]            = "Galego"
+    Locale["gl"]["translations-of"]    = "Traducións de %s"
+    Locale["gl"]["definitions-of"]     = "Definicións de %s"
+    Locale["gl"]["synonyms"]           = "Sinónimos"
+    Locale["gl"]["examples"]           = "Exemplos"
+    Locale["gl"]["see-also"]           = "Ver tamén"
+    Locale["gl"]["family"]             = "Indo-European"
+    Locale["gl"]["iso"]                = "glg"
+    Locale["gl"]["glotto"]             = "gali1258"
+    Locale["gl"]["script"]             = "Latn"
+    Locale["ka"]["name"]               = "Georgian"
+    Locale["ka"]["endonym"]            = "ქართული"
+    Locale["ka"]["translations-of"]    = "%s-ის თარგმანები"
+    Locale["ka"]["definitions-of"]     = "%s-ის განსაზღვრებები"
+    Locale["ka"]["synonyms"]           = "სინონიმები"
+    Locale["ka"]["examples"]           = "მაგალითები"
+    Locale["ka"]["see-also"]           = "ასევე იხილეთ"
+    Locale["ka"]["family"]             = "Kartvelian"
+    Locale["ka"]["iso"]                = "kat"
+    Locale["ka"]["glotto"]             = "nucl1302"
+    Locale["ka"]["script"]             = "Geor"
+    Locale["de"]["name"]               = "German"
+    Locale["de"]["endonym"]            = "Deutsch"
+    Locale["de"]["translations-of"]    = "Übersetzungen für %s"
+    Locale["de"]["definitions-of"]     = "Definitionen von %s"
+    Locale["de"]["synonyms"]           = "Synonyme"
+    Locale["de"]["examples"]           = "Beispiele"
+    Locale["de"]["see-also"]           = "Siehe auch"
+    Locale["de"]["family"]             = "Indo-European"
+    Locale["de"]["iso"]                = "stan1295"
+    Locale["de"]["glotto"]             = "deu"
+    Locale["de"]["script"]             = "Latn"
+    Locale["el"]["name"]               = "Greek"
+    Locale["el"]["endonym"]            = "Ελληνικά"
+    Locale["el"]["translations-of"]    = "Μεταφράσεις του %s"
+    Locale["el"]["definitions-of"]     = "Όρισμοί %s"
+    Locale["el"]["synonyms"]           = "Συνώνυμα"
+    Locale["el"]["examples"]           = "Παραδείγματα"
+    Locale["el"]["see-also"]           = "Δείτε επίσης"
+    Locale["el"]["family"]             = "Indo-European"
+    Locale["el"]["iso"]                = "ell"
+    Locale["el"]["glotto"]             = "mode1248"
+    Locale["el"]["script"]             = "Grek"
+    Locale["gu"]["name"]               = "Gujarati"
+    Locale["gu"]["endonym"]            = "ગુજરાતી"
+    Locale["gu"]["translations-of"]    = "%s ના અનુવાદ"
+    Locale["gu"]["definitions-of"]     = "%s ની વ્યાખ્યાઓ"
+    Locale["gu"]["synonyms"]           = "સમાનાર્થી"
+    Locale["gu"]["examples"]           = "ઉદાહરણો"
+    Locale["gu"]["see-also"]           = "આ પણ જુઓ"
+    Locale["gu"]["family"]             = "Indo-European"
+    Locale["gu"]["iso"]                = "guj"
+    Locale["gu"]["glotto"]             = "guja1252"
+    Locale["gu"]["script"]             = "Gujr"
+    Locale["ht"]["name"]               = "Haitian Creole"
+    Locale["ht"]["endonym"]            = "Kreyòl Ayisyen"
+    Locale["ht"]["translations-of"]    = "Tradiksyon %s"
+    Locale["ht"]["definitions-of"]     = "Definisyon nan %s"
+    Locale["ht"]["synonyms"]           = "Sinonim"
+    Locale["ht"]["examples"]           = "Egzanp:"
+    Locale["ht"]["see-also"]           = "Wè tou"
+    Locale["ht"]["family"]             = "Indo-European"
+    Locale["ht"]["iso"]                = "hat"
+    Locale["ht"]["glotto"]             = "hait1244"
+    Locale["ht"]["script"]             = "Latn"
+    Locale["ha"]["name"]               = "Hausa"
+    Locale["ha"]["endonym"]            = "Hausa"
+    Locale["ha"]["translations-of"]    = "Fassarar %s"
+    Locale["ha"]["definitions-of"]     = "Ma'anoni na %s"
+    Locale["ha"]["synonyms"]           = "Masu kamancin ma'ana"
+    Locale["ha"]["examples"]           = "Misalai"
+    Locale["ha"]["see-also"]           = "Duba kuma"
+    Locale["ha"]["family"]             = "Afro-Asiatic"
+    Locale["ha"]["iso"]                = "hau"
+    Locale["ha"]["glotto"]             = "haus1257"
+    Locale["ha"]["script"]             = "Latn"
+    Locale["he"]["name"]               = "Hebrew"
+    Locale["he"]["endonym"]            = "עִבְרִית"
+    Locale["he"]["translations-of"]    = "תרגומים של %s"
+    Locale["he"]["definitions-of"]     = "הגדרות של %s"
+    Locale["he"]["synonyms"]           = "מילים נרדפות"
+    Locale["he"]["examples"]           = "דוגמאות"
+    Locale["he"]["see-also"]           = "ראה גם"
+    Locale["he"]["family"]             = "Afro-Asiatic"
+    Locale["he"]["iso"]                = "heb"
+    Locale["he"]["glotto"]             = "hebr1245"
+    Locale["he"]["script"]             = "Hebr"
+    Locale["he"]["rtl"]                = "true"
+    Locale["hi"]["name"]               = "Hindi"
+    Locale["hi"]["endonym"]            = "हिन्दी"
+    Locale["hi"]["translations-of"]    = "%s के अनुवाद"
+    Locale["hi"]["definitions-of"]     = "%s की परिभाषाएं"
+    Locale["hi"]["synonyms"]           = "समानार्थी"
+    Locale["hi"]["examples"]           = "उदाहरण"
+    Locale["hi"]["see-also"]           = "यह भी देखें"
+    Locale["hi"]["family"]             = "Indo-European"
+    Locale["hi"]["iso"]                = "hin"
+    Locale["hi"]["glotto"]             = "hind1269"
+    Locale["hi"]["script"]             = "Deva"
+    Locale["hmn"]["name"]              = "Hmong"
+    Locale["hmn"]["endonym"]           = "Hmoob"
+    Locale["hmn"]["translations-of"]   = "Lus txhais: %s"
+    Locale["hmn"]["family"]            = "Hmong-Mien"
+    Locale["hmn"]["iso"]               = "hmn"
+    Locale["hmn"]["glotto"]            = "firs1234"
+    Locale["hmn"]["script"]            = "Latn"
+    Locale["hu"]["name"]               = "Hungarian"
+    Locale["hu"]["endonym"]            = "Magyar"
+    Locale["hu"]["translations-of"]    = "%s fordításai"
+    Locale["hu"]["definitions-of"]     = "%s jelentései"
+    Locale["hu"]["synonyms"]           = "Szinonimák"
+    Locale["hu"]["examples"]           = "Példák"
+    Locale["hu"]["see-also"]           = "Lásd még"
+    Locale["hu"]["family"]             = "Uralic"
+    Locale["hu"]["iso"]                = "hun"
+    Locale["hu"]["glotto"]             = "hung1274"
+    Locale["hu"]["script"]             = "Latn"
+    Locale["is"]["name"]               = "Icelandic"
+    Locale["is"]["endonym"]            = "Íslenska"
+    Locale["is"]["translations-of"]    = "Þýðingar á %s"
+    Locale["is"]["definitions-of"]     = "Skilgreiningar á"
+    Locale["is"]["synonyms"]           = "Samheiti"
+    Locale["is"]["examples"]           = "Dæmi"
+    Locale["is"]["see-also"]           = "Sjá einnig"
+    Locale["is"]["family"]             = "Indo-European"
+    Locale["is"]["iso"]                = "isl"
+    Locale["is"]["glotto"]             = "icel1247"
+    Locale["is"]["script"]             = "Latn"
+    Locale["ig"]["name"]               = "Igbo"
+    Locale["ig"]["endonym"]            = "Igbo"
+    Locale["ig"]["translations-of"]    = "Ntụgharị asụsụ nke %s"
+    Locale["ig"]["definitions-of"]     = "Nkọwapụta nke %s"
+    Locale["ig"]["synonyms"]           = "Okwu oyiri"
+    Locale["ig"]["examples"]           = "Ọmụmaatụ"
+    Locale["ig"]["see-also"]           = "Hụkwuo"
+    Locale["ig"]["family"]             = "Atlantic-Congo"
+    Locale["ig"]["iso"]                = "ibo"
+    Locale["ig"]["glotto"]             = "igbo1259"
+    Locale["ig"]["script"]             = "Latn"
+    Locale["id"]["name"]               = "Indonesian"
+    Locale["id"]["endonym"]            = "Bahasa Indonesia"
+    Locale["id"]["translations-of"]    = "Terjemahan dari %s"
+    Locale["id"]["definitions-of"]     = "Definisi %s"
+    Locale["id"]["synonyms"]           = "Sinonim"
+    Locale["id"]["examples"]           = "Contoh"
+    Locale["id"]["see-also"]           = "Lihat juga"
+    Locale["id"]["family"]             = "Austronesian"
+    Locale["id"]["iso"]                = "ind"
+    Locale["id"]["glotto"]             = "indo1316"
+    Locale["id"]["script"]             = "Latn"
+    Locale["ga"]["name"]               = "Irish"
+    Locale["ga"]["endonym"]            = "Gaeilge"
+    Locale["ga"]["translations-of"]    = "Aistriúcháin ar %s"
+    Locale["ga"]["definitions-of"]     = "Sainmhínithe ar %s"
+    Locale["ga"]["synonyms"]           = "Comhchiallaigh"
+    Locale["ga"]["examples"]           = "Samplaí"
+    Locale["ga"]["see-also"]           = "féach freisin"
+    Locale["ga"]["family"]             = "Indo-European"
+    Locale["ga"]["iso"]                = "gle"
+    Locale["ga"]["glotto"]             = "iris1253"
+    Locale["ga"]["script"]             = "Latn"
+    Locale["it"]["name"]               = "Italian"
+    Locale["it"]["endonym"]            = "Italiano"
+    Locale["it"]["translations-of"]    = "Traduzioni di %s"
+    Locale["it"]["definitions-of"]     = "Definizioni di %s"
+    Locale["it"]["synonyms"]           = "Sinonimi"
+    Locale["it"]["examples"]           = "Esempi"
+    Locale["it"]["see-also"]           = "Vedi anche"
+    Locale["it"]["family"]             = "Indo-European"
+    Locale["it"]["iso"]                = "ita"
+    Locale["it"]["glotto"]             = "ital1282"
+    Locale["it"]["script"]             = "Latn"
+    Locale["ja"]["name"]               = "Japanese"
+    Locale["ja"]["endonym"]            = "日本語"
+    Locale["ja"]["translations-of"]    = "「%s」の翻訳"
+    Locale["ja"]["definitions-of"]     = "%s の定義"
+    Locale["ja"]["synonyms"]           = "同義語"
+    Locale["ja"]["examples"]           = "例"
+    Locale["ja"]["see-also"]           = "関連項目"
+    Locale["ja"]["family"]             = "Japonic"
+    Locale["ja"]["iso"]                = "jpn"
+    Locale["ja"]["glotto"]             = "japa1256"
+    Locale["ja"]["script"]             = "Jpan"
+    Locale["jv"]["name"]               = "Javanese"
+    Locale["jv"]["endonym"]            = "Basa Jawa"
+    Locale["jv"]["translations-of"]    = "Terjemahan %s"
+    Locale["jv"]["definitions-of"]     = "Arti %s"
+    Locale["jv"]["synonyms"]           = "Sinonim"
+    Locale["jv"]["examples"]           = "Conto"
+    Locale["jv"]["see-also"]           = "Deleng uga"
+    Locale["jv"]["family"]             = "Austronesian"
+    Locale["jv"]["iso"]                = "jav"
+    Locale["jv"]["glotto"]             = "java1254"
+    Locale["jv"]["script"]             = "Latn"
+    Locale["kn"]["name"]               = "Kannada"
+    Locale["kn"]["endonym"]            = "ಕನ್ನಡ"
+    Locale["kn"]["translations-of"]    = "%s ನ ಅನುವಾದಗಳು"
+    Locale["kn"]["definitions-of"]     = "%s ನ ವ್ಯಾಖ್ಯಾನಗಳು"
+    Locale["kn"]["synonyms"]           = "ಸಮಾನಾರ್ಥಕಗಳು"
+    Locale["kn"]["examples"]           = "ಉದಾಹರಣೆಗಳು"
+    Locale["kn"]["see-also"]           = "ಇದನ್ನೂ ಗಮನಿಸಿ"
+    Locale["kn"]["family"]             = "Dravidian"
+    Locale["kn"]["iso"]                = "kan"
+    Locale["kn"]["glotto"]             = "kann1255"
+    Locale["kn"]["script"]             = "Knda"
+    Locale["kk"]["name"]               = "Kazakh"
+    Locale["kk"]["endonym"]            = "Қазақ тілі"
+    Locale["kk"]["translations-of"]    = "%s аудармалары"
+    Locale["kk"]["definitions-of"]     = "%s анықтамалары"
+    Locale["kk"]["synonyms"]           = "Синонимдер"
+    Locale["kk"]["examples"]           = "Мысалдар"
+    Locale["kk"]["see-also"]           = "Келесі тізімді де көріңіз:"
+    Locale["kk"]["family"]             = "Turkic"
+    Locale["kk"]["iso"]                = "kaz"
+    Locale["kk"]["glotto"]             = "kaza1248"
+    Locale["kk"]["script"]             = "Cyrl"
+    Locale["km"]["name"]               = "Khmer"
+    Locale["km"]["endonym"]            = "ភាសាខ្មែរ"
+    Locale["km"]["translations-of"]    = "ការ​បក​ប្រែ​នៃ %s"
+    Locale["km"]["definitions-of"]     = "និយមន័យ​នៃ​ %s"
+    Locale["km"]["synonyms"]           = "សទិសន័យ"
+    Locale["km"]["examples"]           = "ឧទាហរណ៍"
+    Locale["km"]["see-also"]           = "មើល​ផង​ដែរ"
+    Locale["km"]["family"]             = "Austroasiatic"
+    Locale["km"]["iso"]                = "khm"
+    Locale["km"]["glotto"]             = "cent1989"
+    Locale["km"]["script"]             = "Khmr"
+    Locale["ko"]["name"]               = "Korean"
+    Locale["ko"]["endonym"]            = "한국어"
+    Locale["ko"]["translations-of"]    = "%s의 번역"
+    Locale["ko"]["definitions-of"]     = "%s의 정의"
+    Locale["ko"]["synonyms"]           = "동의어"
+    Locale["ko"]["examples"]           = "예문"
+    Locale["ko"]["see-also"]           = "참조"
+    Locale["ko"]["family"]             = "Koreanic"
+    Locale["ko"]["iso"]                = "kor"
+    Locale["ko"]["glotto"]             = "kore1280"
+    Locale["ko"]["script"]             = "Kore"
+    Locale["lo"]["name"]               = "Lao"
+    Locale["lo"]["endonym"]            = "ລາວ"
+    Locale["lo"]["translations-of"]    = "ຄຳ​ແປ​ສຳລັບ %s"
+    Locale["lo"]["definitions-of"]     = "ຄວາມໝາຍຂອງ %s"
+    Locale["lo"]["synonyms"]           = "ຄຳທີ່ຄ້າຍກັນ %s"
+    Locale["lo"]["examples"]           = "ຕົວຢ່າງ"
+    Locale["lo"]["see-also"]           = "ເບິ່ງ​ເພີ່ມ​ເຕີມ"
+    Locale["lo"]["family"]             = "Tai-Kadai"
+    Locale["lo"]["iso"]                = "lao"
+    Locale["lo"]["glotto"]             = "laoo1244"
+    Locale["lo"]["script"]             = "Laoo"
+    Locale["la"]["name"]               = "Latin"
+    Locale["la"]["endonym"]            = "Latina"
+    Locale["la"]["translations-of"]    = "Versio de %s"
+    Locale["la"]["family"]             = "Indo-European"
+    Locale["la"]["iso"]                = "lat"
+    Locale["la"]["glotto"]             = "lati1261"
+    Locale["la"]["script"]             = "Latn"
+    Locale["lv"]["name"]               = "Latvian"
+    Locale["lv"]["endonym"]            = "Latviešu"
+    Locale["lv"]["translations-of"]    = "%s tulkojumi"
+    Locale["lv"]["definitions-of"]     = "%s definīcijas"
+    Locale["lv"]["synonyms"]           = "Sinonīmi"
+    Locale["lv"]["examples"]           = "Piemēri"
+    Locale["lv"]["see-also"]           = "Skatiet arī"
+    Locale["lv"]["family"]             = "Indo-European"
+    Locale["lv"]["iso"]                = "lav"
+    Locale["lv"]["glotto"]             = "latv1249"
+    Locale["lv"]["script"]             = "Latn"
+    Locale["lt"]["name"]               = "Lithuanian"
+    Locale["lt"]["endonym"]            = "Lietuvių"
+    Locale["lt"]["translations-of"]    = "„%s“ vertimai"
+    Locale["lt"]["definitions-of"]     = "„%s“ apibrėžimai"
+    Locale["lt"]["synonyms"]           = "Sinonimai"
+    Locale["lt"]["examples"]           = "Pavyzdžiai"
+    Locale["lt"]["see-also"]           = "Taip pat žiūrėkite"
+    Locale["lt"]["family"]             = "Indo-European"
+    Locale["lt"]["iso"]                = "lit"
+    Locale["lt"]["glotto"]             = "lith1251"
+    Locale["lt"]["script"]             = "Latn"
+    Locale["mk"]["name"]               = "Macedonian"
+    Locale["mk"]["endonym"]            = "Македонски"
+    Locale["mk"]["translations-of"]    = "Преводи на %s"
+    Locale["mk"]["definitions-of"]     = "Дефиниции на %s"
+    Locale["mk"]["synonyms"]           = "Синоними"
+    Locale["mk"]["examples"]           = "Примери"
+    Locale["mk"]["see-also"]           = "Види и"
+    Locale["mk"]["family"]             = "Indo-European"
+    Locale["mk"]["iso"]                = "mkd"
+    Locale["mk"]["glotto"]             = "mace1250"
+    Locale["mk"]["script"]             = "Cyrl"
+    Locale["mg"]["name"]               = "Malagasy"
+    Locale["mg"]["endonym"]            = "Malagasy"
+    Locale["mg"]["translations-of"]    = "Dikan'ny %s"
+    Locale["mg"]["definitions-of"]     = "Famaritana ny %s"
+    Locale["mg"]["synonyms"]           = "Mitovy hevitra"
+    Locale["mg"]["examples"]           = "Ohatra"
+    Locale["mg"]["see-also"]           = "Jereo ihany koa"
+    Locale["mg"]["family"]             = "Austronesian"
+    Locale["mg"]["iso"]                = "mlg"
+    Locale["mg"]["glotto"]             = "plat1254"
+    Locale["mg"]["script"]             = "Latn"
+    Locale["ms"]["name"]               = "Malay"
+    Locale["ms"]["endonym"]            = "Bahasa Melayu"
+    Locale["ms"]["translations-of"]    = "Terjemahan %s"
+    Locale["ms"]["definitions-of"]     = "Takrif %s"
+    Locale["ms"]["synonyms"]           = "Sinonim"
+    Locale["ms"]["examples"]           = "Contoh"
+    Locale["ms"]["see-also"]           = "Lihat juga"
+    Locale["ms"]["family"]             = "Austronesian"
+    Locale["ms"]["iso"]                = "msa"
+    Locale["ms"]["glotto"]             = "stan1306"
+    Locale["ms"]["script"]             = "Latn"
+    Locale["ml"]["name"]               = "Malayalam"
+    Locale["ml"]["endonym"]            = "മലയാളം"
+    Locale["ml"]["translations-of"]    = "%s എന്നതിന്റെ വിവർത്തനങ്ങൾ"
+    Locale["ml"]["definitions-of"]     = "%s എന്നതിന്റെ നിർവ്വചനങ്ങൾ"
+    Locale["ml"]["synonyms"]           = "പര്യായങ്ങള്‍"
+    Locale["ml"]["examples"]           = "ഉദാഹരണങ്ങള്‍"
+    Locale["ml"]["see-also"]           = "ഇതും കാണുക"
+    Locale["ml"]["family"]             = "Dravidian"
+    Locale["ml"]["iso"]                = "mal"
+    Locale["ml"]["glotto"]             = "mala1464"
+    Locale["ml"]["script"]             = "Mlym"
+    Locale["mt"]["name"]               = "Maltese"
+    Locale["mt"]["endonym"]            = "Malti"
+    Locale["mt"]["translations-of"]    = "Traduzzjonijiet ta' %s"
+    Locale["mt"]["definitions-of"]     = "Definizzjonijiet ta' %s"
+    Locale["mt"]["synonyms"]           = "Sinonimi"
+    Locale["mt"]["examples"]           = "Eżempji"
+    Locale["mt"]["see-also"]           = "Ara wkoll"
+    Locale["mt"]["family"]             = "Afro-Asiatic"
+    Locale["mt"]["iso"]                = "mlt"
+    Locale["mt"]["glotto"]             = "malt1254"
+    Locale["mt"]["script"]             = "Latn"
+    Locale["mi"]["name"]               = "Maori"
+    Locale["mi"]["endonym"]            = "Māori"
+    Locale["mi"]["translations-of"]    = "Ngā whakamāoritanga o %s"
+    Locale["mi"]["definitions-of"]     = "Ngā whakamārama o %s"
+    Locale["mi"]["synonyms"]           = "Ngā Kupu Taurite"
+    Locale["mi"]["examples"]           = "Ngā Tauira:"
+    Locale["mi"]["see-also"]           = "Tiro hoki:"
+    Locale["mi"]["family"]             = "Austronesian"
+    Locale["mi"]["iso"]                = "mri"
+    Locale["mi"]["glotto"]             = "maor1246"
+    Locale["mi"]["script"]             = "Latn"
+    Locale["mr"]["name"]               = "Marathi"
+    Locale["mr"]["endonym"]            = "मराठी"
+    Locale["mr"]["translations-of"]    = "%s ची भाषांतरे"
+    Locale["mr"]["definitions-of"]     = "%s च्या व्याख्या"
+    Locale["mr"]["synonyms"]           = "समानार्थी शब्द"
+    Locale["mr"]["examples"]           = "उदाहरणे"
+    Locale["mr"]["see-also"]           = "हे देखील पहा"
+    Locale["mr"]["family"]             = "Indo-European"
+    Locale["mr"]["iso"]                = "mar"
+    Locale["mr"]["glotto"]             = "mara1378"
+    Locale["mr"]["script"]             = "Deva"
+    Locale["mn"]["name"]               = "Mongolian"
+    Locale["mn"]["endonym"]            = "Монгол"
+    Locale["mn"]["translations-of"]    = "%s-н орчуулга"
+    Locale["mn"]["definitions-of"]     = "%s үгийн тодорхойлолт"
+    Locale["mn"]["synonyms"]           = "Ойролцоо утгатай"
+    Locale["mn"]["examples"]           = "Жишээнүүд"
+    Locale["mn"]["see-also"]           = "Мөн харах"
+    Locale["mn"]["family"]             = "Mongolic"
+    Locale["mn"]["iso"]                = "mon"
+    Locale["mn"]["glotto"]             = "mong1331"
+    Locale["mn"]["script"]             = "Cyrl"
+    Locale["my"]["name"]               = "Myanmar"
+    Locale["my"]["endonym"]            = "မြန်မာစာ"
+    Locale["my"]["translations-of"]    = "%s၏ ဘာသာပြန်ဆိုချက်များ"
+    Locale["my"]["definitions-of"]     = "%s၏ အနက်ဖွင့်ဆိုချက်များ"
+    Locale["my"]["synonyms"]           = "ကြောင်းတူသံကွဲများ"
+    Locale["my"]["examples"]           = "ဥပမာ"
+    Locale["my"]["see-also"]           = "ဖော်ပြပါများကိုလဲ ကြည့်ပါ"
+    Locale["my"]["family"]             = "Sino-Tibetan"
+    Locale["my"]["iso"]                = "mya"
+    Locale["my"]["glotto"]             = "nucl1310"
+    Locale["my"]["script"]             = "Mymr"
+    Locale["ne"]["name"]               = "Nepali"
+    Locale["ne"]["endonym"]            = "नेपाली"
+    Locale["ne"]["translations-of"]    = "%sका अनुवाद"
+    Locale["ne"]["definitions-of"]     = "%sको परिभाषा"
+    Locale["ne"]["synonyms"]           = "समानार्थीहरू"
+    Locale["ne"]["examples"]           = "उदाहरणहरु"
+    Locale["ne"]["see-also"]           = "यो पनि हेर्नुहोस्"
+    Locale["ne"]["family"]             = "Indo-European"
+    Locale["ne"]["iso"]                = "nep"
+    Locale["ne"]["glotto"]             = "nepa1254"
+    Locale["ne"]["script"]             = "Deva"
+    Locale["no"]["name"]               = "Norwegian"
+    Locale["no"]["endonym"]            = "Norsk"
+    Locale["no"]["translations-of"]    = "Oversettelser av %s"
+    Locale["no"]["definitions-of"]     = "Definisjoner av %s"
+    Locale["no"]["synonyms"]           = "Synonymer"
+    Locale["no"]["examples"]           = "Eksempler"
+    Locale["no"]["see-also"]           = "Se også"
+    Locale["no"]["family"]             = "Indo-European"
+    Locale["no"]["iso"]                = "nor"
+    Locale["no"]["glotto"]             = "norw1258"
+    Locale["no"]["script"]             = "Latn"
+    Locale["fa"]["name"]               = "Persian"
+    Locale["fa"]["endonym"]            = "فارسی"
+    Locale["fa"]["translations-of"]    = "ترجمه‌های %s"
+    Locale["fa"]["definitions-of"]     = "تعریف‌های %s"
+    Locale["fa"]["synonyms"]           = "مترادف‌ها"
+    Locale["fa"]["examples"]           = "مثال‌ها"
+    Locale["fa"]["see-also"]           = "همچنین مراجعه کنید به"
+    Locale["fa"]["family"]             = "Indo-European"
+    Locale["fa"]["iso"]                = "fas"
+    Locale["fa"]["script"]             = "Arab"
+    Locale["fa"]["rtl"]                = "true"
+    Locale["pa"]["name"]               = "Punjabi"
+    Locale["pa"]["endonym"]            = "ਪੰਜਾਬੀ"
+    Locale["pa"]["translations-of"]    = "ਦੇ ਅਨੁਵਾਦ%s"
+    Locale["pa"]["definitions-of"]     = "ਦੀਆਂ ਪਰਿਭਾਸ਼ਾ %s"
+    Locale["pa"]["synonyms"]           = "ਸਮਾਨਾਰਥਕ ਸ਼ਬਦ"
+    Locale["pa"]["examples"]           = "ਉਦਾਹਰਣਾਂ"
+    Locale["pa"]["see-also"]           = "ਇਹ ਵੀ ਵੇਖੋ"
+    Locale["pa"]["family"]             = "Indo-European"
+    Locale["pa"]["iso"]                = "pan"
+    Locale["pa"]["glotto"]             = "panj1256"
+    Locale["pa"]["script"]             = "Guru"
+    Locale["pl"]["name"]               = "Polish"
+    Locale["pl"]["endonym"]            = "Polski"
+    Locale["pl"]["translations-of"]    = "Tłumaczenia %s"
+    Locale["pl"]["definitions-of"]     = "%s – definicje"
+    Locale["pl"]["synonyms"]           = "Synonimy"
+    Locale["pl"]["examples"]           = "Przykłady"
+    Locale["pl"]["see-also"]           = "Zobacz też"
+    Locale["pl"]["family"]             = "Indo-European"
+    Locale["pl"]["iso"]                = "pol"
+    Locale["pl"]["glotto"]             = "poli1260"
+    Locale["pl"]["script"]             = "Latn"
+    Locale["pt"]["name"]               = "Portuguese"
+    Locale["pt"]["endonym"]            = "Português"
+    Locale["pt"]["translations-of"]    = "Traduções de %s"
+    Locale["pt"]["definitions-of"]     = "Definições de %s"
+    Locale["pt"]["synonyms"]           = "Sinônimos"
+    Locale["pt"]["examples"]           = "Exemplos"
+    Locale["pt"]["see-also"]           = "Veja também"
+    Locale["pt"]["family"]             = "Indo-European"
+    Locale["pt"]["iso"]                = "por"
+    Locale["pt"]["glotto"]             = "port1283"
+    Locale["pt"]["script"]             = "Latn"
+    Locale["ro"]["name"]               = "Romanian"
+    Locale["ro"]["endonym"]            = "Română"
+    Locale["ro"]["translations-of"]    = "Traduceri pentru %s"
+    Locale["ro"]["definitions-of"]     = "Definiții pentru %s"
+    Locale["ro"]["synonyms"]           = "Sinonime"
+    Locale["ro"]["examples"]           = "Exemple"
+    Locale["ro"]["see-also"]           = "Vedeți și"
+    Locale["ro"]["family"]             = "Indo-European"
+    Locale["ro"]["iso"]                = "ron"
+    Locale["ro"]["glotto"]             = "roma1327"
+    Locale["ro"]["script"]             = "Latn"
+    Locale["ru"]["name"]               = "Russian"
+    Locale["ru"]["endonym"]            = "Русский"
+    Locale["ru"]["translations-of"]    = "%s: варианты перевода"
+    Locale["ru"]["definitions-of"]     = "%s – определения"
+    Locale["ru"]["synonyms"]           = "Синонимы"
+    Locale["ru"]["examples"]           = "Примеры"
+    Locale["ru"]["see-also"]           = "Похожие слова"
+    Locale["ru"]["family"]             = "Indo-European"
+    Locale["ru"]["iso"]                = "rus"
+    Locale["ru"]["glotto"]             = "russ1263"
+    Locale["ru"]["script"]             = "Cyrl"
+    Locale["sr"]["name"]               = "Serbian"
+    Locale["sr"]["endonym"]            = "српски"
+    Locale["sr"]["translations-of"]    = "Преводи за „%s“"
+    Locale["sr"]["definitions-of"]     = "Дефиниције за %s"
+    Locale["sr"]["synonyms"]           = "Синоними"
+    Locale["sr"]["examples"]           = "Примери"
+    Locale["sr"]["see-also"]           = "Погледајте такође"
+    Locale["sr"]["family"]             = "Indo-European"
+    Locale["sr"]["iso"]                = "srp"
+    Locale["sr"]["glotto"]             = "serb1264"
+    Locale["sr"]["script"]             = "Cyrl"
+    Locale["st"]["name"]               = "Sesotho"
+    Locale["st"]["endonym"]            = "Sesotho"
+    Locale["st"]["translations-of"]    = "Liphetolelo tsa %s"
+    Locale["st"]["definitions-of"]     = "Meelelo ea %s"
+    Locale["st"]["synonyms"]           = "Mantsoe a tšoanang ka moelelo"
+    Locale["st"]["examples"]           = "Mehlala"
+    Locale["st"]["see-also"]           = "Bona hape"
+    Locale["st"]["family"]             = "Atlantic-Congo"
+    Locale["st"]["iso"]                = "sot"
+    Locale["st"]["glotto"]             = "sout2807"
+    Locale["st"]["script"]             = "Latn"
+    Locale["si"]["name"]               = "Sinhala"
+    Locale["si"]["endonym"]            = "සිංහල"
+    Locale["si"]["translations-of"]    = "%s හි පරිවර්තන"
+    Locale["si"]["definitions-of"]     = "%s හි නිර්වචන"
+    Locale["si"]["synonyms"]           = "සමානාර්ථ පද"
+    Locale["si"]["examples"]           = "උදාහරණ"
+    Locale["si"]["see-also"]           = "මෙයත් බලන්න"
+    Locale["si"]["family"]             = "Indo-European"
+    Locale["si"]["iso"]                = "sin"
+    Locale["si"]["glotto"]             = "sinh1246"
+    Locale["si"]["script"]             = "Sinh"
+    Locale["sk"]["name"]               = "Slovak"
+    Locale["sk"]["endonym"]            = "Slovenčina"
+    Locale["sk"]["translations-of"]    = "Preklady výrazu: %s"
+    Locale["sk"]["definitions-of"]     = "Definície výrazu %s"
+    Locale["sk"]["synonyms"]           = "Synonymá"
+    Locale["sk"]["examples"]           = "Príklady"
+    Locale["sk"]["see-also"]           = "Pozrite tiež"
+    Locale["sk"]["family"]             = "Indo-European"
+    Locale["sk"]["iso"]                = "slk"
+    Locale["sk"]["glotto"]             = "slov1269"
+    Locale["sk"]["script"]             = "Latn"
+    Locale["sl"]["name"]               = "Slovenian"
+    Locale["sl"]["endonym"]            = "Slovenščina"
+    Locale["sl"]["translations-of"]    = "Prevodi za %s"
+    Locale["sl"]["definitions-of"]     = "Razlage za %s"
+    Locale["sl"]["synonyms"]           = "Sopomenke"
+    Locale["sl"]["examples"]           = "Primeri"
+    Locale["sl"]["see-also"]           = "Glejte tudi"
+    Locale["sl"]["family"]             = "Indo-European"
+    Locale["sl"]["iso"]                = "slv"
+    Locale["sl"]["glotto"]             = "slov1268"
+    Locale["sl"]["script"]             = "Latn"
+    Locale["so"]["name"]               = "Somali"
+    Locale["so"]["endonym"]            = "Soomaali"
+    Locale["so"]["translations-of"]    = "Turjumaada %s"
+    Locale["so"]["definitions-of"]     = "Qeexitaannada %s"
+    Locale["so"]["synonyms"]           = "La micne ah"
+    Locale["so"]["examples"]           = "Tusaalooyin"
+    Locale["so"]["see-also"]           = "Sidoo kale eeg"
+    Locale["so"]["family"]             = "Afro-Asiatic"
+    Locale["so"]["iso"]                = "som"
+    Locale["so"]["glotto"]             = "soma1255"
+    Locale["so"]["script"]             = "Latn"
+    Locale["es"]["name"]               = "Spanish"
+    Locale["es"]["endonym"]            = "Español"
+    Locale["es"]["translations-of"]    = "Traducciones de %s"
+    Locale["es"]["definitions-of"]     = "Definiciones de %s"
+    Locale["es"]["synonyms"]           = "Sinónimos"
+    Locale["es"]["examples"]           = "Ejemplos"
+    Locale["es"]["see-also"]           = "Ver también"
+    Locale["es"]["family"]             = "Indo-European"
+    Locale["es"]["iso"]                = "spa"
+    Locale["es"]["glotto"]             = "stan1288"
+    Locale["es"]["script"]             = "Latn"
+    Locale["su"]["name"]               = "Sundanese"
+    Locale["su"]["endonym"]            = "Basa Sunda"
+    Locale["su"]["translations-of"]    = "Tarjamahan tina %s"
+    Locale["su"]["definitions-of"]     = "Panjelasan tina %s"
+    Locale["su"]["synonyms"]           = "Sinonim"
+    Locale["su"]["examples"]           = "Conto"
+    Locale["su"]["see-also"]           = "Tingali ogé"
+    Locale["su"]["family"]             = "Austronesian"
+    Locale["su"]["iso"]                = "sun"
+    Locale["su"]["glotto"]             = "sund1252"
+    Locale["su"]["script"]             = "Latn"
+    Locale["sw"]["name"]               = "Swahili"
+    Locale["sw"]["endonym"]            = "Kiswahili"
+    Locale["sw"]["translations-of"]    = "Tafsiri ya %s"
+    Locale["sw"]["definitions-of"]     = "Ufafanuzi wa %s"
+    Locale["sw"]["synonyms"]           = "Visawe"
+    Locale["sw"]["examples"]           = "Mifano"
+    Locale["sw"]["see-also"]           = "Angalia pia"
+    Locale["sw"]["family"]             = "Atlantic-Congo"
+    Locale["sw"]["iso"]                = "swa"
+    Locale["sw"]["glotto"]             = "swah1253"
+    Locale["sw"]["script"]             = "Latn"
+    Locale["sv"]["name"]               = "Swedish"
+    Locale["sv"]["endonym"]            = "Svenska"
+    Locale["sv"]["translations-of"]    = "Översättningar av %s"
+    Locale["sv"]["definitions-of"]     = "Definitioner av %s"
+    Locale["sv"]["synonyms"]           = "Synonymer"
+    Locale["sv"]["examples"]           = "Exempel"
+    Locale["sv"]["see-also"]           = "Se även"
+    Locale["sv"]["family"]             = "Indo-European"
+    Locale["sv"]["iso"]                = "swe"
+    Locale["sv"]["glotto"]             = "swed1254"
+    Locale["sv"]["script"]             = "Latn"
+    Locale["tg"]["name"]               = "Tajik"
+    Locale["tg"]["endonym"]            = "Тоҷикӣ"
+    Locale["tg"]["translations-of"]    = "Тарҷумаҳои %s"
+    Locale["tg"]["definitions-of"]     = "Таърифҳои %s"
+    Locale["tg"]["synonyms"]           = "Муродифҳо"
+    Locale["tg"]["examples"]           = "Намунаҳо:"
+    Locale["tg"]["see-also"]           = "Ҳамчунин Бинед"
+    Locale["tg"]["family"]             = "Indo-European"
+    Locale["tg"]["iso"]                = "tgk"
+    Locale["tg"]["glotto"]             = "taji1245"
+    Locale["tg"]["script"]             = "Cyrl"
+    Locale["ta"]["name"]               = "Tamil"
+    Locale["ta"]["endonym"]            = "தமிழ்"
+    Locale["ta"]["translations-of"]    = "%s இன் மொழிபெயர்ப்புகள்"
+    Locale["ta"]["definitions-of"]     = "%s இன் வரையறைகள்"
+    Locale["ta"]["synonyms"]           = "இணைச்சொற்கள்"
+    Locale["ta"]["examples"]           = "எடுத்துக்காட்டுகள்"
+    Locale["ta"]["see-also"]           = "இதையும் காண்க"
+    Locale["ta"]["family"]             = "Dravidian"
+    Locale["ta"]["iso"]                = "tam"
+    Locale["ta"]["glotto"]             = "tami1289"
+    Locale["ta"]["script"]             = "Taml"
+    Locale["te"]["name"]               = "Telugu"
+    Locale["te"]["endonym"]            = "తెలుగు"
+    Locale["te"]["translations-of"]    = "%s యొక్క అనువాదాలు"
+    Locale["te"]["definitions-of"]     = "%s యొక్క నిర్వచనాలు"
+    Locale["te"]["synonyms"]           = "పర్యాయపదాలు"
+    Locale["te"]["examples"]           = "ఉదాహరణలు"
+    Locale["te"]["see-also"]           = "వీటిని కూడా చూడండి"
+    Locale["te"]["family"]             = "Dravidian"
+    Locale["te"]["iso"]                = "tel"
+    Locale["te"]["glotto"]             = "telu1262"
+    Locale["te"]["script"]             = "Telu"
+    Locale["th"]["name"]               = "Thai"
+    Locale["th"]["endonym"]            = "ไทย"
+    Locale["th"]["translations-of"]    = "คำแปลของ %s"
+    Locale["th"]["definitions-of"]     = "คำจำกัดความของ %s"
+    Locale["th"]["synonyms"]           = "คำพ้องความหมาย"
+    Locale["th"]["examples"]           = "ตัวอย่าง"
+    Locale["th"]["see-also"]           = "ดูเพิ่มเติม"
+    Locale["th"]["family"]             = "Tai–Kadai"
+    Locale["th"]["iso"]                = "tha"
+    Locale["th"]["glotto"]             = "thai1261"
+    Locale["th"]["script"]             = "Thai"
+    Locale["tr"]["name"]               = "Turkish"
+    Locale["tr"]["endonym"]            = "Türkçe"
+    Locale["tr"]["translations-of"]    = "%s çevirileri"
+    Locale["tr"]["definitions-of"]     = "%s için tanımlar"
+    Locale["tr"]["synonyms"]           = "Eş anlamlılar"
+    Locale["tr"]["examples"]           = "Örnekler"
+    Locale["tr"]["see-also"]           = "Ayrıca bkz."
+    Locale["tr"]["family"]             = "Turkic"
+    Locale["tr"]["iso"]                = "tur"
+    Locale["tr"]["glotto"]             = "nucl1301"
+    Locale["tr"]["script"]             = "Latn"
+    Locale["uk"]["name"]               = "Ukrainian"
+    Locale["uk"]["endonym"]            = "Українська"
+    Locale["uk"]["translations-of"]    = "Переклади слова або виразу \"%s\""
+    Locale["uk"]["definitions-of"]     = "\"%s\" – визначення"
+    Locale["uk"]["synonyms"]           = "Синоніми"
+    Locale["uk"]["examples"]           = "Приклади"
+    Locale["uk"]["see-also"]           = "Дивіться також"
+    Locale["uk"]["family"]             = "Indo-European"
+    Locale["uk"]["iso"]                = "ukr"
+    Locale["uk"]["glotto"]             = "ukra1253"
+    Locale["uk"]["script"]             = "Cyrl"
+    Locale["ur"]["name"]               = "Urdu"
+    Locale["ur"]["endonym"]            = "اُردُو"
+    Locale["ur"]["translations-of"]    = "کے ترجمے %s"
+    Locale["ur"]["definitions-of"]     = "کی تعریفات %s"
+    Locale["ur"]["synonyms"]           = "مترادفات"
+    Locale["ur"]["examples"]           = "مثالیں"
+    Locale["ur"]["see-also"]           = "نیز دیکھیں"
+    Locale["ur"]["family"]             = "Indo-European"
+    Locale["ur"]["iso"]                = "urd"
+    Locale["ur"]["glotto"]             = "urdu1245"
+    Locale["ur"]["script"]             = "Arab"
+    Locale["ur"]["rtl"]                = "true"
+    Locale["uz"]["name"]               = "Uzbek"
+    Locale["uz"]["endonym"]            = "Oʻzbek tili"
+    Locale["uz"]["translations-of"]    = "%s: tarjima variantlari"
+    Locale["uz"]["definitions-of"]     = "%s – ta’riflar"
+    Locale["uz"]["synonyms"]           = "Sinonimlar"
+    Locale["uz"]["examples"]           = "Namunalar"
+    Locale["uz"]["see-also"]           = "O‘xshash so‘zlar"
+    Locale["uz"]["family"]             = "Turkic"
+    Locale["uz"]["iso"]                = "uzb"
+    Locale["uz"]["glotto"]             = "uzbe1247"
+    Locale["uz"]["script"]             = "Latn"
+    Locale["vi"]["name"]               = "Vietnamese"
+    Locale["vi"]["endonym"]            = "Tiếng Việt"
+    Locale["vi"]["translations-of"]    = "Bản dịch của %s"
+    Locale["vi"]["definitions-of"]     = "Nghĩa của %s"
+    Locale["vi"]["synonyms"]           = "Từ đồng nghĩa"
+    Locale["vi"]["examples"]           = "Ví dụ"
+    Locale["vi"]["see-also"]           = "Xem thêm"
+    Locale["vi"]["family"]             = "Austroasiatic"
+    Locale["vi"]["iso"]                = "vie"
+    Locale["vi"]["glotto"]             = "viet1252"
+    Locale["vi"]["script"]             = "Latn"
+    Locale["cy"]["name"]               = "Welsh"
+    Locale["cy"]["endonym"]            = "Cymraeg"
+    Locale["cy"]["translations-of"]    = "Cyfieithiadau %s"
+    Locale["cy"]["definitions-of"]     = "Diffiniadau %s"
+    Locale["cy"]["synonyms"]           = "Cyfystyron"
+    Locale["cy"]["examples"]           = "Enghreifftiau"
+    Locale["cy"]["see-also"]           = "Gweler hefyd"
+    Locale["cy"]["family"]             = "Indo-European"
+    Locale["cy"]["iso"]                = "cym"
+    Locale["cy"]["glotto"]             = "wels1247"
+    Locale["cy"]["script"]             = "Latn"
+    Locale["yi"]["name"]               = "Yiddish"
+    Locale["yi"]["endonym"]            = "ייִדיש"
+    Locale["yi"]["translations-of"]    = "איבערזעצונגען פון %s"
+    Locale["yi"]["definitions-of"]     = "דפיניציונען %s"
+    Locale["yi"]["synonyms"]           = "סינאָנימען"
+    Locale["yi"]["examples"]           = "ביישפילע"
+    Locale["yi"]["see-also"]           = "זייען אויך"
+    Locale["yi"]["family"]             = "Indo-European"
+    Locale["yi"]["iso"]                = "yid"
+    Locale["yi"]["glotto"]             = "yidd1255"
+    Locale["yi"]["script"]             = "Hebr"
+    Locale["yi"]["rtl"]                = "true"
+    Locale["yo"]["name"]               = "Yoruba"
+    Locale["yo"]["endonym"]            = "Yorùbá"
+    Locale["yo"]["translations-of"]    = "Awọn itumọ ti %s"
+    Locale["yo"]["definitions-of"]     = "Awọn itumọ ti %s"
+    Locale["yo"]["synonyms"]           = "Awọn ọrọ onitumọ"
+    Locale["yo"]["examples"]           = "Awọn apẹrẹ"
+    Locale["yo"]["see-also"]           = "Tun wo"
+    Locale["yo"]["family"]             = "Atlantic-Congo"
+    Locale["yo"]["iso"]                = "yor"
+    Locale["yo"]["glotto"]             = "yoru1245"
+    Locale["yo"]["script"]             = "Latn"
+    Locale["zu"]["name"]               = "Zulu"
+    Locale["zu"]["endonym"]            = "isiZulu"
+    Locale["zu"]["translations-of"]    = "Ukuhumusha i-%s"
+    Locale["zu"]["definitions-of"]     = "Izincazelo ze-%s"
+    Locale["zu"]["synonyms"]           = "Amagama afanayo"
+    Locale["zu"]["examples"]           = "Izibonelo"
+    Locale["zu"]["see-also"]           = "Bheka futhi"
+    Locale["zu"]["family"]             = "Atlantic-Congo"
+    Locale["zu"]["iso"]                = "zul"
+    Locale["zu"]["glotto"]             = "zulu1248"
+    Locale["zu"]["script"]             = "Latn"
+    LocaleAlias["in"] = "id"
+    LocaleAlias["iw"] = "he"
+    LocaleAlias["ji"] = "yi"
+    LocaleAlias["jw"] = "jv"
+    LocaleAlias["mo"] = "ro"
+    LocaleAlias["sh"] = "sr"
+    LocaleAlias["zh"] = "zh-CN"
 }
-
-# Get locale key by language code or alias.
 function getCode(code) {
-    code = tolower(code) # case-insensitive
-
-    if (code in Locale || code == "auto")
+    if (code == "auto" || code in Locale)
         return code
     else if (code in LocaleAlias)
         return LocaleAlias[code]
     else
-        return # return nothing if not found
+        return
 }
-
-# Detect external bidirectional algorithm utility (fribidi);
-# Fallback to Unix `rev` if not found.
+function getName(code) {
+    return Locale[getCode(code)]["name"]
+}
+function getEndonym(code) {
+    return Locale[getCode(code)]["endonym"]
+}
+function getDisplay(code) {
+    return Locale[getCode(code)]["display"]
+}
+function showTranslationsOf(code, text,    fmt) {
+    fmt = Locale[getCode(code)]["translations-of"]
+    if (!fmt) fmt = Locale["en"]["translations-of"]
+    return sprintf(fmt, text)
+}
+function showDefinitionsOf(code, text,    fmt) {
+    fmt = Locale[getCode(code)]["definitions-of"]
+    if (!fmt) fmt = Locale["en"]["definitions-of"]
+    return sprintf(fmt, text)
+}
+function showSynonyms(code,    tmp) {
+    tmp = Locale[getCode(code)]["synonyms"]
+    if (!tmp) tmp = Locale["en"]["synonyms"]
+    return tmp
+}
+function showExamples(code,    tmp) {
+    tmp = Locale[getCode(code)]["examples"]
+    if (!tmp) tmp = Locale["en"]["examples"]
+    return tmp
+}
+function showSeeAlso(code,    tmp) {
+    tmp = Locale[getCode(code)]["see-also"]
+    if (!tmp) tmp = Locale["en"]["see-also"]
+    return tmp
+}
+function getFamily(code) {
+    return Locale[getCode(code)]["family"]
+}
+function getISO(code) {
+    return Locale[getCode(code)]["iso"]
+}
+function getGlotto(code) {
+    return Locale[getCode(code)]["glotto"]
+}
+function getScript(code) {
+    return Locale[getCode(code)]["script"]
+}
+function isRTL(code) {
+    return Locale[getCode(code)]["rtl"] ? 1 : 0
+}
 function initBiDi() {
-    "fribidi --version 2>/dev/null" |& getline FriBidi
+    "fribidi --version" SUPERR |& getline FriBidi
     BiDiNoPad = FriBidi ? "fribidi --nopad" : "rev"
     BiDi = FriBidi ? "fribidi --width %s" : "rev | sed \"s/'/\\\\\\'/\" | xargs printf '%%s '"
 }
-
-# Convert a logical string to visual; don't right justify RTL lines.
-# Parameters:
-#     code: ignore to apply bidirectional algorithm on every string
+function showPhonetics(phonetics, code) {
+    if (code && getCode(code) == "en")
+        return "/" phonetics "/"
+    else
+        return "(" phonetics ")"
+}
 function show(text, code,    temp) {
     if (!code || Locale[getCode(code)]["rtl"]) {
         if (Cache[text][0])
@@ -862,18 +1368,13 @@ function show(text, code,    temp) {
         else {
             if (FriBidi || (code && Locale[getCode(code)]["rtl"]))
                 ("echo " parameterize(text) " | " BiDiNoPad) | getline temp
-            else # non-RTL language, or FriBidi not installed
+            else
                 temp = text
             return Cache[text][0] = temp
         }
     } else
         return text
 }
-
-# Convert a logical string to visual and right justify RTL lines.
-# Parameters:
-#     code: ignore to apply bidirectional algorithm on every string
-#     width: ignore to use default width for padding
 function s(text, code, width,    temp) {
     if (!code || Locale[getCode(code)]["rtl"]) {
         if (!width) width = Option["width"]
@@ -882,294 +1383,311 @@ function s(text, code, width,    temp) {
         else {
             if (FriBidi || (code && Locale[getCode(code)]["rtl"]))
                 ("echo " parameterize(text) " | " sprintf(BiDi, width)) | getline temp
-            else # non-RTL language, or FriBidi not installed
+            else
                 temp = text
             return Cache[text][width] = temp
         }
     } else
         return text
 }
-
-# Initialize strings for displaying endonyms of locales.
+function ins(level, text, code, width,    i, temp) {
+    if (code && Locale[getCode(code)]["rtl"]) {
+        if (!width) width = Option["width"]
+        return s(text, code, width - level * length(I))
+    } else
+        return replicate(" ", Option["indent"] * level) text
+}
 function initLocaleDisplay(    i) {
     for (i in Locale)
         Locale[i]["display"] = show(Locale[i]["endonym"], i)
 }
-
-# Parse a POSIX locale identifier and return the language code;
-# Identified by both language identifier and region identifier.
-# Parameters:
-#     lang = [language[_territory][.codeset][@modifier]]
-# See: <https://en.wikipedia.org/wiki/Locale>
 function parseLang(lang,    code, group) {
     match(lang, /^([a-z][a-z][a-z]?)(_|$)/, group)
     code = getCode(group[1])
-
-    # Detect region identifier
-    ## Regions using Chinese Simplified: China, Singapore
     if (lang ~ /^zh_(CN|SG)/) code = "zh-CN"
-    ## Regions using Chinese Traditional: Taiwan, Hong Kong
     else if (lang ~ /^zh_(TW|HK)/) code = "zh-TW"
-
-    # FIXME: handle unrecognized language code
     if (!code) code = "en"
-
     return code
 }
-
-# Initialize `UserLang`.
-function initUserLang() {
-    UserLang = ENVIRON["LC_CTYPE"] ?
-        parseLang(ENVIRON["LC_CTYPE"]) :
-        (ENVIRON["LANG"] ?
-         parseLang(ENVIRON["LANG"]) :
-         "en")
-
-    if (tolower(ENVIRON["LANG"]) !~ /utf-?8$/ && tolower(ENVIRON["LC_CTYPE"]) !~ /utf-?8$/)
-        w("[WARNING] Your locale codeset (" ENVIRON["LANG"] ") is not UTF-8. You have been warned.")
+function initUserLang(    locale) {
+    locale = ENVIRON["LANGUAGE"] ? ENVIRON["LANGUAGE"] :
+        (ENVIRON["LC_ALL"] ? ENVIRON["LC_ALL"] :
+         (ENVIRON["LC_CTYPE"] ? ENVIRON["LC_CTYPE"] :
+          (ENVIRON["LC_MESSAGES"] ? ENVIRON["LC_MESSAGES"] :
+           (ENVIRON["LANG"] ? ENVIRON["LANG"] : "en_US.UTF-8"))))
+    if (tolower(locale) !~ /utf-?8$/)
+        w("[WARNING] Your locale codeset (" locale ") is not UTF-8.")
+    UserLang = parseLang(locale)
 }
-####################################################################
-# Help.awk                                                         #
-####################################################################
-
-# Return version as a string.
 function getVersion() {
     return Name " " Version
 }
-
-# Return a list of language codes as a string.
-# Parameters:
-#     displayName = "endonym" or "name"
 function getReference(displayName) {
     if (displayName == "name")
-        return "┌─────────────────────────────┬──────────────────────┬─────────────────┐\n" \
-            "│ " Locale["af"]["name"] "           - " AnsiCode["bold"] "af" AnsiCode["no bold"] "    │ " \
-            Locale["ha"]["name"] "          - " AnsiCode["bold"] "ha" AnsiCode["no bold"] "  │ " \
-            Locale["fa"]["name"] "    - " AnsiCode["bold"] "fa" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["sq"]["name"] "            - " AnsiCode["bold"] "sq" AnsiCode["no bold"] "    │ " \
-            Locale["he"]["name"] "         - " AnsiCode["bold"] "he" AnsiCode["no bold"] "  │ " \
-            Locale["pl"]["name"] "     - " AnsiCode["bold"] "pl" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["ar"]["name"] "              - " AnsiCode["bold"] "ar" AnsiCode["no bold"] "    │ " \
-            Locale["hi"]["name"] "          - " AnsiCode["bold"] "hi" AnsiCode["no bold"] "  │ " \
-            Locale["pt"]["name"] " - " AnsiCode["bold"] "pt" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["hy"]["name"] "            - " AnsiCode["bold"] "hy" AnsiCode["no bold"] "    │ " \
-            Locale["hmn"]["name"] "          - " AnsiCode["bold"] "hmn" AnsiCode["no bold"] " │ " \
-            Locale["pa"]["name"] "    - " AnsiCode["bold"] "pa" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["az"]["name"] "         - " AnsiCode["bold"] "az" AnsiCode["no bold"] "    │ " \
-            Locale["hu"]["name"] "      - " AnsiCode["bold"] "hu" AnsiCode["no bold"] "  │ " \
-            Locale["ro"]["name"] "   - " AnsiCode["bold"] "ro" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["eu"]["name"] "              - " AnsiCode["bold"] "eu" AnsiCode["no bold"] "    │ " \
-            Locale["is"]["name"] "      - " AnsiCode["bold"] "is" AnsiCode["no bold"] "  │ " \
-            Locale["ru"]["name"] "    - " AnsiCode["bold"] "ru" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["be"]["name"] "          - " AnsiCode["bold"] "be" AnsiCode["no bold"] "    │ " \
-            Locale["ig"]["name"] "           - " AnsiCode["bold"] "ig" AnsiCode["no bold"] "  │ " \
-            Locale["sr"]["name"] "    - " AnsiCode["bold"] "sr" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["bn"]["name"] "             - " AnsiCode["bold"] "bn" AnsiCode["no bold"] "    │ " \
-            Locale["id"]["name"] "     - " AnsiCode["bold"] "id" AnsiCode["no bold"] "  │ " \
-            Locale["st"]["name"] "    - " AnsiCode["bold"] "st" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["bs"]["name"] "             - " AnsiCode["bold"] "bs" AnsiCode["no bold"] "    │ " \
-            Locale["ga"]["name"] "          - " AnsiCode["bold"] "ga" AnsiCode["no bold"] "  │ " \
-            Locale["si"]["name"] "    - " AnsiCode["bold"] "si" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["bg"]["name"] "           - " AnsiCode["bold"] "bg" AnsiCode["no bold"] "    │ " \
-            Locale["it"]["name"] "        - " AnsiCode["bold"] "it" AnsiCode["no bold"] "  │ " \
-            Locale["sk"]["name"] "     - " AnsiCode["bold"] "sk" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["ca"]["name"] "             - " AnsiCode["bold"] "ca" AnsiCode["no bold"] "    │ " \
-            Locale["ja"]["name"] "       - " AnsiCode["bold"] "ja" AnsiCode["no bold"] "  │ " \
-            Locale["sl"]["name"] "  - " AnsiCode["bold"] "sl" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["ceb"]["name"] "             - " AnsiCode["bold"] "ceb" AnsiCode["no bold"] "   │ " \
-            Locale["jv"]["name"] "       - " AnsiCode["bold"] "jv" AnsiCode["no bold"] "  │ " \
-            Locale["so"]["name"] "     - " AnsiCode["bold"] "so" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["ny"]["name"] "            - " AnsiCode["bold"] "ny" AnsiCode["no bold"] "    │ " \
-            Locale["kn"]["name"] "        - " AnsiCode["bold"] "kn" AnsiCode["no bold"] "  │ " \
-            Locale["es"]["name"] "    - " AnsiCode["bold"] "es" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["zh-CN"]["name"] "  - " AnsiCode["bold"] "zh-CN" AnsiCode["no bold"] " │ " \
-            Locale["kk"]["name"] "         - " AnsiCode["bold"] "kk" AnsiCode["no bold"] "  │ " \
-            Locale["su"]["name"] "  - " AnsiCode["bold"] "su" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["zh-TW"]["name"] " - " AnsiCode["bold"] "zh-TW" AnsiCode["no bold"] " │ " \
-            Locale["km"]["name"] "          - " AnsiCode["bold"] "km" AnsiCode["no bold"] "  │ " \
-            Locale["sw"]["name"] "    - " AnsiCode["bold"] "sw" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["hr"]["name"] "            - " AnsiCode["bold"] "hr" AnsiCode["no bold"] "    │ " \
-            Locale["ko"]["name"] "         - " AnsiCode["bold"] "ko" AnsiCode["no bold"] "  │ " \
-            Locale["sv"]["name"] "    - " AnsiCode["bold"] "sv" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["cs"]["name"] "               - " AnsiCode["bold"] "cs" AnsiCode["no bold"] "    │ " \
-            Locale["lo"]["name"] "            - " AnsiCode["bold"] "lo" AnsiCode["no bold"] "  │ " \
-            Locale["tg"]["name"] "      - " AnsiCode["bold"] "tg" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["da"]["name"] "              - " AnsiCode["bold"] "da" AnsiCode["no bold"] "    │ " \
-            Locale["la"]["name"] "          - " AnsiCode["bold"] "la" AnsiCode["no bold"] "  │ " \
-            Locale["ta"]["name"] "      - " AnsiCode["bold"] "ta" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["nl"]["name"] "               - " AnsiCode["bold"] "nl" AnsiCode["no bold"] "    │ " \
-            Locale["lv"]["name"] "        - " AnsiCode["bold"] "lv" AnsiCode["no bold"] "  │ " \
-            Locale["te"]["name"] "     - " AnsiCode["bold"] "te" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["en"]["name"] "             - " AnsiCode["bold"] "en" AnsiCode["no bold"] "    │ " \
-            Locale["lt"]["name"] "     - " AnsiCode["bold"] "lt" AnsiCode["no bold"] "  │ " \
-            Locale["th"]["name"] "       - " AnsiCode["bold"] "th" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["eo"]["name"] "           - " AnsiCode["bold"] "eo" AnsiCode["no bold"] "    │ " \
-            Locale["mk"]["name"] "     - " AnsiCode["bold"] "mk" AnsiCode["no bold"] "  │ " \
-            Locale["tr"]["name"] "    - " AnsiCode["bold"] "tr" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["et"]["name"] "            - " AnsiCode["bold"] "et" AnsiCode["no bold"] "    │ " \
-            Locale["mg"]["name"] "       - " AnsiCode["bold"] "mg" AnsiCode["no bold"] "  │ " \
-            Locale["uk"]["name"] "  - " AnsiCode["bold"] "uk" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["tl"]["name"] "            - " AnsiCode["bold"] "tl" AnsiCode["no bold"] "    │ " \
-            Locale["ms"]["name"] "          - " AnsiCode["bold"] "ms" AnsiCode["no bold"] "  │ " \
-            Locale["ur"]["name"] "       - " AnsiCode["bold"] "ur" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["fi"]["name"] "             - " AnsiCode["bold"] "fi" AnsiCode["no bold"] "    │ " \
-            Locale["ml"]["name"] "      - " AnsiCode["bold"] "ml" AnsiCode["no bold"] "  │ " \
-            Locale["uz"]["name"] "      - " AnsiCode["bold"] "uz" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["fr"]["name"] "              - " AnsiCode["bold"] "fr" AnsiCode["no bold"] "    │ " \
-            Locale["mt"]["name"] "        - " AnsiCode["bold"] "mt" AnsiCode["no bold"] "  │ " \
-            Locale["vi"]["name"] " - " AnsiCode["bold"] "vi" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["gl"]["name"] "            - " AnsiCode["bold"] "gl" AnsiCode["no bold"] "    │ " \
-            Locale["mi"]["name"] "          - " AnsiCode["bold"] "mi" AnsiCode["no bold"] "  │ " \
-            Locale["cy"]["name"] "      - " AnsiCode["bold"] "cy" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["ka"]["name"] "            - " AnsiCode["bold"] "ka" AnsiCode["no bold"] "    │ " \
-            Locale["mr"]["name"] "        - " AnsiCode["bold"] "mr" AnsiCode["no bold"] "  │ " \
-            Locale["yi"]["name"] "    - " AnsiCode["bold"] "yi" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["de"]["name"] "              - " AnsiCode["bold"] "de" AnsiCode["no bold"] "    │ " \
-            Locale["my"]["name"] "        - " AnsiCode["bold"] "my" AnsiCode["no bold"] "  │ " \
-            Locale["yo"]["name"] "     - " AnsiCode["bold"] "yo" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["el"]["name"] "               - " AnsiCode["bold"] "el" AnsiCode["no bold"] "    │ " \
-            Locale["mn"]["name"] "      - " AnsiCode["bold"] "mn" AnsiCode["no bold"] "  │ " \
-            Locale["zu"]["name"] "       - " AnsiCode["bold"] "zu" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["gu"]["name"] "            - " AnsiCode["bold"] "gu" AnsiCode["no bold"] "    │ " \
-            Locale["ne"]["name"] "         - " AnsiCode["bold"] "ne" AnsiCode["no bold"] "  │ " \
-            "                │\n" \
-            "│ " Locale["ht"]["name"] "      - " AnsiCode["bold"] "ht" AnsiCode["no bold"] "    │ " \
-            Locale["no"]["name"] "      - " AnsiCode["bold"] "no" AnsiCode["no bold"] "  │ " \
-            "                │\n" \
+        return "┌─────────────────────────────┬──────────────────────┬─────────────────┐" RS\
+            "│ " getName("af") "           - " ansi("bold", "af") "    │ "\
+            getName("ha") "          - " ansi("bold", "ha") "  │ "\
+            getName("fa") "    - " ansi("bold", "fa") " │" RS\
+            "│ " getName("sq") "            - " ansi("bold", "sq") "    │ "\
+            getName("he") "         - " ansi("bold", "he") "  │ "\
+            getName("pl") "     - " ansi("bold", "pl") " │" RS\
+            "│ " getName("ar") "              - " ansi("bold", "ar") "    │ "\
+            getName("hi") "          - " ansi("bold", "hi") "  │ "\
+            getName("pt") " - " ansi("bold", "pt") " │" RS\
+            "│ " getName("hy") "            - " ansi("bold", "hy") "    │ "\
+            getName("hmn") "          - " ansi("bold", "hmn") " │ "\
+            getName("pa") "    - " ansi("bold", "pa") " │" RS\
+            "│ " getName("az") "         - " ansi("bold", "az") "    │ "\
+            getName("hu") "      - " ansi("bold", "hu") "  │ "\
+            getName("ro") "   - " ansi("bold", "ro") " │" RS\
+            "│ " getName("eu") "              - " ansi("bold", "eu") "    │ "\
+            getName("is") "      - " ansi("bold", "is") "  │ "\
+            getName("ru") "    - " ansi("bold", "ru") " │" RS\
+            "│ " getName("be") "          - " ansi("bold", "be") "    │ "\
+            getName("ig") "           - " ansi("bold", "ig") "  │ "\
+            getName("sr") "    - " ansi("bold", "sr") " │" RS\
+            "│ " getName("bn") "             - " ansi("bold", "bn") "    │ "\
+            getName("id") "     - " ansi("bold", "id") "  │ "\
+            getName("st") "    - " ansi("bold", "st") " │" RS\
+            "│ " getName("bs") "             - " ansi("bold", "bs") "    │ "\
+            getName("ga") "          - " ansi("bold", "ga") "  │ "\
+            getName("si") "    - " ansi("bold", "si") " │" RS\
+            "│ " getName("bg") "           - " ansi("bold", "bg") "    │ "\
+            getName("it") "        - " ansi("bold", "it") "  │ "\
+            getName("sk") "     - " ansi("bold", "sk") " │" RS\
+            "│ " getName("ca") "             - " ansi("bold", "ca") "    │ "\
+            getName("ja") "       - " ansi("bold", "ja") "  │ "\
+            getName("sl") "  - " ansi("bold", "sl") " │" RS\
+            "│ " getName("ceb") "             - " ansi("bold", "ceb") "   │ "\
+            getName("jv") "       - " ansi("bold", "jv") "  │ "\
+            getName("so") "     - " ansi("bold", "so") " │" RS\
+            "│ " getName("ny") "            - " ansi("bold", "ny") "    │ "\
+            getName("kn") "        - " ansi("bold", "kn") "  │ "\
+            getName("es") "    - " ansi("bold", "es") " │" RS\
+            "│ " getName("zh-CN") "  - " ansi("bold", "zh-CN") " │ "\
+            getName("kk") "         - " ansi("bold", "kk") "  │ "\
+            getName("su") "  - " ansi("bold", "su") " │" RS\
+            "│ " getName("zh-TW") " - " ansi("bold", "zh-TW") " │ "\
+            getName("km") "          - " ansi("bold", "km") "  │ "\
+            getName("sw") "    - " ansi("bold", "sw") " │" RS\
+            "│ " getName("hr") "            - " ansi("bold", "hr") "    │ "\
+            getName("ko") "         - " ansi("bold", "ko") "  │ "\
+            getName("sv") "    - " ansi("bold", "sv") " │" RS\
+            "│ " getName("cs") "               - " ansi("bold", "cs") "    │ "\
+            getName("lo") "            - " ansi("bold", "lo") "  │ "\
+            getName("tg") "      - " ansi("bold", "tg") " │" RS\
+            "│ " getName("da") "              - " ansi("bold", "da") "    │ "\
+            getName("la") "          - " ansi("bold", "la") "  │ "\
+            getName("ta") "      - " ansi("bold", "ta") " │" RS\
+            "│ " getName("nl") "               - " ansi("bold", "nl") "    │ "\
+            getName("lv") "        - " ansi("bold", "lv") "  │ "\
+            getName("te") "     - " ansi("bold", "te") " │" RS\
+            "│ " getName("en") "             - " ansi("bold", "en") "    │ "\
+            getName("lt") "     - " ansi("bold", "lt") "  │ "\
+            getName("th") "       - " ansi("bold", "th") " │" RS\
+            "│ " getName("eo") "           - " ansi("bold", "eo") "    │ "\
+            getName("mk") "     - " ansi("bold", "mk") "  │ "\
+            getName("tr") "    - " ansi("bold", "tr") " │" RS\
+            "│ " getName("et") "            - " ansi("bold", "et") "    │ "\
+            getName("mg") "       - " ansi("bold", "mg") "  │ "\
+            getName("uk") "  - " ansi("bold", "uk") " │" RS\
+            "│ " getName("tl") "            - " ansi("bold", "tl") "    │ "\
+            getName("ms") "          - " ansi("bold", "ms") "  │ "\
+            getName("ur") "       - " ansi("bold", "ur") " │" RS\
+            "│ " getName("fi") "             - " ansi("bold", "fi") "    │ "\
+            getName("ml") "      - " ansi("bold", "ml") "  │ "\
+            getName("uz") "      - " ansi("bold", "uz") " │" RS\
+            "│ " getName("fr") "              - " ansi("bold", "fr") "    │ "\
+            getName("mt") "        - " ansi("bold", "mt") "  │ "\
+            getName("vi") " - " ansi("bold", "vi") " │" RS\
+            "│ " getName("gl") "            - " ansi("bold", "gl") "    │ "\
+            getName("mi") "          - " ansi("bold", "mi") "  │ "\
+            getName("cy") "      - " ansi("bold", "cy") " │" RS\
+            "│ " getName("ka") "            - " ansi("bold", "ka") "    │ "\
+            getName("mr") "        - " ansi("bold", "mr") "  │ "\
+            getName("yi") "    - " ansi("bold", "yi") " │" RS\
+            "│ " getName("de") "              - " ansi("bold", "de") "    │ "\
+            getName("mn") "      - " ansi("bold", "mn") "  │ "\
+            getName("yo") "     - " ansi("bold", "yo") " │" RS\
+            "│ " getName("el") "               - " ansi("bold", "el") "    │ "\
+            getName("my") "        - " ansi("bold", "my") "  │ "\
+            getName("zu") "       - " ansi("bold", "zu") " │" RS\
+            "│ " getName("gu") "            - " ansi("bold", "gu") "    │ "\
+            getName("ne") "         - " ansi("bold", "ne") "  │ "\
+            "                │" RS\
+            "│ " getName("ht") "      - " ansi("bold", "ht") "    │ "\
+            getName("no") "      - " ansi("bold", "no") "  │ "\
+            "                │" RS\
             "└─────────────────────────────┴──────────────────────┴─────────────────┘"
     else
-        return "┌──────────────────────┬───────────────────────┬─────────────────────┐\n" \
-            "│ " Locale["af"]["display"] "      - " AnsiCode["bold"] "af" AnsiCode["no bold"] "  │ " \
-            Locale["hu"]["display"] "           - " AnsiCode["bold"] "hu" AnsiCode["no bold"] " │ " \
-            Locale["pl"]["display"] "      - " AnsiCode["bold"] "pl" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["ar"]["display"] "        - " AnsiCode["bold"] "ar" AnsiCode["no bold"] "  │ " \
-            Locale["hy"]["display"] "          - " AnsiCode["bold"] "hy" AnsiCode["no bold"] " │ " \
-            Locale["pt"]["display"] "   - " AnsiCode["bold"] "pt" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["az"]["display"] "   - " AnsiCode["bold"] "az" AnsiCode["no bold"] "  │ " \
-            Locale["id"]["display"] " - " AnsiCode["bold"] "id" AnsiCode["no bold"] " │ " \
-            Locale["ro"]["display"] "      - " AnsiCode["bold"] "ro" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["be"]["display"] "     - " AnsiCode["bold"] "be" AnsiCode["no bold"] "  │ " \
-            Locale["ig"]["display"] "             - " AnsiCode["bold"] "ig" AnsiCode["no bold"] " │ " \
-            Locale["ru"]["display"] "     - " AnsiCode["bold"] "ru" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["bg"]["display"] "      - " AnsiCode["bold"] "bg" AnsiCode["no bold"] "  │ " \
-            Locale["is"]["display"] "         - " AnsiCode["bold"] "is" AnsiCode["no bold"] " │ " \
-            Locale["si"]["display"] "        - " AnsiCode["bold"] "si" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["bn"]["display"] "          - " AnsiCode["bold"] "bn" AnsiCode["no bold"] "  │ " \
-            Locale["it"]["display"] "         - " AnsiCode["bold"] "it" AnsiCode["no bold"] " │ " \
-            Locale["sk"]["display"] "  - " AnsiCode["bold"] "sk" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["bs"]["display"] "       - " AnsiCode["bold"] "bs" AnsiCode["no bold"] "  │ " \
-            Locale["ja"]["display"] "           - " AnsiCode["bold"] "ja" AnsiCode["no bold"] " │ " \
-            Locale["sl"]["display"] " - " AnsiCode["bold"] "sl" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["ca"]["display"] "         - " AnsiCode["bold"] "ca" AnsiCode["no bold"] "  │ " \
-            Locale["jv"]["display"] "        - " AnsiCode["bold"] "jv" AnsiCode["no bold"] " │ " \
-            Locale["so"]["display"] "    - " AnsiCode["bold"] "so" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["ceb"]["display"] "        - " AnsiCode["bold"] "ceb" AnsiCode["no bold"] " │ " \
-            Locale["ka"]["display"] "          - " AnsiCode["bold"] "ka" AnsiCode["no bold"] " │ " \
-            Locale["sq"]["display"] "       - " AnsiCode["bold"] "sq" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["cs"]["display"] "        - " AnsiCode["bold"] "cs" AnsiCode["no bold"] "  │ " \
-            Locale["kk"]["display"] "       - " AnsiCode["bold"] "kk" AnsiCode["no bold"] " │ " \
-            Locale["sr"]["display"] "      - " AnsiCode["bold"] "sr" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["cy"]["display"] "        - " AnsiCode["bold"] "cy" AnsiCode["no bold"] "  │ " \
-            Locale["km"]["display"] "         - " AnsiCode["bold"] "km" AnsiCode["no bold"] " │ " \
-            Locale["st"]["display"] "     - " AnsiCode["bold"] "st" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["da"]["display"] "          - " AnsiCode["bold"] "da" AnsiCode["no bold"] "  │ " \
-            Locale["kn"]["display"] "             - " AnsiCode["bold"] "kn" AnsiCode["no bold"] " │ " \
-            Locale["su"]["display"] "  - " AnsiCode["bold"] "su" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["de"]["display"] "        - " AnsiCode["bold"] "de" AnsiCode["no bold"] "  │ " \
-            Locale["ko"]["display"] "           - " AnsiCode["bold"] "ko" AnsiCode["no bold"] " │ " \
-            Locale["sv"]["display"] "     - " AnsiCode["bold"] "sv" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["el"]["display"] "       - " AnsiCode["bold"] "el" AnsiCode["no bold"] "  │ " \
-            Locale["la"]["display"] "           - " AnsiCode["bold"] "la" AnsiCode["no bold"] " │ " \
-            Locale["sw"]["display"] "   - " AnsiCode["bold"] "sw" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["en"]["display"] "        - " AnsiCode["bold"] "en" AnsiCode["no bold"] "  │ " \
-            Locale["lo"]["display"] "              - " AnsiCode["bold"] "lo" AnsiCode["no bold"] " │ " \
-            Locale["ta"]["display"] "        - " AnsiCode["bold"] "ta" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["eo"]["display"] "      - " AnsiCode["bold"] "eo" AnsiCode["no bold"] "  │ " \
-            Locale["lt"]["display"] "         - " AnsiCode["bold"] "lt" AnsiCode["no bold"] " │ " \
-            Locale["te"]["display"] "       - " AnsiCode["bold"] "te" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["es"]["display"] "        - " AnsiCode["bold"] "es" AnsiCode["no bold"] "  │ " \
-            Locale["lv"]["display"] "         - " AnsiCode["bold"] "lv" AnsiCode["no bold"] " │ " \
-            Locale["tg"]["display"] "      - " AnsiCode["bold"] "tg" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["et"]["display"] "          - " AnsiCode["bold"] "et" AnsiCode["no bold"] "  │ " \
-            Locale["mg"]["display"] "         - " AnsiCode["bold"] "mg" AnsiCode["no bold"] " │ " \
-            Locale["th"]["display"] "         - " AnsiCode["bold"] "th" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["eu"]["display"] "        - " AnsiCode["bold"] "eu" AnsiCode["no bold"] "  │ " \
-            Locale["mi"]["display"] "            - " AnsiCode["bold"] "mi" AnsiCode["no bold"] " │ " \
-            Locale["tl"]["display"] "     - " AnsiCode["bold"] "tl" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["fa"]["display"] "          - " AnsiCode["bold"] "fa" AnsiCode["no bold"] "  │ " \
-            Locale["mk"]["display"] "       - " AnsiCode["bold"] "mk" AnsiCode["no bold"] " │ " \
-            Locale["tr"]["display"] "      - " AnsiCode["bold"] "tr" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["fi"]["display"] "          - " AnsiCode["bold"] "fi" AnsiCode["no bold"] "  │ " \
-            Locale["ml"]["display"] "           - " AnsiCode["bold"] "ml" AnsiCode["no bold"] " │ " \
-            Locale["uk"]["display"] "  - " AnsiCode["bold"] "uk" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["fr"]["display"] "       - " AnsiCode["bold"] "fr" AnsiCode["no bold"] "  │ " \
-            Locale["mn"]["display"] "           - " AnsiCode["bold"] "mn" AnsiCode["no bold"] " │ " \
-            Locale["ur"]["display"] "        - " AnsiCode["bold"] "ur" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["ga"]["display"] "        - " AnsiCode["bold"] "ga" AnsiCode["no bold"] "  │ " \
-            Locale["mr"]["display"] "            - " AnsiCode["bold"] "mr" AnsiCode["no bold"] " │ " \
-            Locale["uz"]["display"] " - " AnsiCode["bold"] "uz" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["gl"]["display"] "         - " AnsiCode["bold"] "gl" AnsiCode["no bold"] "  │ " \
-            Locale["ms"]["display"] "    - " AnsiCode["bold"] "ms" AnsiCode["no bold"] " │ " \
-            Locale["vi"]["display"] "  - " AnsiCode["bold"] "vi" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["gu"]["display"] "         - " AnsiCode["bold"] "gu" AnsiCode["no bold"] "  │ " \
-            Locale["mt"]["display"] "            - " AnsiCode["bold"] "mt" AnsiCode["no bold"] " │ " \
-            Locale["yi"]["display"] "       - " AnsiCode["bold"] "yi" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["ha"]["display"] "          - " AnsiCode["bold"] "ha" AnsiCode["no bold"] "  │ " \
-            Locale["my"]["display"] "          - " AnsiCode["bold"] "my" AnsiCode["no bold"] " │ " \
-            Locale["yo"]["display"] "      - " AnsiCode["bold"] "yo" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["he"]["display"] "          - " AnsiCode["bold"] "he" AnsiCode["no bold"] "  │ " \
-            Locale["ne"]["display"] "            - " AnsiCode["bold"] "ne" AnsiCode["no bold"] " │ " \
-            Locale["zh-CN"]["display"] "    - " AnsiCode["bold"] "zh-CN" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["hi"]["display"] "          - " AnsiCode["bold"] "hi" AnsiCode["no bold"] "  │ " \
-            Locale["nl"]["display"] "       - " AnsiCode["bold"] "nl" AnsiCode["no bold"] " │ " \
-            Locale["zh-TW"]["display"] "    - " AnsiCode["bold"] "zh-TW" AnsiCode["no bold"] " │\n" \
-            "│ " Locale["hmn"]["display"] "          - " AnsiCode["bold"] "hmn" AnsiCode["no bold"] " │ " \
-            Locale["no"]["display"] "            - " AnsiCode["bold"] "no" AnsiCode["no bold"] " │ " \
-            Locale["zu"]["display"] "     - " AnsiCode["bold"] "zu" AnsiCode["no bold"] "    │\n" \
-            "│ " Locale["hr"]["display"] "       - " AnsiCode["bold"] "hr" AnsiCode["no bold"] "  │ " \
-            Locale["ny"]["display"] "           - " AnsiCode["bold"] "ny" AnsiCode["no bold"] " │ " \
-            "                    │\n" \
-            "│ " Locale["ht"]["display"] " - " AnsiCode["bold"] "ht" AnsiCode["no bold"] "  │ " \
-            Locale["pa"]["display"] "            - " AnsiCode["bold"] "pa" AnsiCode["no bold"] " │ " \
-            "                    │\n" \
+        return "┌──────────────────────┬───────────────────────┬─────────────────────┐" RS\
+            "│ " getDisplay("af") "      - " ansi("bold", "af") "  │ "\
+            getDisplay("hu") "           - " ansi("bold", "hu") " │ "\
+            getDisplay("pl") "      - " ansi("bold", "pl") "    │" RS\
+            "│ " getDisplay("ar") "        - " ansi("bold", "ar") "  │ "\
+            getDisplay("hy") "          - " ansi("bold", "hy") " │ "\
+            getDisplay("pt") "   - " ansi("bold", "pt") "    │" RS\
+            "│ " getDisplay("az") "   - " ansi("bold", "az") "  │ "\
+            getDisplay("id") " - " ansi("bold", "id") " │ "\
+            getDisplay("ro") "      - " ansi("bold", "ro") "    │" RS\
+            "│ " getDisplay("be") "     - " ansi("bold", "be") "  │ "\
+            getDisplay("ig") "             - " ansi("bold", "ig") " │ "\
+            getDisplay("ru") "     - " ansi("bold", "ru") "    │" RS\
+            "│ " getDisplay("bg") "      - " ansi("bold", "bg") "  │ "\
+            getDisplay("is") "         - " ansi("bold", "is") " │ "\
+            getDisplay("si") "        - " ansi("bold", "si") "    │" RS\
+            "│ " getDisplay("bn") "          - " ansi("bold", "bn") "  │ "\
+            getDisplay("it") "         - " ansi("bold", "it") " │ "\
+            getDisplay("sk") "  - " ansi("bold", "sk") "    │" RS\
+            "│ " getDisplay("bs") "       - " ansi("bold", "bs") "  │ "\
+            getDisplay("ja") "           - " ansi("bold", "ja") " │ "\
+            getDisplay("sl") " - " ansi("bold", "sl") "    │" RS\
+            "│ " getDisplay("ca") "         - " ansi("bold", "ca") "  │ "\
+            getDisplay("jv") "        - " ansi("bold", "jv") " │ "\
+            getDisplay("so") "    - " ansi("bold", "so") "    │" RS\
+            "│ " getDisplay("ceb") "        - " ansi("bold", "ceb") " │ "\
+            getDisplay("ka") "          - " ansi("bold", "ka") " │ "\
+            getDisplay("sq") "       - " ansi("bold", "sq") "    │" RS\
+            "│ " getDisplay("cs") "        - " ansi("bold", "cs") "  │ "\
+            getDisplay("kk") "       - " ansi("bold", "kk") " │ "\
+            getDisplay("sr") "      - " ansi("bold", "sr") "    │" RS\
+            "│ " getDisplay("cy") "        - " ansi("bold", "cy") "  │ "\
+            getDisplay("km") "         - " ansi("bold", "km") " │ "\
+            getDisplay("st") "     - " ansi("bold", "st") "    │" RS\
+            "│ " getDisplay("da") "          - " ansi("bold", "da") "  │ "\
+            getDisplay("kn") "             - " ansi("bold", "kn") " │ "\
+            getDisplay("su") "  - " ansi("bold", "su") "    │" RS\
+            "│ " getDisplay("de") "        - " ansi("bold", "de") "  │ "\
+            getDisplay("ko") "           - " ansi("bold", "ko") " │ "\
+            getDisplay("sv") "     - " ansi("bold", "sv") "    │" RS\
+            "│ " getDisplay("el") "       - " ansi("bold", "el") "  │ "\
+            getDisplay("la") "           - " ansi("bold", "la") " │ "\
+            getDisplay("sw") "   - " ansi("bold", "sw") "    │" RS\
+            "│ " getDisplay("en") "        - " ansi("bold", "en") "  │ "\
+            getDisplay("lo") "              - " ansi("bold", "lo") " │ "\
+            getDisplay("ta") "        - " ansi("bold", "ta") "    │" RS\
+            "│ " getDisplay("eo") "      - " ansi("bold", "eo") "  │ "\
+            getDisplay("lt") "         - " ansi("bold", "lt") " │ "\
+            getDisplay("te") "       - " ansi("bold", "te") "    │" RS\
+            "│ " getDisplay("es") "        - " ansi("bold", "es") "  │ "\
+            getDisplay("lv") "         - " ansi("bold", "lv") " │ "\
+            getDisplay("tg") "      - " ansi("bold", "tg") "    │" RS\
+            "│ " getDisplay("et") "          - " ansi("bold", "et") "  │ "\
+            getDisplay("mg") "         - " ansi("bold", "mg") " │ "\
+            getDisplay("th") "         - " ansi("bold", "th") "    │" RS\
+            "│ " getDisplay("eu") "        - " ansi("bold", "eu") "  │ "\
+            getDisplay("mi") "            - " ansi("bold", "mi") " │ "\
+            getDisplay("tl") "     - " ansi("bold", "tl") "    │" RS\
+            "│ " getDisplay("fa") "          - " ansi("bold", "fa") "  │ "\
+            getDisplay("mk") "       - " ansi("bold", "mk") " │ "\
+            getDisplay("tr") "      - " ansi("bold", "tr") "    │" RS\
+            "│ " getDisplay("fi") "          - " ansi("bold", "fi") "  │ "\
+            getDisplay("ml") "           - " ansi("bold", "ml") " │ "\
+            getDisplay("uk") "  - " ansi("bold", "uk") "    │" RS\
+            "│ " getDisplay("fr") "       - " ansi("bold", "fr") "  │ "\
+            getDisplay("mn") "           - " ansi("bold", "mn") " │ "\
+            getDisplay("ur") "        - " ansi("bold", "ur") "    │" RS\
+            "│ " getDisplay("ga") "        - " ansi("bold", "ga") "  │ "\
+            getDisplay("mr") "            - " ansi("bold", "mr") " │ "\
+            getDisplay("uz") " - " ansi("bold", "uz") "    │" RS\
+            "│ " getDisplay("gl") "         - " ansi("bold", "gl") "  │ "\
+            getDisplay("ms") "    - " ansi("bold", "ms") " │ "\
+            getDisplay("vi") "  - " ansi("bold", "vi") "    │" RS\
+            "│ " getDisplay("gu") "         - " ansi("bold", "gu") "  │ "\
+            getDisplay("mt") "            - " ansi("bold", "mt") " │ "\
+            getDisplay("yi") "       - " ansi("bold", "yi") "    │" RS\
+            "│ " getDisplay("ha") "          - " ansi("bold", "ha") "  │ "\
+            getDisplay("my") "          - " ansi("bold", "my") " │ "\
+            getDisplay("yo") "      - " ansi("bold", "yo") "    │" RS\
+            "│ " getDisplay("he") "          - " ansi("bold", "he") "  │ "\
+            getDisplay("ne") "            - " ansi("bold", "ne") " │ "\
+            getDisplay("zh-CN") "    - " ansi("bold", "zh-CN") " │" RS\
+            "│ " getDisplay("hi") "          - " ansi("bold", "hi") "  │ "\
+            getDisplay("nl") "       - " ansi("bold", "nl") " │ "\
+            getDisplay("zh-TW") "    - " ansi("bold", "zh-TW") " │" RS\
+            "│ " getDisplay("hmn") "          - " ansi("bold", "hmn") " │ "\
+            getDisplay("no") "            - " ansi("bold", "no") " │ "\
+            getDisplay("zu") "     - " ansi("bold", "zu") "    │" RS\
+            "│ " getDisplay("hr") "       - " ansi("bold", "hr") "  │ "\
+            getDisplay("ny") "           - " ansi("bold", "ny") " │ "\
+            "                    │" RS\
+            "│ " getDisplay("ht") " - " ansi("bold", "ht") "  │ "\
+            getDisplay("pa") "            - " ansi("bold", "pa") " │ "\
+            "                    │" RS\
             "└──────────────────────┴───────────────────────┴─────────────────────┘"
 }
-
-# Return help message as a string.
 function getHelp() {
-    return "Usage: " Command " [options] [source]:[target] [" AnsiCode["underline"] "text" AnsiCode["no underline"] "] ...\n" \
-        "       " Command " [options] [source]:[target1]+[target2]+... [" AnsiCode["underline"] "text" AnsiCode["no underline"] "] ...\n\n" \
-        "Options:\n" \
-        "  " AnsiCode["bold"] "-V, -version" AnsiCode["no bold"] "\n    Print version and exit.\n" \
-        "  " AnsiCode["bold"] "-H, -h, -help" AnsiCode["no bold"] "\n    Print this help message and exit.\n" \
-        "  " AnsiCode["bold"] "-M, -m, -manual" AnsiCode["no bold"] "\n    Show the manual.\n" \
-        "  " AnsiCode["bold"] "-r, -reference" AnsiCode["no bold"] "\n    Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.\n" \
-        "  " AnsiCode["bold"] "-R, -reference-english" AnsiCode["no bold"] "\n    Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.\n" \
-        "  " AnsiCode["bold"] "-v, -verbose" AnsiCode["no bold"] "\n    Verbose mode. (default)\n" \
-        "  " AnsiCode["bold"] "-b, -brief" AnsiCode["no bold"] "\n    Brief mode.\n" \
-        "  " AnsiCode["bold"] "-no-ansi" AnsiCode["no bold"] "\n    Don't use ANSI escape codes in the translation.\n" \
-        "  " AnsiCode["bold"] "-w [num], -width [num]" AnsiCode["no bold"] "\n    Specify the screen width for padding when displaying right-to-left languages.\n" \
-        "  " AnsiCode["bold"] "-browser [program]" AnsiCode["no bold"] "\n    Specify the web browser to use.\n" \
-        "  " AnsiCode["bold"] "-p, -play" AnsiCode["no bold"] "\n    Listen to the translation.\n" \
-        "  " AnsiCode["bold"] "-player [program]" AnsiCode["no bold"] "\n    Specify the command-line audio player to use, and listen to the translation.\n" \
-        "  " AnsiCode["bold"] "-x [proxy], -proxy [proxy]" AnsiCode["no bold"] "\n    Use proxy on given port.\n" \
-        "  " AnsiCode["bold"] "-I, -interactive" AnsiCode["no bold"] "\n    Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).\n" \
-        "  " AnsiCode["bold"] "-no-rlwrap" AnsiCode["no bold"] "\n    Don't invoke `rlwrap` when starting an interactive shell with `-I`.\n" \
-        "  " AnsiCode["bold"] "-E, -emacs" AnsiCode["no bold"] "\n    Start an interactive shell within GNU Emacs, invoking `emacs`.\n" \
-        "  " AnsiCode["bold"] "-prompt [prompt_string]" AnsiCode["no bold"] "\n    Customize your prompt string in the interactive shell.\n" \
-        "  " AnsiCode["bold"] "-prompt-color [color_code]" AnsiCode["no bold"] "\n    Customize your prompt color in the interactive shell.\n" \
-        "  " AnsiCode["bold"] "-i [file], -input [file]" AnsiCode["no bold"] "\n    Specify the input file name.\n" \
-        "  " AnsiCode["bold"] "-o [file], -output [file]" AnsiCode["no bold"] "\n    Specify the output file name.\n" \
-        "  " AnsiCode["bold"] "-l [code], -lang [code]" AnsiCode["no bold"] "\n    Specify your own, native language (\"home/host language\").\n" \
-        "  " AnsiCode["bold"] "-s [code], -source [code]" AnsiCode["no bold"] "\n    Specify the source language (language of the original text).\n" \
-        "  " AnsiCode["bold"] "-t [codes], -target [codes]" AnsiCode["no bold"] "\n    Specify the target language(s) (language(s) of the translated text).\n" \
-        "\nSee the man page " Command "(1) for more information."
+    return "Usage:\t" Command " [options] [source]:[target] [" ansi("underline", "text") "] ..." RS\
+        "\t" Command " [options] [source]:[target1]+[target2]+... [" ansi("underline", "text") "] ..." RS RS\
+        "Options:" RS\
+        ansi("bold", "-V, -version") RS\
+        ins(1, "Print version and exit.") RS\
+        ansi("bold", "-H, -h, -help") RS\
+        ins(1, "Print this help message and exit.") RS\
+        ansi("bold", "-M, -m, -manual") RS\
+        ins(1, "Show the manual.") RS\
+        ansi("bold", "-r, -reference") RS\
+        ins(1, "Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.") RS\
+        ansi("bold", "-R, -reference-english") RS\
+        ins(1, "Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.") RS\
+        ansi("bold", "-v, -verbose") RS\
+        ins(1, "Verbose mode. (default)") RS\
+        ansi("bold", "-b, -brief") RS\
+        ins(1, "Brief mode.") RS\
+        ansi("bold", "-show-original [yes|no]") RS\
+        ins(1, "Show original text or not. (default: yes)") RS\
+        ansi("bold", "-show-original-phonetics [yes|no]") RS\
+        ins(1, "Show phonetic notation of original text or not. (default: yes)") RS\
+        ansi("bold", "-show-translation [yes|no]") RS\
+        ins(1, "Show translation or not. (default: yes)") RS\
+        ansi("bold", "-show-translation-phonetics [yes|no]") RS\
+        ins(1, "Show phonetic notation of translation or not. (default: yes)") RS\
+        ansi("bold", "-show-prompt-message [yes|no]") RS\
+        ins(1, "Show prompt message or not. (default: yes)") RS\
+        ansi("bold", "-show-languages [yes|no]") RS\
+        ins(1, "Show source and target languages or not. (default: yes)") RS\
+        ansi("bold", "-show-original-dictionary [yes|no]") RS\
+        ins(1, "Show dictionary entry of original text or not. (default: no)") RS\
+        ansi("bold", "-show-dictionary [yes|no]") RS\
+        ins(1, "Show dictionary entry of translation or not. (default: yes)") RS\
+        ansi("bold", "-show-alternatives [yes|no]") RS\
+        ins(1, "Show alternative translations or not. (default: yes)") RS\
+        ansi("bold", "-no-ansi") RS\
+        ins(1, "Don't use ANSI escape codes in the translation.") RS\
+        ansi("bold", "-w [num], -width [num]") RS\
+        ins(1, "Specify the screen width for padding when displaying right-to-left languages.") RS\
+        ansi("bold", "-indent [num]") RS\
+        ins(1, "Specify the size of indent (in terms of spaces). (default: 4)") RS\
+        ansi("bold", "-browser [program]") RS\
+        ins(1, "Specify the web browser to use.") RS\
+        ansi("bold", "-p, -play") RS\
+        ins(1, "Listen to the translation.") RS\
+        ansi("bold", "-player [program]") RS\
+        ins(1, "Specify the command-line audio player to use, and listen to the translation.") RS\
+        ansi("bold", "-x [proxy], -proxy [proxy]") RS\
+        ins(1, "Use proxy on given port.") RS\
+        ansi("bold", "-I, -interactive") RS\
+        ins(1, "Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).") RS\
+        ansi("bold", "-no-rlwrap") RS\
+        ins(1, "Don't invoke `rlwrap` when starting an interactive shell with `-I`.") RS\
+        ansi("bold", "-E, -emacs") RS\
+        ins(1, "Start an interactive shell within GNU Emacs, invoking `emacs`.") RS\
+        ansi("bold", "-prompt [prompt_string]") RS\
+        ins(1, "Customize your prompt string in the interactive shell.") RS\
+        ansi("bold", "-prompt-color [color_code]") RS\
+        ins(1, "Customize your prompt color in the interactive shell.") RS\
+        ansi("bold", "-i [file], -input [file]") RS\
+        ins(1, "Specify the input file name.") RS\
+        ansi("bold", "-o [file], -output [file]") RS\
+        ins(1, "Specify the output file name.") RS\
+        ansi("bold", "-l [code], -lang [code]") RS\
+        ins(1, "Specify your own, native language (\"home/host language\").") RS\
+        ansi("bold", "-s [code], -source [code]") RS\
+        ins(1, "Specify the source language (language of the original text).") RS\
+        ansi("bold", "-t [codes], -target [codes]") RS\
+        ins(1, "Specify the target language(s) (language(s) of the translated text).") RS\
+        RS "See the man page " Command "(1) for more information."
 }
-####################################################################
-# PLTokenizer.awk                                                  #
-####################################################################
-
-# Tokenize a string.
 function plTokenize(returnTokens, string,
                     delimiters,
                     newlines,
@@ -1180,7 +1698,6 @@ function plTokenize(returnTokens, string,
                     lineComments,
                     reservedOperators,
                     reservedPatterns,
-                    ####
                     blockCommenting,
                     c,
                     currentToken,
@@ -1194,52 +1711,50 @@ function plTokenize(returnTokens, string,
                     tempGroup,
                     tempPattern,
                     tempString) {
-    # Default parameters
     if (!delimiters[0]) {
-        delimiters[0] = " "  # whitespace
-        delimiters[1] = "\t" # horizontal tab
-        delimiters[2] = "\v" # vertical tab
+        delimiters[0] = " "
+        delimiters[1] = "\t"
+        delimiters[2] = "\v"
     }
     if (!newlines[0]) {
-        newlines[0] = "\n" # line feed
-        newlines[1] = "\r" # carriage return
+        newlines[0] = "\n"
+        newlines[1] = "\r"
     }
     if (!quotes[0]) {
-        quotes[0] = "\"" # double quote
+        quotes[0] = "\""
     }
     if (!escapeChars[0]) {
-        escapeChars[0] = "\\" # backslash
+        escapeChars[0] = "\\"
     }
     if (!leftBlockComments[0]) {
-        leftBlockComments[0] = "#|" # Lisp-style extended comment (open)
-        leftBlockComments[1] = "/*" # C-style comment (open)
-        leftBlockComments[2] = "(*" # ML-style comment (open)
+        leftBlockComments[0] = "#|"
+        leftBlockComments[1] = "/*"
+        leftBlockComments[2] = "(*"
     }
     if (!rightBlockComments[0]) {
-        rightBlockComments[0] = "|#" # Lisp-style extended comment (close)
-        rightBlockComments[1] = "*/" # C-style comment (close)
-        rightBlockComments[2] = "*)" # ML-style comment (close)
+        rightBlockComments[0] = "|#"
+        rightBlockComments[1] = "*/"
+        rightBlockComments[2] = "*)"
     }
     if (!lineComments[0]) {
-        lineComments[0] = ";"  # Lisp-style line comment
-        lineComments[1] = "//" # C++-style line comment
-        lineComments[2] = "#"  # hash comment
+        lineComments[0] = ";"
+        lineComments[1] = "//"
+        lineComments[2] = "#"
     }
     if (!reservedOperators[0]) {
-        reservedOperators[0] = "(" #  left parenthesis
-        reservedOperators[1] = ")" # right parenthesis
-        reservedOperators[2] = "[" #  left bracket
-        reservedOperators[3] = "]" # right bracket
-        reservedOperators[4] = "{" #  left brace
-        reservedOperators[5] = "}" # right brace
-        reservedOperators[6] = "," # comma
+        reservedOperators[0] = "("
+        reservedOperators[1] = ")"
+        reservedOperators[2] = "["
+        reservedOperators[3] = "]"
+        reservedOperators[4] = "{"
+        reservedOperators[5] = "}"
+        reservedOperators[6] = ","
     }
     if (!reservedPatterns[0]) {
-        reservedPatterns[0] = "[+-]?((0|[1-9][0-9]*)|[.][0-9]*|(0|[1-9][0-9]*)[.][0-9]*)([Ee][+-]?[0-9]+)?" # numeric literal (scientific notation possible)
-        reservedPatterns[1] = "[+-]?0[0-7]+([.][0-7]*)?" # numeric literal (octal)
-        reservedPatterns[2] = "[+-]?0[Xx][0-9A-Fa-f]+([.][0-9A-Fa-f]*)?" # numeric literal (hexadecimal)
+        reservedPatterns[0] = "[+-]?((0|[1-9][0-9]*)|[.][0-9]*|(0|[1-9][0-9]*)[.][0-9]*)([Ee][+-]?[0-9]+)?"
+        reservedPatterns[1] = "[+-]?0[0-7]+([.][0-7]*)?"
+        reservedPatterns[2] = "[+-]?0[Xx][0-9A-Fa-f]+([.][0-9A-Fa-f]*)?"
     }
-
     split(string, s, "")
     currentToken = ""
     quoting = escaping = blockCommenting = lineCommenting = 0
@@ -1248,158 +1763,104 @@ function plTokenize(returnTokens, string,
     while (i <= length(s)) {
         c = s[i]
         r = substr(string, i)
-
         if (blockCommenting) {
             if (tempString = startsWithAny(r, rightBlockComments))
-                blockCommenting = 0 # block comment ends
-
+                blockCommenting = 0
             i++
-
         } else if (lineCommenting) {
             if (belongsTo(c, newlines))
-                lineCommenting = 0 # line comment ends
-
+                lineCommenting = 0
             i++
-
         } else if (quoting) {
             currentToken = currentToken c
-
             if (escaping) {
-                escaping = 0 # escape ends
-
+                escaping = 0
             } else {
                 if (belongsTo(c, quotes)) {
-                    # Finish the current token
                     if (currentToken) {
                         returnTokens[p++] = currentToken
                         currentToken = ""
                     }
-
-                    quoting = 0 # quotation ends
-
+                    quoting = 0
                 } else if (belongsTo(c, escapeChars)) {
-                    escaping = 1 # escape begins
-
+                    escaping = 1
                 } else {
-                    # Continue
                 }
             }
-
             i++
-
         } else {
             if (belongsTo(c, delimiters) || belongsTo(c, newlines)) {
-                # Finish the current token
                 if (currentToken) {
                     returnTokens[p++] = currentToken
                     currentToken = ""
                 }
-
                 i++
-
             } else if (belongsTo(c, quotes)) {
-                # Finish the current token
                 if (currentToken) {
                     returnTokens[p++] = currentToken
                 }
-
                 currentToken = c
-
-                quoting = 1 # quotation begins
-
+                quoting = 1
                 i++
-
             } else if (tempString = startsWithAny(r, leftBlockComments)) {
-                # Finish the current token
                 if (currentToken) {
                     returnTokens[p++] = currentToken
                     currentToken = ""
                 }
-
-                blockCommenting = 1 # block comment begins
-
+                blockCommenting = 1
                 i += length(tempString)
-
             } else if (tempString = startsWithAny(r, lineComments)) {
-                # Finish the current token
                 if (currentToken) {
                     returnTokens[p++] = currentToken
                     currentToken = ""
                 }
-
-                lineCommenting = 1 # line comment begins
-
+                lineCommenting = 1
                 i += length(tempString)
-
             } else if (tempString = startsWithAny(r, reservedOperators)) {
-                # Finish the current token
                 if (currentToken) {
                     returnTokens[p++] = currentToken
                     currentToken = ""
                 }
-
-                # Reserve token
                 returnTokens[p++] = tempString
-
                 i += length(tempString)
-
             } else if (tempPattern = matchesAny(r, reservedPatterns)) {
-                # Finish the current token
                 if (currentToken) {
                     returnTokens[p++] = currentToken
                     currentToken = ""
                 }
-
-                # Reserve token
                 match(r, "^" tempPattern, tempGroup)
                 returnTokens[p++] = tempGroup[0]
-
                 i += length(tempGroup[0])
-
             } else {
-                # Continue with the current token
                 currentToken = currentToken c
-
                 i++
             }
         }
     }
-
-    # Finish the last token
     if (currentToken)
         returnTokens[p++] = currentToken
-
 }
-####################################################################
-# PLParser.awk                                                     #
-####################################################################
-
-# Parse a list of tokens and return an AST.
 function plParse(returnAST, tokens,
                  leftBrackets,
                  rightBrackets,
                  separators,
-                 ####
                  i, j, key, p, stack, token) {
-    # Default parameters
     if (!leftBrackets[0]) {
-        leftBrackets[0] = "(" # left parenthesis
-        leftBrackets[1] = "[" # left bracket
-        leftBrackets[2] = "{" # left brace
+        leftBrackets[0] = "("
+        leftBrackets[1] = "["
+        leftBrackets[2] = "{"
     }
     if (!rightBrackets[0]) {
-        rightBrackets[0] = ")" # right parenthesis
-        rightBrackets[1] = "]" # right bracket
-        rightBrackets[2] = "}" # right brace
+        rightBrackets[0] = ")"
+        rightBrackets[1] = "]"
+        rightBrackets[2] = "}"
     }
     if (!separators[0]) {
-        separators[0] = "," # comma
+        separators[0] = ","
     }
-
     stack[p = 0] = 0
     for (i = 0; i < length(tokens); i++) {
         token = tokens[i]
-
         if (belongsTo(token, leftBrackets))
             stack[++p] = 0
         else if (belongsTo(token, rightBrackets))
@@ -1414,31 +1875,22 @@ function plParse(returnAST, tokens,
         }
     }
 }
-####################################################################
-# Translate.awk                                                    #
-####################################################################
-
-# Detect external audio player (mplayer, mpv, mpg123).
 function initAudioPlayer() {
-    AudioPlayer = !system("mplayer >/dev/null 2>/dev/null") ?
+    AudioPlayer = !system("mplayer" SUPOUT SUPERR) ?
         "mplayer" :
-        (!system("mpv >/dev/null 2>/dev/null") ?
+        (!system("mpv" SUPOUT SUPERR) ?
          "mpv" :
-         (!system("mpg123 >/dev/null 2>/dev/null") ?
+         (!system("mpg123 --version" SUPOUT SUPERR) ?
           "mpg123" :
           ""))
 }
-
-# Detect external speech synthesizer (say, espeak).
 function initSpeechSynthesizer() {
-    SpeechSynthesizer = !system("say '' >/dev/null 2>/dev/null") ?
+    SpeechSynthesizer = !system("say ''" SUPOUT SUPERR) ?
         "say" :
-        (!system("espeak '' >/dev/null 2>/dev/null") ?
+        (!system("espeak ''" SUPOUT SUPERR) ?
          "espeak" :
          "")
 }
-
-# Initialize `HttpService`.
 function initHttpService() {
     HttpProtocol = "http://"
     HttpHost = "translate.google.com"
@@ -1452,84 +1904,70 @@ function initHttpService() {
         HttpPathPrefix = ""
     }
 }
-
-# Pre-process string (URL-encode before send).
 function preprocess(text) {
     return quote(text)
 }
-
-# Post-process string (remove any redundant whitespace).
 function postprocess(text) {
     text = gensub(/ ([.,;:?!"])/, "\\1", "g", text)
     text = gensub(/(["]) /, "\\1", "g", text)
     return text
 }
-
-# Send an HTTP request and get response from Google Translate.
 function getResponse(text, sl, tl, hl,    content, url) {
-    url = HttpPathPrefix "/translate_a/single?client=t"                 \
-        "&ie=UTF-8&oe=UTF-8"                                            \
-        "&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at"  \
+    url = HttpPathPrefix "/translate_a/single?client=t"\
+        "&ie=UTF-8&oe=UTF-8"\
+        "&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at"\
         "&q=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl
-
-    print "GET " url " HTTP/1.1\n"             \
-          "Host: " HttpHost "\n"               \
+    print "GET " url " HTTP/1.1\n"\
+          "Host: " HttpHost "\n"\
           "Connection: close\n" |& HttpService
     while ((HttpService |& getline) > 0)
         content = $0
     close(HttpService)
-
     return assert(content, "[ERROR] Null response.")
 }
-
-# Play using Google Text-to-Speech engine.
 function play(text, tl,    url) {
-    url = HttpProtocol HttpHost "/translate_tts?ie=UTF-8"       \
+    url = HttpProtocol HttpHost "/translate_tts?ie=UTF-8"\
         "&tl=" tl "&q=" preprocess(text)
-
-    # Don't use getline from pipe here - the same pipe will be run only once for each AWK script!
-    system(Option["player"] " '" url "' >/dev/null 2>/dev/null")
+    system(Option["player"] " " parameterize(url) SUPOUT SUPERR)
 }
-
-# Get the translation of a string.
 function getTranslation(text, sl, tl, hl,
                         isVerbose, toSpeech, returnPlaylist,
-                        ####
-                        altTranslations, article, ast, content,
-                        explanation, group, i, il, ils,
-                        isPhonetic, j, original, phonetics,
-                        r, rtl, saveSortedIn, segments,
-                        temp, tokens, translation, translations,
-                        word, words, wordClasses) {
+                        r,
+                        content, tokens, ast,
+                        il, ils, isPhonetic,
+                        article, example, explanation, ref, word,
+                        translation, translations, phonetics,
+                        wordClasses, words, segments, altTranslations,
+                        original, oPhonetics, oWordClasses, oWords,
+                        oRefs, oSynonyms, oExamples, oSeeAlso,
+                        wShowOriginal, wShowOriginalPhonetics,
+                        wShowTranslation, wShowTranslationPhonetics,
+                        wShowPromptMessage, wShowLanguages,
+                        wShowOriginalDictionary, wShowDictionary,
+                        wShowAlternatives,
+                        hasWordClasses, hasAltTranslations,
+                        i, j, k, group, temp, saveSortedIn) {
     isPhonetic = match(tl, /^@/)
     tl = substr(tl, 1 + isPhonetic)
-
     if (!getCode(tl)) {
-        # Check if target language is supported
         w("[WARNING] Unknown target language code: " tl)
-    } else if (getCode(tl) != "auto" && rtl = Locale[getCode(tl)]["rtl"]) {
-        # Check if target language is RTL
+    } else if (isRTL(tl)) {
         if (!FriBidi)
-            w("[WARNING] " Locale[getCode(tl)]["name"] " is a right-to-left language, but GNU FriBidi is not found on your system.\nText might be displayed incorrectly.")
+            w("[WARNING] " getName(tl) " is a right-to-left language, but FriBidi cannot be found.")
     }
-
     content = getResponse(text, sl, tl, hl)
-
     plTokenize(tokens, content)
     plParse(ast, tokens)
-
-    if (!anything(ast)) {
-        e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
-        ExitCode = 1
-    }
-
-    # Debug mode
     if (Option["debug"]) {
         d(content)
         da(tokens, "tokens[%s]='%s'")
         da(ast, "ast[%s]='%s'")
     }
-
+    if (!anything(ast)) {
+        e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
+        ExitCode = 1
+        return
+    }
     saveSortedIn = PROCINFO["sorted_in"]
     PROCINFO["sorted_in"] = "@ind_num_asc"
     for (i in ast) {
@@ -1539,173 +1977,239 @@ function getTranslation(text, sl, tl, hl,
             append(original, literal(ast[i]))
         if (i ~ "^0" SUBSEP "0" SUBSEP "[[:digit:]]+" SUBSEP "2$")
             append(phonetics, literal(ast[i]))
-
+        if (i ~ "^0" SUBSEP "0" SUBSEP "[[:digit:]]+" SUBSEP "3$")
+            append(oPhonetics, literal(ast[i]))
         if (match(i, "^0" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
             wordClasses[group[1]] = literal(ast[i])
-
         if (match(i, "^0" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "2" SUBSEP "([[:digit:]]+)" SUBSEP "([[:digit:]]+)$", group))
             words[group[1]][group[2]][group[3]] = literal(ast[i])
         if (match(i, "^0" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "2" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)$", group))
             words[group[1]][group[2]]["1"][group[3]] = literal(ast[i])
-
         if (match(i, "^0" SUBSEP "5" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group)) {
             segments[group[1]] = literal(ast[i])
             altTranslations[group[1]][0] = ""
         }
-
         if (match(i, "^0" SUBSEP "5" SUBSEP "([[:digit:]]+)" SUBSEP "2" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
             altTranslations[group[1]][group[2]] = postprocess(literal(ast[i]))
-
-        # Identified source languages
         if (i ~ "^0" SUBSEP "8" SUBSEP "0" SUBSEP "[[:digit:]]+$" ||
             i ~ "^0" SUBSEP "2$")
             append(ils, literal(ast[i]))
+        if (match(i, "^0" SUBSEP "11" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
+            oWordClasses[group[1]] = literal(ast[i])
+        if (match(i, "^0" SUBSEP "11" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "1$", group))
+            if (ast[i]) {
+                oRefs[literal(ast[i])][1] = group[1]
+                oRefs[literal(ast[i])][2] = group[2]
+            }
+        if (match(i, "^0" SUBSEP "11" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "0" SUBSEP "([[:digit:]]+)$", group))
+            oSynonyms[group[1]][group[2]][group[3]] = literal(ast[i])
+        if (match(i, "^0" SUBSEP "12" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
+            oWordClasses[group[1]] = literal(ast[i])
+        if (match(i, "^0" SUBSEP "12" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
+            oWords[group[1]][group[2]][0] = literal(ast[i])
+        if (match(i, "^0" SUBSEP "12" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "1$", group))
+            oWords[group[1]][group[2]][1] = literal(ast[i])
+        if (match(i, "^0" SUBSEP "12" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "2$", group))
+            oWords[group[1]][group[2]][2] = postprocess(literal(ast[i]))
+        if (match(i, "^0" SUBSEP "13" SUBSEP "0" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
+            oExamples[group[1]] = postprocess(literal(ast[i]))
+        if (match(i, "^0" SUBSEP "14" SUBSEP "0" SUBSEP "([[:digit:]]+)$", group))
+            oSeeAlso[group[1]] = literal(ast[i])
     }
     PROCINFO["sorted_in"] = saveSortedIn
-
     translation = join(translations)
-
     il = !anything(ils) || belongsTo(sl, ils) ? sl : ils[0]
-
-    # Generate output
     if (!isVerbose) {
-        # Brief mode
-
         r = isPhonetic && anything(phonetics) ?
-            join(phonetics) :  # phonetic transcription
-            s(translation, tl) # target language
-
+            join(phonetics) :
+            s(translation, tl)
         if (toSpeech) {
             returnPlaylist[0]["text"] = translation
             returnPlaylist[0]["tl"] = tl
         }
-
     } else {
-        # Verbose mode
-
-        r = AnsiCode["bold"] s(translation, tl) AnsiCode["no bold"] # target language
-        if (anything(phonetics))
-            r = r "\n" AnsiCode["bold"] join(phonetics) AnsiCode["no bold"] # phonetic transcription
-
-        if (isarray(altTranslations[0]) && anything(altTranslations[0])) {
-            # List alternative translations
-
-            if (Locale[getCode(hl)]["rtl"] || Locale[getCode(il)]["rtl"])
-                r = r "\n\n" s(sprintf(Locale[getCode(hl)]["message"], join(original))) # caution: mixed languages, BiDi invoked must be implemented correctly (i.e. FriBidi is required)
-            else
-                r = r "\n\n" sprintf(Locale[getCode(hl)]["message"], join(original))
-            if (Locale[getCode(il)]["rtl"] || Locale[getCode(tl)]["rtl"])
-                r = r "\n" s("(" Locale[getCode(il)]["endonym"] " ➔ " Locale[getCode(tl)]["endonym"] ")") # caution: mixed languages
-            else
-                r = r "\n" "(" Locale[getCode(il)]["endonym"] " ➔ " Locale[getCode(tl)]["endonym"] ")"
-
-            temp = segments[0] "(" join(altTranslations[0], "/") ")"
-            for (i = 1; i < length(altTranslations); i++)
-                temp = temp " " segments[i] "(" join(altTranslations[i], "/") ")"
-            if (Locale[getCode(il)]["rtl"] || Locale[getCode(tl)]["rtl"])
-                r = r "\n" AnsiCode["bold"] s(temp) AnsiCode["no bold"] # caution: mixed languages
-            else
-                r = r "\n" AnsiCode["bold"] temp AnsiCode["no bold"]
+        wShowOriginal = Option["show-original"]
+        wShowOriginalPhonetics = Option["show-original-phonetics"]
+        wShowTranslation = Option["show-translation"]
+        wShowTranslationPhonetics = Option["show-translation-phonetics"]
+        wShowPromptMessage = Option["show-prompt-message"]
+        wShowLanguages = Option["show-languages"]
+        wShowOriginalDictionary = Option["show-original-dictionary"]
+        wShowDictionary = Option["show-dictionary"]
+        wShowAlternatives = Option["show-alternatives"]
+        if (!anything(oPhonetics)) wShowOriginalPhonetics = 0
+        if (!anything(phonetics)) wShowTranslationPhonetics = 0
+        if (il == tl && isarray(oWordClasses)) {
+            wShowOriginalDictionary = 1
+            wShowTranslation = 0
         }
-
-        if (isarray(wordClasses) && anything(wordClasses)) {
-            # List dictionary entries
-
-            for (i = 0; i < length(words); i++) {
-                r = r "\n\n" s("[" wordClasses[i] "]", hl) # home language
+        hasWordClasses = isarray(wordClasses) && anything(wordClasses)
+        hasAltTranslations = isarray(altTranslations[0]) && anything(altTranslations[0])
+        if (!hasWordClasses) wShowDictionary = 0
+        if (hasWordClasses || !hasAltTranslations) wShowAlternatives = 0
+        if (wShowOriginal) {
+            if (r) r = r RS RS
+            r = r ansi("negative", ansi("bold", s(join(original), il)))
+            if (wShowOriginalPhonetics)
+                r = r RS showPhonetics(join(oPhonetics), il)
+        }
+        if (wShowTranslation) {
+            if (r) r = r RS RS
+            r = r ansi("bold", s(translation, tl))
+            if (wShowTranslationPhonetics)
+                r = r RS showPhonetics(join(phonetics), tl)
+        }
+        if (wShowPromptMessage || wShowLanguages)
+            if (r) r = r RS
+        if (wShowPromptMessage) {
+            if (hasWordClasses) {
+                if (r) r = r RS
+                if (isRTL(hl))
+                    r = r s(showDefinitionsOf(hl, join(original)))
+                else
+                    r = r showDefinitionsOf(hl, ansi("underline", show(join(original), il)))
+            } else if (hasAltTranslations) {
+                if (r) r = r RS
+                if (isRTL(hl))
+                    r = r s(showTranslationsOf(hl, join(original)))
+                else
+                    r = r showTranslationsOf(hl, ansi("underline", show(join(original), il)))
+            }
+        }
+        if (wShowLanguages) {
+            if (hasWordClasses || hasAltTranslations) {
+                if (r) r = r RS
+                r = r s(sprintf("[ %s -> %s ]", getEndonym(il), getEndonym(tl)))
+            }
+        }
+        if (wShowOriginalDictionary) {
+            if (r) r = r RS
+            if (isarray(oWordClasses) && anything(oWordClasses)) {
+                for (i = 0; i < length(oWordClasses); i++) {
+                    r = (i > 0 ? r RS : r) RS s(oWordClasses[i], hl)
+                    if (isarray(oWords[i])) {
+                        for (j = 0; j < length(oWords[i]); j++) {
+                            explanation = oWords[i][j][0]
+                            ref = oWords[i][j][1]
+                            example = oWords[i][j][2]
+                            r = (j > 0 ? r RS : r) RS ansi("bold", ins(1, explanation, il))
+                            if (example)
+                                r = r RS ins(2, "- \"" example "\"", il)
+                            if (ref && isarray(oRefs[ref])) {
+                                temp = showSynonyms(hl) ": " oSynonyms[oRefs[ref][1]][oRefs[ref][2]][0]
+                                for (k = 1; k < length(oSynonyms[oRefs[ref][1]][oRefs[ref][2]]); k++)
+                                    temp = temp ", " oSynonyms[oRefs[ref][1]][oRefs[ref][2]][k]
+                                r = r RS ins(1, temp)
+                            }
+                        }
+                    } else {
+                        for (j = 0; j < length(oSynonyms[i]); j++) {
+                            temp = "* " oSynonyms[i][j][0]
+                            for (k = 1; k < length(oSynonyms[i][j]); k++)
+                                temp = temp ", " oSynonyms[i][j][k]
+                            r = r RS ins(1, temp)
+                        }
+                    }
+                }
+            }
+            if (isarray(oExamples) && anything(oExamples)) {
+                r = r RS RS s(showExamples(hl), hl)
+                for (i = 0; i < length(oExamples); i++) {
+                    example = oExamples[i]
+                    if (isRTL(il)) {
+                        sub(/\u003cb\u003e/, "", example)
+                        sub(/\u003c\/b\u003e/, "", example)
+                    } else {
+                        sub(/\u003cb\u003e/, AnsiCode["negative"] AnsiCode["bold"], example)
+                        sub(/\u003c\/b\u003e/, AnsiCode["positive"] AnsiCode["no bold"], example)
+                    }
+                    r = (i > 0 ? r RS : r) RS ins(1, "- " example, il)
+                }
+            }
+            if (isarray(oSeeAlso) && anything(oSeeAlso)) {
+                r = r RS RS s(showSeeAlso(hl), hl)
+                temp = isRTL(il) ? oSeeAlso[0] : ansi("underline", oSeeAlso[0])
+                for (k = 1; k < length(oSeeAlso); k++)
+                    temp = temp ", " (isRTL(il) ? oSeeAlso[k] : ansi("underline", oSeeAlso[k]))
+                r = r RS ins(1, temp, il)
+            }
+        }
+        if (wShowDictionary) {
+            if (r) r = r RS
+            for (i = 0; i < length(wordClasses); i++) {
+                r = (i > 0 ? r RS : r) RS s(wordClasses[i], hl)
                 for (j = 0; j < length(words[i]); j++) {
                     word = words[i][j][0]
                     explanation = join(words[i][j][1], ", ")
                     article = words[i][j][4]
-
-                    if (rtl) {
-                        r = r "\n" AnsiCode["bold"] sprintf("%" Option["width"] - 4 "s", s((article ?
-                                                                                            "(" article ")" :
-                                                                                            "") " " word, tl, Option["width"] - 4)) AnsiCode["no bold"] # target language
-                        r = r "\n" s(explanation, il, Option["width"] - 8) # identified source language
-                    } else {
-                        r = r "\n" "    " AnsiCode["bold"] show((article ?
-                                                                 "(" article ") " :
-                                                                 "") word, tl) AnsiCode["no bold"] # target language
-                        r = r "\n" "        " s(explanation, il, Option["width"] - 8) # identified source language
-                    }
+                    r = r RS ansi("bold", ins(1, (article ? "(" article ") " : "") word, tl))
+                    r = r RS ins(2, explanation, il)
                 }
             }
         }
-
+        if (wShowAlternatives) {
+            if (r) r = r RS RS
+            for (i = 0; i < length(altTranslations); i++) {
+                r = (i > 0 ? r RS : r) ansi("underline", show(segments[i]))
+                temp = isRTL(tl) ? altTranslations[i][0] : ansi("bold", altTranslations[i][0])
+                for (j = 1; j < length(altTranslations[i]); j++)
+                    temp = temp ", " (isRTL(tl) ? altTranslations[i][j] : ansi("bold", altTranslations[i][j]))
+                r = r RS ins(1, temp)
+            }
+        }
         if (toSpeech) {
-            if (index(Locale[getCode(hl)]["message"], "%s") > 2) {
-                returnPlaylist[0]["text"] = sprintf(Locale[getCode(hl)]["message"], "")
+            if (index(showTranslationsOf(hl, "%s"), "%s") > 2) {
+                returnPlaylist[0]["text"] = showTranslationsOf(hl)
                 returnPlaylist[0]["tl"] = hl
                 returnPlaylist[1]["text"] = join(original)
                 returnPlaylist[1]["tl"] = il
             } else {
                 returnPlaylist[0]["text"] = join(original)
                 returnPlaylist[0]["tl"] = il
-                returnPlaylist[1]["text"] = sprintf(Locale[getCode(hl)]["message"], "")
+                returnPlaylist[1]["text"] = showTranslationsOf(hl)
                 returnPlaylist[1]["tl"] = hl
             }
             returnPlaylist[2]["text"] = translation
             returnPlaylist[2]["tl"] = tl
         }
     }
-
     return r
 }
-
-# Translate a file.
 function fileTranslation(uri,    group, temp1, temp2) {
     temp1 = Option["input"]
     temp2 = Option["verbose"]
-
     match(uri, /^file:\/\/(.*)/, group)
     Option["input"] = group[1]
     Option["verbose"] = 0
-
     translateMain()
-
     Option["input"] = temp1
     Option["verbose"] = temp2
 }
-
-# Start a browser session and translate a web page.
 function webTranslation(uri, sl, tl, hl) {
-    system(Option["browser"] " " parameterize("https://translate.google.com/translate?" \
+    system(Option["browser"] " " parameterize("https://translate.google.com/translate?"\
                                               "hl=" hl "&sl=" sl "&tl=" tl "&u=" uri) "&")
 }
-
-# Translate the source text (into all target languages).
 function translate(text, inline,
-                   ####
-                   i, j, playlist, saveSortedIn) {
-
+                   i, j, r, playlist, saveSortedIn) {
     if (!getCode(Option["hl"])) {
-        # Check if home language is supported
         w("[WARNING] Unknown language code: " Option["hl"] ", fallback to English: en")
-        Option["hl"] = "en" # fallback to English
-    } else if (getCode(Option["hl"]) != "auto" && Locale[getCode(Option["hl"])]["rtl"]) {
-        # Check if home language is RTL
+        Option["hl"] = "en"
+    } else if (isRTL(Option["hl"])) {
         if (!FriBidi)
-            w("[WARNING] " Locale[getCode(Option["hl"])]["name"] " is a right-to-left language, but GNU FriBidi is not found on your system.\nText might be displayed incorrectly.")
+            w("[WARNING] " getName(Option["hl"]) " is a right-to-left language, but FriBidi cannot be found.")
     }
-
     if (!getCode(Option["sl"])) {
-        # Check if source language is supported
         w("[WARNING] Unknown source language code: " Option["sl"])
-    } else if (getCode(Option["sl"]) != "auto" && Locale[getCode(Option["sl"])]["rtl"]) {
-        # Check if source language is RTL
+    } else if (isRTL(Option["sl"])) {
         if (!FriBidi)
-            w("[WARNING] " Locale[getCode(Option["sl"])]["name"] " is a right-to-left language, but GNU FriBidi is not found on your system.\nText might be displayed incorrectly.")
+            w("[WARNING] " getName(Option["sl"]) " is a right-to-left language, but FriBidi cannot be found.")
     }
-
     saveSortedIn = PROCINFO["sorted_in"]
     PROCINFO["sorted_in"] = "@ind_num_asc"
     for (i in Option["tl"]) {
-        # Non-interactive verbose mode: separator between targets
         if (!Option["interactive"])
             if (Option["verbose"] && i > 1)
                 print replicate("─", Option["width"])
-
         if (inline &&
             startsWithAny(text, UriSchemes) == "file://") {
             fileTranslation(text)
@@ -1714,8 +2218,8 @@ function translate(text, inline,
                    startsWithAny(text, UriSchemes) == "https://") {
             webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
         } else {
-            print getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist) > Option["output"]
-
+            r = getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist)
+            print r > Option["output"]
             if (Option["play"])
                 if (Option["player"])
                     for (j in playlist)
@@ -1727,19 +2231,14 @@ function translate(text, inline,
     }
     PROCINFO["sorted_in"] = saveSortedIn
 }
-
-# Read from input and translate each line.
 function translateMain(    i, line) {
     if (Option["interactive"])
         prompt()
-
     i = 0
     while (getline line < Option["input"]) {
-        # Non-interactive verbose mode: separator between sources
         if (!Option["interactive"])
             if (Option["verbose"] && i++ > 0)
                 print replicate("═", Option["width"])
-
         if (Option["interactive"]) {
             if (line ~ /:(q|quit)/)
                 exit
@@ -1751,37 +2250,20 @@ function translateMain(    i, line) {
                     printf ", " Option["tl"][i]
                 print ")"
             }
-
             else {
                 translate(line)
-
-                # Interactive verbose mode: newline after each translation
-                if (Option["verbose"]) printf "\n"
+                if (Option["verbose"]) printf RS
             }
-
             prompt()
         } else
             translate(line)
     }
 }
-####################################################################
-# Shell.awk                                                        #
-####################################################################
-
-# Detect external readline wrapper (rlwrap).
 function initRlwrap() {
-    Rlwrap = ("rlwrap --version 2>/dev/null" | getline) ? "rlwrap" : ""
+    Rlwrap = ("rlwrap --version" SUPERR | getline) ? "rlwrap" : ""
 }
-
-# Prompt for interactive session.
 function prompt(    i, p, temp) {
     p = Option["prompt"]
-
-    # Format specifiers supported by strftime().
-    # Roughly following ISO 8601:1988, with the notable exception of "%S", "%t" and "%T".
-    # GNU libc extensions like "%l", "%s" and "%_*" are not supported.
-    # See: <https://www.gnu.org/software/gawk/manual/html_node/Time-Functions.html>
-    #      <http://pubs.opengroup.org/onlinepubs/007908799/xsh/strftime.html>
     if (p ~ /%a/) gsub(/%a/, strftime("%a"), p)
     if (p ~ /%A/) gsub(/%A/, strftime("%A"), p)
     if (p ~ /%b/) gsub(/%b/, strftime("%b"), p)
@@ -1815,225 +2297,231 @@ function prompt(    i, p, temp) {
     if (p ~ /%Y/) gsub(/%Y/, strftime("%Y"), p)
     if (p ~ /%z/) gsub(/%z/, strftime("%z"), p)
     if (p ~ /%Z/) gsub(/%Z/, strftime("%Z"), p)
-
-    # %_ : prompt message
     if (p ~ /%_/)
-        gsub(/%_/, sprintf(Locale[getCode(Option["hl"])]["message"], ""), p)
-
-    # %l : home language
+        gsub(/%_/, showTranslationsOf(Option["hl"]), p)
     if (p ~ /%l/)
-        gsub(/%l/, Locale[getCode(Option["hl"])]["display"], p)
-
-    # %L : home language (English name)
+        gsub(/%l/, getDisplay(Option["hl"]), p)
     if (p ~ /%L/)
-        gsub(/%L/, Locale[getCode(Option["hl"])]["name"], p)
-
-    # %s : source language
-    # 's' is the format-control character for string
-
-    # %S : source language (English name)
+        gsub(/%L/, getName(Option["hl"]), p)
     if (p ~ /%S/)
-        gsub(/%S/, Locale[getCode(Option["sl"])]["name"], p)
-
-    # %t : target languages, separated by "+"
+        gsub(/%S/, getName(Option["sl"]), p)
     if (p ~ /%t/) {
-        temp = Locale[getCode(Option["tl"][1])]["display"]
+        temp = getDisplay(Option["tl"][1])
         for (i = 2; i <= length(Option["tl"]); i++)
-            temp = temp "+" Locale[getCode(Option["tl"][i])]["display"]
+            temp = temp "+" getDisplay(Option["tl"][i])
         gsub(/%t/, temp, p)
     }
-
-    # %T : target languages (English names), separated by "+"
     if (p ~ /%T/) {
-        temp = Locale[getCode(Option["tl"][1])]["name"]
+        temp = getName(Option["tl"][1])
         for (i = 2; i <= length(Option["tl"]); i++)
-            temp = temp "+" Locale[getCode(Option["tl"][i])]["name"]
+            temp = temp "+" getName(Option["tl"][i])
         gsub(/%T/, temp, p)
     }
-
-    # %, : target languages, separated by ","
     if (p ~ /%,/) {
-        temp = Locale[getCode(Option["tl"][1])]["display"]
+        temp = getDisplay(Option["tl"][1])
         for (i = 2; i <= length(Option["tl"]); i++)
-            temp = temp "," Locale[getCode(Option["tl"][i])]["display"]
+            temp = temp "," getDisplay(Option["tl"][i])
         gsub(/%,/, temp, p)
     }
-
-    # %< : target languages (English names), separated by ","
     if (p ~ /%</) {
-        temp = Locale[getCode(Option["tl"][1])]["name"]
+        temp = getName(Option["tl"][1])
         for (i = 2; i <= length(Option["tl"]); i++)
-            temp = temp "," Locale[getCode(Option["tl"][i])]["name"]
+            temp = temp "," getName(Option["tl"][i])
         gsub(/%</, temp, p)
     }
-
-    # %/ : target languages, separated by "/"
     if (p ~ /%\//) {
-        temp = Locale[getCode(Option["tl"][1])]["display"]
+        temp = getDisplay(Option["tl"][1])
         for (i = 2; i <= length(Option["tl"]); i++)
-            temp = temp "/" Locale[getCode(Option["tl"][i])]["display"]
+            temp = temp "/" getDisplay(Option["tl"][i])
         gsub(/%\//, temp, p)
     }
-
-    # %? : target languages (English names), separated by "/"
     if (p ~ /%\?/) {
-        temp = Locale[getCode(Option["tl"][1])]["name"]
+        temp = getName(Option["tl"][1])
         for (i = 2; i <= length(Option["tl"]); i++)
-            temp = temp "/" Locale[getCode(Option["tl"][i])]["name"]
+            temp = temp "/" getName(Option["tl"][i])
         gsub(/%\?/, temp, p)
     }
-
-    # %s : source language
-    printf(AnsiCode["bold"] AnsiCode[tolower(Option["prompt-color"])] p AnsiCode[0] " ", Locale[getCode(Option["sl"])]["display"]) > "/dev/stderr"
+    printf(AnsiCode["bold"] AnsiCode[tolower(Option["prompt-color"])] p AnsiCode[0] " ", getDisplay(Option["sl"])) > STDERR
 }
 
-####################################################################
-# Main.awk                                                         #
-####################################################################
-
-# Detect gawk version.
 function initGawk(    group) {
     Gawk = "gawk"
     GawkVersion = PROCINFO["version"]
-
     split(PROCINFO["version"], group, ".")
     if (group[1] < 4) {
-        e("[ERROR] Oops! Your gawk (version " GawkVersion ") appears to be too old.\nYou need at least gawk 4.0.0 to run this program.")
+        e("[ERROR] Oops! Your gawk (version " GawkVersion ") "\
+          "appears to be too old.\n"\
+          "        You need at least gawk 4.0.0 to run this program.")
         exit 1
     }
 }
-
-# Pre-initialization (before option parsing).
-function preInit() {
-    initGawk()          #<< AnsiCode
-
-    # Languages
+function init1() {
+    initGawk()
     initBiDi()
     initLocale()
-    initLocaleDisplay() #<< Locale, BiDi
-    initUserLang()      #<< Locale
-
+    initLocaleDisplay()
+    initUserLang()
     RS = "\n"
-
     ExitCode = 0
-
     Option["debug"] = 0
-
     Option["verbose"] = 1
+    Option["show-original"] = 1
+    Option["show-original-phonetics"] = 1
+    Option["show-translation"] = 1
+    Option["show-translation-phonetics"] = 1
+    Option["show-prompt-message"] = 1
+    Option["show-languages"] = 1
+    Option["show-original-dictionary"] = 0
+    Option["show-dictionary"] = 1
+    Option["show-alternatives"] = 1
     Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] : 64
-
+    Option["indent"] = 4
     Option["browser"] = ENVIRON["BROWSER"]
-
     Option["play"] = 0
     Option["player"] = ENVIRON["PLAYER"]
-
     Option["proxy"] = ENVIRON["HTTP_PROXY"] ? ENVIRON["HTTP_PROXY"] : ENVIRON["http_proxy"]
-
     Option["interactive"] = 0
     Option["no-rlwrap"] = 0
     Option["emacs"] = 0
     Option["prompt"] = ENVIRON["TRANS_PS"] ? ENVIRON["TRANS_PS"] : "%s>"
     Option["prompt-color"] = ENVIRON["TRANS_PS_COLOR"] ? ENVIRON["TRANS_PS_COLOR"] : "default"
-
     Option["input"] = ""
-    Option["output"] = "/dev/stdout"
-
+    Option["output"] = STDOUT
     Option["hl"] = ENVIRON["HOME_LANG"] ? ENVIRON["HOME_LANG"] : UserLang
     Option["sl"] = ENVIRON["SOURCE_LANG"] ? ENVIRON["SOURCE_LANG"] : "auto"
     Option["tl"][1] = ENVIRON["TARGET_LANG"] ? ENVIRON["TARGET_LANG"] : UserLang
 }
-
-# Post-initialization (after option parsing).
-function postInit() {
-    # Translate
-    initHttpService()
+function init2() {
+    if (Option["no-ansi"])
+        delete AnsiCode
 }
-
-# Main entry point.
+function init3(    group) {
+    initHttpService()
+    if (!Option["browser"]) {
+        "xdg-mime query default text/html" SUPERR |& getline Option["browser"]
+        match(Option["browser"], "(.*).desktop$", group)
+        Option["browser"] = group[1]
+    }
+    if (Option["play"]) {
+        if (!Option["player"]) {
+            initAudioPlayer()
+            Option["player"] = AudioPlayer ? AudioPlayer : Option["player"]
+            if (!Option["player"])
+                initSpeechSynthesizer()
+        }
+        if (!Option["player"] && !SpeechSynthesizer) {
+            w("[WARNING] No available audio player or speech synthesizer is found.")
+            Option["play"] = 0
+        }
+    }
+}
 BEGIN {
-    preInit()
-
+    init1()
     pos = 0
     while (ARGV[++pos]) {
-        # -, -no-op
         match(ARGV[pos], /^-(-?no-op)?$/)
         if (RSTART) continue
-
-        # -V, -version
         match(ARGV[pos], /^--?(vers(i(on?)?)?|V)$/)
         if (RSTART) {
             print getVersion()
             print
             printf("%-22s%s\n", "gawk (GNU Awk)", PROCINFO["version"])
             printf("%s\n", FriBidi ? FriBidi : "fribidi (GNU FriBidi) [NOT INSTALLED]")
-            printf("%-22s%s\n", "User Language", Locale[getCode(UserLang)]["name"] " (" show(Locale[getCode(UserLang)]["endonym"]) ")")
+            printf("%-22s%s\n", "User Language", getName(UserLang) " (" getDisplay(UserLang) ")")
             exit
         }
-
-        # -H, -h, -help
         match(ARGV[pos], /^--?(h(e(lp?)?)?|H)$/)
         if (RSTART) {
             print getHelp()
             exit
         }
-
-        # -M, -m, -manual
         match(ARGV[pos], /^--?(m(a(n(u(al?)?)?)?)?|M)$/)
         if (RSTART) {
             if (ENVIRON["TRANS_MANPAGE"])
-                system("echo -E \"${TRANS_MANPAGE}\" | " \
-                       "groff -Wall -mtty-char -mandoc -Tutf8 -rLL=${COLUMNS}n -rLT=${COLUMNS}n | " \
-                       (system("most 2>/dev/null") ?
+                system("echo -E \"${TRANS_MANPAGE}\" | "\
+                       "groff -Wall -mtty-char -mandoc -Tutf8 -rLL=${COLUMNS}n -rLT=${COLUMNS}n | "\
+                       (system("most" SUPERR) ?
                         "less -s -P\"\\ \\Manual page " Command "(1) line %lt (press h for help or q to quit)\"" :
                         "most -Cs"))
             else
                 print getHelp()
             exit
         }
-
-        # -r, -reference
         match(ARGV[pos], /^--?r(e(f(e(r(e(n(ce?)?)?)?)?)?)?)?$/)
         if (RSTART) {
             print getReference("endonym")
             exit
         }
-
-        # -R, -reference-english
         match(ARGV[pos], /^--?(reference-(e(n(g(l(i(sh?)?)?)?)?)?)?|R)$/)
         if (RSTART) {
             print getReference("name")
             exit
         }
-
-        # -d, -debug
-        match(ARGV[pos], /^--?d(e(b(ug?)?)?)?$/)
+        match(ARGV[pos], /^--?(debug|D)$/)
         if (RSTART) {
             Option["debug"] = 1
             continue
         }
-
-        # -v, -verbose
         match(ARGV[pos], /^--?v(e(r(b(o(se?)?)?)?)?)?$/)
         if (RSTART) {
-            Option["verbose"] = 1 # default value
+            Option["verbose"] = 1
             continue
         }
-
-        # -b, -brief
         match(ARGV[pos], /^--?b(r(i(ef?)?)?)?$/)
         if (RSTART) {
             Option["verbose"] = 0
             continue
         }
-
-        # -no-ansi
+        match(ARGV[pos], /^--?show-original(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-original"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
+        match(ARGV[pos], /^--?show-original-phonetics(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-original-phonetics"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
+        match(ARGV[pos], /^--?show-translation(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-translation"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
+        match(ARGV[pos], /^--?show-translation-phonetics(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-translation-phonetics"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
+        match(ARGV[pos], /^--?show-prompt-message(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-prompt-message"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
+        match(ARGV[pos], /^--?show-languages(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-languages"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
+        match(ARGV[pos], /^--?show-original-dictionary(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-original-dictionary"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
+        match(ARGV[pos], /^--?show-dictionary(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-dictionary"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
+        match(ARGV[pos], /^--?show-alternatives(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["show-alternatives"] = yn(group[1] ? group[2] : ARGV[++pos])
+            continue
+        }
         match(ARGV[pos], /^--?no-ansi/)
         if (RSTART) {
             Option["no-ansi"] = 1
             continue
         }
-
-        # -w [num], -width [num]
         match(ARGV[pos], /^--?w(i(d(th?)?)?)?(=(.*)?)?$/, group)
         if (RSTART) {
             Option["width"] = group[4] ?
@@ -2041,8 +2529,13 @@ BEGIN {
                 ARGV[++pos]
             continue
         }
-
-        # -browser [program]
+        match(ARGV[pos], /^--?indent(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["indent"] = group[1] ?
+                (group[2] ? group[2] : Option["indent"]) :
+                ARGV[++pos]
+            continue
+        }
         match(ARGV[pos], /^--?browser(=(.*)?)?$/, group)
         if (RSTART) {
             Option["browser"] = group[1] ?
@@ -2050,15 +2543,11 @@ BEGIN {
                 ARGV[++pos]
             continue
         }
-
-        # -p, -play
         match(ARGV[pos], /^--?p(l(ay?)?)?$/)
         if (RSTART) {
             Option["play"] = 1
             continue
         }
-
-        # -player [program]
         match(ARGV[pos], /^--?player(=(.*)?)?$/, group)
         if (RSTART) {
             Option["play"] = 1
@@ -2067,8 +2556,6 @@ BEGIN {
                 ARGV[++pos]
             continue
         }
-
-        # -x [proxy], -proxy [proxy]
         match(ARGV[pos], /^--?(proxy|x)(=(.*)?)?$/, group)
         if (RSTART) {
             Option["proxy"] = group[2] ?
@@ -2076,29 +2563,21 @@ BEGIN {
                 ARGV[++pos]
             continue
         }
-
-        # -I, -interactive
         match(ARGV[pos], /^--?(int(e(r(a(c(t(i(ve?)?)?)?)?)?)?)?|I)$/)
         if (RSTART) {
             Option["interactive"] = 1
             continue
         }
-
-        # -no-rlwrap
         match(ARGV[pos], /^--?no-rlwrap/)
         if (RSTART) {
             Option["no-rlwrap"] = 1
             continue
         }
-
-        # -E, -emacs
         match(ARGV[pos], /^--?(emacs|E)$/)
         if (RSTART) {
             Option["emacs"] = 1
             continue
         }
-
-        # -prompt [prompt_string]
         match(ARGV[pos], /^--?prompt(=(.*)?)?$/, group)
         if (RSTART) {
             Option["prompt"] = group[1] ?
@@ -2106,8 +2585,6 @@ BEGIN {
                 ARGV[++pos]
             continue
         }
-
-        # -prompt-color [color_code]
         match(ARGV[pos], /^--?prompt-color(=(.*)?)?$/, group)
         if (RSTART) {
             Option["prompt-color"] = group[1] ?
@@ -2115,8 +2592,6 @@ BEGIN {
                 ARGV[++pos]
             continue
         }
-
-        # -i [file], -input [file]
         match(ARGV[pos], /^--?i(n(p(ut?)?)?)?(=(.*)?)?$/, group)
         if (RSTART) {
             Option["input"] = group[4] ?
@@ -2124,8 +2599,6 @@ BEGIN {
                 ARGV[++pos]
             continue
         }
-
-        # -o [file], -output [file]
         match(ARGV[pos], /^--?o(u(t(p(ut?)?)?)?)?(=(.*)?)?$/, group)
         if (RSTART) {
             Option["output"] = group[5] ?
@@ -2133,8 +2606,6 @@ BEGIN {
                 ARGV[++pos]
             continue
         }
-
-        # -l [code], -lang [code]
         match(ARGV[pos], /^--?l(a(ng?)?)?(=(.*)?)?$/, group)
         if (RSTART) {
             Option["hl"] = group[3] ?
@@ -2142,8 +2613,6 @@ BEGIN {
                 ARGV[++pos]
             continue
         }
-
-        # -s [code], -source [code]
         match(ARGV[pos], /^--?s(o(u(r(ce?)?)?)?)?(=(.*)?)?$/, group)
         if (RSTART) {
             Option["sl"] = group[5] ?
@@ -2151,8 +2620,6 @@ BEGIN {
                 ARGV[++pos]
             continue
         }
-
-        # -t [codes], -target [codes]
         match(ARGV[pos], /^--?t(a(r(g(et?)?)?)?)?(=(.*)?)?$/, group)
         if (RSTART) {
             if (group[5]) {
@@ -2161,132 +2628,76 @@ BEGIN {
                 split(ARGV[++pos], Option["tl"], "+")
             continue
         }
-
-        # Shortcut format
-        # '[code]:[code]+...' or '[code]=[code]+...'
-        match(ARGV[pos], /^[{([]?([[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?)?)[})\]]?$/, group)
+        match(ARGV[pos], /^[{(\[]?([[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?)?)[})\]]?$/, group)
         if (RSTART) {
             if (group[1]) Option["sl"] = group[1]
             if (group[4]) split(group[4], Option["tl"], "+")
             continue
         }
-
-        # --
         match(ARGV[pos], /^--$/)
         if (RSTART) {
-            ++pos # skip the end-of-options option
-            break # no more option from here
+            ++pos
+            break
         }
-
-        break # no more option from here
+        break
     }
-
-    # Option parsing finished
-    postInit()
-
+    init2()
     if (Option["interactive"] && !Option["no-rlwrap"]) {
-        # Interactive mode
-        initRlwrap() # initialize Rlwrap
-
+        initRlwrap()
         if (Rlwrap && (ENVIRON["TRANS_PROGRAM"] || fileExists(EntryPoint))) {
             command = Rlwrap " " Gawk " " (ENVIRON["TRANS_PROGRAM"] ?
                                            "\"${TRANS_PROGRAM}\"" :
-                                           "-f " EntryPoint) " -" \
-                " -no-rlwrap" # be careful - never fork Rlwrap recursively!
+                                           "-f " EntryPoint) " -"\
+                " -no-rlwrap"
             for (i = 1; i < length(ARGV); i++)
                 if (ARGV[i])
                     command = command " " parameterize(ARGV[i])
-
             if (!system(command))
-                exit # child process finished, exit
+                exit
             else
-                ; # skip
+                ;
         } else
-            ; # skip
-
+            ;
     } else if (!Option["interactive"] && !Option["no-rlwrap"] && Option["emacs"]) {
-        # Emacs interface
         Emacs = "emacs"
-
         if (ENVIRON["TRANS_PROGRAM"] || fileExists(EntryPoint)) {
             params = ""
             for (i = 1; i < length(ARGV); i++)
                 if (ARGV[i])
                     params = params " " (parameterize(ARGV[i], "\""))
             if (ENVIRON["TRANS_PROGRAM"]) {
-                el = "(progn (setq trans-program (getenv \"TRANS_PROGRAM\")) " \
-                    "(setq explicit-shell-file-name \"" Gawk "\") " \
-                    "(setq explicit-" Gawk "-args (cons trans-program '(\"-\" \"-I\" \"-no-rlwrap\"" params "))) " \
+                el = "(progn (setq trans-program (getenv \"TRANS_PROGRAM\")) "\
+                    "(setq explicit-shell-file-name \"" Gawk "\") "\
+                    "(setq explicit-" Gawk "-args (cons trans-program '(\"-\" \"-I\" \"-no-rlwrap\"" params "))) "\
                     "(command-execute 'shell) (rename-buffer \"" Name "\"))"
             } else {
-                el = "(progn (setq explicit-shell-file-name \"" Gawk "\") " \
-                    "(setq explicit-" Gawk "-args '(\"-f\" \"" EntryPoint "\" \"--\" \"-I\" \"-no-rlwrap\"" params ")) " \
+                el = "(progn (setq explicit-shell-file-name \"" Gawk "\") "\
+                    "(setq explicit-" Gawk "-args '(\"-f\" \"" EntryPoint "\" \"--\" \"-I\" \"-no-rlwrap\"" params ")) "\
                     "(command-execute 'shell) (rename-buffer \"" Name "\"))"
             }
             command = Emacs " --eval " parameterize(el)
-
             if (!system(command))
-                exit # child process finished, exit
+                exit
             else
-                Option["interactive"] = 1 # skip
+                Option["interactive"] = 1
         } else
-            Option["interactive"] = 1 # skip
+            Option["interactive"] = 1
     }
-
-    if (Option["play"]) {
-        # Initialize audio player or speech synthesizer
-        if (!Option["player"]) {
-            initAudioPlayer()
-            Option["player"] = AudioPlayer ? AudioPlayer : Option["player"]
-            if (!Option["player"])
-                initSpeechSynthesizer()
-        }
-
-        if (!Option["player"] && !SpeechSynthesizer) {
-            w("[WARNING] No available audio player or speech synthesizer is found.")
-            Option["play"] = 0
-        }
-    }
-
     if (Option["interactive"]) {
-        print AnsiCode["bold"] AnsiCode[tolower(Option["prompt-color"])] getVersion() AnsiCode[0] > "/dev/stderr"
-        print AnsiCode[tolower(Option["prompt-color"])] "(:q to quit)" AnsiCode[0] > "/dev/stderr"
+        print AnsiCode["bold"] AnsiCode[tolower(Option["prompt-color"])] getVersion() AnsiCode[0] > STDERR
+        print AnsiCode[tolower(Option["prompt-color"])] "(:q to quit)" AnsiCode[0] > STDERR
     }
-
-    # Initialize browser
-    if (!Option["browser"]) {
-        "xdg-mime query default text/html 2>/dev/null" |& getline Option["browser"]
-        match(Option["browser"], "(.*).desktop$", group)
-        Option["browser"] = group[1]
-    }
-
-    # Disable ANSI SGR (Select Graphic Rendition) codes if required
-    if (Option["no-ansi"])
-        delete AnsiCode
-
+    init3()
     if (pos < ARGC) {
-        # More parameters
-
-        # Translate the remaining parameters
         for (i = pos; i < ARGC; i++) {
-            # Verbose mode: separator between sources
             if (Option["verbose"] && i > pos)
                 print replicate("═", Option["width"])
-
-            translate(ARGV[i], 1) # inline mode
+            translate(ARGV[i], 1)
         }
-
-        # If input not specified, we're done
     } else {
-        # No more parameter besides options
-
-        # If input not specified, use stdin
-        if (!Option["input"]) Option["input"] = "/dev/stdin"
+        if (!Option["input"]) Option["input"] = STDIN
     }
-
-    # If input specified, start translating
     if (Option["input"])
         translateMain()
-
     exit ExitCode
 }

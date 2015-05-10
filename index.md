@@ -1,14 +1,14 @@
 ---
 title: Translate Shell
 project-name: Translate Shell
-project-version: 0.8.23
+project-version: 0.8.24
 project-logo: images/avatar.jpg
 background: images/public_domain.png
 github: soimort/translate-shell
 url: http://www.soimort.org/translate-shell/
 download-url: http://www.soimort.org/translate-shell/trans
 download-checksum-type: SHA1SUM
-download-checksum-data: d7bd8acebd883800b66964231acf84fa5d06597a
+download-checksum-data: 77a116ecda749953019c9524efcbf8254208ff72
 download-signature: http://www.soimort.org/translate-shell/trans.sig
 
 ---
@@ -22,19 +22,24 @@ download-signature: http://www.soimort.org/translate-shell/trans.sig
 [Translate Shell](http://www.soimort.org/translate-shell) (previously _Google Translate CLI_) is a command-line interface and interactive shell for [Google Translate](https://translate.google.com/). It works just the way you want it to be.
 
 ```
-$ trans "Saluton, Mondo"
-Hello, World
+$ trans 'Saluton, Mondo!'
+Saluton, Mondo!
 
-Translations of Saluton, Mondo
-(Esperanto -> English)
-Saluton(Hello/Hail/Hi/A greeting/Saluton) , Mondo(, World)
+Hello, World!
+
+Translations of Saluton, Mondo!
+[ Esperanto -> English ]
+Saluton ,
+    Hello,
+Mondo !
+    World!
 ```
 
 Translations with detailed explanations are shown by default. You can also translate the text briefly, i.e., only the most relevant translation is shown: (this will give you the same result as in [Google Translate CLI Legacy](https://github.com/soimort/translate-shell/tree/legacy))
 
 ```
-$ trans -b "Saluton, Mondo"
-Hello, World
+$ trans -b 'Saluton, Mondo!'
+Hello, World!
 ```
 
 Translations can be done interactively; input your text line by line:
@@ -91,11 +96,6 @@ Any POSIX-compliant system should work, including but not limited to:
 
 It is strongly recommended that you use UTF-8 codeset for your default locale, as it potentially supports all languages. You can check whether your codeset is UTF-8 using:
 
-    $ echo $LC_CTYPE
-    en_US.UTF-8
-
-Or:
-
     $ locale
 
 And you need to have necessary Unicode fonts installed for the languages you want to display.
@@ -119,13 +119,31 @@ Additionally, you may verify [this signature](http://www.soimort.org/translate-s
 
     $ gpg --verify trans.sig trans
 
-### From Your OS
+### From Git
 
-#### OS X
+    $ git clone https://github.com/soimort/translate-shell
+    $ cd translate-shell/
+    $ sudo make install
 
-Available as a self-hosted Homebrew formula: (always the latest release since it's maintained by the author)
+The default `PREFIX` of installation is `/usr/local`. If you wish to install it to another path (e.g. `/usr`, `~/.local`), use:
+
+    $ sudo make PREFIX=/usr install
+
+If you prefer zsh, specify zsh as the build target: (normally you don't need to worry about that if both bash and zsh are installed on your system)
+
+    $ sudo make TARGET=zsh install
+
+### From Your Package Manager
+
+#### OS X (via Homebrew) / Linux (via Linuxbrew)
+
+Available as a self-hosted Homebrew formula:
 
     $ brew install http://www.soimort.org/translate-shell/translate-shell.rb
+
+On Linux, you may ignore its dependencies (e.g. gawk) if you already have them in your system:
+
+    $ brew install --ignore-dependencies http://www.soimort.org/translate-shell/translate-shell.rb
 
 #### FreeBSD
 
@@ -136,7 +154,7 @@ Available in FreeBSD Ports collection:
 
 #### Debian
 
-Available in Debian Testing (Jessie):
+Available in Debian Unstable:
 
     $ apt-get install translate-shell
 
@@ -147,20 +165,6 @@ Available in the [Arch User Repository](https://aur.archlinux.org/packages/trans
     $ cower -d translate-shell
     $ cd translate-shell/
     $ makepkg -si
-
-### From Git (For Developers and Advanced Users)
-
-    $ git clone https://github.com/soimort/translate-shell
-    $ cd translate-shell/
-    $ make install
-
-By default, a bash script `trans` will be installed to your `/usr/bin`. If you prefer to use zsh, you can specify zsh as the build target:
-
-    $ make TARGET=zsh install
-
-You can specify the installation path too:
-
-    $ make INSTDIR=~/bin install
 
 ## Examples
 
@@ -325,55 +329,75 @@ Use <kbd>Shift-K</kbd> to view the translation of the word under the cursor.
 Use `$ trans -H` to view the [detailed man page](http://www.soimort.org/translate-shell/trans.1.html).
 
 ```
-Usage: trans [options] [source]:[target] [text] ...
-       trans [options] [source]:[target1]+[target2]+... [text] ...
+Usage:  trans [options] [source]:[target] [text] ...
+        trans [options] [source]:[target1]+[target2]+... [text] ...
 
 Options:
-  -V, -version
+-V, -version
     Print version and exit.
-  -H, -h, -help
-    Print the help message and exit.
-  -M, -m, -manual
+-H, -h, -help
+    Print this help message and exit.
+-M, -m, -manual
     Show the manual.
-  -r, -reference
+-r, -reference
     Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.
-  -R, -reference-english
+-R, -reference-english
     Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.
-  -v, -verbose
+-v, -verbose
     Verbose mode. (default)
-  -b, -brief
+-b, -brief
     Brief mode.
-  -no-ansi
+-show-original [yes|no]
+    Show original text or not. (default: yes)
+-show-original-phonetics [yes|no]
+    Show phonetic notation of original text or not. (default: yes)
+-show-translation [yes|no]
+    Show translation or not. (default: yes)
+-show-translation-phonetics [yes|no]
+    Show phonetic notation of translation or not. (default: yes)
+-show-prompt-message [yes|no]
+    Show prompt message or not. (default: yes)
+-show-languages [yes|no]
+    Show source and target languages or not. (default: yes)
+-show-original-dictionary [yes|no]
+    Show dictionary entry of original text or not. (default: no)
+-show-dictionary [yes|no]
+    Show dictionary entry of translation or not. (default: yes)
+-show-alternatives [yes|no]
+    Show alternative translations or not. (default: yes)
+-no-ansi
     Don't use ANSI escape codes in the translation.
-  -w [num], -width [num]
+-w [num], -width [num]
     Specify the screen width for padding when displaying right-to-left languages.
-  -browser [program]
+-indent [num]
+    Specify the size of indent (in terms of spaces). (default: 4)
+-browser [program]
     Specify the web browser to use.
-  -p, -play
+-p, -play
     Listen to the translation.
-  -player [program]
+-player [program]
     Specify the command-line audio player to use, and listen to the translation.
-  -x [proxy], -proxy [proxy]
+-x [proxy], -proxy [proxy]
     Use proxy on given port.
-  -I, -interactive
+-I, -interactive
     Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).
-  -no-rlwrap
+-no-rlwrap
     Don't invoke `rlwrap` when starting an interactive shell with `-I`.
-  -E, -emacs
+-E, -emacs
     Start an interactive shell within GNU Emacs, invoking `emacs`.
-  -prompt [prompt_string]
+-prompt [prompt_string]
     Customize your prompt string in the interactive shell.
-  -prompt-color [color_code]
+-prompt-color [color_code]
     Customize your prompt color in the interactive shell.
-  -i [file], -input [file]
+-i [file], -input [file]
     Specify the input file name.
-  -o [file], -output [file]
+-o [file], -output [file]
     Specify the output file name.
-  -l [code], -lang [code]
+-l [code], -lang [code]
     Specify your own, native language ("home/host language").
-  -s [code], -source [code]
+-s [code], -source [code]
     Specify the source language (language of the original text).
-  -t [codes], -target [codes]
+-t [codes], -target [codes]
     Specify the target language(s) (language(s) of the translated text).
 
 See the man page trans(1) for more information.
@@ -431,8 +455,8 @@ Use `$ trans -R` to view the list of language codes.
 │ French              - fr    │ Maltese        - mt  │ Vietnamese - vi │
 │ Galician            - gl    │ Maori          - mi  │ Welsh      - cy │
 │ Georgian            - ka    │ Marathi        - mr  │ Yiddish    - yi │
-│ German              - de    │ Myanmar        - my  │ Yoruba     - yo │
-│ Greek               - el    │ Mongolian      - mn  │ Zulu       - zu │
+│ German              - de    │ Mongolian      - mn  │ Yoruba     - yo │
+│ Greek               - el    │ Myanmar        - my  │ Zulu       - zu │
 │ Gujarati            - gu    │ Nepali         - ne  │                 │
 │ Haitian Creole      - ht    │ Norwegian      - no  │                 │
 └─────────────────────────────┴──────────────────────┴─────────────────┘
