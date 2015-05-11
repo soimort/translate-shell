@@ -1,26 +1,33 @@
 #!/usr/bin/gawk -f
 @include "include/Commons"
-@include "include/Utils"
 
-function pass(string, ansiCode) {
+function pass(name, message, ansiCode,    string) {
+    if (!name) name = TEST
     if (!ansiCode) ansiCode = "green"
+
+    G_COUNTER++; COUNTER++; G_SUCCESS++
+    string = sprintf("(%2s/%-2s) TESTING %s", COUNTER, TOTAL, name)
+    if (message) string = string "\n       " message
     print(ansi(ansiCode, ansi("bold", "[PASS] " string)))
 }
 
-function fail(string, ansiCode) {
+function fail(name, message, ansiCode,    string) {
+    if (!name) name = TEST
     if (!ansiCode) ansiCode = "red"
+
+    G_COUNTER++; COUNTER++
+    string = sprintf("(%2s/%-2s) TESTING %s", COUNTER, TOTAL, name)
+    if (message) string = string "\n       " message
     print(ansi(ansiCode, ansi("bold", "[FAIL] " string)))
 }
 
 function assertTrue(x, name, message, ansiCode) {
-    if (!message) message = "assertTrue: FALSE"
-    if (!name) name = TEST
-    G_COUNTER++; COUNTER++
-    string = "(" COUNTER "/" TOTAL ") TESTING " name
-    if (x) {
-        G_SUCCESS++
-        pass(string, ansiCode)
-    } else fail(string "\n       " message, ansiCode)
+    if (x)
+        pass(name, "", ansiCode)
+    else {
+        if (!message) message = "assertTrue: FALSE"
+        fail(name, message, ansiCode)
+    }
 }
 
 function assertFalse(x, name, message, ansiCode) {
@@ -28,18 +35,71 @@ function assertFalse(x, name, message, ansiCode) {
     assertTrue(!x, name, message, ansiCode)
 }
 
-function assertEqual(x, y, name, message, ansiCode) {
-    if (!message)
-        message = "assertEqual: " ansi("underline", x)  \
-            " IS NOT EQUAL TO " ansi("underline", y)
-    assertTrue(x == y, name, message, ansiCode)
+function assertEqual(x, y, name, message, ansiCode,    i) {
+    if (isarray(x) && !isarray(y)) {
+        if (!message)
+            message = "assertEqual: EXPECTED SCALAR VALUE " ansi("underline", y) ", GOT:"
+        fail(name, message, ansiCode)
+        da(x)
+
+    } else if (!isarray(x) && isarray(y)) {
+        if (!message)
+            message = "assertEqual: GOT SCALAR VALUE " ansi("underline", x) ", EXPECTED:"
+        fail(name, message, ansiCode)
+        da(y)
+
+    } else if (isarray(x) && isarray(y)) {
+        if (length(x) != length(y)) {
+            if (!message)
+                message = "assertEqual: ARRAY LENGTH "                  \
+                    ansi("underline", length(x)) " != " ansi("underline", length(y))
+            fail(name, message, ansiCode)
+
+        } else {
+            for (i in x) {
+                if (x[i] != y[i]) {
+                    if (!message)
+                        message = "assertEqual: ARRAY[" i "] "          \
+                            ansi("underline", x[i]) " != " ansi("underline", y[i])
+                    fail(name, message, ansiCode)
+                    return
+                }
+            }
+            pass(name, "", ansiCode)
+        }
+
+    } else {
+        if (!message)
+            message = "assertEqual: " ansi("underline", x)      \
+                " IS NOT EQUAL TO " ansi("underline", y)
+        assertTrue(x == y, name, message, ansiCode)
+    }
 }
 
-function assertNotEqual(x, y, name, message, ansiCode) {
-    if (!message)
-        message = "assertNotEqual: " ansi("underline", x)       \
-            " IS EQUAL TO " ansi("underline", y)
-    assertFalse(x == y, name, message, ansiCode)
+function assertNotEqual(x, y, name, message, ansiCode,    i) {
+    if (isarray(x) && isarray(y)) {
+        if (length(x) != length(y))
+            pass(name, "", ansiCode)
+        else {
+            for (i in x) {
+                if (x[i] != y[i]) {
+                    pass(name, "", ansiCode)
+                    return
+                }
+            }
+            if (!message)
+                message = "assertNotEqual: TWO ARRAYS ARE IDENTICAL"
+            fail(name, message, ansiCode)
+        }
+
+    } else if (!isarray(x) && !isarray(y)) {
+        if (!message)
+            message = "assertNotEqual: " ansi("underline", x)   \
+                " IS EQUAL TO " ansi("underline", y)
+        assertFalse(x == y, name, message, ansiCode)
+
+    } else
+        pass(name, "", ansiCode)
 }
 
 function T(test, total) {
@@ -49,7 +109,7 @@ function T(test, total) {
 }
 
 function START_TEST(name) {
-    print(ansi("negative", ansi("bold", "====== TESTING FOR "   \
+    print(ansi("negative", ansi("bold", "====== TESTING FOR "           \
                                 ansi("underline", name) " STARTED")))
     G_COUNTER = G_SUCCESS = 0
 }
