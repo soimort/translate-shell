@@ -1,10 +1,12 @@
+@include "include/Utils"
+
 BEGIN {
     START_TEST("Utils.awk")
 
     T("GawkVersion", 1)
     {
         initGawk()
-        assertTrue(GawkVersion ~ "^4\.")
+        assertTrue(GawkVersion ~ "^4.")
     }
 
     T("Rlwrap", 1)
