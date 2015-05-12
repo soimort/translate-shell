@@ -109,8 +109,11 @@ BEGIN {
         assertFalse(matchesAny("1.0", patterns))
     }
 
-    T("join()", 2)
+    T("join()", 4)
     {
+        assertEqual(join("", "-"), "")
+        delete array; array[0]
+        assertEqual(join(array, "-"), "")
         delete array; array[0] = "foo"; array[1] = "bar"
         assertEqual(join(array, " "), "foo bar")
         assertEqual(join(array, ","), "foo,bar")
