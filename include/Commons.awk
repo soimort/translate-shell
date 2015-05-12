@@ -226,7 +226,7 @@ function join(array, separator, sortedIn, preserveNull,
     temp = ""
     j = 0
     saveSortedIn = PROCINFO["sorted_in"]
-    if (length(array)) {
+    if (isarray(array)) {
         PROCINFO["sorted_in"] = sortedIn
         for (i in array)
             if (preserveNull || array[i] != "")
