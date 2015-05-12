@@ -198,6 +198,13 @@ BEGIN {
             continue
         }
 
+        # -N, -nothing
+        match(ARGV[pos], /^--?(N|nothing)$/)
+        if (RSTART) {
+            InfoOnly = "nothing"
+            continue
+        }
+
         ## Display options
 
         # -verbose
@@ -567,6 +574,8 @@ BEGIN {
         exit
     case "list":
         print getList(Option["tl"])
+        exit
+    case "nothing":
         exit
     }
 
