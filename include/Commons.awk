@@ -112,6 +112,11 @@ function join(array, separator, sortedIn, preserveNull,
     return temp
 }
 
+# Split a string into characters.
+function explode(string, array) {
+    split(string, array, NULLSTR)
+}
+
 # Return the real character represented by an escape sequence.
 # Example: escapeChar("n") returns "\n".
 # See: <https://en.wikipedia.org/wiki/Escape_character>
@@ -142,7 +147,7 @@ function literal(string,
     if (string !~ /^".*"$/)
         return string
 
-    split(string, s, NULLSTR)
+    explode(string, s)
     string = NULLSTR
     escaping = 0
     for (i = 2; i < length(s); i++) {
@@ -351,7 +356,7 @@ function initUrlEncoding() {
 # Return the URL-encoded string.
 function quote(string,    i, r, s) {
     r = NULLSTR
-    split(string, s, NULLSTR)
+    explode(string, s)
     for (i = 1; i <= length(s); i++)
         r = r (s[i] in UrlEncoding ? UrlEncoding[s[i]] : s[i])
     return r
