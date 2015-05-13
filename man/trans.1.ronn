@@ -154,7 +154,7 @@ This option overrides the setting of environment variable `PLAYER`.
 Use proxy on given port. String format:
 
 ```
-[PROTOCOL://]HOST[:PORT]
+[PROTOCOL://]HOST:PORT
 ```
 
 This option overrides the setting of environment variables `HTTP_PROXY` and `http_proxy`.

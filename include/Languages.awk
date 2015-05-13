@@ -184,7 +184,7 @@ function initLocale(    i) {
     Locale["ny"]["glotto"]             = "nyan1308"
     Locale["ny"]["script"]             = "Latn"
 
-    #14a Chinese (Mandarin Chinese), Simplified
+    #14a Chinese (Mandarin), Simplified
     Locale["zh-CN"]["name"]            = "Chinese Simplified"
     Locale["zh-CN"]["endonym"]         = "简体中文"
     Locale["zh-CN"]["translations-of"] = "%s 的翻译"
@@ -197,7 +197,7 @@ function initLocale(    i) {
     Locale["zh-CN"]["glotto"]          = "mand1415"
     Locale["zh-CN"]["script"]          = "Hans"
 
-    #14b Chinese (Mandarin Chinese), Traditional
+    #14b Chinese (Mandarin), Traditional
     Locale["zh-TW"]["name"]            = "Chinese Traditional"
     Locale["zh-TW"]["endonym"]         = "正體中文"
     Locale["zh-TW"]["translations-of"] = "「%s」的翻譯"
