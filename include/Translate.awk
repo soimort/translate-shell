@@ -138,8 +138,8 @@ function getTranslation(text, sl, tl, hl,
     tokenize(tokens, content)
     parseJsonArray(ast, tokens)
 
-    l(content, "content")
-    l(tokens, "tokens")
+    l(content, "content", 1, 1)
+    l(tokens, "tokens", 1, 0, 1)
     l(ast, "ast")
     if (!anything(ast)) {
         e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")

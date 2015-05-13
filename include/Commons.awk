@@ -208,9 +208,9 @@ function parameterize(string, quotationMark) {
 }
 
 # Convert any value to human-readable string.
-function toString(value, inline, numSub, level, sortedIn,
+function toString(value, inline, heredoc, valOnly, numSub, level, sortedIn,
                   ####
-                  i, items, j, k, p, saveSortedIn, v) {
+                  i, items, j, k, p, saveSortedIn, temp, v) {
     if (!level) level = 0
     if (!sortedIn)
         sortedIn = "@ind_num_asc"
@@ -222,18 +222,25 @@ function toString(value, inline, numSub, level, sortedIn,
         for (i in value) {
             split(i, j, SUBSEP); k = join(j, ",")
             if (!numSub || !isnum(k)) k = parameterize(k, "\"")
-            v = toString(value[i], inline, numSub, level + 1, sortedIn)
+            v = toString(value[i], inline, heredoc, valOnly, numSub, level + 1, sortedIn)
             if (!isarray(value[i])) v = parameterize(v, "\"")
-            items[p++] = inline ? (k ": " v) :
-                (replicate("\t", level) k "\t" v)
+            if (valOnly)
+                items[p++] = inline ? v : (replicate("\t", level) v)
+            else
+                items[p++] = inline ? (k ": " v) :
+                    (replicate("\t", level) k "\t" v)
         }
         PROCINFO["sorted_in"] = saveSortedIn
-        if (inline)
-            return "{" join(items, ", ") "}"
+        temp = inline ? join(items, ", ") :
+            ("\n" join(items, "\n") "\n" replicate("\t", level))
+        temp = valOnly ? ("[" temp "]") : ("{" temp "}")
+        return temp
+    } else {
+        if (heredoc)
+            return "'''\n" value "\n'''"
         else
-            return "{" "\n" join(items, "\n") "\n" replicate("\t", level) "}"
-    } else
-        return value
+            return value
+    }
 }
 
 # Squeeze a source line of AWK code.
@@ -329,7 +336,7 @@ function d(text) {
 }
 
 # Debug any value.
-function da(value, name, sortedIn,
+function da(value, name, inline, heredoc, valOnly, numSub, sortedIn,
             ####
             i, j, saveSortedIn) {
     # Default parameters
@@ -338,16 +345,17 @@ function da(value, name, sortedIn,
     if (!sortedIn)
         sortedIn = "@ind_num_asc"
 
-    if (isarray(value)) {
-        saveSortedIn = PROCINFO["sorted_in"]
-        PROCINFO["sorted_in"] = sortedIn
-        for (i in value) {
-            split(i, j, SUBSEP)
-            da(value[i], sprintf(name "[%s]", join(j, ",")), sortedIn)
-        }
-        PROCINFO["sorted_in"] = saveSortedIn
-    } else
-        d(name " = " value)
+    d(name " = " toString(value, inline, heredoc, valOnly, numSub, 0, sortedIn))
+    #if (isarray(value)) {
+    #    saveSortedIn = PROCINFO["sorted_in"]
+    #    PROCINFO["sorted_in"] = sortedIn
+    #    for (i in value) {
+    #        split(i, j, SUBSEP)
+    #        da(value[i], sprintf(name "[%s]", join(j, ",")), sortedIn)
+    #    }
+    #    PROCINFO["sorted_in"] = saveSortedIn
+    #} else
+    #    d(name " = " value)
 }
 
 # Naive assertion.

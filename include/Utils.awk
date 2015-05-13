@@ -36,10 +36,10 @@ function initEmacs() {
 }
 
 # Log any value if debugging is enabled.
-function l(value, name) {
+function l(value, name, inline, heredoc, valOnly, numSub, sortedIn) {
     if (Option["debug"]) {
         if (name)
-            da(value, name)
+            da(value, name, inline, heredoc, valOnly, numSub, sortedIn)
         else
             d(value)
     }
