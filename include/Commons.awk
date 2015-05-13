@@ -37,11 +37,6 @@ function exists(value) {
         return value ? 1 : 0
 }
 
-# Append an element into an array (zero-based).
-function append(array, element) {
-    array[anything(array) ? length(array) : 0] = element
-}
-
 # Return an element if it belongs to the array;
 # Otherwise, return a null string.
 function belongsTo(element, array,
@@ -66,6 +61,11 @@ function identical(x, y,
         return 1
     } else
         return 0
+}
+
+# Append an element into an array (zero-based).
+function append(array, element) {
+    array[anything(array) ? length(array) : 0] = element
 }
 
 

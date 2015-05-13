@@ -33,6 +33,13 @@ BEGIN {
         assertFalse(identical(x[0], y[0]))
         assertTrue(identical(x[0], y[0][0]))
     }
+    T("append()", 1)
+    {
+        delete array; array[0] = "foo"
+        delete expected; expected[0] = "foo"; expected[1] = "bar"
+        append(array, "bar")
+        assertTrue(identical(array, expected))
+    }
 
     # Strings
     T("startsWithAny()", 3)
