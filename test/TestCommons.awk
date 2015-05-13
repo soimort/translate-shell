@@ -42,6 +42,13 @@ BEGIN {
     }
 
     # Strings
+    T("isnum()", 4)
+    {
+        assertTrue(isnum(0))
+        assertTrue(isnum(42.0))
+        assertFalse(isnum(""))
+        assertFalse(isnum("hello world"))
+    }
     T("startsWithAny()", 3)
     {
         delete substrings; substrings[0] = "A"; substrings[1] = "a"

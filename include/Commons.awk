@@ -72,6 +72,12 @@ function append(array, element) {
 
 ## Strings:
 
+# Return non-zero if the string represents a numeral;
+# Otherwise, return 0.
+function isnum(string) {
+    return string == string + 0
+}
+
 # Return one of the substrings if the string starts with it;
 # Otherwise, return a null string.
 function startsWithAny(string, substrings,
