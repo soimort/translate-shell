@@ -207,6 +207,35 @@ function parameterize(string, quotationMark) {
     }
 }
 
+# Convert any value to human-readable string.
+function toString(value, inline, numSub, level, sortedIn,
+                  ####
+                  i, items, j, k, p, saveSortedIn, v) {
+    if (!level) level = 0
+    if (!sortedIn)
+        sortedIn = "@ind_num_asc"
+
+    if (isarray(value)) {
+        saveSortedIn = PROCINFO["sorted_in"]
+        PROCINFO["sorted_in"] = sortedIn
+        p = 0
+        for (i in value) {
+            split(i, j, SUBSEP); k = join(j, ",")
+            if (!numSub || !isnum(k)) k = parameterize(k, "\"")
+            v = toString(value[i], inline, numSub, level + 1, sortedIn)
+            if (!isarray(value[i])) v = parameterize(v, "\"")
+            items[p++] = inline ? (k ": " v) :
+                (replicate("\t", level) k "\t" v)
+        }
+        PROCINFO["sorted_in"] = saveSortedIn
+        if (inline)
+            return "{" join(items, ", ") "}"
+        else
+            return "{" "\n" join(items, "\n") "\n" replicate("\t", level) "}"
+    } else
+        return value
+}
+
 # Squeeze a source line of AWK code.
 function squeeze(line, preserveIndent) {
     # Remove preceding spaces if indentation not preserved
