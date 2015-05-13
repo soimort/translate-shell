@@ -73,6 +73,13 @@ BEGIN {
         assertEqual(join(array, " "), "foo bar")
         assertEqual(join(array, ","), "foo,bar")
     }
+    T("explode()", 1)
+    {
+        delete array
+        delete expected; expected[1] = "f"; expected[2] = "o"; expected[3] = "o"
+        explode("foo", array)
+        assertTrue(identical(array, expected))
+    }
     T("escapeChar()", 8)
     {
         assertEqual(escapeChar("b"), "\b")
