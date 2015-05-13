@@ -24,6 +24,15 @@ BEGIN {
         assertTrue(belongsTo("bar", array))
         assertFalse(belongsTo("world", array))
     }
+    T("identical()", 4)
+    {
+        delete x; x[0] = 42
+        delete y; y[0][0] = 42
+        assertFalse(identical(x, y))
+        assertTrue(identical(x, y[0]))
+        assertFalse(identical(x[0], y[0]))
+        assertTrue(identical(x[0], y[0][0]))
+    }
 
     # Strings
     T("startsWithAny()", 3)

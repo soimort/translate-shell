@@ -52,6 +52,22 @@ function belongsTo(element, array,
     return NULLSTR
 }
 
+# Return non-zero if two values are identical;
+# Otherwise, return 0.
+function identical(x, y,
+                   ####
+                   i) {
+    if (!isarray(x) && !isarray(y))
+        return x == y
+    else if (isarray(x) && isarray(y)) {
+        if (length(x) != length(y)) return 0
+        for (i in x)
+            if (!identical(x[i], y[i])) return 0
+        return 1
+    } else
+        return 0
+}
+
 
 
 ## Strings:
