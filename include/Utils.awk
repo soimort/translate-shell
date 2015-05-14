@@ -35,6 +35,11 @@ function initEmacs() {
     Emacs = detectProgram("emacs", "--version")
 }
 
+# Detect curl.
+function initCurl() {
+    Curl = detectProgram("curl", "--version")
+}
+
 # Log any value if debugging is enabled.
 function l(value, name, inline, heredoc, valOnly, numSub, sortedIn) {
     if (Option["debug"]) {
@@ -116,5 +121,22 @@ function emacsMe(    i, params, el, command) {
             l(">> process exited with non-zero return code")
             return 1
         }
+    }
+}
+
+# Fetch the content of a URL. Return a null string if failed.
+function curl(url,    command, content, line) {
+    initCurl()
+
+    if (!Curl) {
+        l(">> not found: curl")
+        w("[WARNING] curl is not found.")
+        return NULLSTR
+    } else {
+        command = Curl " --location --silent " url
+        content = NULLSTR
+        while ((command |& getline line) > 0)
+            content = content line "\n"
+        return content
     }
 }
