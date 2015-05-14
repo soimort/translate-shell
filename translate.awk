@@ -33,7 +33,6 @@
 
 @include "include/Languages"
 @include "include/Help"
-@include "include/Tokenizer"
 @include "include/Parser"
 @include "include/Theme"
 @include "include/Translate"

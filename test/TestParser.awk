@@ -1,7 +1,7 @@
-@include "include/Tokenizer"
+@include "include/Parser"
 
 BEGIN {
-    START_TEST("Tokenizer.awk")
+    START_TEST("Parser.awk")
 
     T("tokenize()", 8)
     {
@@ -69,6 +69,15 @@ BEGIN {
         expected[9] = "]"
         expected[10] = "]"
         assertEqual(tokens, expected)
+    }
+
+    T("parseList()", 1)
+    {
+        delete tokens; delete ast; delete expected
+        tokenize(tokens, "0")
+        parseList(ast, tokens)
+        expected[NULLSTR][0] = "0"
+        assertEqual(ast, expected)
     }
 
     END_TEST()
