@@ -136,7 +136,7 @@ function curl(url,    command, content, line) {
         command = Curl " --location --silent " url
         content = NULLSTR
         while ((command |& getline line) > 0)
-            content = content line "\n"
+            content = (content ? content "\n" : NULLSTR) line
         return content
     }
 }
