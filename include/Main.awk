@@ -566,27 +566,27 @@ BEGIN {
     switch (InfoOnly) {
     case "version":
         print getVersion()
-        exit
+        exit ExitCode
     case "help":
         print getHelp()
-        exit
+        exit ExitCode
     case "manual":
         showMan()
-        exit
+        exit ExitCode
     case "reference":
         print getReference("endonym")
-        exit
+        exit ExitCode
     case "reference-english":
         print getReference("name")
-        exit
+        exit ExitCode
     case "list":
         print getList(Option["tl"])
-        exit
+        exit ExitCode
     case "upgrade":
         upgrade()
-        exit
+        exit ExitCode
     case "nothing":
-        exit
+        exit ExitCode
     }
 
     if (Option["interactive"])
