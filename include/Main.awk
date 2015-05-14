@@ -198,6 +198,13 @@ BEGIN {
             continue
         }
 
+        # -U, -upgrade
+        match(ARGV[pos], /^--?(U|upgrade)$/)
+        if (RSTART) {
+            InfoOnly = "upgrade"
+            continue
+        }
+
         # -N, -nothing
         match(ARGV[pos], /^--?(N|nothing)$/)
         if (RSTART) {
@@ -574,6 +581,9 @@ BEGIN {
         exit
     case "list":
         print getList(Option["tl"])
+        exit
+    case "upgrade":
+        upgrade()
         exit
     case "nothing":
         exit
