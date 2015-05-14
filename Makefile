@@ -23,6 +23,7 @@ test: build
 	@gawk -f test.awk
 
 check: test
+	$(BUILDDIR)/$(COMMAND) -V
 	[ "`$(BUILDDIR)/$(COMMAND) -b 忍者`" = 'Ninja' ]
 
 install:
