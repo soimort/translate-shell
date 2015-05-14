@@ -38,7 +38,7 @@ BEGIN {
         delete array; array[0] = "foo"
         delete expected; expected[0] = "foo"; expected[1] = "bar"
         append(array, "bar")
-        assertTrue(identical(array, expected))
+        assertEqual(array, expected)
     }
 
     # Strings
@@ -85,7 +85,7 @@ BEGIN {
         delete array
         delete expected; expected[1] = "f"; expected[2] = "o"; expected[3] = "o"
         explode("foo", array)
-        assertTrue(identical(array, expected))
+        assertEqual(array, expected)
     }
     T("escapeChar()", 8)
     {
