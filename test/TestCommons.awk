@@ -125,6 +125,13 @@ BEGIN {
         assertEqual(parameterize("foo 'bar", "\""), "\"foo 'bar\"")
         assertEqual(parameterize("foo \"bar\"", "\""), "\"foo \\\\\"bar\\\\\"\"")
     }
+    T("toString()", 4)
+    {
+        assertEqual(toString(""), "")
+        assertEqual(toString(42), "42")
+        assertEqual(toString("foo"), "foo")
+        assertEqual(toString("\"foo bar\""), "\"foo bar\"")
+    }
     T("squeeze()", 4)
     {
         assertEqual(squeeze(""), "")
