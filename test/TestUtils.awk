@@ -21,5 +21,13 @@ BEGIN {
         assertEqual(Emacs, "emacs")
     }
 
+    T("newerVersion()", 4)
+    {
+        assertTrue(newerVersion("0.9", "0.8"))
+        assertTrue(newerVersion("1.0", "0.9.9999"))
+        assertTrue(newerVersion("1.9.9999", "1.9.10"))
+        assertTrue(newerVersion("2", "1.9.9999"))
+    }
+
     END_TEST()
 }
