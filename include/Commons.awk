@@ -189,8 +189,9 @@ function literal(string,
 
 # Return the escaped string.
 function escape(string) {
+    gsub(/\\/, "\\\\", string) # substitute backslashes first
     gsub(/"/, "\\\"", string)
-    gsub(/\\/, "\\\\", string)
+
     return string
 }
 

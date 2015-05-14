@@ -95,7 +95,7 @@ function emacsMe(    i, params, el, command) {
         params = ""
         for (i = 1; i < length(ARGV); i++)
             if (ARGV[i])
-                params = params " " (parameterize(ARGV[i], "\""))
+                params = params " " parameterize(ARGV[i], "\"")
         if (ENVIRON["TRANS_PROGRAM"]) {
             el = "(progn (setq trans-program (getenv \"TRANS_PROGRAM\")) " \
                 "(setq explicit-shell-file-name \"" Gawk "\") "         \
