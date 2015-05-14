@@ -36,70 +36,17 @@ function assertFalse(x, name, message, ansiCode) {
 }
 
 function assertEqual(x, y, name, message, ansiCode,    i) {
-    if (isarray(x) && !isarray(y)) {
-        if (!message)
-            message = "assertEqual: EXPECTED SCALAR VALUE " ansi("underline", y) ", GOT:"
-        fail(name, message, ansiCode)
-        da(x)
-
-    } else if (!isarray(x) && isarray(y)) {
-        if (!message)
-            message = "assertEqual: GOT SCALAR VALUE " ansi("underline", x) ", EXPECTED:"
-        fail(name, message, ansiCode)
-        da(y)
-
-    } else if (isarray(x) && isarray(y)) {
-        if (length(x) != length(y)) {
-            if (!message)
-                message = "assertEqual: ARRAY LENGTH "                  \
-                    ansi("underline", length(x)) " != " ansi("underline", length(y))
-            fail(name, message, ansiCode)
-
-        } else {
-            for (i in x) {
-                if (x[i] != y[i]) {
-                    if (!message)
-                        message = "assertEqual: ARRAY[" i "] "          \
-                            ansi("underline", x[i]) " != " ansi("underline", y[i])
-                    fail(name, message, ansiCode)
-                    return
-                }
-            }
-            pass(name, "", ansiCode)
-        }
-
-    } else {
-        if (!message)
-            message = "assertEqual: " ansi("underline", x)      \
-                " IS NOT EQUAL TO " ansi("underline", y)
-        assertTrue(x == y, name, message, ansiCode)
-    }
+    if (!message)
+        message = "assertEqual: " ansi("underline", toString(x, 1))     \
+            " IS NOT EQUAL TO " ansi("underline", toString(y, 1))
+    assertTrue(identical(x, y), name, message, ansiCode)
 }
 
 function assertNotEqual(x, y, name, message, ansiCode,    i) {
-    if (isarray(x) && isarray(y)) {
-        if (length(x) != length(y))
-            pass(name, "", ansiCode)
-        else {
-            for (i in x) {
-                if (x[i] != y[i]) {
-                    pass(name, "", ansiCode)
-                    return
-                }
-            }
-            if (!message)
-                message = "assertNotEqual: TWO ARRAYS ARE IDENTICAL"
-            fail(name, message, ansiCode)
-        }
-
-    } else if (!isarray(x) && !isarray(y)) {
-        if (!message)
-            message = "assertNotEqual: " ansi("underline", x)   \
-                " IS EQUAL TO " ansi("underline", y)
-        assertFalse(x == y, name, message, ansiCode)
-
-    } else
-        pass(name, "", ansiCode)
+    if (!message)
+        message = "assertNotEqual: " ansi("underline", toString(x, 1))  \
+            " IS EQUAL TO " ansi("underline", toString(y, 1))
+    assertFalse(identical(x, y), name, message, ansiCode)
 }
 
 function T(test, total) {
