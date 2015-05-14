@@ -1,0 +1,4 @@
+;;# Main registry
+{:transcript 0
+ :translate-shell "0.8.24"
+ }
