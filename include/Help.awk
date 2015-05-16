@@ -26,111 +26,111 @@ function getVersion(    build, gitHead) {
 
 # Return help message as a string.
 function getHelp() {
-    return "Usage:   " ansi("bold", Command " " ansi("negative", "[OPTIONS]") \
-                            " " ansi("negative", "[SOURCE]")            \
-                            ":" ansi("negative", "[TARGET(S)]")         \
-                            " " ansi("negative", "[TEXT]") " ...") RS   \
-        "Example: " ansi("underline", "trans -b la:en 'per aspera ad astra'") RS \
-        RS "Information Options:" RS                                    \
-        ins(1, ansi("bold", "-V, -version")) RS                         \
+    return "Usage:  " ansi("bold", Command)                             \
+        " [" ansi("underline", "OPTIONS") "]"                           \
+        " [" ansi("underline", "SOURCE") "]"                            \
+        ":[" ansi("underline", "TARGETS") "]"                           \
+        " [" ansi("underline", "TEXT") "]..." RS                        \
+        RS "Information options:" RS                                    \
+        ins(1, ansi("bold", "-V") ", " ansi("bold", "-version")) RS     \
         ins(2, "Print version and exit.") RS                            \
-        ins(1, ansi("bold", "-H, -help")) RS                            \
+        ins(1, ansi("bold", "-H") ", " ansi("bold", "-help")) RS        \
         ins(2, "Print help message and exit.") RS                       \
-        ins(1, ansi("bold", "-M, -manual")) RS                          \
+        ins(1, ansi("bold", "-M") ", " ansi("bold", "-man")) RS         \
         ins(2, "Show man page and exit.") RS                            \
-        ins(1, ansi("bold", "-T, -reference")) RS                       \
-        ins(2, "Print a reference table of languages and exit.") RS     \
-        ins(1, ansi("bold", "-R, -reference-english")) RS               \
-        ins(2, "Print a reference table of languages (in English names) and exit.") RS \
-        ins(1, ansi("bold", "-L " ansi("negative", "CODE(S)")           \
-                    ", -list " ansi("negative", "CODE(S)"))) RS         \
-        ins(2, "Print detailed information of languages and exit.") RS  \
-        ins(1, ansi("bold", "-U, -upgrade")) RS                         \
+        ins(1, ansi("bold", "-T") ", " ansi("bold", "-reference")) RS   \
+        ins(2, "Print reference table of languages and exit.") RS       \
+        ins(1, ansi("bold", "-R") ", " ansi("bold", "-reference-english")) RS \
+        ins(2, "Print reference table of languages (in English names) and exit.") RS \
+        ins(1, ansi("bold", "-L ") ansi("underline", "CODES")           \
+            ", " ansi("bold", "-list ") ansi("underline", "CODES")) RS  \
+        ins(2, "Print details of languages and exit.") RS               \
+        ins(1, ansi("bold", "-U") ", " ansi("bold", "-upgrade")) RS     \
         ins(2, "Upgrade this program to latest version.") RS            \
-        RS "Display Options:" RS                                        \
+        RS "Display options:" RS                                        \
         ins(1, ansi("bold", "-verbose")) RS                             \
         ins(2, "Verbose mode. (default)") RS                            \
-        ins(1, ansi("bold", "-b, -brief")) RS                           \
+        ins(1, ansi("bold", "-b") ", " ansi("bold", "-brief")) RS       \
         ins(2, "Brief mode.") RS                                        \
-        ins(1, ansi("bold", "-d, -dictionary")) RS                      \
+        ins(1, ansi("bold", "-d") ", " ansi("bold", "-dictionary")) RS  \
         ins(2, "Dictionary mode.") RS                                   \
-        ins(1, ansi("bold", "-show-original " ansi("negative", "Y|n"))) RS \
+        ins(1, ansi("bold", "-show-original ") ansi("underline", "Y/n")) RS \
         ins(2, "Show original text or not.") RS                         \
-        ins(1, ansi("bold", "-show-original-phonetics " ansi("negative", "Y|n"))) RS \
+        ins(1, ansi("bold", "-show-original-phonetics ") ansi("underline", "Y/n")) RS \
         ins(2, "Show phonetic notation of original text or not.") RS    \
-        ins(1, ansi("bold", "-show-translation " ansi("negative", "Y|n"))) RS \
+        ins(1, ansi("bold", "-show-translation ") ansi("underline", "Y/n")) RS \
         ins(2, "Show translation or not.") RS                           \
-        ins(1, ansi("bold", "-show-translation-phonetics " ansi("negative", "Y|n"))) RS \
+        ins(1, ansi("bold", "-show-translation-phonetics ") ansi("underline", "Y/n")) RS \
         ins(2, "Show phonetic notation of translation or not.") RS      \
-        ins(1, ansi("bold", "-show-prompt-message " ansi("negative", "Y|n"))) RS \
+        ins(1, ansi("bold", "-show-prompt-message ") ansi("underline", "Y/n")) RS \
         ins(2, "Show prompt message or not.") RS                        \
-        ins(1, ansi("bold", "-show-languages " ansi("negative", "Y|n"))) RS \
+        ins(1, ansi("bold", "-show-languages ") ansi("underline", "Y/n")) RS \
         ins(2, "Show source and target languages or not.") RS           \
-        ins(1, ansi("bold", "-show-original-dictionary " ansi("negative", "y|N"))) RS \
+        ins(1, ansi("bold", "-show-original-dictionary ") ansi("underline", "y/N")) RS \
         ins(2, "Show dictionary entry of original text or not.") RS     \
-        ins(1, ansi("bold", "-show-dictionary " ansi("negative", "Y|n"))) RS \
+        ins(1, ansi("bold", "-show-dictionary ") ansi("underline", "Y/n")) RS \
         ins(2, "Show dictionary entry of translation or not.") RS       \
-        ins(1, ansi("bold", "-show-alternatives " ansi("negative", "Y|n"))) RS \
+        ins(1, ansi("bold", "-show-alternatives ") ansi("underline", "Y/n")) RS \
         ins(2, "Show alternative translations or not.") RS              \
-        ins(1, ansi("bold", "-w " ansi("negative", "NUM")               \
-                    ", -width " ansi("negative", "NUM"))) RS            \
+        ins(1, ansi("bold", "-w ") ansi("underline", "NUM")             \
+            ", " ansi("bold", "-width ") ansi("underline", "NUM")) RS   \
         ins(2, "Specify the screen width for padding.") RS              \
-        ins(1, ansi("bold", "-indent " ansi("negative", "NUM"))) RS     \
+        ins(1, ansi("bold", "-indent ") ansi("underline", "NUM")) RS    \
         ins(2, "Specify the size of indent (number of spaces).") RS     \
         ins(1, ansi("bold", "-no-ansi")) RS                             \
         ins(2, "Do not use ANSI escape codes.") RS                      \
         ins(1, ansi("bold", "-no-theme")) RS                            \
         ins(2, "Do not use any other theme than default.") RS           \
-        ins(1, ansi("bold", "-theme " ansi("negative", "FILENAME"))) RS \
+        ins(1, ansi("bold", "-theme ") ansi("underline", "FILENAME")) RS \
         ins(2, "Specify the theme to use.") RS                          \
-        RS "Audio Options:" RS                                          \
+        RS "Audio options:" RS                                          \
         ins(1, ansi("bold", "-no-play")) RS                             \
         ins(2, "Do not listen to the translation.") RS                  \
         ins(1, ansi("bold", "-p, -play")) RS                            \
         ins(2, "Listen to the translation.") RS                         \
-        ins(1, ansi("bold", "-player " ansi("negative", "PROGRAM"))) RS \
+        ins(1, ansi("bold", "-player ") ansi("underline", "PROGRAM")) RS \
         ins(2, "Specify the audio player to use, and listen to the translation.") RS \
-        RS "Terminal Paging and Web Options:" RS                        \
+        RS "Terminal paging and browsing options:" RS                   \
         ins(1, ansi("bold", "-no-view")) RS                             \
         ins(2, "Do not view the translation in a terminal pager.") RS   \
-        ins(1, ansi("bold", "-v, -view")) RS                            \
+        ins(1, ansi("bold", "-v") ", " ansi("bold", "-view")) RS        \
         ins(2, "View the translation in a terminal pager.") RS          \
-        ins(1, ansi("bold", "-pager " ansi("negative", "PROGRAM"))) RS  \
+        ins(1, ansi("bold", "-pager ") ansi("underline", "PROGRAM")) RS \
         ins(2, "Specify the terminal pager to use, and view the translation.") RS \
-        ins(1, ansi("bold", "-browser " ansi("negative", "PROGRAM"))) RS \
+        ins(1, ansi("bold", "-browser ") ansi("underline", "PROGRAM")) RS \
         ins(2, "Specify the web browser to use.") RS                    \
-        RS "Networking Options:" RS                                     \
-        ins(1, ansi("bold", "-x " ansi("negative", "HOST:PORT")         \
-                    ", -proxy " ansi("negative", "HOST:PORT"))) RS      \
+        RS "Networking options:" RS                                     \
+        ins(1, ansi("bold", "-x ") ansi("underline", "HOST:PORT")       \
+            ", " ansi("bold", "-proxy ") ansi("underline", "HOST:PORT")) RS \
         ins(2, "Use HTTP proxy on given port.") RS                      \
-        ins(1, ansi("bold", "-u " ansi("negative", "STRING")            \
-                    ", -user-agent " ansi("negative", "STRING"))) RS    \
+        ins(1, ansi("bold", "-u ") ansi("underline", "STRING")          \
+            ", " ansi("bold", "-user-agent ") ansi("underline", "STRING")) RS \
         ins(2, "Specify the User-Agent to identify as.") RS             \
-        RS "Interactive Shell Options:" RS                              \
+        RS "Interactive shell options:" RS                              \
         ins(1, ansi("bold", "-no-rlwrap")) RS                           \
         ins(2, "Do not invoke rlwrap when starting an interactive shell.") RS \
-        ins(1, ansi("bold", "-I, -interactive, -shell")) RS             \
+        ins(1, ansi("bold", "-I") ", " ansi("bold", "-interactive") ", " ansi("bold", "-shell")) RS \
         ins(2, "Start an interactive shell.") RS                        \
-        ins(1, ansi("bold", "-E, -emacs")) RS                           \
+        ins(1, ansi("bold", "-E") ", " ansi("bold", "-emacs")) RS       \
         ins(2, "Start the GNU Emacs front-end for an interactive shell.") RS \
-        RS "I/O Options:" RS                                            \
-        ins(1, ansi("bold", "-i " ansi("negative", "FILENAME")          \
-                    ", -input " ansi("negative", "FILENAME"))) RS       \
+        RS "I/O options:" RS                                            \
+        ins(1, ansi("bold", "-i ") ansi("underline", "FILENAME")        \
+            ", " ansi("bold", "-input ") ansi("underline", "FILENAME")) RS \
         ins(2, "Specify the input file.") RS                            \
-        ins(1, ansi("bold", "-o " ansi("negative", "FILENAME")          \
-                    ", -output " ansi("negative", "FILENAME"))) RS      \
+        ins(1, ansi("bold", "-o ") ansi("underline", "FILENAME")        \
+            ", " ansi("bold", "-output ") ansi("underline", "FILENAME")) RS \
         ins(2, "Specify the output file.") RS                           \
-        RS "Language Preference Options:" RS                            \
-        ins(1, ansi("bold", "-l " ansi("negative", "CODE")              \
-                    ", -lang " ansi("negative", "CODE"))) RS            \
+        RS "Language preference options:" RS                            \
+        ins(1, ansi("bold", "-l ") ansi("underline", "CODE")            \
+            ", " ansi("bold", "-lang ") ansi("underline", "CODE")) RS   \
         ins(2, "Specify your home language.") RS                        \
-        ins(1, ansi("bold", "-s " ansi("negative", "CODE")              \
-                    ", -source " ansi("negative", "CODE"))) RS          \
+        ins(1, ansi("bold", "-s ") ansi("underline", "CODE")            \
+            ", " ansi("bold", "-source ") ansi("underline", "CODE")) RS \
         ins(2, "Specify the source language.") RS                       \
-        ins(1, ansi("bold", "-t " ansi("negative", "CODE(S)")           \
-                    ", -target " ansi("negative", "CODE(S)"))) RS       \
+        ins(1, ansi("bold", "-t ") ansi("underline", "CODES")           \
+            ", " ansi("bold", "-target ") ansi("underline", "CODES")) RS \
         ins(2, "Specify the target language(s), joined by '+'.") RS     \
-        RS "Other Options:" RS                                          \
+        RS "Other options:" RS                                          \
         ins(1, ansi("bold", "-no-init")) RS                             \
         ins(2, "Do not load any initialization script.") RS             \
         RS "See the man page " Command "(1) for more information."

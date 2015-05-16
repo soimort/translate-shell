@@ -158,7 +158,7 @@ BEGIN {
             continue
         }
 
-        # -M, -manual
+        # -M, -man
         match(ARGV[pos], /^--?(M|m(a(n(u(al?)?)?)?)?)$/)
         if (RSTART) {
             InfoOnly = "manual"
@@ -187,7 +187,7 @@ BEGIN {
             continue
         }
 
-        # -L CODE(S), -list CODE(S)
+        # -L CODES, -list CODES
         match(ARGV[pos], /^--?(L|list)(=(.*)?)?$/, group)
         if (RSTART) {
             InfoOnly = "list"
@@ -237,63 +237,63 @@ BEGIN {
             continue
         }
 
-        # -show-original Y|n
+        # -show-original Y/n
         match(ARGV[pos], /^--?show-original(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-original"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # -show-original-phonetics Y|n
+        # -show-original-phonetics Y/n
         match(ARGV[pos], /^--?show-original-phonetics(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-original-phonetics"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # -show-translation Y|n
+        # -show-translation Y/n
         match(ARGV[pos], /^--?show-translation(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-translation"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # -show-translation-phonetics Y|n
+        # -show-translation-phonetics Y/n
         match(ARGV[pos], /^--?show-translation-phonetics(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-translation-phonetics"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # -show-prompt-message Y|n
+        # -show-prompt-message Y/n
         match(ARGV[pos], /^--?show-prompt-message(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-prompt-message"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # -show-languages Y|n
+        # -show-languages Y/n
         match(ARGV[pos], /^--?show-languages(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-languages"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # -show-original-dictionary y|N
+        # -show-original-dictionary y/N
         match(ARGV[pos], /^--?show-original-dictionary(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-original-dictionary"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # -show-dictionary Y|n
+        # -show-dictionary Y/n
         match(ARGV[pos], /^--?show-dictionary(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-dictionary"] = yn(group[1] ? group[2] : ARGV[++pos])
             continue
         }
 
-        # -show-alternatives Y|n
+        # -show-alternatives Y/n
         match(ARGV[pos], /^--?show-alternatives(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-alternatives"] = yn(group[1] ? group[2] : ARGV[++pos])
@@ -367,7 +367,7 @@ BEGIN {
             continue
         }
 
-        ## Terminal paging and web options
+        ## Terminal paging and browsing options
 
         # -no-view
         match(ARGV[pos], /^--?no-view$/)
@@ -503,7 +503,7 @@ BEGIN {
             continue
         }
 
-        # -t CODE(S), -target CODE(S)
+        # -t CODES, -target CODES
         match(ARGV[pos], /^--?t(a(r(g(et?)?)?)?)?(=(.*)?)?$/, group)
         if (RSTART) {
             if (group[5]) {
