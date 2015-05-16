@@ -30,7 +30,7 @@ function getHelp() {
                             " " ansi("negative", "[SOURCE]")            \
                             ":" ansi("negative", "[TARGET(S)]")         \
                             " " ansi("negative", "[TEXT]") " ...") RS   \
-        "Example: " ansi("underline", "trans -brief la:en 'per aspera ad astra'") RS \
+        "Example: " ansi("underline", "trans -b la:en 'per aspera ad astra'") RS \
         RS "Information Options:" RS                                    \
         ins(1, ansi("bold", "-V, -version")) RS                         \
         ins(2, "Print version and exit.") RS                            \
@@ -45,6 +45,8 @@ function getHelp() {
         ins(1, ansi("bold", "-L " ansi("negative", "CODE(S)")           \
                     ", -list " ansi("negative", "CODE(S)"))) RS         \
         ins(2, "Print detailed information of languages and exit.") RS  \
+        ins(1, ansi("bold", "-U, -upgrade")) RS                         \
+        ins(2, "Upgrade this program to latest version.") RS            \
         RS "Display Options:" RS                                        \
         ins(1, ansi("bold", "-verbose")) RS                             \
         ins(2, "Verbose mode. (default)") RS                            \
