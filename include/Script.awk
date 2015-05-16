@@ -41,3 +41,42 @@ function loadOptions(script,    i, j, tokens, name, value) {
         }
     }
 }
+
+# Upgrade script.
+function upgrade(    gitHead, i, newVersion, registry, tokens, trans) {
+    if (!ENVIRON["TRANS_ABSPATH"]) {
+        w("[ERROR] Not running from a single executable.")
+        gitHead = getGitHead()
+        if (gitHead)
+            w("        Please try to upgrade via git commands.")
+        else
+            w("        Please download the latest release from here:" RS \
+              "        https://github.com/soimort/translate-shell/releases")
+        ExitCode = 1
+        return
+    }
+
+    RegistryIndex = "https://raw.githubusercontent.com/soimort/translate-shell/registry/index.trans"
+    TransExecutable = "http://www.soimort.org/translate-shell/trans"
+
+    registry = curl(RegistryIndex)
+    if (!registry) {
+        e("[ERROR] Upgrading failed.")
+        ExitCode = 1
+        return
+    }
+
+    tokenize(tokens, registry)
+    for (i in tokens)
+        if (tokens[i] == ":translate-shell")
+            newVersion = literal(tokens[i + 1])
+    if (newerVersion(newVersion, Version)) {
+        trans = curl(TransExecutable)
+        if (trans) {
+            print trans > ENVIRON["TRANS_ABSPATH"]
+            print "Successfully upgraded to " newVersion "." > STDERR
+        } else
+            e("[ERROR] Upgrading failed due to network errors.")
+    } else
+        e("[ERROR] Already up-to-date.")
+}
