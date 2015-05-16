@@ -77,26 +77,26 @@ function getHelp() {
         ins(2, "Specify the screen width for padding.") RS              \
         ins(1, ansi("bold", "-indent ") ansi("underline", "NUM")) RS    \
         ins(2, "Specify the size of indent (number of spaces).") RS     \
-        ins(1, ansi("bold", "-no-ansi")) RS                             \
-        ins(2, "Do not use ANSI escape codes.") RS                      \
-        ins(1, ansi("bold", "-no-theme")) RS                            \
-        ins(2, "Do not use any other theme than default.") RS           \
         ins(1, ansi("bold", "-theme ") ansi("underline", "FILENAME")) RS \
         ins(2, "Specify the theme to use.") RS                          \
+        ins(1, ansi("bold", "-no-theme")) RS                            \
+        ins(2, "Do not use any other theme than default.") RS           \
+        ins(1, ansi("bold", "-no-ansi")) RS                             \
+        ins(2, "Do not use ANSI escape codes.") RS                      \
         RS "Audio options:" RS                                          \
-        ins(1, ansi("bold", "-no-play")) RS                             \
-        ins(2, "Do not listen to the translation.") RS                  \
         ins(1, ansi("bold", "-p, -play")) RS                            \
         ins(2, "Listen to the translation.") RS                         \
         ins(1, ansi("bold", "-player ") ansi("underline", "PROGRAM")) RS \
         ins(2, "Specify the audio player to use, and listen to the translation.") RS \
+        ins(1, ansi("bold", "-no-play")) RS                             \
+        ins(2, "Do not listen to the translation.") RS                  \
         RS "Terminal paging and browsing options:" RS                   \
-        ins(1, ansi("bold", "-no-view")) RS                             \
-        ins(2, "Do not view the translation in a terminal pager.") RS   \
         ins(1, ansi("bold", "-v") ", " ansi("bold", "-view")) RS        \
         ins(2, "View the translation in a terminal pager.") RS          \
         ins(1, ansi("bold", "-pager ") ansi("underline", "PROGRAM")) RS \
         ins(2, "Specify the terminal pager to use, and view the translation.") RS \
+        ins(1, ansi("bold", "-no-view")) RS                             \
+        ins(2, "Do not view the translation in a terminal pager.") RS   \
         ins(1, ansi("bold", "-browser ") ansi("underline", "PROGRAM")) RS \
         ins(2, "Specify the web browser to use.") RS                    \
         RS "Networking options:" RS                                     \
@@ -107,12 +107,12 @@ function getHelp() {
             ", " ansi("bold", "-user-agent ") ansi("underline", "STRING")) RS \
         ins(2, "Specify the User-Agent to identify as.") RS             \
         RS "Interactive shell options:" RS                              \
-        ins(1, ansi("bold", "-no-rlwrap")) RS                           \
-        ins(2, "Do not invoke rlwrap when starting an interactive shell.") RS \
         ins(1, ansi("bold", "-I") ", " ansi("bold", "-interactive") ", " ansi("bold", "-shell")) RS \
         ins(2, "Start an interactive shell.") RS                        \
         ins(1, ansi("bold", "-E") ", " ansi("bold", "-emacs")) RS       \
         ins(2, "Start the GNU Emacs front-end for an interactive shell.") RS \
+        ins(1, ansi("bold", "-no-rlwrap")) RS                           \
+        ins(2, "Do not invoke rlwrap when starting an interactive shell.") RS \
         RS "I/O options:" RS                                            \
         ins(1, ansi("bold", "-i ") ansi("underline", "FILENAME")        \
             ", " ansi("bold", "-input ") ansi("underline", "FILENAME")) RS \

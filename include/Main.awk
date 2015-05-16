@@ -318,10 +318,12 @@ BEGIN {
             continue
         }
 
-        # -no-ansi
-        match(ARGV[pos], /^--?no-ansi$/)
+        # -theme FILENAME
+        match(ARGV[pos], /^--?theme(=(.*)?)?$/, group)
         if (RSTART) {
-            Option["no-ansi"] = 1
+            Option["theme"] = group[1] ?
+                (group[2] ? group[2] : Option["theme"]) :
+                ARGV[++pos]
             continue
         }
 
@@ -332,23 +334,14 @@ BEGIN {
             continue
         }
 
-        # -theme FILENAME
-        match(ARGV[pos], /^--?theme(=(.*)?)?$/, group)
+        # -no-ansi
+        match(ARGV[pos], /^--?no-ansi$/)
         if (RSTART) {
-            Option["theme"] = group[1] ?
-                (group[2] ? group[2] : Option["theme"]) :
-                ARGV[++pos]
+            Option["no-ansi"] = 1
             continue
         }
 
         ## Audio options
-
-        # -no-play
-        match(ARGV[pos], /^--?no-play$/)
-        if (RSTART) {
-            Option["play"] = 0
-            continue
-        }
 
         # -p, -play
         match(ARGV[pos], /^--?p(l(ay?)?)?$/)
@@ -367,14 +360,14 @@ BEGIN {
             continue
         }
 
-        ## Terminal paging and browsing options
-
-        # -no-view
-        match(ARGV[pos], /^--?no-view$/)
+        # -no-play
+        match(ARGV[pos], /^--?no-play$/)
         if (RSTART) {
-            Option["view"] = 0
+            Option["play"] = 0
             continue
         }
+
+        ## Terminal paging and browsing options
 
         # -v, -view
         match(ARGV[pos], /^--?v(i(ew?)?)?$/)
@@ -390,6 +383,13 @@ BEGIN {
             Option["pager"] = group[1] ?
                 (group[2] ? group[2] : Option["pager"]) :
                 ARGV[++pos]
+            continue
+        }
+
+        # -no-view
+        match(ARGV[pos], /^--?no-view$/)
+        if (RSTART) {
+            Option["view"] = 0
             continue
         }
 
@@ -424,13 +424,6 @@ BEGIN {
 
         ## Interactive shell options
 
-        # -no-rlwrap
-        match(ARGV[pos], /^--?no-rlwrap$/)
-        if (RSTART) {
-            Option["no-rlwrap"] = 1
-            continue
-        }
-
         # -I, -interactive, -shell
         match(ARGV[pos], /^--?(I|int(e(r(a(c(t(i(ve?)?)?)?)?)?)?)?|shell)$/)
         if (RSTART) {
@@ -442,6 +435,13 @@ BEGIN {
         match(ARGV[pos], /^--?(E|emacs)$/)
         if (RSTART) {
             Option["emacs"] = 1
+            continue
+        }
+
+        # -no-rlwrap
+        match(ARGV[pos], /^--?no-rlwrap$/)
+        if (RSTART) {
+            Option["no-rlwrap"] = 1
             continue
         }
 
