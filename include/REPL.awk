@@ -123,3 +123,37 @@ function prompt(    i, p, temp) {
     # %s : source language
     printf(prettify("prompt", p), getDisplay(Option["sl"])) > STDERR
 }
+
+# REPL.
+function repl(line,    command, group, i, words) {
+    split(line, words, " ")
+    command = words[1]
+
+    if (command ~ /^:(q|quit)$/) {
+        exit
+    } else if (command ~ /^:set$/) {
+        name = words[2]
+        value = words[3]
+        Option[name] = value
+    } else if (command ~ /^:show$/) {
+        name = words[2]
+        print prettify("welcome-submessage", toString(Option[name], 1, 0, 1))
+    } else {
+        match(command, /^[{(\[]?([[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?)?)[})\]]?$/, group)
+        if (RSTART) {
+            if (group[1]) Option["sl"] = group[1]
+            if (group[4]) split(group[4], Option["tl"], "+")
+            line = words[2]
+            for (i = 3; i <= length(words); i++)
+                line = line " " words[i]
+        }
+        if (line) {
+            translate(line)
+
+            # Interactive verbose mode: newline after each translation
+            if (Option["verbose"]) printf RS
+        }
+    }
+
+    prompt()
+}
