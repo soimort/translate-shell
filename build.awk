@@ -10,9 +10,10 @@ function init() {
     Trans     = BuildPath Command
 
     ManPath   = "man/"
+    Template  = ManPath "template.html"
     Man       = ManPath Command ".1"
-    Ronn      = Man ".ronn"
-    RonnStyle = ManPath "styles/night.css"
+    Markdown  = Man ".md"
+    Html      = Man ".html"
 }
 
 # Task: clean
@@ -23,11 +24,9 @@ function clean() {
 
 # Task: man
 function man() {
-    return system("ronn "                                               \
-                  "--manual=" parameterize(toupper(Command) " MANUAL")  \
-                  " --organization=" parameterize(Version)              \
-                  " --style=" parameterize(RonnStyle)                   \
-                  " " Ronn)
+    system("pandoc -s -t man " Markdown " -o " Man)
+    system("pandoc -s -t html --toc --toc-depth 1 --template " Template " " Markdown " -o " Html)
+    return 0
 }
 
 # Task: build
