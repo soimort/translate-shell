@@ -24,9 +24,9 @@ function clean() {
 
 # Task: man
 function man() {
-    system("pandoc -s -t man " Markdown " -o " Man)
-    system("pandoc -s -t html --toc --toc-depth 1 --template " Template " " Markdown " -o " Html)
-    return 0
+    if (fileExists(Template))
+        system("pandoc -s -t html --toc --toc-depth 1 --template " Template " " Markdown " -o " Html)
+    return system("pandoc -s -t man " Markdown " -o " Man)
 }
 
 # Task: build
