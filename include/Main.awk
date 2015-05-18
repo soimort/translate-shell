@@ -7,7 +7,7 @@ function init() {
     initGawk()
     initBiDi()
 
-    # Languages.awk
+    # (Languages.awk)
     initLocale()
     initUserLang()
 
@@ -37,7 +37,7 @@ function init() {
     Option["play"] = 0
     Option["player"] = ENVIRON["PLAYER"]
 
-    # Terminal paging and web
+    # Terminal paging and browsing
     Option["view"] = 0
     Option["pager"] = ENVIRON["PAGER"]
     Option["browser"] = ENVIRON["BROWSER"]
@@ -79,7 +79,7 @@ function initScript(    file, line, script, temp) {
         script = script "\n" line
     loadOptions(script)
 
-    # Hack: Option["tl"] must be an array
+    # HACK: Option["tl"] must be an array
     if (!isarray(Option["tl"])) {
         temp = Option["tl"]
         delete Option["tl"]
@@ -89,7 +89,7 @@ function initScript(    file, line, script, temp) {
 
 # Miscellany initialization.
 function initMisc(    group) {
-    # Translate.awk
+    # (Translate.awk)
     initHttpService()
 
     # Disable ANSI escape codes if required
