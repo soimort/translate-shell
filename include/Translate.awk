@@ -2,17 +2,6 @@
 # Translate.awk                                                    #
 ####################################################################
 
-# Detect external terminal pager (less, more, most).
-function initPager() {
-    Pager = !system("less -V" SUPOUT SUPERR) ?
-        "less" :
-        (!system("more -V" SUPOUT SUPERR) ?
-         "more" :
-         (!system("most" SUPOUT SUPERR) ?
-          "most" :
-          ""))
-}
-
 # Detect external audio player (mplayer, mpv, mpg123).
 function initAudioPlayer() {
     AudioPlayer = !system("mplayer" SUPOUT SUPERR) ?
@@ -31,6 +20,17 @@ function initSpeechSynthesizer() {
         (!system("espeak ''" SUPOUT SUPERR) ?
          "espeak" :
          "")
+}
+
+# Detect external terminal pager (less, more, most).
+function initPager() {
+    Pager = !system("less -V" SUPOUT SUPERR) ?
+        "less" :
+        (!system("more -V" SUPOUT SUPERR) ?
+         "more" :
+         (!system("most" SUPOUT SUPERR) ?
+          "most" :
+          ""))
 }
 
 # Initialize `HttpService`.

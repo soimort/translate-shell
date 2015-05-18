@@ -3,7 +3,10 @@
 ####################################################################
 
 # Return version as a string.
-function getVersion(    build, gitHead) {
+function getVersion(    build, gitHead, platform) {
+    initAudioPlayer()
+    initPager()
+    platform = detectProgram("uname", "-o", 1)
     if (ENVIRON["TRANS_BUILD"])
         build = "-" ENVIRON["TRANS_BUILD"]
     else {
@@ -12,8 +15,14 @@ function getVersion(    build, gitHead) {
     }
 
     return sprintf(ansi("bold", "%-22s%s%s") "\n\n", Name, Version, build) \
+        sprintf("%-22s%s\n", "platform", platform)                      \
         sprintf("%-22s%s\n", "gawk (GNU Awk)", PROCINFO["version"])     \
-        sprintf("%s\n", FriBidi ? FriBidi : "fribidi (GNU FriBidi) [NOT INSTALLED]") \
+        sprintf("%s\n", FriBidi ? FriBidi :
+                "fribidi (GNU FriBidi) [NOT INSTALLED]")                \
+        sprintf("%-22s%s\n", "audio player", AudioPlayer ? AudioPlayer :
+                "[NOT INSTALLED]")                                      \
+        sprintf("%-22s%s\n", "terminal pager", Pager ? Pager :
+                "[NOT INSTALLED]")                                      \
         sprintf("%-22s%s\n", "terminal type", ENVIRON["TERM"])          \
         sprintf("%-22s%s (%s)\n", "user locale", UserLocale, getName(UserLang)) \
         sprintf("%-22s%s\n", "home language", Option["hl"])             \
