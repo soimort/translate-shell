@@ -78,6 +78,8 @@ function build(target, type,    group, inline, line, temp) {
 
         print "export TRANS_ABSPATH=$(cd \"$(dirname \"$0\")\" && pwd)/$(basename \"$0\")" > Trans
 
+        print "export COLUMNS=$(tput cols)" > Trans
+
         print "gawk -f <(echo -E \"$TRANS_PROGRAM\") - \"$@\"" > Trans
 
         ("chmod +x " parameterize(Trans)) | getline

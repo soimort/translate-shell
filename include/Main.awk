@@ -28,7 +28,7 @@ function init() {
     Option["show-original-dictionary"] = 0
     Option["show-dictionary"] = 1
     Option["show-alternatives"] = 1
-    Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] : 64
+    Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] - 2 : 64
     Option["indent"] = 4
     Option["no-ansi"] = 0
     Option["theme"] = "default"
