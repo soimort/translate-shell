@@ -140,21 +140,30 @@ function getHelp() {
 function showMan(    temp) {
     if (ENVIRON["TRANS_MANPAGE"]) {
         initPager()
-        temp = "echo -E \"${TRANS_MANPAGE}\""
-        temp = temp PIPE                                                \
-            "groff -Wall -mtty-char -mandoc -Tutf8 -rLL=${COLUMNS}n -rLT=${COLUMNS}n"
-        switch (Pager) {
-        case "less":
-            temp = temp PIPE Pager " -s -P\"\\ \\Manual page " Command "(1) line %lt (press h for help or q to quit)\""
-            break
-        case "most":
-            temp = temp PIPE Pager " -Cs"
-            break
-        default: # more
-            temp = temp PIPE Pager
+        Groff = detectProgram("groff", "--version")
+        if (Pager && Groff) {
+            temp = "echo -E \"${TRANS_MANPAGE}\""
+            temp = temp PIPE                                            \
+                Groff " -Wall -mtty-char -mandoc -Tutf8 "               \
+                "-rLL=" Option["width"] "n -rLT=" Option["width"] "n"
+            switch (Pager) {
+            case "less":
+                temp = temp PIPE                                        \
+                    Pager " -s -P\"\\ \\Manual page " Command "(1) line %lt (press h for help or q to quit)\""
+                break
+            case "most":
+                temp = temp PIPE Pager " -Cs"
+                break
+            default: # more
+                temp = temp PIPE Pager
+            }
+            system(temp)
+            return
         }
-        system(temp)
-    } else if (system("man " Command SUPERR))
+    }
+    if (fileExists("man/" Command ".1"))
+        system("man man/" Command ".1" SUPERR)
+    else if (system("man " Command SUPERR))
         print getHelp()
 }
 
