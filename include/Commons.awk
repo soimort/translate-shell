@@ -446,7 +446,7 @@ function dirExists(file) {
 # Detect whether a program exists in path.
 # Return the name (or output) if the program call writes anything to stdout;
 # Otherwise, return a null string.
-function detectProgram(prog, arg, returnOutput) {
+function detectProgram(prog, arg, returnOutput,    temp) {
     if (returnOutput) {
         prog " " arg SUPERR | getline temp
         return temp
