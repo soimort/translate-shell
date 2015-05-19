@@ -1359,23 +1359,26 @@ function scriptName(code) {
 }
 
 # Return detailed information of a language as a string.
-function getDetails(code,    group, ws, iso) {
+function getDetails(code,    group, iso, language, script) {
     if (code == "auto" || !getCode(code))
         return prettify("languages", sprintf("%-22s%s\n", "Unknown code", ansi("bold", code)))
 
-    ws = scriptName(getScript(code))
-    if (isRTL(code)) ws = ws " (R-to-L)"
+    script = scriptName(getScript(code))
+    if (isRTL(code)) script = script " (R-to-L)"
     split(getISO(code), group, "-")
     iso = group[1]
+    split(getName(code), group, " ")
+    language = group[1]
     return sprintf("%s\n", prettify("translation", getDisplay(code)))   \
-        prettify("languages",                                           \
+        prettify("languages",
                  sprintf("%-22s%s\n", "Name", ansi("bold", getName(code))) \
                  sprintf("%-22s%s\n", "Family", ansi("bold", getFamily(code))) \
-                 sprintf("%-22s%s\n", "Writing system", ansi("bold", ws)) \
+                 sprintf("%-22s%s\n", "Writing system", ansi("bold", script)) \
                  sprintf("%-22s%s\n", "Code", ansi("bold", getCode(code))) \
                  sprintf("%-22s%s\n", "ISO 639-3", ansi("bold", iso))   \
                  sprintf("%-22s%s\n", "Ethnologue", ansi("bold", "http://www.ethnologue.com/language/" iso)) \
-                 sprintf("%-22s%s", "Glottolog", ansi("bold", "http://glottolog.org/resource/languoid/id/" getGlotto(code))))
+                 sprintf("%-22s%s\n", "Glottolog", ansi("bold", "http://glottolog.org/resource/languoid/id/" getGlotto(code))) \
+                 sprintf("%-22s%s", "Wikipedia", ansi("bold", "http://en.wikipedia.org/wiki/" language "_language")))
 }
 
 # Add /slashes/ for IPA phonemic notations and (parentheses) for others.
