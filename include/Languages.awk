@@ -1379,8 +1379,8 @@ function show(text, code,    temp) {
         if (Cache[text][0])
             return Cache[text][0]
         else {
-            if (FriBidi || (code && isRTL(code)))
-                ("echo " parameterize(text) " | " BiDiNoPad) | getline temp
+            if ((FriBidi || (code && isRTL(code))) && BiDiNoPad)
+                ("echo " parameterize(text) PIPE BiDiNoPad) | getline temp
             else # non-RTL language, or FriBidi not installed
                 temp = text
             return Cache[text][0] = temp
@@ -1399,8 +1399,8 @@ function s(text, code, width,    temp) {
         if (Cache[text][width])
             return Cache[text][width]
         else {
-            if (FriBidi || (code && isRTL(code)))
-                ("echo " parameterize(text) " | " sprintf(BiDi, width)) | getline temp
+            if ((FriBidi || (code && isRTL(code))) && BiDi)
+                ("echo " parameterize(text) PIPE sprintf(BiDi, width)) | getline temp
             else # non-RTL language, or FriBidi not installed
                 temp = text
             return Cache[text][width] = temp
