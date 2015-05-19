@@ -196,6 +196,7 @@ function initLocale(    i) {
     Locale["zh-CN"]["iso"]             = "zho-CN"
     Locale["zh-CN"]["glotto"]          = "mand1415"
     Locale["zh-CN"]["script"]          = "Hans"
+    Locale["zh-CN"]["dictionary"]      = "true" # has dictionary
 
     #14b Chinese (Mandarin), Traditional
     Locale["zh-TW"]["name"]            = "Chinese Traditional"
@@ -209,6 +210,7 @@ function initLocale(    i) {
     Locale["zh-TW"]["iso"]             = "zho-TW"
     Locale["zh-TW"]["glotto"]          = "mand1415"
     Locale["zh-TW"]["script"]          = "Hant"
+    Locale["zh-TW"]["dictionary"]      = "true" # has dictionary
 
     #15 Croatian
     Locale["hr"]["name"]               = "Croatian"
@@ -261,6 +263,7 @@ function initLocale(    i) {
     Locale["nl"]["iso"]                = "nld"
     Locale["nl"]["glotto"]             = "dutc1256"
     Locale["nl"]["script"]             = "Latn"
+    Locale["nl"]["dictionary"]         = "true" # has dictionary
 
     #19 English (Standard English)
     Locale["en"]["name"]               = "English"
@@ -274,6 +277,7 @@ function initLocale(    i) {
     Locale["en"]["iso"]                = "eng"
     Locale["en"]["glotto"]             = "stan1293"
     Locale["en"]["script"]             = "Latn"
+    Locale["en"]["dictionary"]         = "true" # has dictionary
 
     #20 Esperanto
     Locale["eo"]["name"]               = "Esperanto"
@@ -339,6 +343,7 @@ function initLocale(    i) {
     Locale["fr"]["iso"]                = "fra"
     Locale["fr"]["glotto"]             = "stan1290"
     Locale["fr"]["script"]             = "Latn"
+    Locale["fr"]["dictionary"]         = "true" # has dictionary
 
     #25 Galician
     Locale["gl"]["name"]               = "Galician"
@@ -378,6 +383,7 @@ function initLocale(    i) {
     Locale["de"]["iso"]                = "deu"
     Locale["de"]["glotto"]             = "stan1295"
     Locale["de"]["script"]             = "Latn"
+    Locale["de"]["dictionary"]         = "true" # has dictionary
 
     #28 Greek (Modern Greek)
     Locale["el"]["name"]               = "Greek"
@@ -548,6 +554,7 @@ function initLocale(    i) {
     Locale["it"]["iso"]                = "ita"
     Locale["it"]["glotto"]             = "ital1282"
     Locale["it"]["script"]             = "Latn"
+    Locale["it"]["dictionary"]         = "true" # has dictionary
 
     #41 Japanese
     Locale["ja"]["name"]               = "Japanese"
@@ -561,6 +568,7 @@ function initLocale(    i) {
     Locale["ja"]["iso"]                = "jpn"
     Locale["ja"]["glotto"]             = "nucl1643"
     Locale["ja"]["script"]             = "Jpan"
+    Locale["ja"]["dictionary"]         = "true" # has dictionary
 
     #42 Javanese, Latin alphabet
     Locale["jv"]["name"]               = "Javanese"
@@ -626,6 +634,7 @@ function initLocale(    i) {
     Locale["ko"]["iso"]                = "kor"
     Locale["ko"]["glotto"]             = "kore1280"
     Locale["ko"]["script"]             = "Kore"
+    Locale["ko"]["dictionary"]         = "true" # has dictionary
 
     #47 Lao
     Locale["lo"]["name"]               = "Lao"
@@ -861,6 +870,7 @@ function initLocale(    i) {
     Locale["pt"]["iso"]                = "por"
     Locale["pt"]["glotto"]             = "port1283"
     Locale["pt"]["script"]             = "Latn"
+    Locale["pt"]["dictionary"]         = "true" # has dictionary
 
     #65 Punjabi, Gurmukhī alphabet
     Locale["pa"]["name"]               = "Punjabi"
@@ -900,6 +910,7 @@ function initLocale(    i) {
     Locale["ru"]["iso"]                = "rus"
     Locale["ru"]["glotto"]             = "russ1263"
     Locale["ru"]["script"]             = "Cyrl"
+    Locale["ru"]["dictionary"]         = "true" # has dictionary
 
     #68 Serbian, Cyrillic alphabet
     Locale["sr"]["name"]               = "Serbian"
@@ -991,6 +1002,7 @@ function initLocale(    i) {
     Locale["es"]["iso"]                = "spa"
     Locale["es"]["glotto"]             = "stan1288"
     Locale["es"]["script"]             = "Latn"
+    Locale["es"]["dictionary"]         = "true" # has dictionary
 
     #75 Sundanese, Latin alphabet
     Locale["su"]["name"]               = "Sundanese"
@@ -1306,6 +1318,11 @@ function getScript(code) {
 # Return 1 if a language is R-to-L; otherwise return 0.
 function isRTL(code) {
     return Locale[getCode(code)]["rtl"] ? 1 : 0
+}
+
+# Return 1 if Google provides dictionary data for a language; otherwise return 0.
+function hasDictionary(code) {
+    return Locale[getCode(code)]["dictionary"] ? 1 : 0
 }
 
 # Return the name of script (writing system).
