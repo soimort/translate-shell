@@ -1,5 +1,6 @@
 /_*
 /build
+/wiki
 *.mk
 *.html
 *.css
