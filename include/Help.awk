@@ -181,7 +181,7 @@ function showMan(    temp) {
 #     displayName = "endonym" or "name"
 function getReference(displayName,
                       ####
-                      code, col, cols, i, j, name, rows, r, saveSortedIn, t, tt) {
+                      code, col, cols, i, j, name, r, rows, saveSortedIn, t, tt) {
     rows = int(length(Locale) / 3) + 1
     cols[0][0] = cols[1][0] = cols[2][0] = NULLSTR
     i = 0
