@@ -1,7 +1,7 @@
 /_*
 /build
+/gh-pages
+/registry
 /wiki
-*.mk
-*.html
-*.css
 *.emacs*
+*.html
