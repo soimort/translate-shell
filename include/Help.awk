@@ -176,202 +176,103 @@ function showMan(    temp) {
         print getHelp()
 }
 
+# Comparator using getName().
+function compName(i1, v1, i2, v2) {
+    if (getName(i1) < getName(i2)) return -1
+    else return (getName(i1) != getName(i2))
+}
+
 # Return a reference table of languages as a string.
 # Parameters:
 #     displayName = "endonym" or "name"
-function getReference(displayName) {
-    if (displayName == "name")
-        return "┌─────────────────────────────┬──────────────────────┬─────────────────┐" RS \
-            "│ " getName("af") "           - " ansi("bold", "af") "    │ " \
-            getName("ha") "          - " ansi("bold", "ha") "  │ "      \
-            getName("fa") "    - " ansi("bold", "fa") " │" RS           \
-            "│ " getName("sq") "            - " ansi("bold", "sq") "    │ " \
-            getName("he") "         - " ansi("bold", "he") "  │ "       \
-            getName("pl") "     - " ansi("bold", "pl") " │" RS          \
-            "│ " getName("ar") "              - " ansi("bold", "ar") "    │ " \
-            getName("hi") "          - " ansi("bold", "hi") "  │ "      \
-            getName("pt") " - " ansi("bold", "pt") " │" RS              \
-            "│ " getName("hy") "            - " ansi("bold", "hy") "    │ " \
-            getName("hmn") "          - " ansi("bold", "hmn") " │ "     \
-            getName("pa") "    - " ansi("bold", "pa") " │" RS           \
-            "│ " getName("az") "         - " ansi("bold", "az") "    │ " \
-            getName("hu") "      - " ansi("bold", "hu") "  │ "          \
-            getName("ro") "   - " ansi("bold", "ro") " │" RS            \
-            "│ " getName("eu") "              - " ansi("bold", "eu") "    │ " \
-            getName("is") "      - " ansi("bold", "is") "  │ "          \
-            getName("ru") "    - " ansi("bold", "ru") " │" RS           \
-            "│ " getName("be") "          - " ansi("bold", "be") "    │ " \
-            getName("ig") "           - " ansi("bold", "ig") "  │ "     \
-            getName("sr") "    - " ansi("bold", "sr") " │" RS           \
-            "│ " getName("bn") "             - " ansi("bold", "bn") "    │ " \
-            getName("id") "     - " ansi("bold", "id") "  │ "           \
-            getName("st") "    - " ansi("bold", "st") " │" RS           \
-            "│ " getName("bs") "             - " ansi("bold", "bs") "    │ " \
-            getName("ga") "          - " ansi("bold", "ga") "  │ "      \
-            getName("si") "    - " ansi("bold", "si") " │" RS           \
-            "│ " getName("bg") "           - " ansi("bold", "bg") "    │ " \
-            getName("it") "        - " ansi("bold", "it") "  │ "        \
-            getName("sk") "     - " ansi("bold", "sk") " │" RS          \
-            "│ " getName("ca") "             - " ansi("bold", "ca") "    │ " \
-            getName("ja") "       - " ansi("bold", "ja") "  │ "         \
-            getName("sl") "  - " ansi("bold", "sl") " │" RS             \
-            "│ " getName("ceb") "             - " ansi("bold", "ceb") "   │ " \
-            getName("jv") "       - " ansi("bold", "jv") "  │ "         \
-            getName("so") "     - " ansi("bold", "so") " │" RS          \
-            "│ " getName("ny") "            - " ansi("bold", "ny") "    │ " \
-            getName("kn") "        - " ansi("bold", "kn") "  │ "        \
-            getName("es") "    - " ansi("bold", "es") " │" RS           \
-            "│ " getName("zh-CN") "  - " ansi("bold", "zh-CN") " │ "    \
-            getName("kk") "         - " ansi("bold", "kk") "  │ "       \
-            getName("su") "  - " ansi("bold", "su") " │" RS             \
-            "│ " getName("zh-TW") " - " ansi("bold", "zh-TW") " │ "     \
-            getName("km") "          - " ansi("bold", "km") "  │ "      \
-            getName("sw") "    - " ansi("bold", "sw") " │" RS           \
-            "│ " getName("hr") "            - " ansi("bold", "hr") "    │ " \
-            getName("ko") "         - " ansi("bold", "ko") "  │ "       \
-            getName("sv") "    - " ansi("bold", "sv") " │" RS           \
-            "│ " getName("cs") "               - " ansi("bold", "cs") "    │ " \
-            getName("lo") "            - " ansi("bold", "lo") "  │ "    \
-            getName("tg") "      - " ansi("bold", "tg") " │" RS         \
-            "│ " getName("da") "              - " ansi("bold", "da") "    │ " \
-            getName("la") "          - " ansi("bold", "la") "  │ "      \
-            getName("ta") "      - " ansi("bold", "ta") " │" RS         \
-            "│ " getName("nl") "               - " ansi("bold", "nl") "    │ " \
-            getName("lv") "        - " ansi("bold", "lv") "  │ "        \
-            getName("te") "     - " ansi("bold", "te") " │" RS          \
-            "│ " getName("en") "             - " ansi("bold", "en") "    │ " \
-            getName("lt") "     - " ansi("bold", "lt") "  │ "           \
-            getName("th") "       - " ansi("bold", "th") " │" RS        \
-            "│ " getName("eo") "           - " ansi("bold", "eo") "    │ " \
-            getName("mk") "     - " ansi("bold", "mk") "  │ "           \
-            getName("tr") "    - " ansi("bold", "tr") " │" RS           \
-            "│ " getName("et") "            - " ansi("bold", "et") "    │ " \
-            getName("mg") "       - " ansi("bold", "mg") "  │ "         \
-            getName("uk") "  - " ansi("bold", "uk") " │" RS             \
-            "│ " getName("tl") "            - " ansi("bold", "tl") "    │ " \
-            getName("ms") "          - " ansi("bold", "ms") "  │ "      \
-            getName("ur") "       - " ansi("bold", "ur") " │" RS        \
-            "│ " getName("fi") "             - " ansi("bold", "fi") "    │ " \
-            getName("ml") "      - " ansi("bold", "ml") "  │ "          \
-            getName("uz") "      - " ansi("bold", "uz") " │" RS         \
-            "│ " getName("fr") "              - " ansi("bold", "fr") "    │ " \
-            getName("mt") "        - " ansi("bold", "mt") "  │ "        \
-            getName("vi") " - " ansi("bold", "vi") " │" RS              \
-            "│ " getName("gl") "            - " ansi("bold", "gl") "    │ " \
-            getName("mi") "          - " ansi("bold", "mi") "  │ "      \
-            getName("cy") "      - " ansi("bold", "cy") " │" RS         \
-            "│ " getName("ka") "            - " ansi("bold", "ka") "    │ " \
-            getName("mr") "        - " ansi("bold", "mr") "  │ "        \
-            getName("yi") "    - " ansi("bold", "yi") " │" RS           \
-            "│ " getName("de") "              - " ansi("bold", "de") "    │ " \
-            getName("mn") "      - " ansi("bold", "mn") "  │ "          \
-            getName("yo") "     - " ansi("bold", "yo") " │" RS          \
-            "│ " getName("el") "               - " ansi("bold", "el") "    │ " \
-            getName("my") "        - " ansi("bold", "my") "  │ "        \
-            getName("zu") "       - " ansi("bold", "zu") " │" RS        \
-            "│ " getName("gu") "            - " ansi("bold", "gu") "    │ " \
-            getName("ne") "         - " ansi("bold", "ne") "  │ "       \
-            "                │" RS                                      \
-            "│ " getName("ht") "      - " ansi("bold", "ht") "    │ "   \
-            getName("no") "      - " ansi("bold", "no") "  │ "          \
-            "                │" RS                                      \
-            "└─────────────────────────────┴──────────────────────┴─────────────────┘"
-    else
-        return "┌──────────────────────┬───────────────────────┬─────────────────────┐" RS \
-            "│ " getDisplay("af") "      - " ansi("bold", "af") "  │ "  \
-            getDisplay("hu") "           - " ansi("bold", "hu") " │ "   \
-            getDisplay("pl") "      - " ansi("bold", "pl") "    │" RS   \
-            "│ " getDisplay("ar") "        - " ansi("bold", "ar") "  │ " \
-            getDisplay("hy") "          - " ansi("bold", "hy") " │ "    \
-            getDisplay("pt") "   - " ansi("bold", "pt") "    │" RS      \
-            "│ " getDisplay("az") "   - " ansi("bold", "az") "  │ "     \
-            getDisplay("id") " - " ansi("bold", "id") " │ "             \
-            getDisplay("ro") "      - " ansi("bold", "ro") "    │" RS   \
-            "│ " getDisplay("be") "     - " ansi("bold", "be") "  │ "   \
-            getDisplay("ig") "             - " ansi("bold", "ig") " │ " \
-            getDisplay("ru") "     - " ansi("bold", "ru") "    │" RS    \
-            "│ " getDisplay("bg") "      - " ansi("bold", "bg") "  │ "  \
-            getDisplay("is") "         - " ansi("bold", "is") " │ "     \
-            getDisplay("si") "        - " ansi("bold", "si") "    │" RS \
-            "│ " getDisplay("bn") "          - " ansi("bold", "bn") "  │ " \
-            getDisplay("it") "         - " ansi("bold", "it") " │ "     \
-            getDisplay("sk") "  - " ansi("bold", "sk") "    │" RS       \
-            "│ " getDisplay("bs") "       - " ansi("bold", "bs") "  │ " \
-            getDisplay("ja") "           - " ansi("bold", "ja") " │ "   \
-            getDisplay("sl") " - " ansi("bold", "sl") "    │" RS        \
-            "│ " getDisplay("ca") "         - " ansi("bold", "ca") "  │ " \
-            getDisplay("jv") "        - " ansi("bold", "jv") " │ "      \
-            getDisplay("so") "    - " ansi("bold", "so") "    │" RS     \
-            "│ " getDisplay("ceb") "        - " ansi("bold", "ceb") " │ " \
-            getDisplay("ka") "          - " ansi("bold", "ka") " │ "    \
-            getDisplay("sq") "       - " ansi("bold", "sq") "    │" RS  \
-            "│ " getDisplay("cs") "        - " ansi("bold", "cs") "  │ " \
-            getDisplay("kk") "       - " ansi("bold", "kk") " │ "       \
-            getDisplay("sr") "      - " ansi("bold", "sr") "    │" RS   \
-            "│ " getDisplay("cy") "        - " ansi("bold", "cy") "  │ " \
-            getDisplay("km") "         - " ansi("bold", "km") " │ "     \
-            getDisplay("st") "     - " ansi("bold", "st") "    │" RS    \
-            "│ " getDisplay("da") "          - " ansi("bold", "da") "  │ " \
-            getDisplay("kn") "             - " ansi("bold", "kn") " │ " \
-            getDisplay("su") "  - " ansi("bold", "su") "    │" RS       \
-            "│ " getDisplay("de") "        - " ansi("bold", "de") "  │ " \
-            getDisplay("ko") "           - " ansi("bold", "ko") " │ "   \
-            getDisplay("sv") "     - " ansi("bold", "sv") "    │" RS    \
-            "│ " getDisplay("el") "       - " ansi("bold", "el") "  │ " \
-            getDisplay("la") "           - " ansi("bold", "la") " │ "   \
-            getDisplay("sw") "   - " ansi("bold", "sw") "    │" RS      \
-            "│ " getDisplay("en") "        - " ansi("bold", "en") "  │ " \
-            getDisplay("lo") "              - " ansi("bold", "lo") " │ " \
-            getDisplay("ta") "        - " ansi("bold", "ta") "    │" RS \
-            "│ " getDisplay("eo") "      - " ansi("bold", "eo") "  │ "  \
-            getDisplay("lt") "         - " ansi("bold", "lt") " │ "     \
-            getDisplay("te") "       - " ansi("bold", "te") "    │" RS  \
-            "│ " getDisplay("es") "        - " ansi("bold", "es") "  │ " \
-            getDisplay("lv") "         - " ansi("bold", "lv") " │ "     \
-            getDisplay("tg") "      - " ansi("bold", "tg") "    │" RS   \
-            "│ " getDisplay("et") "          - " ansi("bold", "et") "  │ " \
-            getDisplay("mg") "         - " ansi("bold", "mg") " │ "     \
-            getDisplay("th") "         - " ansi("bold", "th") "    │" RS \
-            "│ " getDisplay("eu") "        - " ansi("bold", "eu") "  │ " \
-            getDisplay("mi") "            - " ansi("bold", "mi") " │ "  \
-            getDisplay("tl") "     - " ansi("bold", "tl") "    │" RS    \
-            "│ " getDisplay("fa") "          - " ansi("bold", "fa") "  │ " \
-            getDisplay("mk") "       - " ansi("bold", "mk") " │ "       \
-            getDisplay("tr") "      - " ansi("bold", "tr") "    │" RS   \
-            "│ " getDisplay("fi") "          - " ansi("bold", "fi") "  │ " \
-            getDisplay("ml") "           - " ansi("bold", "ml") " │ "   \
-            getDisplay("uk") "  - " ansi("bold", "uk") "    │" RS       \
-            "│ " getDisplay("fr") "       - " ansi("bold", "fr") "  │ " \
-            getDisplay("mn") "           - " ansi("bold", "mn") " │ "   \
-            getDisplay("ur") "        - " ansi("bold", "ur") "    │" RS \
-            "│ " getDisplay("ga") "        - " ansi("bold", "ga") "  │ " \
-            getDisplay("mr") "            - " ansi("bold", "mr") " │ "  \
-            getDisplay("uz") " - " ansi("bold", "uz") "    │" RS        \
-            "│ " getDisplay("gl") "         - " ansi("bold", "gl") "  │ " \
-            getDisplay("ms") "    - " ansi("bold", "ms") " │ "          \
-            getDisplay("vi") "  - " ansi("bold", "vi") "    │" RS       \
-            "│ " getDisplay("gu") "         - " ansi("bold", "gu") "  │ " \
-            getDisplay("mt") "            - " ansi("bold", "mt") " │ "  \
-            getDisplay("yi") "       - " ansi("bold", "yi") "    │" RS  \
-            "│ " getDisplay("ha") "          - " ansi("bold", "ha") "  │ " \
-            getDisplay("my") "          - " ansi("bold", "my") " │ "    \
-            getDisplay("yo") "      - " ansi("bold", "yo") "    │" RS   \
-            "│ " getDisplay("he") "          - " ansi("bold", "he") "  │ " \
-            getDisplay("ne") "            - " ansi("bold", "ne") " │ "  \
-            getDisplay("zh-CN") "    - " ansi("bold", "zh-CN") " │" RS  \
-            "│ " getDisplay("hi") "          - " ansi("bold", "hi") "  │ " \
-            getDisplay("nl") "       - " ansi("bold", "nl") " │ "       \
-            getDisplay("zh-TW") "    - " ansi("bold", "zh-TW") " │" RS  \
-            "│ " getDisplay("hmn") "          - " ansi("bold", "hmn") " │ " \
-            getDisplay("no") "            - " ansi("bold", "no") " │ "  \
-            getDisplay("zu") "     - " ansi("bold", "zu") "    │" RS    \
-            "│ " getDisplay("hr") "       - " ansi("bold", "hr") "  │ " \
-            getDisplay("ny") "           - " ansi("bold", "ny") " │ "   \
-            "                    │" RS                                  \
-            "│ " getDisplay("ht") " - " ansi("bold", "ht") "  │ "       \
-            getDisplay("pa") "            - " ansi("bold", "pa") " │ "  \
-            "                    │" RS                                  \
-            "└──────────────────────┴───────────────────────┴─────────────────────┘"
+function getReference(displayName,
+                      ####
+                      code, col, cols, i, j, name, rows, r, saveSortedIn, t, tt) {
+    rows = int(length(Locale) / 3) + 1
+    cols[0][0] = cols[1][0] = cols[2][0] = NULLSTR
+    i = 0
+    saveSortedIn = PROCINFO["sorted_in"]
+    PROCINFO["sorted_in"] = displayName == "endonym" ? "@ind_num_asc" :
+        "compName"
+    for (code in Locale) {
+        col = int(i / rows)
+        append(cols[col], code)
+        i++
+    }
+    PROCINFO["sorted_in"] = saveSortedIn
+
+    if (displayName == "endonym") {
+        r = "┌" replicate("─", 22) "┬" replicate("─", 23) "┬" replicate("─", 23) "┐" RS
+        for (i = 0; i < rows; i++) {
+            r = r "│ "
+            for (j = 0; j < 3; j++) {
+                if (cols[j][i]) {
+                    t = cols[j][i] == "he" ||
+                        cols[j][i] == "hi" ||
+                        cols[j][i] == "hu" ||
+                        cols[j][i] == "la" ||
+                        cols[j][i] == "ml" ||
+                        cols[j][i] == "mn" ||
+                        cols[j][i] == "ne" ||
+                        cols[j][i] == "ny" ||
+                        cols[j][i] == "pa" ||
+                        cols[j][i] == "pl" ||
+                        cols[j][i] == "ro" ||
+                        cols[j][i] == "sr" ||
+                        cols[j][i] == "te" ||
+                        cols[j][i] == "tg" ||
+                        cols[j][i] == "tr" ||
+                        cols[j][i] == "ur" ||
+                        cols[j][i] == "yi" ||
+                        cols[j][i] == "yo" ||
+                        (cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW" &&
+                         length(getEndonym(cols[j][i])) < 6) ? "\t\t " :
+                        cols[j][i] == "ht" ? " " :
+                        cols[j][i] == "id" ? "" :
+                        "\t "
+                    tt = length(cols[j][i]) == 3 ? " │" :
+                        (cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW") ? "  │" : ""
+                    r = r getDisplay(cols[j][i]) t "- " ansi("bold", cols[j][i]) tt " "
+                } else
+                    r = r "\t\t       │"
+            }
+            r = r RS
+        }
+        r = r "└" replicate("─", 22) "┴" replicate("─", 23) "┴" replicate("─", 23) "┘"
+    } else {
+        r = "┌" replicate("─", 22) "┬" replicate("─", 23) "┬" replicate("─", 23) "┐" RS
+        for (i = 0; i < rows; i++) {
+            r = r "│ "
+            for (j = 0; j < 3; j++) {
+                if (cols[j][i]) {
+                    t = cols[j][i] == "he" ||
+                        cols[j][i] == "kk" ||
+                        cols[j][i] == "ko" ||
+                        cols[j][i] == "ne" ||
+                        cols[j][i] == "pl" ||
+                        cols[j][i] == "sk" ||
+                        cols[j][i] == "so" ||
+                        cols[j][i] == "te" ||
+                        cols[j][i] == "yo" ||
+                        (cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW" &&
+                         length(getName(cols[j][i])) < 6) ? "\t\t " :
+                        cols[j][i] == "ht" ? " " :
+                        "\t "
+                    tt = length(cols[j][i]) == 3 ? " │" :
+                        (cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW") ? "  │" : ""
+                    name = getName(cols[j][i])
+                    if (cols[j][i] == "zh-CN" ||
+                        cols[j][i] == "zh-TW")
+                        name = substr(name, 1, 12) "."
+                    r = r name t "- " ansi("bold", cols[j][i]) tt " "
+                } else
+                    r = r "\t\t       │"
+            }
+            r = r RS
+        }
+        r = r "└" replicate("─", 22) "┴" replicate("─", 23) "┴" replicate("─", 23) "┘"
+    }
+    return r
 }
 
 # Return detailed information of languages as a string.
