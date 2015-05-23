@@ -1,0 +1,53 @@
+{:translate-shell "0.9.0"
+
+ :sgr-original "light magenta"
+ :sgr-original-phonetics "light magenta"
+ :sgr-translation ["light magenta" "bold"]
+ :sgr-translation-phonetics ["light magenta" "bold"]
+ :sgr-brief-translation ["light magenta" "bold"]
+ :sgr-brief-translation-phonetics ["light magenta" "bold"]
+
+ :sgr-original-dictionary-detailed-word-class "magenta"
+ :sgr-original-dictionary-detailed-explanation ["light magenta" "bold"]
+ :sgr-original-dictionary-detailed-example "light magenta"
+ :sgr-original-dictionary-detailed-synonyms "magenta"
+ :sgr-original-dictionary-detailed-synonyms-item "light magenta"
+ :sgr-original-dictionary-synonyms "magenta"
+ :sgr-original-dictionary-synonyms-word-class "magenta"
+ :sgr-original-dictionary-synonyms-synonyms "magenta"
+ :sgr-original-dictionary-synonyms-synonyms-item ["light magenta" "bold"]
+ :sgr-original-dictionary-examples "magenta"
+ :sgr-original-dictionary-examples-example "light magenta"
+ :sgr-original-dictionary-examples-original ["light magenta" "bold" "negative"]
+ :sgr-original-dictionary-see-also "magenta"
+ :sgr-original-dictionary-see-also-phrases "magenta"
+ :sgr-original-dictionary-see-also-phrases-item ["light magenta" "bold" "underline"]
+
+ :sgr-dictionary-word-class "magenta"
+ :sgr-dictionary-word ["light magenta" "bold"]
+ :sgr-dictionary-explanation "magenta"
+ :sgr-dictionary-explanation-item "light magenta"
+
+ :sgr-alternatives-original "light magenta"
+ :sgr-alternatives-translations "magenta"
+ :sgr-alternatives-translations-item ["light magenta" "bold"]
+
+ :sgr-prompt-message "magenta"
+ :sgr-prompt-message-original "light magenta"
+ :sgr-languages "magenta"
+ :sgr-languages-sl "light magenta"
+ :sgr-languages-tl ["light magenta" "bold"]
+ :fmt-languages "[ %s → %t ]"
+
+ :chr-source-seperator "═"
+ :sgr-source-seperator "magenta"
+ :chr-target-seperator "─"
+ :sgr-target-seperator "magenta"
+
+ :fmt-welcome-message "Translate Shell"
+ :sgr-welcome-message ["magenta" "bold"]
+ :fmt-welcome-submessage "(:q to quit)"
+ :sgr-welcome-submessage "magenta"
+ :fmt-prompt "%s> "
+ :sgr-prompt ["magenta" "bold"]
+ }

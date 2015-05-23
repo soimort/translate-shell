@@ -1,0 +1,53 @@
+{:translate-shell "0.9.0"
+
+ :sgr-original ["light blue" "bold"]
+ :sgr-original-phonetics ["light blue" "bold"]
+ :sgr-translation ["light cyan" "bold"]
+ :sgr-translation-phonetics ["light cyan" "bold"]
+ :sgr-brief-translation ["light cyan" "bold"]
+ :sgr-brief-translation-phonetics ["light cyan" "bold"]
+
+ :sgr-original-dictionary-detailed-word-class "light blue"
+ :sgr-original-dictionary-detailed-explanation ["light cyan" "bold"]
+ :sgr-original-dictionary-detailed-example ["light blue" "bold"]
+ :sgr-original-dictionary-detailed-synonyms "light blue"
+ :sgr-original-dictionary-detailed-synonyms-item ["light blue" "bold"]
+ :sgr-original-dictionary-synonyms "light blue"
+ :sgr-original-dictionary-synonyms-word-class "light blue"
+ :sgr-original-dictionary-synonyms-synonyms "light blue"
+ :sgr-original-dictionary-synonyms-synonyms-item ["light cyan" "bold"]
+ :sgr-original-dictionary-examples "light blue"
+ :sgr-original-dictionary-examples-example ["light blue" "bold"]
+ :sgr-original-dictionary-examples-original ["light cyan" "bold" "negative"]
+ :sgr-original-dictionary-see-also "light blue"
+ :sgr-original-dictionary-see-also-phrases "light blue"
+ :sgr-original-dictionary-see-also-phrases-item ["light cyan" "bold" "underline"]
+
+ :sgr-dictionary-word-class "light blue"
+ :sgr-dictionary-word ["light cyan" "bold"]
+ :sgr-dictionary-explanation "light blue"
+ :sgr-dictionary-explanation-item ["light blue" "bold"]
+
+ :sgr-alternatives-original ["light blue" "bold"]
+ :sgr-alternatives-translations "light blue"
+ :sgr-alternatives-translations-item ["light cyan" "bold"]
+
+ :sgr-prompt-message "light blue"
+ :sgr-prompt-message-original ["light blue" "bold"]
+ :sgr-languages "light blue"
+ :sgr-languages-sl ["light blue" "bold"]
+ :sgr-languages-tl ["light cyan" "bold"]
+ :fmt-languages "[ %s → %t ]"
+
+ :chr-source-seperator "═"
+ :sgr-source-seperator "light blue"
+ :chr-target-seperator "─"
+ :sgr-target-seperator "light blue"
+
+ :fmt-welcome-message "Translate Shell"
+ :sgr-welcome-message ["light blue" "bold"]
+ :fmt-welcome-submessage "(:q to quit)"
+ :sgr-welcome-submessage "light blue"
+ :fmt-prompt "%s> "
+ :sgr-prompt ["light blue" "bold"]
+ }

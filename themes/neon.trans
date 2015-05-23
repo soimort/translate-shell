@@ -1,0 +1,53 @@
+{:translate-shell "0.9.0"
+
+ :sgr-original ["light yellow" "bold"]
+ :sgr-original-phonetics ["light yellow" "bold"]
+ :sgr-translation ["light red" "bold"]
+ :sgr-translation-phonetics ["light red" "bold"]
+ :sgr-brief-translation ["light red" "bold"]
+ :sgr-brief-translation-phonetics ["light red" "bold"]
+
+ :sgr-original-dictionary-detailed-word-class "light yellow"
+ :sgr-original-dictionary-detailed-explanation ["light red" "bold"]
+ :sgr-original-dictionary-detailed-example ["light yellow" "bold"]
+ :sgr-original-dictionary-detailed-synonyms "light yellow"
+ :sgr-original-dictionary-detailed-synonyms-item ["light yellow" "bold"]
+ :sgr-original-dictionary-synonyms "light yellow"
+ :sgr-original-dictionary-synonyms-word-class "light yellow"
+ :sgr-original-dictionary-synonyms-synonyms "light yellow"
+ :sgr-original-dictionary-synonyms-synonyms-item ["light red" "bold"]
+ :sgr-original-dictionary-examples "light yellow"
+ :sgr-original-dictionary-examples-example ["light yellow" "bold"]
+ :sgr-original-dictionary-examples-original ["light red" "bold" "negative"]
+ :sgr-original-dictionary-see-also "light yellow"
+ :sgr-original-dictionary-see-also-phrases "light yellow"
+ :sgr-original-dictionary-see-also-phrases-item ["light red" "bold" "underline"]
+
+ :sgr-dictionary-word-class "light yellow"
+ :sgr-dictionary-word ["light red" "bold"]
+ :sgr-dictionary-explanation "light yellow"
+ :sgr-dictionary-explanation-item ["light yellow" "bold"]
+
+ :sgr-alternatives-original ["light yellow" "bold"]
+ :sgr-alternatives-translations "light yellow"
+ :sgr-alternatives-translations-item ["light red" "bold"]
+
+ :sgr-prompt-message "light yellow"
+ :sgr-prompt-message-original ["light yellow" "bold"]
+ :sgr-languages "light yellow"
+ :sgr-languages-sl ["light yellow" "bold"]
+ :sgr-languages-tl ["light red" "bold"]
+ :fmt-languages "[ %s → %t ]"
+
+ :chr-source-seperator "═"
+ :sgr-source-seperator "light yellow"
+ :chr-target-seperator "─"
+ :sgr-target-seperator "light yellow"
+
+ :fmt-welcome-message "Translate Shell"
+ :sgr-welcome-message ["light yellow" "bold"]
+ :fmt-welcome-submessage "(:q to quit)"
+ :sgr-welcome-submessage "light yellow"
+ :fmt-prompt "%s> "
+ :sgr-prompt ["light yellow" "bold"]
+ }

@@ -1,0 +1,53 @@
+{:translate-shell "0.9.0"
+
+ :sgr-original "light green"
+ :sgr-original-phonetics "light green"
+ :sgr-translation ["light green" "bold"]
+ :sgr-translation-phonetics ["light green" "bold"]
+ :sgr-brief-translation ["light green" "bold"]
+ :sgr-brief-translation-phonetics ["light green" "bold"]
+
+ :sgr-original-dictionary-detailed-word-class "green"
+ :sgr-original-dictionary-detailed-explanation ["light green" "bold"]
+ :sgr-original-dictionary-detailed-example "light green"
+ :sgr-original-dictionary-detailed-synonyms "green"
+ :sgr-original-dictionary-detailed-synonyms-item "light green"
+ :sgr-original-dictionary-synonyms "green"
+ :sgr-original-dictionary-synonyms-word-class "green"
+ :sgr-original-dictionary-synonyms-synonyms "green"
+ :sgr-original-dictionary-synonyms-synonyms-item ["light green" "bold"]
+ :sgr-original-dictionary-examples "green"
+ :sgr-original-dictionary-examples-example "light green"
+ :sgr-original-dictionary-examples-original ["light green" "bold" "negative"]
+ :sgr-original-dictionary-see-also "green"
+ :sgr-original-dictionary-see-also-phrases "green"
+ :sgr-original-dictionary-see-also-phrases-item ["light green" "bold" "underline"]
+
+ :sgr-dictionary-word-class "green"
+ :sgr-dictionary-word ["light green" "bold"]
+ :sgr-dictionary-explanation "green"
+ :sgr-dictionary-explanation-item "light green"
+
+ :sgr-alternatives-original "light green"
+ :sgr-alternatives-translations "green"
+ :sgr-alternatives-translations-item ["light green" "bold"]
+
+ :sgr-prompt-message "green"
+ :sgr-prompt-message-original "light green"
+ :sgr-languages "green"
+ :sgr-languages-sl "light green"
+ :sgr-languages-tl ["light green" "bold"]
+ :fmt-languages "[ %s → %t ]"
+
+ :chr-source-seperator "═"
+ :sgr-source-seperator "green"
+ :chr-target-seperator "─"
+ :sgr-target-seperator "green"
+
+ :fmt-welcome-message "Who are you?"
+ :sgr-welcome-message "green"
+ :fmt-welcome-submessage "Am I alone?"
+ :sgr-welcome-submessage "green"
+ :fmt-prompt "> "
+ :sgr-prompt ["green" "bold"]
+ }

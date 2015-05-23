@@ -1,0 +1,53 @@
+{:translate-shell "0.9.0"
+
+ :sgr-original "white"
+ :sgr-original-phonetics "white"
+ :sgr-translation ["white" "bold"]
+ :sgr-translation-phonetics ["white" "bold"]
+ :sgr-brief-translation ["white" "bold"]
+ :sgr-brief-translation-phonetics ["white" "bold"]
+
+ :sgr-original-dictionary-detailed-word-class "gray"
+ :sgr-original-dictionary-detailed-explanation ["white" "bold"]
+ :sgr-original-dictionary-detailed-example "white"
+ :sgr-original-dictionary-detailed-synonyms "gray"
+ :sgr-original-dictionary-detailed-synonyms-item "white"
+ :sgr-original-dictionary-synonyms "gray"
+ :sgr-original-dictionary-synonyms-word-class "gray"
+ :sgr-original-dictionary-synonyms-synonyms "gray"
+ :sgr-original-dictionary-synonyms-synonyms-item ["white" "bold"]
+ :sgr-original-dictionary-examples "gray"
+ :sgr-original-dictionary-examples-example "white"
+ :sgr-original-dictionary-examples-original ["white" "bold" "negative"]
+ :sgr-original-dictionary-see-also "gray"
+ :sgr-original-dictionary-see-also-phrases "gray"
+ :sgr-original-dictionary-see-also-phrases-item ["white" "bold" "underline"]
+
+ :sgr-dictionary-word-class "gray"
+ :sgr-dictionary-word ["white" "bold"]
+ :sgr-dictionary-explanation "gray"
+ :sgr-dictionary-explanation-item "white"
+
+ :sgr-alternatives-original "white"
+ :sgr-alternatives-translations "gray"
+ :sgr-alternatives-translations-item ["white" "bold"]
+
+ :sgr-prompt-message "gray"
+ :sgr-prompt-message-original "white"
+ :sgr-languages "gray"
+ :sgr-languages-sl "white"
+ :sgr-languages-tl ["white" "bold"]
+ :fmt-languages "[ %s → %t ]"
+
+ :chr-source-seperator "═"
+ :sgr-source-seperator "gray"
+ :chr-target-seperator "─"
+ :sgr-target-seperator "gray"
+
+ :fmt-welcome-message "More light and light it grows,"
+ :sgr-welcome-message "gray"
+ :fmt-welcome-submessage "  More dark and dark our woes!"
+ :sgr-welcome-submessage "gray"
+ :fmt-prompt "%s> "
+ :sgr-prompt ["gray" "bold"]
+ }
