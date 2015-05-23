@@ -176,12 +176,6 @@ function showMan(    temp) {
         print getHelp()
 }
 
-# Comparator using getName().
-function compName(i1, v1, i2, v2) {
-    if (getName(i1) < getName(i2)) return -1
-    else return (getName(i1) != getName(i2))
-}
-
 # Return a reference table of languages as a string.
 # Parameters:
 #     displayName = "endonym" or "name"

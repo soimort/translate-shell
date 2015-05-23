@@ -1325,6 +1325,14 @@ function hasDictionary(code) {
     return Locale[getCode(code)]["dictionary"] ? 1 : 0
 }
 
+# Comparator using getName().
+function compName(i1, v1, i2, v2) {
+    if (getName(i1) < getName(i2))
+        return -1
+    else
+        return (getName(i1) != getName(i2))
+}
+
 # Return the name of script (writing system).
 # See: <https://en.wikipedia.org/wiki/ISO_15924#List_of_codes>
 function scriptName(code) {
