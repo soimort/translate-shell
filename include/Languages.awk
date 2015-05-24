@@ -209,6 +209,19 @@ function initLocale(    i) {
     Locale["oc"]["glotto"]             = "occi1239"
     Locale["oc"]["script"]             = "Latn"
 
+    #? Oromo
+    Locale["om"]["name"]               = "Oromo"
+    Locale["om"]["endonym"]            = "Afaan Oromoo"
+    #Locale["om"]["translations-of"]
+    #Locale["om"]["definitions-of"]
+    #Locale["om"]["synonyms"]
+    #Locale["om"]["examples"]
+    #Locale["om"]["see-also"]
+    Locale["om"]["family"]             = "Afro-Asiatic"
+    Locale["om"]["iso"]                = "orm"
+    Locale["om"]["glotto"]             = "nucl1736"
+    Locale["om"]["script"]             = "Latn"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
