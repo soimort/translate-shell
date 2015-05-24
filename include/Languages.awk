@@ -328,6 +328,19 @@ function initLocale(    i) {
     Locale["ti"]["glotto"]             = "tigr1271"
     Locale["ti"]["script"]             = "Ethi"
 
+    #? Tibetan (Standard Tibetan)
+    Locale["bo"]["name"]               = "Tibetan"
+    Locale["bo"]["endonym"]            = "བོད་ཡིག"
+    #Locale["bo"]["translations-of"]
+    #Locale["bo"]["definitions-of"]
+    #Locale["bo"]["synonyms"]
+    #Locale["bo"]["examples"]
+    #Locale["bo"]["see-also"]
+    Locale["bo"]["family"]             = "Sino-Tibetan"
+    Locale["bo"]["iso"]                = "bod"
+    Locale["bo"]["glotto"]             = "tibe1272"
+    Locale["bo"]["script"]             = "Tibt"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
