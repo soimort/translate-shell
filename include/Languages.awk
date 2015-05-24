@@ -14,6 +14,19 @@
 #      <http://glottolog.org/>
 function initLocale(    i) {
 
+    #? Amharic
+    Locale["am"]["name"]               = "Amharic"
+    Locale["am"]["endonym"]            = "አማርኛ"
+    #Locale["am"]["translations-of"]
+    #Locale["am"]["definitions-of"]
+    #Locale["am"]["synonyms"]
+    #Locale["am"]["examples"]
+    #Locale["am"]["see-also"]
+    Locale["am"]["family"]             = "Afro-Asiatic"
+    Locale["am"]["iso"]                = "amh"
+    Locale["am"]["glotto"]             = "amha1245"
+    Locale["am"]["script"]             = "Ethi"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
