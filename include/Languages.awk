@@ -354,6 +354,19 @@ function initLocale(    i) {
     Locale["tk"]["glotto"]             = "turk1304"
     Locale["tk"]["script"]             = "Latn"
 
+    #? Tatar
+    Locale["tt"]["name"]               = "Tatar"
+    Locale["tt"]["endonym"]            = "татарча"
+    #Locale["tt"]["translations-of"]
+    #Locale["tt"]["definitions-of"]
+    #Locale["tt"]["synonyms"]
+    #Locale["tt"]["examples"]
+    #Locale["tt"]["see-also"]
+    Locale["tt"]["family"]             = "Turkic"
+    Locale["tt"]["iso"]                = "tat"
+    Locale["tt"]["glotto"]             = "tata1255"
+    Locale["tt"]["script"]             = "Cyrl"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
