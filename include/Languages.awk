@@ -92,6 +92,19 @@ function initLocale(    i) {
     Locale["dz"]["glotto"]             = "nucl1307"
     Locale["dz"]["script"]             = "Tibt"
 
+    #? Faroese
+    Locale["fo"]["name"]               = "Faroese"
+    Locale["fo"]["endonym"]            = "Føroyskt"
+    #Locale["fo"]["translations-of"]
+    #Locale["fo"]["definitions-of"]
+    #Locale["fo"]["synonyms"]
+    #Locale["fo"]["examples"]
+    #Locale["fo"]["see-also"]
+    Locale["fo"]["family"]             = "Indo-European"
+    Locale["fo"]["iso"]                = "fao"
+    Locale["fo"]["glotto"]             = "faro1244"
+    Locale["fo"]["script"]             = "Latn"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
