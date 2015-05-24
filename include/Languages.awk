@@ -394,6 +394,19 @@ function initLocale(    i) {
     #Locale["vo"]["glotto"]
     Locale["vo"]["script"]             = "Latn"
 
+    #? Wolof
+    Locale["wo"]["name"]               = "Wolof"
+    Locale["wo"]["endonym"]            = "Wollof"
+    #Locale["wo"]["translations-of"]
+    #Locale["wo"]["definitions-of"]
+    #Locale["wo"]["synonyms"]
+    #Locale["wo"]["examples"]
+    #Locale["wo"]["see-also"]
+    Locale["wo"]["family"]             = "Atlantic-Congo"
+    Locale["wo"]["iso"]                = "wol"
+    Locale["wo"]["glotto"]             = "wolo1247"
+    Locale["wo"]["script"]             = "Latn"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
