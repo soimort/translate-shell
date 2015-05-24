@@ -1,17 +1,19 @@
-# How to Contribute
+## How to Report an Issue
 
-## Reporting an Issue
+1. For bugs and suggestions, please always **[report your issue on GitHub](https://github.com/soimort/translate-shell/issues)**.
 
-1. Please [report your issue on GitHub](https://github.com/soimort/translate-shell/issues).
+2. For bugs, make sure you can reproduce on **the latest stable version** before reporting.
 
-2. **Always test with the latest released version before reporting an issue.**
+3. In your bug report, please include details such as:
+   * The exact command you entered, expected output and actual output
+   * The output of `trans -V` on your system
 
-3. In your bug report, please be specific about:
-   * The exact command you entered
-   * The output of `trans -version` on your system
+## How to Send a Pull Request
 
-## Sending a Pull Request
+### Waiving Copyrights
 
-This is a public domain software, which means the author/contributors shall not retain any and all copyright interest in any piece of code in this repository.
+This is a public domain software, which means the author(s) do not retain any copyright interest in this repository. You ("the contributor") will be asked to **[sign the Contributor License Agreement](https://www.clahub.com/agreements/soimort/translate-shell)** before your contribution can be considered.
 
-You are asked to <a href="https://www.clahub.com/agreements/soimort/translate-shell">sign the Contributor License Agreement</a>, before your contribution can be merged into this repository (therefore available under public domain).
+### Following the Coding Style
+
+Please review the **[AWK style guide](https://github.com/soimort/translate-shell/wiki/AWK-Style-Guide)**.
