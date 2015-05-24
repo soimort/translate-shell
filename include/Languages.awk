@@ -1582,6 +1582,7 @@ function scriptName(code) {
     case "Latn": return "Latin"
     case "Mlym": return "Malayalam"
     case "Mymr": return "Myanmar"
+    case "Orya": return "Oriya"
     case "Sinh": return "Sinhala"
     case "Taml": return "Tamil"
     case "Telu": return "Telugu"
