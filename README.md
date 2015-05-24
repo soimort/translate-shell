@@ -484,10 +484,11 @@ Find out whether your Linux distribution has included **Translate Shell** in its
 
 * **[Distros](https://github.com/soimort/translate-shell/wiki/Distros)**
 
-Frequently Asked Questions, historical stuff, etc.:
+Frequently Asked Questions, historical stuff, AWK coding style, etc.:
 
 * **[FAQ](https://github.com/soimort/translate-shell/wiki/FAQ)**
 * **[History](https://github.com/soimort/translate-shell/wiki/History)**
+* **[AWK Style Guide](https://github.com/soimort/translate-shell/wiki/AWK-Style-Guide)**
 
 ## How to Report Bugs / Contribute
 

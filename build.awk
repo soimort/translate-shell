@@ -45,6 +45,7 @@ function init() {
     Readme               = ReadmePath "README.md"
 
     WikiPath             = "wiki/"
+    WikiHome             = WikiPath "Home.md"
     WikiLanguages        = WikiPath "Languages.md"
     WikiLanguagesHtml    = WikiLanguages ".html"
 
@@ -94,6 +95,9 @@ function readme(    code, col, cols, content, group, i, j, language, r, rows, te
         r = r RS
     }
     gsub(/\$code-list\$/, r, text)
+
+    content = readFrom(WikiHome)
+    gsub(/\$wiki-home\$/, content, text)
 
     writeTo(text, Readme)
     return 0

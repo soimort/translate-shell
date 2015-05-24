@@ -331,26 +331,7 @@ $code-list$
 
 ## Wiki
 
-Lists of all languages, writing systems and fonts for reference:
-
-* **[Languages](https://github.com/soimort/translate-shell/wiki/Languages)**
-* **[Writing Systems and Fonts](https://github.com/soimort/translate-shell/wiki/Writing-Systems-and-Fonts)**
-
-The following pages demonstrate the advanced usage of **Translate Shell**:
-
-* **[REPL](https://github.com/soimort/translate-shell/wiki/REPL)**
-* **[Text Editor Integration](https://github.com/soimort/translate-shell/wiki/Text-Editor-Integration)**
-* **[Configuration](https://github.com/soimort/translate-shell/wiki/Configuration)**
-* **[Themes](https://github.com/soimort/translate-shell/wiki/Themes)**
-
-Find out whether your Linux distribution has included **Translate Shell** in its official repository. If not, contribute one:
-
-* **[Distros](https://github.com/soimort/translate-shell/wiki/Distros)**
-
-Frequently Asked Questions, historical stuff, etc.:
-
-* **[FAQ](https://github.com/soimort/translate-shell/wiki/FAQ)**
-* **[History](https://github.com/soimort/translate-shell/wiki/History)**
+$wiki-home$
 
 ## How to Report Bugs / Contribute
 
