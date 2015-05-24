@@ -66,6 +66,19 @@ function initLocale(    i) {
     Locale["br"]["glotto"]             = "bret1244"
     Locale["br"]["script"]             = "Latn"
 
+    #? Corsican
+    Locale["co"]["name"]               = "Corsican"
+    Locale["co"]["endonym"]            = "Corsu"
+    #Locale["co"]["translations-of"]
+    #Locale["co"]["definitions-of"]
+    #Locale["co"]["synonyms"]
+    #Locale["co"]["examples"]
+    #Locale["co"]["see-also"]
+    Locale["co"]["family"]             = "Indo-European"
+    Locale["co"]["iso"]                = "cos"
+    Locale["co"]["glotto"]             = "cors1242"
+    Locale["co"]["script"]             = "Latn"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
