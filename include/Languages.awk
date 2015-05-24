@@ -105,6 +105,19 @@ function initLocale(    i) {
     Locale["fo"]["glotto"]             = "faro1244"
     Locale["fo"]["script"]             = "Latn"
 
+    #? Fijian
+    Locale["fj"]["name"]               = "Fijian"
+    Locale["fj"]["endonym"]            = "Vosa Vakaviti"
+    #Locale["fj"]["translations-of"]
+    #Locale["fj"]["definitions-of"]
+    #Locale["fj"]["synonyms"]
+    #Locale["fj"]["examples"]
+    #Locale["fj"]["see-also"]
+    Locale["fj"]["family"]             = "Austronesian"
+    Locale["fj"]["iso"]                = "fij"
+    Locale["fj"]["glotto"]             = "fiji1243"
+    Locale["fj"]["script"]             = "Latn"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
