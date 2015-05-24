@@ -201,7 +201,9 @@ function getReference(displayName,
             r = r "│ "
             for (j = 0; j < 3; j++) {
                 if (cols[j][i]) {
-                    t = cols[j][i] == "he" ||
+                    t = cols[j][i] == "bo" ||
+                        cols[j][i] == "dz" ||
+                        cols[j][i] == "he" ||
                         cols[j][i] == "hi" ||
                         cols[j][i] == "hu" ||
                         cols[j][i] == "la" ||
@@ -217,11 +219,11 @@ function getReference(displayName,
                         cols[j][i] == "tg" ||
                         cols[j][i] == "tr" ||
                         cols[j][i] == "ur" ||
+                        cols[j][i] == "wo" ||
                         cols[j][i] == "yi" ||
                         cols[j][i] == "yo" ||
                         (cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW" &&
                          length(getEndonym(cols[j][i])) < 6) ? "\t\t " :
-                        cols[j][i] == "ht" ? " " :
                         cols[j][i] == "id" ? "" :
                         "\t "
                     tt = length(cols[j][i]) == 3 ? " │" :
@@ -242,14 +244,21 @@ function getReference(displayName,
                     t = cols[j][i] == "he" ||
                         cols[j][i] == "kk" ||
                         cols[j][i] == "ko" ||
+                        cols[j][i] == "ky" ||
                         cols[j][i] == "ne" ||
                         cols[j][i] == "pl" ||
+                        cols[j][i] == "ps" ||
+                        cols[j][i] == "sd" ||
                         cols[j][i] == "sk" ||
+                        cols[j][i] == "sm" ||
                         cols[j][i] == "so" ||
                         cols[j][i] == "te" ||
+                        cols[j][i] == "ug" ||
                         cols[j][i] == "yo" ||
                         (cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW" &&
                          length(getName(cols[j][i])) < 6) ? "\t\t " :
+                        cols[j][i] == "fy" ||
+                        cols[j][i] == "gd" ||
                         cols[j][i] == "ht" ? " " :
                         "\t "
                     tt = length(cols[j][i]) == 3 ? " │" :
