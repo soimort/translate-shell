@@ -196,6 +196,19 @@ function initLocale(    i) {
     Locale["lb"]["glotto"]             = "luxe1241"
     Locale["lb"]["script"]             = "Latn"
 
+    #? Occitan
+    Locale["oc"]["name"]               = "Occitan"
+    Locale["oc"]["endonym"]            = "Occitan"
+    #Locale["oc"]["translations-of"]
+    #Locale["oc"]["definitions-of"]
+    #Locale["oc"]["synonyms"]
+    #Locale["oc"]["examples"]
+    #Locale["oc"]["see-also"]
+    Locale["oc"]["family"]             = "Indo-European"
+    Locale["oc"]["iso"]                = "oci"
+    Locale["oc"]["glotto"]             = "occi1239"
+    Locale["oc"]["script"]             = "Latn"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
