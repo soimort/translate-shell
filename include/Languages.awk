@@ -131,6 +131,19 @@ function initLocale(    i) {
     Locale["gn"]["glotto"]             = "para1311"
     Locale["gn"]["script"]             = "Latn"
 
+    #? Interlingue
+    Locale["ie"]["name"]               = "Interlingue"
+    Locale["ie"]["endonym"]            = "Interlingue"
+    #Locale["ie"]["translations-of"]
+    #Locale["ie"]["definitions-of"]
+    #Locale["ie"]["synonyms"]
+    #Locale["ie"]["examples"]
+    #Locale["ie"]["see-also"]
+    Locale["ie"]["family"]             = "Artificial Language"
+    Locale["ie"]["iso"]                = "ile"
+    Locale["ie"]["glotto"]             = "occi1241"
+    Locale["ie"]["script"]             = "Latn"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
