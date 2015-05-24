@@ -276,6 +276,19 @@ function initLocale(    i) {
     Locale["sd"]["script"]             = "Arab"
     Locale["sd"]["rtl"]                = "true" # RTL language
 
+    #? Samoan
+    Locale["sm"]["name"]               = "Samoan"
+    Locale["sm"]["endonym"]            = "Gagana Sāmoa"
+    #Locale["sm"]["translations-of"]
+    #Locale["sm"]["definitions-of"]
+    #Locale["sm"]["synonyms"]
+    #Locale["sm"]["examples"]
+    #Locale["sm"]["see-also"]
+    Locale["sm"]["family"]             = "Austronesian"
+    Locale["sm"]["iso"]                = "smo"
+    Locale["sm"]["glotto"]             = "samo1305"
+    Locale["sm"]["script"]             = "Latn"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
