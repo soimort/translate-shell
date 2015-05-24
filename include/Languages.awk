@@ -367,6 +367,20 @@ function initLocale(    i) {
     Locale["tt"]["glotto"]             = "tata1255"
     Locale["tt"]["script"]             = "Cyrl"
 
+    #? Uyghur
+    Locale["ug"]["name"]               = "Uyghur"
+    Locale["ug"]["endonym"]            = "ئۇيغۇر تىلى"
+    #Locale["ug"]["translations-of"]
+    #Locale["ug"]["definitions-of"]
+    #Locale["ug"]["synonyms"]
+    #Locale["ug"]["examples"]
+    #Locale["ug"]["see-also"]
+    Locale["ug"]["family"]             = "Turkic"
+    Locale["ug"]["iso"]                = "uig"
+    Locale["ug"]["glotto"]             = "uigh1240"
+    Locale["ug"]["script"]             = "Arab"
+    Locale["ug"]["rtl"]                = "true" # RTL language
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
