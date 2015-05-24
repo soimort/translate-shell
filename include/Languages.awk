@@ -420,6 +420,19 @@ function initLocale(    i) {
     Locale["fy"]["glotto"]             = "west2354"
     Locale["fy"]["script"]             = "Latn"
 
+    #? Xhosa
+    Locale["xh"]["name"]               = "Xhosa"
+    Locale["xh"]["endonym"]            = "isiXhosa"
+    #Locale["xh"]["translations-of"]
+    #Locale["xh"]["definitions-of"]
+    #Locale["xh"]["synonyms"]
+    #Locale["xh"]["examples"]
+    #Locale["xh"]["see-also"]
+    Locale["xh"]["family"]             = "Atlantic-Congo"
+    Locale["xh"]["iso"]                = "xho"
+    Locale["xh"]["glotto"]             = "xhos1239"
+    Locale["xh"]["script"]             = "Latn"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
