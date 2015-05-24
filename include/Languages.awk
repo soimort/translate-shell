@@ -381,6 +381,19 @@ function initLocale(    i) {
     Locale["ug"]["script"]             = "Arab"
     Locale["ug"]["rtl"]                = "true" # RTL language
 
+    #? Volapük
+    Locale["vo"]["name"]               = "Volapük"
+    Locale["vo"]["endonym"]            = "Volapük"
+    #Locale["vo"]["translations-of"]
+    #Locale["vo"]["definitions-of"]
+    #Locale["vo"]["synonyms"]
+    #Locale["vo"]["examples"]
+    #Locale["vo"]["see-also"]
+    Locale["vo"]["family"]             = "Artificial Language"
+    Locale["vo"]["iso"]                = "vol"
+    #Locale["vo"]["glotto"]
+    Locale["vo"]["script"]             = "Latn"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
