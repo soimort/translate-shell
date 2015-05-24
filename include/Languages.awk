@@ -1411,6 +1411,8 @@ function initLocale(    i) {
     LocaleAlias["ji"] = "yi" # withdrawn language code for Yiddish
     LocaleAlias["jw"] = "jv" # withdrawn language code for Javanese
     LocaleAlias["mo"] = "ro" # Moldavian or Moldovan considered a variant of the Romanian language
+    LocaleAlias["nb"] = "no" # Google Translate does not distinguish between Bokmål and Nynorsk
+    LocaleAlias["nn"] = "no"
     LocaleAlias["sh"] = "sr" # Serbo-Croatian: default to Serbian
     LocaleAlias["zh"] = "zh-CN" # Chinese: default to Chinese Simplified
     LocaleAlias["zho"] = "zh-CN"
