@@ -40,6 +40,19 @@ function initLocale(    i) {
     Locale["as"]["glotto"]             = "assa1263"
     Locale["as"]["script"]             = "Beng"
 
+    #? Bashkir
+    Locale["ba"]["name"]               = "Bashkir"
+    Locale["ba"]["endonym"]            = "башҡорт теле"
+    #Locale["ba"]["translations-of"]
+    #Locale["ba"]["definitions-of"]
+    #Locale["ba"]["synonyms"]
+    #Locale["ba"]["examples"]
+    #Locale["ba"]["see-also"]
+    Locale["ba"]["family"]             = "Turkic"
+    Locale["ba"]["iso"]                = "bak"
+    Locale["ba"]["glotto"]             = "bash1264"
+    Locale["ba"]["script"]             = "Cyrl"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
