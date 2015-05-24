@@ -235,6 +235,20 @@ function initLocale(    i) {
     Locale["or"]["glotto"]             = "macr1269"
     Locale["or"]["script"]             = "Orya"
 
+    #? Pashto
+    Locale["ps"]["name"]               = "Pashto"
+    Locale["ps"]["endonym"]            = "پښتو"
+    #Locale["ps"]["translations-of"]
+    #Locale["ps"]["definitions-of"]
+    #Locale["ps"]["synonyms"]
+    #Locale["ps"]["examples"]
+    #Locale["ps"]["see-also"]
+    Locale["ps"]["family"]             = "Indo-European"
+    Locale["ps"]["iso"]                = "pus"
+    Locale["ps"]["glotto"]             = "pash1269"
+    Locale["ps"]["script"]             = "Arab"
+    Locale["ps"]["rtl"]                = "true" # RTL language
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
