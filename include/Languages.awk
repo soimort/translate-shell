@@ -407,6 +407,19 @@ function initLocale(    i) {
     Locale["wo"]["glotto"]             = "wolo1247"
     Locale["wo"]["script"]             = "Latn"
 
+    #? Western Frisian
+    Locale["fy"]["name"]               = "Western Frisian"
+    Locale["fy"]["endonym"]            = "Frysk"
+    #Locale["fy"]["translations-of"]
+    #Locale["fy"]["definitions-of"]
+    #Locale["fy"]["synonyms"]
+    #Locale["fy"]["examples"]
+    #Locale["fy"]["see-also"]
+    Locale["fy"]["family"]             = "Indo-European"
+    Locale["fy"]["iso"]                = "fry"
+    Locale["fy"]["glotto"]             = "west2354"
+    Locale["fy"]["script"]             = "Latn"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
