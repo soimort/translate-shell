@@ -249,6 +249,19 @@ function initLocale(    i) {
     Locale["ps"]["script"]             = "Arab"
     Locale["ps"]["rtl"]                = "true" # RTL language
 
+    #? Romansh
+    Locale["rm"]["name"]               = "Romansh"
+    Locale["rm"]["endonym"]            = "Rumantsch"
+    #Locale["rm"]["translations-of"]
+    #Locale["rm"]["definitions-of"]
+    #Locale["rm"]["synonyms"]
+    #Locale["rm"]["examples"]
+    #Locale["rm"]["see-also"]
+    Locale["rm"]["family"]             = "Indo-European"
+    Locale["rm"]["iso"]                = "roh"
+    Locale["rm"]["glotto"]             = "roma1326"
+    Locale["rm"]["script"]             = "Latn"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
