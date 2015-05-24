@@ -6,7 +6,7 @@ MANDIR   = man
 TARGET   = bash
 PREFIX   = /usr/local
 
-.PHONY: default clean build release test check install uninstall
+.PHONY: default clean build release grip test check install uninstall
 
 default: build
 
@@ -18,6 +18,9 @@ build:
 
 release:
 	@gawk -f build.awk build -target=$(TARGET) -type=release
+
+grip:
+	@gawk -f build.awk readme && grip
 
 test: build
 	@gawk -f test.awk
