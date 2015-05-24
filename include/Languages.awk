@@ -183,6 +183,19 @@ function initLocale(    i) {
     Locale["ku"]["glotto"]             = "kurd1259"
     Locale["ku"]["script"]             = "Latn"
 
+    #? Luxembourgish
+    Locale["lb"]["name"]               = "Luxembourgish"
+    Locale["lb"]["endonym"]            = "Lëtzebuergesch"
+    #Locale["lb"]["translations-of"]
+    #Locale["lb"]["definitions-of"]
+    #Locale["lb"]["synonyms"]
+    #Locale["lb"]["examples"]
+    #Locale["lb"]["see-also"]
+    Locale["lb"]["family"]             = "Indo-European"
+    Locale["lb"]["iso"]                = "ltz"
+    Locale["lb"]["glotto"]             = "luxe1241"
+    Locale["lb"]["script"]             = "Latn"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
