@@ -1441,6 +1441,7 @@ function scriptName(code) {
     case "Taml": return "Tamil"
     case "Telu": return "Telugu"
     case "Thai": return "Thai"
+    case "Tibt": return "Tibetan"
     default: return "Unknown"
     }
 }
