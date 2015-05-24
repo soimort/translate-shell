@@ -170,7 +170,7 @@ function initLocale(    i) {
     Locale["ky"]["glotto"]             = "kirg1245"
     Locale["ky"]["script"]             = "Cyrl"
 
-    #? Kurdish, Latin alphabet
+    #? Kurdish (Central Kurdish, Sorani), Latin alphabet
     Locale["ku"]["name"]               = "Kurdish"
     Locale["ku"]["endonym"]            = "Kurdî"
     #Locale["ku"]["translations-of"]
@@ -304,7 +304,7 @@ function initLocale(    i) {
 
     #? Shona
     Locale["sn"]["name"]               = "Shona"
-    Locale["sn"]["endonym"]            = "ChiShona"
+    Locale["sn"]["endonym"]            = "chiShona"
     #Locale["sn"]["translations-of"]
     #Locale["sn"]["definitions-of"]
     #Locale["sn"]["synonyms"]
