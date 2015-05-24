@@ -106,6 +106,8 @@ function readme(    code, col, cols, content, group, i, j, language, r, rows, te
 function wiki(    code, group, iso, language, saveSortedIn) {
     initBiDi(); initLocale()
 
+    print "***" length(Locale) "*** *languages in total. "              \
+        "Generated from the source code of Translate Shell " Version ".*\n" > WikiLanguages
     print "| Code | Name | Family | [Writing system](https://github.com/soimort/translate-shell/wiki/Writing-Systems-and-Fonts) | Is [RTL](http://en.wikipedia.org/wiki/Right-to-left)? | Has dictionary? |" > WikiLanguages
     print "| :--: | ---: | -----: | :------------: | :---------------------------------------------------: | :-------------: |" > WikiLanguages
     saveSortedIn = PROCINFO["sorted_in"]
