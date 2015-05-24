@@ -27,6 +27,19 @@ function initLocale(    i) {
     Locale["am"]["glotto"]             = "amha1245"
     Locale["am"]["script"]             = "Ethi"
 
+    #? Assamese
+    Locale["as"]["name"]               = "Assamese"
+    Locale["as"]["endonym"]            = "অসমীয়া"
+    #Locale["as"]["translations-of"]
+    #Locale["as"]["definitions-of"]
+    #Locale["as"]["synonyms"]
+    #Locale["as"]["examples"]
+    #Locale["as"]["see-also"]
+    Locale["as"]["family"]             = "Indo-European"
+    Locale["as"]["iso"]                = "asm"
+    Locale["as"]["glotto"]             = "assa1263"
+    Locale["as"]["script"]             = "Beng"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
