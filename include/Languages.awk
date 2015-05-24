@@ -53,6 +53,19 @@ function initLocale(    i) {
     Locale["ba"]["glotto"]             = "bash1264"
     Locale["ba"]["script"]             = "Cyrl"
 
+    #? Breton
+    Locale["br"]["name"]               = "Breton"
+    Locale["br"]["endonym"]            = "Brezhoneg"
+    #Locale["br"]["translations-of"]
+    #Locale["br"]["definitions-of"]
+    #Locale["br"]["synonyms"]
+    #Locale["br"]["examples"]
+    #Locale["br"]["see-also"]
+    Locale["br"]["family"]             = "Indo-European"
+    Locale["br"]["iso"]                = "bre"
+    Locale["br"]["glotto"]             = "bret1244"
+    Locale["br"]["script"]             = "Latn"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
