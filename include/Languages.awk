@@ -262,6 +262,20 @@ function initLocale(    i) {
     Locale["rm"]["glotto"]             = "roma1326"
     Locale["rm"]["script"]             = "Latn"
 
+    #? Sindhi
+    Locale["sd"]["name"]               = "Sindhi"
+    Locale["sd"]["endonym"]            = "سنڌي"
+    #Locale["sd"]["translations-of"]
+    #Locale["sd"]["definitions-of"]
+    #Locale["sd"]["synonyms"]
+    #Locale["sd"]["examples"]
+    #Locale["sd"]["see-also"]
+    Locale["sd"]["family"]             = "Indo-European"
+    Locale["sd"]["iso"]                = "snd"
+    Locale["sd"]["glotto"]             = "sind1272"
+    Locale["sd"]["script"]             = "Arab"
+    Locale["sd"]["rtl"]                = "true" # RTL language
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
