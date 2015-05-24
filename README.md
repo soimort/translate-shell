@@ -95,6 +95,8 @@ Start an interactive shell and translate anything you input into your native lan
 
     $ gawk -f (curl -Ls git.io/translate | psub) -shell
 
+**Please make sure to read [the disclaimer](#disclaimer) before using.**
+
 ## Installation
 
 ### Option #1. Direct Download
@@ -427,6 +429,8 @@ See the man page trans(1) for more information.
 
 Use `trans -R` or `trans -T` to view the reference table in a terminal.
 
+For more details on languages and corresponding codes, see **[wiki: Languages](https://github.com/soimort/translate-shell/wiki/Languages)**.
+
 | Language | Code | Language | Code | Language | Code |
 | :------: | :--: | :------: | :--: | :------: | :--: |
 | **[Afrikaans](http://en.wikipedia.org/wiki/Afrikaans_language)** <br/> **Afrikaans** | **`af`** | **[Hausa](http://en.wikipedia.org/wiki/Hausa_language)** <br/> **Hausa** | **`ha`** | **[Persian](http://en.wikipedia.org/wiki/Persian_language)** <br/> **فارسی** | **`fa`** | 
@@ -484,3 +488,21 @@ Frequently Asked Questions, historical stuff, etc.:
 
 * **[FAQ](https://github.com/soimort/translate-shell/wiki/FAQ)**
 * **[History](https://github.com/soimort/translate-shell/wiki/History)**
+
+## How to Report Bugs / Contribute
+
+**Please review the [guidelines for contributing](https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md) before reporting an issue or sending a pull request.**
+
+## Disclaimer
+
+This software is provided for the purpose of **reasonable personal use** of the Google Translate service, i.e., for those who prefer command line to web interface. For other purposes, please refer to the official [Google Translate API](https://developers.google.com/translate/).
+
+By using this software, you ("the user") are aware that:
+
+1. **Google Translate** is a proprietary service provided and owned by Google Inc.
+2. **Translate Shell** is **NOT** a Google product. Neither this software nor its author is affiliated with Google Inc.
+3. The software is provided "**AS IS**", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
+
+## Copyright Waiver
+
+This is free and unencumbered software released into the public domain. See **[LICENSE](https://github.com/soimort/translate-shell/blob/stable/LICENSE)** and **[WAIVER](https://github.com/soimort/translate-shell/blob/stable/WAIVER)** for details.
