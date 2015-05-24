@@ -315,6 +315,19 @@ function initLocale(    i) {
     Locale["sn"]["glotto"]             = "core1255"
     Locale["sn"]["script"]             = "Latn"
 
+    #? Tigrinya
+    Locale["ti"]["name"]               = "Tigrinya"
+    Locale["ti"]["endonym"]            = "ትግርኛ"
+    #Locale["ti"]["translations-of"]
+    #Locale["ti"]["definitions-of"]
+    #Locale["ti"]["synonyms"]
+    #Locale["ti"]["examples"]
+    #Locale["ti"]["see-also"]
+    Locale["ti"]["family"]             = "Afro-Asiatic"
+    Locale["ti"]["iso"]                = "tir"
+    Locale["ti"]["glotto"]             = "tigr1271"
+    Locale["ti"]["script"]             = "Ethi"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
