@@ -302,6 +302,19 @@ function initLocale(    i) {
     Locale["gd"]["glotto"]             = "scot1245"
     Locale["gd"]["script"]             = "Latn"
 
+    #? Shona
+    Locale["sn"]["name"]               = "Shona"
+    Locale["sn"]["endonym"]            = "ChiShona"
+    #Locale["sn"]["translations-of"]
+    #Locale["sn"]["definitions-of"]
+    #Locale["sn"]["synonyms"]
+    #Locale["sn"]["examples"]
+    #Locale["sn"]["see-also"]
+    Locale["sn"]["family"]             = "Atlantic-Congo"
+    Locale["sn"]["iso"]                = "sna"
+    Locale["sn"]["glotto"]             = "core1255"
+    Locale["sn"]["script"]             = "Latn"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
