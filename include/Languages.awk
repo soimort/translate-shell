@@ -170,6 +170,19 @@ function initLocale(    i) {
     Locale["ky"]["glotto"]             = "kirg1245"
     Locale["ky"]["script"]             = "Cyrl"
 
+    #? Kurdish, Latin alphabet
+    Locale["ku"]["name"]               = "Kurdish"
+    Locale["ku"]["endonym"]            = "Kurdî"
+    #Locale["ku"]["translations-of"]
+    #Locale["ku"]["definitions-of"]
+    #Locale["ku"]["synonyms"]
+    #Locale["ku"]["examples"]
+    #Locale["ku"]["see-also"]
+    Locale["ku"]["family"]             = "Indo-European"
+    Locale["ku"]["iso"]                = "kur"
+    Locale["ku"]["glotto"]             = "kurd1259"
+    Locale["ku"]["script"]             = "Latn"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
