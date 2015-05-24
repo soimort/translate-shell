@@ -144,6 +144,19 @@ function initLocale(    i) {
     Locale["ie"]["glotto"]             = "occi1241"
     Locale["ie"]["script"]             = "Latn"
 
+    #? Kinyarwanda
+    Locale["rw"]["name"]               = "Kinyarwanda"
+    Locale["rw"]["endonym"]            = "Ikinyarwanda"
+    #Locale["rw"]["translations-of"]
+    #Locale["rw"]["definitions-of"]
+    #Locale["rw"]["synonyms"]
+    #Locale["rw"]["examples"]
+    #Locale["rw"]["see-also"]
+    Locale["rw"]["family"]             = "Atlantic-Congo"
+    Locale["rw"]["iso"]                = "kin"
+    Locale["rw"]["glotto"]             = "kiny1244"
+    Locale["rw"]["script"]             = "Latn"
+
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
