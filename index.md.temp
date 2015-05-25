@@ -1,0 +1,15 @@
+---
+title: Translate Shell
+project-name: Translate Shell
+project-version: $Version$
+project-logo: images/logo.jpg
+background: images/background.png
+github: soimort/translate-shell
+url: http://www.soimort.org/translate-shell/
+download-url: http://www.soimort.org/translate-shell/trans
+download-checksum-type: SHA1SUM
+download-checksum-data: $sha1$
+download-signature: http://www.soimort.org/translate-shell/trans.sig
+
+---
+$readme$
