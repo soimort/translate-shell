@@ -39,6 +39,10 @@ function init() {
     ManHtml              = Man ".html"
 
     PagesPath            = "gh-pages/"
+    BadgeDownload        = PagesPath "images/badge-download"
+    BadgeRelease         = PagesPath "images/badge-release"
+    HomebrewFormula      = PagesPath "translate-shell.rb"
+    Index                = PagesPath "index.md"
 
     ReadmePath           = "./"
     ReadmeTemplate       = ReadmePath "README.template.md"
@@ -58,10 +62,6 @@ function man() {
     if (fileExists(ManTemplate))
         system("pandoc -s -t html --toc --toc-depth 1 --template " ManTemplate " " ManSource " -o " ManHtml)
     return system("pandoc -s -t man " ManSource " -o " Man)
-}
-
-function pages() {
-    # TODO
 }
 
 function readme(    code, col, cols, content, group, i, j, language, r, rows, text) {
@@ -131,7 +131,6 @@ function wiki(    code, group, iso, language, saveSortedIn) {
 
 function doc() {
     man()
-    pages()
     readme()
     wiki()
     return 0
@@ -235,15 +234,51 @@ function clean() {
 }
 
 function release() {
-    # TODO
+    ("sha1sum " Trans) | getline temp
+    split(temp, group)
+    sha1 = group[1]
+
+    d("Updating registry ...")
+    # Update registry
     text = readFrom(MainRegistryTemplate)
     gsub(/\$Version\$/, Version, text)
     writeTo(text, MainRegistry)
 
+    d("Updating gh-pages/images ...")
+    # Update gh-pages/images/badge-release
+    text = readFrom(BadgeRelease ".temp")
+    gsub(/\$Version\$/, Version, text)
+    writeTo(text, BadgeRelease)
+    system("save-to-png " BadgeRelease)
+    # Update gh-pages/images/badge-download
+    ("wc -c " Trans) | getline temp
+    split(temp, group)
+    size = int(group[1] / 1000)
+    text = readFrom(BadgeDownload ".temp")
+    gsub(/\$Size\$/, size, text)
+    writeTo(text, BadgeDownload)
+    system("save-to-png " BadgeDownload)
+
+    d("Updating gh-pages/translate-shell.rb ...")
+    # Update gh-pages/translate-shell.rb
+    text = readFrom(HomebrewFormula ".temp")
+    gsub(/\$sha1\$/, sha1, text)
+    gsub(/\$Version\$/, Version, text)
+    writeTo(text, HomebrewFormula)
+
+    d("Updating gh-pages/index.md ...")
+    # Update gh-pages/index.md
+    content = readFrom(Readme)
+    text = readFrom(Index ".temp")
+    gsub(/\$sha1\$/, sha1, text)
+    gsub(/\$Version\$/, Version, text)
+    gsub(/\$readme\$/, content, text)
+    writeTo(text, Index)
+
     return 0
 }
 
-function temp() {
+function test() {
     return 0
 }
 
@@ -286,10 +321,6 @@ BEGIN {
             status = man()
             break
 
-        case "pages":
-            status = pages()
-            break
-
         case "readme":
             status = readme()
             break
@@ -314,8 +345,8 @@ BEGIN {
             status = release()
             break
 
-        case "temp":
-            status = temp()
+        case "test":
+            status = test()
             break
 
         default: # unknown task
