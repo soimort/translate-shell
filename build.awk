@@ -34,8 +34,9 @@ function init() {
 
     ManPath              = "man/"
     Man                  = ManPath Command ".1"
-    ManSource            = Man ".md"
-    ManTemplate          = Man ".template.html"
+    ManTemplate          = Man ".template.md"
+    ManMarkdown          = Man ".md"
+    ManHtmlTemplate      = Man ".template.html"
     ManHtml              = Man ".html"
 
     PagesPath            = "gh-pages/"
@@ -58,10 +59,15 @@ function init() {
     MainRegistry         = RegistryPath "index.trans"
 }
 
-function man() {
-    if (fileExists(ManTemplate))
-        system("pandoc -s -t html --toc --toc-depth 1 --template " ManTemplate " " ManSource " -o " ManHtml)
-    return system("pandoc -s -t man " ManSource " -o " Man)
+function man(    text) {
+    text = readFrom(ManTemplate)
+    gsub(/\$Version\$/, Version, text)
+    gsub(/\$ReleaseDate\$/, ReleaseDate, text)
+    writeTo(text, ManMarkdown)
+
+    if (fileExists(ManHtmlTemplate))
+        system("pandoc -s -t html --toc --toc-depth 1 --template " ManHtmlTemplate " " ManMarkdown " -o " ManHtml)
+    return system("pandoc -s -t man " ManMarkdown " -o " Man)
 }
 
 function readme(    code, col, cols, content, group, i, j, language, r, rows, text) {
