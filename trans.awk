@@ -26,7 +26,8 @@
 BEGIN {
     Name        = "Translate Shell"
     Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.9.0"
+    Version     = "0.9.0.2"
+    ReleaseDate = "2015-05-26"
     Command     = "trans"
     EntryPoint  = "translate.awk"
 }
@@ -396,21 +397,15 @@ function m(string) {
     if (Option["debug"])
         return ansi("cyan", string) RS
 }
-function newerVersion(ver1, ver2,    group1, group2) {
+function newerVersion(ver1, ver2,    i, group1, group2) {
     split(ver1, group1, ".")
     split(ver2, group2, ".")
-    if (group1[1] + 0 > group2[1] + 0)
-        return 1
-    else if (group1[1] + 0 < group2[1] + 0)
-        return 0
-    if (group1[2] + 0 > group2[2] + 0)
-        return 1
-    else if (group1[2] + 0 < group2[2] + 0)
-        return 0
-    if (group1[3] + 0 > group2[3] + 0)
-        return 1
-    else if (group1[3] + 0 < group2[3] + 0)
-        return 0
+    for (i = 1; i <= 4; i++) {
+        if (group1[i] + 0 > group2[i] + 0)
+            return 1
+        else if (group1[i] + 0 < group2[i] + 0)
+            return 0
+    }
     return 0
 }
 function rlwrapMe(    i, command) {
@@ -1918,11 +1913,24 @@ function parseLang(lang,    code, group) {
     if (!code) code = "en"
     return code
 }
-function initUserLang() {
-    UserLocale = ENVIRON["LANGUAGE"] ? ENVIRON["LANGUAGE"] :
-        (ENVIRON["LC_ALL"] ? ENVIRON["LC_ALL"] :
-         (ENVIRON["LANG"] ? ENVIRON["LANG"] : "en_US.UTF-8"))
-    if (tolower(UserLocale) !~ /utf-?8$/)
+function initUserLang(    lang, utf) {
+    if (lang = ENVIRON["LANGUAGE"]) {
+        if (!UserLocale) UserLocale = lang
+        utf = utf || tolower(lang) ~ /utf-?8$/
+    }
+    if (lang = ENVIRON["LC_ALL"]) {
+        if (!UserLocale) UserLocale = lang
+        utf = utf || tolower(lang) ~ /utf-?8$/
+    }
+    if (lang = ENVIRON["LANG"]) {
+        if (!UserLocale) UserLocale = lang
+        utf = utf || tolower(lang) ~ /utf-?8$/
+    }
+    if (!UserLocale) {
+        UserLocale = "en_US.UTF-8"
+        utf = 1
+    }
+    if (!utf)
         w("[WARNING] Your locale codeset (" UserLocale ") is not UTF-8.")
     UserLang = parseLang(UserLocale)
 }
