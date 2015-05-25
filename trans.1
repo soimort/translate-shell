@@ -1,0 +1,444 @@
+.TH "TRANS" "1" "2015\-05\-17" "0.9.0" ""
+.SH NAME
+.PP
+trans \- Google Translate served as a command\-line tool
+.SH SYNOPSIS
+.PP
+\f[B]trans\f[] [\f[I]OPTIONS\f[]] [\f[I]SOURCE\f[]]:[\f[I]TARGETS\f[]]
+[\f[I]TEXT\f[]]...
+.SH DESCRIPTION
+.PP
+This tool uses Google Translate to translate text into any language.
+.PP
+Each command\-line argument which is not a valid option is treated as
+\f[I]TEXT\f[] to be translated.
+.PP
+If neither \f[I]TEXT\f[] nor the input file is specified by
+command\-line arguments, the program will read and translate from
+standard input.
+.SH OPTIONS
+.SS Information options
+.TP
+.B \f[B]\-V\f[], \f[B]\-version\f[]
+Print version and exit.
+.RS
+.RE
+.TP
+.B \f[B]\-H\f[], \f[B]\-help\f[]
+Print help message and exit.
+.RS
+.RE
+.TP
+.B \f[B]\-M\f[], \f[B]\-man\f[]
+Show man page and exit.
+.RS
+.RE
+.TP
+.B \f[B]\-T\f[], \f[B]\-reference\f[]
+Print reference table of all supported languages and codes, and exit.
+Names of languages are displayed in their endonyms (language name in the
+language itself).
+.RS
+.RE
+.TP
+.B \f[B]\-R\f[], \f[B]\-reference\-english\f[]
+Print reference table of all supported languages and codes, and exit.
+Names of languages are displayed in English.
+.RS
+.RE
+.TP
+.B \f[B]\-L\f[] \f[I]CODES\f[], \f[B]\-list\f[] \f[I]CODES\f[]
+Print details of languages and exit.
+When specifying two or more language codes, concatenate them by plus
+sign "+".
+.RS
+.RE
+.TP
+.B \f[B]\-U\f[], \f[B]\-upgrade\f[]
+Upgrade this program to latest version.
+.RS
+.RE
+.SS Display options
+.TP
+.B \f[B]\-verbose\f[]
+Verbose mode.
+.RS
+.PP
+Show the original text and its most relevant translation, then its
+phonetic notation (if any), then its alternative translations (if any)
+or its definition in the dictionary (if it is a word).
+.PP
+This option is unnecessary in most cases since verbose mode is enabled
+by default.
+.RE
+.TP
+.B \f[B]\-b\f[], \f[B]\-brief\f[]
+Brief mode.
+.RS
+.PP
+Show the most relevant translation or its phonetic notation only.
+.RE
+.TP
+.B \f[B]\-d\f[], \f[B]\-dictionary\f[]
+Dictionary mode.
+.RS
+.PP
+Show the definition of the original word in the dictionary.
+.RE
+.TP
+.B \f[B]\-show\-original\f[] \f[I]Y/n\f[]
+Show original text or not.
+(default: yes)
+.RS
+.RE
+.TP
+.B \f[B]\-show\-original\-phonetics\f[] \f[I]Y/n\f[]
+Show phonetic notation of original text or not.
+(default: yes)
+.RS
+.RE
+.TP
+.B \f[B]\-show\-translation\f[] \f[I]Y/n\f[]
+Show translation or not.
+(default: yes)
+.RS
+.RE
+.TP
+.B \f[B]\-show\-translation\-phonetics\f[] \f[I]Y/n\f[]
+Show phonetic notation of translation or not.
+(default: yes)
+.RS
+.RE
+.TP
+.B \f[B]\-show\-prompt\-message\f[] \f[I]Y/n\f[]
+Show prompt message or not.
+(default: yes)
+.RS
+.RE
+.TP
+.B \f[B]\-show\-languages\f[] \f[I]Y/n\f[]
+Show source and target languages or not.
+(default: yes)
+.RS
+.RE
+.TP
+.B \f[B]\-show\-original\-dictionary\f[] \f[I]y/N\f[]
+Show dictionary entry of original text or not.
+(default: no)
+.RS
+.PP
+This option is enabled in dictionary mode.
+.RE
+.TP
+.B \f[B]\-show\-dictionary\f[] \f[I]Y/n\f[]
+Show dictionary entry of translation or not.
+(default: yes)
+.RS
+.RE
+.TP
+.B \f[B]\-show\-alternatives\f[] \f[I]Y/n\f[]
+Show alternative translations or not.
+(default: yes)
+.RS
+.RE
+.TP
+.B \f[B]\-w\f[] \f[I]NUM\f[], \f[B]\-width\f[] \f[I]NUM\f[]
+Specify the screen width for padding.
+.RS
+.PP
+This option overrides the setting of environment variable
+$\f[B]COLUMNS\f[].
+.RE
+.TP
+.B \f[B]\-indent\f[] \f[I]NUM\f[]
+Specify the size of indent (number of spaces).
+(default: 4)
+.RS
+.RE
+.TP
+.B \f[B]\-theme\f[] \f[I]FILENAME\f[]
+Specify the theme to use.
+(default: default)
+.RS
+.RE
+.TP
+.B \f[B]\-no\-theme\f[]
+Do not use any other theme than default.
+.RS
+.RE
+.TP
+.B \f[B]\-no\-ansi\f[]
+Do not use ANSI escape codes.
+.RS
+.RE
+.SS Audio options
+.TP
+.B \f[B]\-p\f[], \f[B]\-play\f[]
+Listen to the translation.
+.RS
+.PP
+You must have at least one of the supported audio players
+(\f[B]mplayer\f[], \f[B]mpv\f[] or \f[B]mpg123\f[]) installed to stream
+from Google Text\-to\-Speech engine.
+Otherwise, a local speech synthesizer may be used instead (\f[B]say\f[]
+on Mac OS X, \f[B]espeak\f[] on Linux or other platforms).
+.RE
+.TP
+.B \f[B]\-player\f[] \f[I]PROGRAM\f[]
+Specify the audio player to use, and listen to the translation.
+.RS
+.PP
+Option \f[B]\-play\f[] will try to use \f[B]mplayer\f[], \f[B]mpv\f[] or
+\f[B]mpg123\f[] by default, since these players are known to work for
+streaming URLs.
+Not all command\-line audio players can work this way.
+Use this option only when you have your own preference.
+.PP
+This option overrides the setting of environment variable
+$\f[B]PLAYER\f[].
+.RE
+.TP
+.B \f[B]\-no\-play\f[]
+Do not listen to the translation.
+.RS
+.RE
+.SS Terminal paging and browsing options
+.TP
+.B \f[B]\-v\f[], \f[B]\-view\f[]
+View the translation in a terminal pager (\f[B]less\f[], \f[B]more\f[]
+or \f[B]most\f[]).
+.RS
+.RE
+.TP
+.B \f[B]\-pager\f[] \f[I]PROGRAM\f[]
+Specify the terminal pager to use, and view the translation.
+.RS
+.PP
+This option overrides the setting of environment variable
+$\f[B]PAGER\f[].
+.RE
+.TP
+.B \f[B]\-no\-view\f[]
+Do not view the translation in a terminal pager.
+.RS
+.RE
+.TP
+.B \f[B]\-browser\f[] \f[I]PROGRAM\f[]
+Specify the web browser to use.
+.RS
+.PP
+This option overrides the setting of environment variable
+$\f[B]BROWSER\f[].
+.RE
+.SS Networking options
+.TP
+.B \f[B]\-x\f[] \f[I]HOST:PORT\f[], \f[B]\-proxy\f[] \f[I]HOST:PORT\f[]
+Use HTTP proxy on given port.
+.RS
+.PP
+This option overrides the setting of environment variables
+$\f[B]HTTP_PROXY\f[] and $\f[B]http_proxy\f[].
+.RE
+.TP
+.B \f[B]\-u\f[] \f[I]STRING\f[], \f[B]\-user\-agent\f[] \f[I]STRING\f[]
+Specify the User\-Agent to identify as.
+.RS
+.PP
+This option overrides the setting of environment variables
+$\f[B]USER_AGENT\f[].
+.RE
+.SS Interactive shell options
+.TP
+.B \f[B]\-I\f[], \f[B]\-interactive\f[], \f[B]\-shell\f[]
+Start an interactive shell, invoking \f[B]rlwrap\f[] whenever possible
+(unless \f[B]\-no\-rlwrap\f[] is specified).
+.RS
+.RE
+.TP
+.B \f[B]\-E\f[], \f[B]\-emacs\f[]
+Start the GNU Emacs front\-end for an interactive shell.
+.RS
+.PP
+This option does not need to, and cannot be used along with \f[B]\-I\f[]
+or \f[B]\-no\-rlwrap\f[].
+.RE
+.TP
+.B \f[B]\-no\-rlwrap\f[]
+Do not invoke \f[B]rlwrap\f[] when starting an interactive shell.
+.RS
+.PP
+This option is useful when your terminal type is not supported by
+\f[B]rlwrap\f[] (e.g.
+\f[B]emacs\f[]).
+.RE
+.SS I/O options
+.TP
+.B \f[B]\-i\f[] \f[I]FILENAME\f[], \f[B]\-input\f[] \f[I]FILENAME\f[]
+Specify the input file.
+.RS
+.PP
+Source text to be translated will be read from the input file, instead
+of standard input.
+.RE
+.TP
+.B \f[B]\-o\f[] \f[I]FILENAME\f[], \f[B]\-output\f[] \f[I]FILENAME\f[]
+Specify the output file.
+.RS
+.PP
+Translations will be written to the output file, instead of standard
+output.
+.RE
+.SS Language preference options
+.TP
+.B \f[B]\-l\f[] \f[I]CODE\f[], \f[B]\-lang\f[] \f[I]CODE\f[]
+Specify your home language (the language you would like to see for
+displaying prompt messages in the translation).
+.RS
+.PP
+This option affects only the display in verbose mode (anything other
+than source language and target language will be displayed in your home
+language).
+This option has no effect in brief mode.
+.PP
+This option is optional.
+When its setting is omitted, English will be used.
+.PP
+This option overrides the setting of environment variables
+$\f[B]LANGUAGE\f[], $\f[B]LC_ALL\f[], $\f[B]LANG\f[] and
+$\f[B]HOME_LANG\f[].
+.RE
+.TP
+.B \f[B]\-s\f[] \f[I]CODE\f[], \f[B]\-source\f[] \f[I]CODE\f[]
+Specify the source language (the language of original text).
+.RS
+.PP
+This option is optional.
+When its setting is omitted, the language of original text will be
+identified automatically (with a possibility of misidentification).
+.PP
+This option overrides the setting of environment variable
+$\f[B]SOURCE_LANG\f[].
+.RE
+.TP
+.B \f[B]\-t\f[] \f[I]CODES\f[], \f[B]\-target\f[] \f[I]CODES\f[]
+Specify the target language(s) (the language(s) of translated text).
+When specifying two or more language codes, concatenate them by plus
+sign "+".
+.RS
+.PP
+This option is optional.
+When its setting is omitted, everything will be translated into English.
+.PP
+This option overrides the setting of environment variables
+$\f[B]LANGUAGE\f[], $\f[B]LC_ALL\f[], $\f[B]LANG\f[] and
+$\f[B]TARGET_LANG\f[].
+.RE
+.TP
+.B [\f[I]SOURCE\f[]]:[\f[I]TARGETS\f[]]
+A simpler, alternative way to specify the source language and target
+language(s) is to use a shortcut formatted string:
+.RS
+.IP \[bu] 2
+\f[I]SOURCE\-CODE\f[]:\f[I]TARGET\-CODE\f[]
+.IP \[bu] 2
+\f[I]SOURCE\-CODE\f[]:\f[I]TARGET\-CODE1\f[]+\f[I]TARGET\-CODE2\f[]+...
+.IP \[bu] 2
+\f[I]SOURCE\-CODE\f[]=\f[I]TARGET\-CODE\f[]
+.IP \[bu] 2
+\f[I]SOURCE\-CODE\f[]=\f[I]TARGET\-CODE1\f[]+\f[I]TARGET\-CODE2\f[]+...
+.PP
+Delimiter ":" and "=" can be used interchangeably.
+.PP
+Either \f[I]SOURCE\f[] or \f[I]TARGETS\f[] may be omitted, but the
+delimiter character must be kept.
+.RE
+.SS Other options
+.TP
+.B \f[B]\-no\-init\f[]
+Do not load any initialization script.
+.RS
+.RE
+.TP
+.B \f[B]\-\-\f[]
+End\-of\-options.
+.RS
+.PP
+All arguments after this option are treated as \f[I]TEXT\f[] to be
+translated.
+.RE
+.SH EXIT STATUS
+.TP
+.B \f[B]0\f[]
+Successful translation.
+.RS
+.RE
+.TP
+.B \f[B]1\f[]
+Error.
+.RS
+.RE
+.SH ENVIRONMENT
+.TP
+.B \f[B]PAGER\f[]
+Equivalent to option setting \f[B]\-pager\f[].
+.RS
+.RE
+.TP
+.B \f[B]BROWSER\f[]
+Equivalent to option setting \f[B]\-browser\f[].
+.RS
+.RE
+.TP
+.B \f[B]PLAYER\f[]
+Equivalent to option setting \f[B]\-player\f[].
+.RS
+.RE
+.TP
+.B \f[B]HTTP_PROXY\f[]
+Equivalent to option setting \f[B]\-proxy\f[].
+.RS
+.RE
+.TP
+.B \f[B]USER_AGENT\f[]
+Equivalent to option setting \f[B]\-user\-agent\f[].
+.RS
+.RE
+.TP
+.B \f[B]HOME_LANG\f[]
+Equivalent to option setting \f[B]\-lang\f[].
+.RS
+.RE
+.TP
+.B \f[B]SOURCE_LANG\f[]
+Equivalent to option setting \f[B]\-source\f[].
+.RS
+.RE
+.TP
+.B \f[B]TARGET_LANG\f[]
+Equivalent to option setting \f[B]\-target\f[].
+.RS
+.RE
+.SH FILES
+.TP
+.B \f[I]/etc/translate\-shell\f[]
+Initialization script.
+(system\-wide)
+.RS
+.RE
+.TP
+.B \f[I]$HOME/.translate\-shell/init.trans\f[]
+Initialization script.
+(user\-specific)
+.RS
+.RE
+.TP
+.B \f[I]\&./.trans\f[]
+Initialization script.
+(current directory)
+.RS
+.RE
+.SH REPORTING BUGS
+.PP
+<https://github.com/soimort/translate-shell/issues>
+.SH AUTHORS
+Mort Yao <soi@mort.ninja>.

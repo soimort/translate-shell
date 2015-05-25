@@ -1,25 +1,26 @@
 ---
 title: Translate Shell
 project-name: Translate Shell
-project-version: 0.8.24
-project-logo: images/avatar.jpg
-background: images/public_domain.png
+project-version: 0.9.0
+project-logo: images/logo.jpg
+background: images/background.png
 github: soimort/translate-shell
 url: http://www.soimort.org/translate-shell/
 download-url: http://www.soimort.org/translate-shell/trans
 download-checksum-type: SHA1SUM
-download-checksum-data: 77a116ecda749953019c9524efcbf8254208ff72
+download-checksum-data: 76d95299387b3da9c9b2c52e4a500983a148c79f
 download-signature: http://www.soimort.org/translate-shell/trans.sig
 
 ---
 # Translate Shell
 
+[![Icon](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/icon.png)](http://www.soimort.org/translate-shell)
 [![Build Status](https://travis-ci.org/soimort/translate-shell.png)](https://travis-ci.org/soimort/translate-shell)
 [![Version](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-release.png)](https://github.com/soimort/translate-shell/releases)
 [![Download](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png)](http://www.soimort.org/translate-shell/trans)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/soimort/translate-shell?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/soimort/translate-shell?utm_source=badge$readme$utm_medium=badge$readme$utm_campaign=pr-badge$readme$utm_content=badge)
 
-[Translate Shell](http://www.soimort.org/translate-shell) (previously _Google Translate CLI_) is a command-line interface and interactive shell for [Google Translate](https://translate.google.com/). It works just the way you want it to be.
+**[Translate Shell](http://www.soimort.org/translate-shell)** (formerly _Google Translate CLI_) is a command-line translator powered by **[Google Translate](https://translate.google.com/)**. It gives you easy access to Google Translate in your terminal:
 
 ```
 $ trans 'Saluton, Mondo!'
@@ -35,109 +36,111 @@ Mondo !
     World!
 ```
 
-Translations with detailed explanations are shown by default. You can also translate the text briefly, i.e., only the most relevant translation is shown: (this will give you the same result as in [Google Translate CLI Legacy](https://github.com/soimort/translate-shell/tree/legacy))
+By default, translations with detailed explanations are shown. You can also translate the text briefly: (only the most relevant translation will be shown)
 
 ```
-$ trans -b 'Saluton, Mondo!'
+$ trans -brief 'Saluton, Mondo!'
 Hello, World!
 ```
 
-Translations can be done interactively; input your text line by line:
+**Translate Shell** can also be used like an interactive shell; input the text to be translated line by line:
 
 ```
-$ trans -b -I
+$ trans -shell -brief
+> Rien ne réussit comme le succès.
+Nothing succeeds like success.
 > Was mich nicht umbringt, macht mich stärker.
 What does not kill me makes me stronger.
 > Юмор есть остроумие глубокого чувства.
-Humor is a deep sense of wit.
+Humor has a deep sense of wit.
 > 學而不思則罔，思而不學則殆。
 Learning without thought is labor lost, thought without learning is perilous.
 > 幸福になるためには、人から愛されるのが一番の近道。
-In order to be happy, the shortest way is from being loved by the people.
+In order to be happy, the best way is to be loved by people.
 ```
-
-**Translate Shell** is a complete rewrite of [Google Translate CLI Legacy](https://github.com/soimort/translate-shell/tree/legacy), which is a tiny script written in 100 lines of AWK code. Translate Shell is backward compatible with Google Translate CLI Legacy in its command-line usage; furthermore, it provides more functionality including verbose translation, Text-to-Speech and interactive mode, etc.
 
 ## Prerequisites
 
 ### System Requirements
 
-Any POSIX-compliant system should work, including but not limited to:
+**Translate Shell** is known to work on many POSIX-compliant systems, including but not limited to:
 
 * GNU/Linux
-* BSD family, including OS X
-* illumos family, including SmartOS
-* Cygwin on Windows
+* OS X
+* FreeBSD
+* Cygwin
 
 ### Dependencies
 
-* [GNU Awk](https://www.gnu.org/software/gawk/) (gawk) `>=4.0`
-    * This program relies heavily on GNU-only extensions of the AWK language, which are not possible with POSIX AWK or other AWK implementations.
-    * gawk comes with (almost) all GNU/Linux distributions. On BSD systems, it is available in ports. On OS X, it is available in MacPorts and Homebrew.
-    * If you have an older version of gawk (`>=3.1`), you may still want to use [Google Translate CLI Legacy](https://github.com/soimort/translate-shell/tree/legacy).
-    * Be aware that msys-gawk shipped with MinGW is outdated; however, you may still use Google Translate CLI Legacy as well.
+* **[GNU Awk](https://www.gnu.org/software/gawk/)** (**gawk**) **4.0 or later**
+    * This program relies heavily on GNU extensions of the [AWK language](http://en.wikipedia.org/wiki/AWK), which are non-portable for other AWK implementations (e.g. nawk).
+    * How to get gawk:
+      * gawk comes with all GNU/Linux distributions.
+      * On FreeBSD, gawk is available in the ports.
+      * On OS X, gawk is available in MacPorts and Homebrew.
+* **[GNU Bash](http://www.gnu.org/software/bash/)** or **[Zsh](http://www.zsh.org/)**
+    * You may use Translate Shell from any Unix shell of your choice (bash, zsh, ksh, tcsh, fish, etc.); however, the wrapper script requires either **bash** or **zsh** installed.
 
 ### Optional Dependencies
 
-* [GNU Bash](http://www.gnu.org/software/bash/) or [Zsh](http://www.zsh.org/)
-    * You can use Translate Shell from any modern Unix shell of your choice (bash, zsh, ksh, tcsh, fish, etc.); however, it requires either bash or zsh installed for interpreting the wrapper script.
-* [GNU FriBidi](http://fribidi.org/): an implementation of the Unicode Bidirectional Algorithm (bidi)
-    * needed for displaying right-to-left (RTL) languages
-* [MPlayer](http://www.mplayerhq.hu/), [mplayer2](http://www.mplayer2.org/), [mpv](http://mpv.io/), [mpg123](http://mpg123.org/), or [eSpeak](http://espeak.sourceforge.net/)
-    * needed for the Text-to-Speech functionality
-* [rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/#rlwrap): a GNU readline wrapper
-    * needed for readline-style editing and history in the interactive mode
-* [groff](http://www.gnu.org/software/groff/): GNU troff (pre-installed on most systems)
-    * needed for formatting man pages
-* [GNU Emacs](http://www.gnu.org/software/emacs/)
-    * for using the Emacs interface
+* **[GNU FriBidi](http://fribidi.org/)**: _an implementation of the Unicode Bidirectional Algorithm (bidi)_
+    * required for displaying text in Right-to-Left scripts (e.g. Arabic, Hebrew)
+* **[mplayer](http://www.mplayerhq.hu/)**, **[mplayer2](http://www.mplayer2.org/)**, **[mpv](http://mpv.io/)**, **[mpg123](http://mpg123.org/)**, or **[eSpeak](http://espeak.sourceforge.net/)**
+    * required for the Text-to-Speech functionality
+* **[less](http://www.greenwoodsoftware.com/less/)**, **[more](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/more.html)** or **[most](http://www.jedsoft.org/most/)**
+    * required for terminal paging
+* **[rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/#rlwrap)**: *a GNU readline wrapper*
+    * required for readline-style editing and history in the interactive shell
+* **[curl](http://curl.haxx.se/)** with **OpenSSL** support
+    * required for secured URL fetching (self-upgrading, etc.)
 
-### Environment and Encoding
+### Environment and Fonts
 
-It is strongly recommended that you use UTF-8 codeset for your default locale, as it potentially supports all languages. You can check whether your codeset is UTF-8 using:
+It is strongly recommended to use a UTF-8 codeset in your default [locale](http://en.wikipedia.org/wiki/Locale), as it has potential support for all languages. You can check whether your codeset is UTF-8 using the `locale` command.
 
-    $ locale
+In addition, you must have corresponding fonts for the language(s) / script(s) you wish to display in your terminal. See **[wiki: Writing Systems and Fonts](https://github.com/soimort/translate-shell/wiki/Writing-Systems-and-Fonts#unicode-fonts)** for more details on scripts and recommended Unicode fonts.
 
-And you need to have necessary Unicode fonts installed for the languages you want to display.
+## Try It Out!
 
-## Try It Out
+Start an interactive shell and translate anything you input into your native language: (in **bash** or **zsh**)
 
-As long as you have `gawk` already, you're good to go!
+    $ gawk -f <(curl -Ls git.io/translate) -shell
 
-    $ gawk "$(curl -Ls git.io/translate)" -I
+(in **fish**)
+
+    $ gawk -f (curl -Ls git.io/translate | psub) -shell
+
+**Please make sure to read [the disclaimer](#disclaimer) before using.**
 
 ## Installation
 
-### Direct Download (Latest Release)
+### Option #1. Direct Download
 
-Download [this executable](http://git.io/trans) and place it into your path.
+Download [the self-contained executable](http://git.io/trans) and place it into your path. It's everything you need.
 
     $ wget git.io/trans
     $ chmod +x ./trans
 
-Additionally, you may verify [this signature](http://www.soimort.org/translate-shell/trans.sig) if you want:
+There is a [GPG signature](http://www.soimort.org/translate-shell/trans.sig).
 
-    $ gpg --verify trans.sig trans
-
-### From Git
+### Option #2. From Git
 
     $ git clone https://github.com/soimort/translate-shell
     $ cd translate-shell/
-    $ sudo make install
+    $ make
+    $ [sudo] make install
 
-The default `PREFIX` of installation is `/usr/local`. If you wish to install it to another path (e.g. `/usr`, `~/.local`), use:
+In case you have only zsh but not bash in your system, build with:
 
-    $ sudo make PREFIX=/usr install
+    $ make TARGET=zsh
 
-If you prefer zsh, specify zsh as the build target: (normally you don't need to worry about that if both bash and zsh are installed on your system)
+The default `PREFIX` of installation is `/usr/local`. To install the program to somewhere else (e.g. `/usr`, `~/.local`), use:
 
-    $ sudo make TARGET=zsh install
+    $ [sudo] make PREFIX=/usr install
 
-### From Your Package Manager
+### Option #3. From A Package Manager
 
-#### OS X (via Homebrew) / Linux (via Linuxbrew)
-
-Available as a self-hosted Homebrew formula:
+On OS X with Homebrew:
 
     $ brew install http://www.soimort.org/translate-shell/translate-shell.rb
 
@@ -145,34 +148,15 @@ On Linux, you may ignore its dependencies (e.g. gawk) if you already have them i
 
     $ brew install --ignore-dependencies http://www.soimort.org/translate-shell/translate-shell.rb
 
-#### FreeBSD
+See **[wiki: Distros](https://github.com/soimort/translate-shell/wiki/Distros)** on how to install from a specific package manager on your distro.
 
-Available in FreeBSD Ports collection:
-
-    $ cd /usr/ports/textproc/google-translate-cli
-    $ make install
-
-#### Debian
-
-Available in Debian Unstable:
-
-    $ apt-get install translate-shell
-
-#### Arch Linux
-
-Available in the [Arch User Repository](https://aur.archlinux.org/packages/translate-shell/):
-
-    $ cower -d translate-shell
-    $ cd translate-shell/
-    $ makepkg -si
-
-## Examples
+## Introduction by Examples
 
 ### Translate a Word
 
 #### From any language to your language
 
-Google Translate will detect the language of the source text automatically, and Translate Shell will translate it into the language of your locale.
+Google Translate can identify the language of the source text automatically, and Translate Shell by default translates the source text into the language of your `locale`.
 
     $ trans vorto
 
@@ -186,344 +170,366 @@ Translate a word into Chinese and Japanese: (use a plus sign "`+`" as the delimi
 
     $ trans :zh+ja word
 
-You can use an equals sign ("`=`") in place of "`:`". The traditional way of using a pair of curly brackets in Google Translate CLI Legacy is still supported: (depending on your shell)
+Alternatively, equals sign ("`=`") can be used in place of the colon ("`:`"). Note that in some shells (e.g. zsh), equals signs may be interpreted differently, therefore the argument specifying languages needs to be protected:
 
     $ trans {=zh+ja} word
+    $ trans '=zh+ja' word
 
-You can also use the `-target` option to specify this:
+You can also use the `-target` (`-t`) option to specify the target language(s):
 
     $ trans -t zh+ja word
 
 #### From a specific language
 
-Google Translate could identify the language of the source text incorrectly; in that case, you will need to specify the language yourself:
+Google Translate may wrongly identify the source text as some other language than you expected:
 
-    $ trans :en 手紙
-    $ trans ja:en 手紙
-    $ trans zh:en 手紙
+    $ trans 手紙
 
-You can also use the `-source` option to specify this:
+In that case, you need to specify its language explicitly:
 
-    $ trans -s ja -t en 手紙
+    $ trans ja: 手紙
+    $ trans zh: 手紙
+
+You can also use the `-source` (`-s`) option to specify the source language:
+
+    $ trans -s ja 手紙
 
 ### Translate Multiple Words or a Phrase
 
 Translate each word alone:
 
-    $ trans en:zh freedom of speech
+    $ trans en:zh word processor
 
-Put words into one argument and translate them as a whole:
+Put words into one argument, and translate them as a whole:
 
-    $ trans en:zh "freedom of speech"
+    $ trans en:zh "word processor"
 
 ### Translate a Sentence
 
-Translating a sentence is much the same like translating a phrase; you can quote words into one argument:
+Translating a sentence is much the same like translating a phrase; you can just quote the sentence into one argument:
 
-    $ trans :zh "Words will always retain their power."
-    $ trans :zh 'Words will always retain their power.'
+    $ trans :zh "To-morrow, and to-morrow, and to-morrow,"
+    $ trans :zh 'To-morrow, and to-morrow, and to-morrow,'
 
-To avoid punctuation marks and other special characters (e.g. "`!`") being interpreted by the shell, use *single quotes*:
+It is also possible to translate multi-line sentences:
 
-    $ trans :zh 'Yes we can!'
+    $ trans :zh "Creeps in this petty pace from day to day,
+    > To the last syllable of recorded time;
+    > And all our yesterdays have lighted fools
+    > The way to dusty death."
 
-There are some cases though, you may still want to use *double quotes*: (i.e. the sentence contains a single quotation mark "`'`")
+To avoid punctuation marks (e.g. "`!`") or other special characters being interpreted by the shell, use *single quotes*:
 
-    $ trans :zh "I'm lovin' it! McDonald's"
+    $ trans :zh 'Out, out, brief candle!'
+
+There are some cases though, you may still want to use *double quotes*: (e.g. the sentence contains a single quotation mark "`'`")
+
+    $ trans :zh "Life's but a walking shadow, a poor player"
 
 ### Brief Mode
 
-By default, Translate Shell displays translations in a verbose manner. If you prefer to see only the most relevant translation, you can fallback to brief mode using the `-brief` option:
+By default, Translate Shell displays translations in a verbose manner. If you prefer to see only the most relevant translation, there is a brief mode available using the `-brief` (`-b`) option:
 
-    $ trans :fr -b "Saluton, Mondo"
+    $ trans -b :fr "Saluton, Mondo"
 
-In brief mode, phonetic notation (for some languages) is not shown by default. To enable this, put an at sign "`@`" in front of the language code:
+In brief mode, phonetic notation (if any) is not shown by default. To enable this, put an at sign "`@`" in front of the language code:
 
-    $ trans :@ja -b "Saluton, Mondo"
+    $ trans -b :@ja "Saluton, Mondo"
+
+### Dictionary Mode
+
+Google Translate can be used as a dictionary. When translating a word and the target language is the same as the source language, the dictionary entry of the word is shown:
+
+    $ trans :en word
+
+To enable dictionary mode no matter whether the source language and the target language are identical, use the `-dictionary` (`-d`) option.
+
+    $ trans -d fr: mot
+
+**Note:** Not every language supported by Google Translate has provided dictionary data. See **[wiki: Languages](https://github.com/soimort/translate-shell/wiki/Languages)** to find out which language(s) has dictionary support.
 
 ### Text-to-Speech
 
-Use the `-play` option to listen to the translation:
+Use the `-play` (`-p`) option to listen to the translation:
 
-    $ trans :ja -b -p "Saluton, Mondo"
+    $ trans -b -p :ja "Saluton, Mondo"
+
+### Terminal Paging
+
+Sometimes the content of translation can be too much for display in one screen. Use the `-view` (`-v`) option to view the translation in a terminal pager such as `less` or `more`:
+
+    $ trans -d -v word
 
 ### Right-to-Left (RTL) Languages
 
-You can use the `-width` option to specify the screen width for padding when displaying right-to-left languages, if you want:
+[Right-to-Left (RTL) languages](http://en.wikipedia.org/wiki/Right-to-left) are well supported via [GNU FriBidi](http://fribidi.org/).
 
-    $ trans :he -b -w 40 "Saluton, Mondo"
+The program will automatically adjust the screen width for padding when displaying right-to-left languages. Alternatively, you may use the `-width` (`-w`) option to specify the screen width:
 
-### Input and Output
+    $ trans -b -w 40 :he "Saluton, Mondo"
 
-When no non-option argument is given, Translate Shell will read from standard input, or from the file specified by the `-input` option:
+See **[wiki: Languages](https://github.com/soimort/translate-shell/wiki/Languages)** to find out which language(s) uses a Right-to-Left writing system.
 
-    $ echo "Saluton, Mondo" | trans :fr -b
-    $ trans :fr -b -i input.txt
+### Pipeline, Input and Output
 
-Translations will be written to standard output, or to the file specified by the `-output` option:
+If no source text is given in command-line arguments, the program will read from standard input, or from the file specified by the `-input` (`-i`) option:
 
-    $ echo "Saluton, Mondo" | trans :fr -b -o output.txt
+    $ echo "Saluton, Mondo" | trans -b :fr
+    $ trans -b -i input.txt :fr
+
+Translations are written to standard output, or to the file specified by the `-output` (`-o`) option:
+
+    $ echo "Saluton, Mondo" | trans -b -o output.txt :fr
 
 ### Translate a File
 
-Instead of using the `-input` option, a URI scheme of file can be provided as a parameter (`file://` followed by the file name):
+Instead of using the `-input` option, a [file URI scheme](http://en.wikipedia.org/wiki/File_URI_scheme) (`file://` followed by the file name) can be used as a command-line argument:
 
     $ trans :fr file://input.txt
 
-Brief mode is used when translating from URI schemes.
+**Note**: Brief mode is used when translating from file URI schemes.
 
 ### Translate a Web Page
 
-For the translation of a web page, a URI scheme of HTTP(S) can be provided as a parameter:
+To translate a web page, an http(s) URI scheme can be used as an argument:
 
     $ trans :fr http://www.w3.org/
 
-A browser session will be started for viewing the translation (in Google Translate). To specify the web browser, use the `-browser` option:
+A browser session will open for viewing the translation (via Google Translate's web interface). To specify your web browser of choice, use the `-browser` option:
 
-    $ trans :fr -browser firefox http://www.w3.org/
+    $ trans -browser firefox :fr http://www.w3.org/
 
-### Interactive Mode
+### Language Details
 
-Start an interactive shell, using the `-interactive` option:
+Use the `-list` (`-L`) option to view details of one or more languages:
 
-    $ trans -I
+    $ trans -L fr
+    $ trans -L de+en
 
-## Text Editors
+Some basic information of the language will be displayed: its English name and endonym (language name in the language itself), language family, writing system, canonical Google Translate code and ISO 639-3 code.
 
-`trans` is a command-line program which can be easily integrated with your favorite text editor. Below are some useful tips.
+### Interactive Translate Shell (REPL)
 
-### Emacs
+Start an interactive shell using the `-shell` (or `-interactive`, `-I`) option:
 
-#### Interactive shell
+    $ trans -shell
 
-You can, of course, use Emacs as a front-end of Translate Shell, in the same way you emulate your favorite shell with <kbd>M-x shell</kbd>. There is a shortcut for starting Emacs with Translate Shell, using the `-emacs` option:
+You may specify the source language and the target language(s) before starting an interactive shell:
 
-    $ trans -E
+    $ trans -shell en:fr
 
-#### Text translation
+You may also change these settings during an interactive session. See **[wiki: REPL](https://github.com/soimort/translate-shell/wiki/REPL)** for more advanced usage of the interactive Translate Shell.
 
-When editing a text file, viewing the translation of a region is just one single command: (translating any language to Japanese, for example)
+### Upgrading
 
-<kbd>M-| trans :ja</kbd>
+It is possible for the program to upgrade itself:
 
-#### Emacs mode
+    $ trans -U
 
-There is a simple minor mode for Emacs: [google-translate-mode.el](https://github.com/soimort/translate-shell/raw/develop/google-translate-mode.el)
-
-* <kbd>C-c -</kbd> Show translation of the current word in message buffer.
-* <kbd>C-c =</kbd> View verbose translation of the current word in popup dialog.
-* <kbd>C-c +</kbd> Insert translation of the current word right after.
-
-### Vim
-
-#### Text translation
-
-Add one line to your `~/.vimrc`:
-
-    set keywordprg=trans\ :ja
-
-Use <kbd>Shift-K</kbd> to view the translation of the word under the cursor.
+To enable this kind of upgrading, `curl` with OpenSSL must be installed on the system (since `gawk` does not come with SSL/TLS support).
 
 ## Usage
 
-Use `$ trans -H` to view the [detailed man page](http://www.soimort.org/translate-shell/trans.1.html).
+For more details on command-line options, see the man page **[trans(1)](http://www.soimort.org/translate-shell/trans.1.html)** or use `trans -M` in a terminal.
 
 ```
-Usage:  trans [options] [source]:[target] [text] ...
-        trans [options] [source]:[target1]+[target2]+... [text] ...
+Usage:  trans [OPTIONS] [SOURCE]:[TARGETS] [TEXT]...
 
-Options:
--V, -version
-    Print version and exit.
--H, -h, -help
-    Print this help message and exit.
--M, -m, -manual
-    Show the manual.
--r, -reference
-    Print a list of languages (displayed in endonyms) and their ISO 639 codes for reference, and exit.
--R, -reference-english
-    Print a list of languages (displayed in English names) and their ISO 639 codes for reference, and exit.
--v, -verbose
-    Verbose mode. (default)
--b, -brief
-    Brief mode.
--show-original [yes|no]
-    Show original text or not. (default: yes)
--show-original-phonetics [yes|no]
-    Show phonetic notation of original text or not. (default: yes)
--show-translation [yes|no]
-    Show translation or not. (default: yes)
--show-translation-phonetics [yes|no]
-    Show phonetic notation of translation or not. (default: yes)
--show-prompt-message [yes|no]
-    Show prompt message or not. (default: yes)
--show-languages [yes|no]
-    Show source and target languages or not. (default: yes)
--show-original-dictionary [yes|no]
-    Show dictionary entry of original text or not. (default: no)
--show-dictionary [yes|no]
-    Show dictionary entry of translation or not. (default: yes)
--show-alternatives [yes|no]
-    Show alternative translations or not. (default: yes)
--no-ansi
-    Don't use ANSI escape codes in the translation.
--w [num], -width [num]
-    Specify the screen width for padding when displaying right-to-left languages.
--indent [num]
-    Specify the size of indent (in terms of spaces). (default: 4)
--browser [program]
-    Specify the web browser to use.
--p, -play
-    Listen to the translation.
--player [program]
-    Specify the command-line audio player to use, and listen to the translation.
--x [proxy], -proxy [proxy]
-    Use proxy on given port.
--I, -interactive
-    Start an interactive shell, invoking `rlwrap` whenever possible (unless `-no-rlwrap` is specified).
--no-rlwrap
-    Don't invoke `rlwrap` when starting an interactive shell with `-I`.
--E, -emacs
-    Start an interactive shell within GNU Emacs, invoking `emacs`.
--prompt [prompt_string]
-    Customize your prompt string in the interactive shell.
--prompt-color [color_code]
-    Customize your prompt color in the interactive shell.
--i [file], -input [file]
-    Specify the input file name.
--o [file], -output [file]
-    Specify the output file name.
--l [code], -lang [code]
-    Specify your own, native language ("home/host language").
--s [code], -source [code]
-    Specify the source language (language of the original text).
--t [codes], -target [codes]
-    Specify the target language(s) (language(s) of the translated text).
+Information options:
+    -V, -version
+        Print version and exit.
+    -H, -help
+        Print help message and exit.
+    -M, -man
+        Show man page and exit.
+    -T, -reference
+        Print reference table of languages and exit.
+    -R, -reference-english
+        Print reference table of languages (in English names) and exit.
+    -L CODES, -list CODES
+        Print details of languages and exit.
+    -U, -upgrade
+        Upgrade this program to latest version.
+
+Display options:
+    -verbose
+        Verbose mode. (default)
+    -b, -brief
+        Brief mode.
+    -d, -dictionary
+        Dictionary mode.
+    -show-original Y/n
+        Show original text or not.
+    -show-original-phonetics Y/n
+        Show phonetic notation of original text or not.
+    -show-translation Y/n
+        Show translation or not.
+    -show-translation-phonetics Y/n
+        Show phonetic notation of translation or not.
+    -show-prompt-message Y/n
+        Show prompt message or not.
+    -show-languages Y/n
+        Show source and target languages or not.
+    -show-original-dictionary y/N
+        Show dictionary entry of original text or not.
+    -show-dictionary Y/n
+        Show dictionary entry of translation or not.
+    -show-alternatives Y/n
+        Show alternative translations or not.
+    -w NUM, -width NUM
+        Specify the screen width for padding.
+    -indent NUM
+        Specify the size of indent (number of spaces).
+    -theme FILENAME
+        Specify the theme to use.
+    -no-theme
+        Do not use any other theme than default.
+    -no-ansi
+        Do not use ANSI escape codes.
+
+Audio options:
+    -p, -play
+        Listen to the translation.
+    -player PROGRAM
+        Specify the audio player to use, and listen to the translation.
+    -no-play
+        Do not listen to the translation.
+
+Terminal paging and browsing options:
+    -v, -view
+        View the translation in a terminal pager.
+    -pager PROGRAM
+        Specify the terminal pager to use, and view the translation.
+    -no-view
+        Do not view the translation in a terminal pager.
+    -browser PROGRAM
+        Specify the web browser to use.
+
+Networking options:
+    -x HOST:PORT, -proxy HOST:PORT
+        Use HTTP proxy on given port.
+    -u STRING, -user-agent STRING
+        Specify the User-Agent to identify as.
+
+Interactive shell options:
+    -I, -interactive, -shell
+        Start an interactive shell.
+    -E, -emacs
+        Start the GNU Emacs front-end for an interactive shell.
+    -no-rlwrap
+        Do not invoke rlwrap when starting an interactive shell.
+
+I/O options:
+    -i FILENAME, -input FILENAME
+        Specify the input file.
+    -o FILENAME, -output FILENAME
+        Specify the output file.
+
+Language preference options:
+    -l CODE, -lang CODE
+        Specify your home language.
+    -s CODE, -source CODE
+        Specify the source language.
+    -t CODES, -target CODES
+        Specify the target language(s), joined by '+'.
+
+Other options:
+    -no-init
+        Do not load any initialization script.
 
 See the man page trans(1) for more information.
 ```
 
-## Environment Variables
+## Code List
 
-You can export some environment variables as your default configuration. This will save you from typing the same command-line options each time.
+Use `trans -R` or `trans -T` to view the reference table in a terminal.
 
-* `BROWSER`: for option `-browser`
-* `PLAYER`: for option `-player`
-* `HTTP_PROXY` and `http_proxy`: for option `-proxy`
-* `TRANS_PS`: for option `-prompt`
-* `TRANS_PS_COLOR`: for option `-prompt-color`
-* `HOME_LANG`: for option `-l`
-* `SOURCE_LANG`: for option `-s`
-* `TARGET_LANG`: for option `-t`
+For more details on languages and corresponding codes, see **[wiki: Languages](https://github.com/soimort/translate-shell/wiki/Languages)**.
 
-Example:
+| Language | Code | Language | Code | Language | Code |
+| :------: | :--: | :------: | :--: | :------: | :--: |
+| **[Afrikaans](http://en.wikipedia.org/wiki/Afrikaans_language)** <br/> **Afrikaans** | **`af`** | **[Hebrew](http://en.wikipedia.org/wiki/Hebrew_language)** <br/> **עִבְרִית** | **`he`** | **[Punjabi](http://en.wikipedia.org/wiki/Punjabi_language)** <br/> **ਪੰਜਾਬੀ** | **`pa`** | 
+| **[Albanian](http://en.wikipedia.org/wiki/Albanian_language)** <br/> **Shqip** | **`sq`** | **[Hindi](http://en.wikipedia.org/wiki/Hindi_language)** <br/> **हिन्दी** | **`hi`** | **[Romanian](http://en.wikipedia.org/wiki/Romanian_language)** <br/> **Română** | **`ro`** | 
+| **[Amharic](http://en.wikipedia.org/wiki/Amharic_language)** <br/> **አማርኛ** | **`am`** | **[Hmong](http://en.wikipedia.org/wiki/Hmong_language)** <br/> **Hmoob** | **`hmn`** | **[Romansh](http://en.wikipedia.org/wiki/Romansh_language)** <br/> **Rumantsch** | **`rm`** | 
+| **[Arabic](http://en.wikipedia.org/wiki/Arabic_language)** <br/> **العربية** | **`ar`** | **[Hungarian](http://en.wikipedia.org/wiki/Hungarian_language)** <br/> **Magyar** | **`hu`** | **[Russian](http://en.wikipedia.org/wiki/Russian_language)** <br/> **Русский** | **`ru`** | 
+| **[Armenian](http://en.wikipedia.org/wiki/Armenian_language)** <br/> **Հայերեն** | **`hy`** | **[Icelandic](http://en.wikipedia.org/wiki/Icelandic_language)** <br/> **Íslenska** | **`is`** | **[Samoan](http://en.wikipedia.org/wiki/Samoan_language)** <br/> **Gagana Sāmoa** | **`sm`** | 
+| **[Assamese](http://en.wikipedia.org/wiki/Assamese_language)** <br/> **অসমীয়া** | **`as`** | **[Igbo](http://en.wikipedia.org/wiki/Igbo_language)** <br/> **Igbo** | **`ig`** | **[Scottish Gaelic](http://en.wikipedia.org/wiki/Scottish_language)** <br/> **Gàidhlig** | **`gd`** | 
+| **[Azerbaijani](http://en.wikipedia.org/wiki/Azerbaijani_language)** <br/> **Azərbaycanca** | **`az`** | **[Indonesian](http://en.wikipedia.org/wiki/Indonesian_language)** <br/> **Bahasa Indonesia** | **`id`** | **[Serbian](http://en.wikipedia.org/wiki/Serbian_language)** <br/> **српски** | **`sr`** | 
+| **[Bashkir](http://en.wikipedia.org/wiki/Bashkir_language)** <br/> **башҡорт теле** | **`ba`** | **[Interlingue](http://en.wikipedia.org/wiki/Interlingue_language)** <br/> **Interlingue** | **`ie`** | **[Sesotho](http://en.wikipedia.org/wiki/Sesotho_language)** <br/> **Sesotho** | **`st`** | 
+| **[Basque](http://en.wikipedia.org/wiki/Basque_language)** <br/> **Euskara** | **`eu`** | **[Irish](http://en.wikipedia.org/wiki/Irish_language)** <br/> **Gaeilge** | **`ga`** | **[Shona](http://en.wikipedia.org/wiki/Shona_language)** <br/> **chiShona** | **`sn`** | 
+| **[Belarusian](http://en.wikipedia.org/wiki/Belarusian_language)** <br/> **беларуская** | **`be`** | **[Italian](http://en.wikipedia.org/wiki/Italian_language)** <br/> **Italiano** | **`it`** | **[Sindhi](http://en.wikipedia.org/wiki/Sindhi_language)** <br/> **سنڌي** | **`sd`** | 
+| **[Bengali](http://en.wikipedia.org/wiki/Bengali_language)** <br/> **বাংলা** | **`bn`** | **[Japanese](http://en.wikipedia.org/wiki/Japanese_language)** <br/> **日本語** | **`ja`** | **[Sinhala](http://en.wikipedia.org/wiki/Sinhala_language)** <br/> **සිංහල** | **`si`** | 
+| **[Bosnian](http://en.wikipedia.org/wiki/Bosnian_language)** <br/> **Bosanski** | **`bs`** | **[Javanese](http://en.wikipedia.org/wiki/Javanese_language)** <br/> **Basa Jawa** | **`jv`** | **[Slovak](http://en.wikipedia.org/wiki/Slovak_language)** <br/> **Slovenčina** | **`sk`** | 
+| **[Breton](http://en.wikipedia.org/wiki/Breton_language)** <br/> **Brezhoneg** | **`br`** | **[Kannada](http://en.wikipedia.org/wiki/Kannada_language)** <br/> **ಕನ್ನಡ** | **`kn`** | **[Slovenian](http://en.wikipedia.org/wiki/Slovenian_language)** <br/> **Slovenščina** | **`sl`** | 
+| **[Bulgarian](http://en.wikipedia.org/wiki/Bulgarian_language)** <br/> **български** | **`bg`** | **[Kazakh](http://en.wikipedia.org/wiki/Kazakh_language)** <br/> **Қазақ тілі** | **`kk`** | **[Somali](http://en.wikipedia.org/wiki/Somali_language)** <br/> **Soomaali** | **`so`** | 
+| **[Catalan](http://en.wikipedia.org/wiki/Catalan_language)** <br/> **Català** | **`ca`** | **[Khmer](http://en.wikipedia.org/wiki/Khmer_language)** <br/> **ភាសាខ្មែរ** | **`km`** | **[Spanish](http://en.wikipedia.org/wiki/Spanish_language)** <br/> **Español** | **`es`** | 
+| **[Cebuano](http://en.wikipedia.org/wiki/Cebuano_language)** <br/> **Cebuano** | **`ceb`** | **[Kinyarwanda](http://en.wikipedia.org/wiki/Kinyarwanda_language)** <br/> **Ikinyarwanda** | **`rw`** | **[Sundanese](http://en.wikipedia.org/wiki/Sundanese_language)** <br/> **Basa Sunda** | **`su`** | 
+| **[Cherokee](http://en.wikipedia.org/wiki/Cherokee_language)** <br/> **ᏣᎳᎩ** | **`chr`** | **[Korean](http://en.wikipedia.org/wiki/Korean_language)** <br/> **한국어** | **`ko`** | **[Swahili](http://en.wikipedia.org/wiki/Swahili_language)** <br/> **Kiswahili** | **`sw`** | 
+| **[Chichewa](http://en.wikipedia.org/wiki/Chichewa_language)** <br/> **Nyanja** | **`ny`** | **[Kurdish](http://en.wikipedia.org/wiki/Kurdish_language)** <br/> **Kurdî** | **`ku`** | **[Swedish](http://en.wikipedia.org/wiki/Swedish_language)** <br/> **Svenska** | **`sv`** | 
+| **[Chinese Simplified](http://en.wikipedia.org/wiki/Chinese_language)** <br/> **简体中文** | **`zh-CN`** | **[Kyrgyz](http://en.wikipedia.org/wiki/Kyrgyz_language)** <br/> **Кыргызча** | **`ky`** | **[Tajik](http://en.wikipedia.org/wiki/Tajik_language)** <br/> **Тоҷикӣ** | **`tg`** | 
+| **[Chinese Traditional](http://en.wikipedia.org/wiki/Chinese_language)** <br/> **正體中文** | **`zh-TW`** | **[Lao](http://en.wikipedia.org/wiki/Lao_language)** <br/> **ລາວ** | **`lo`** | **[Tamil](http://en.wikipedia.org/wiki/Tamil_language)** <br/> **தமிழ்** | **`ta`** | 
+| **[Corsican](http://en.wikipedia.org/wiki/Corsican_language)** <br/> **Corsu** | **`co`** | **[Latin](http://en.wikipedia.org/wiki/Latin_language)** <br/> **Latina** | **`la`** | **[Tatar](http://en.wikipedia.org/wiki/Tatar_language)** <br/> **татарча** | **`tt`** | 
+| **[Croatian](http://en.wikipedia.org/wiki/Croatian_language)** <br/> **Hrvatski** | **`hr`** | **[Latvian](http://en.wikipedia.org/wiki/Latvian_language)** <br/> **Latviešu** | **`lv`** | **[Telugu](http://en.wikipedia.org/wiki/Telugu_language)** <br/> **తెలుగు** | **`te`** | 
+| **[Czech](http://en.wikipedia.org/wiki/Czech_language)** <br/> **Čeština** | **`cs`** | **[Lithuanian](http://en.wikipedia.org/wiki/Lithuanian_language)** <br/> **Lietuvių** | **`lt`** | **[Thai](http://en.wikipedia.org/wiki/Thai_language)** <br/> **ไทย** | **`th`** | 
+| **[Danish](http://en.wikipedia.org/wiki/Danish_language)** <br/> **Dansk** | **`da`** | **[Luxembourgish](http://en.wikipedia.org/wiki/Luxembourgish_language)** <br/> **Lëtzebuergesch** | **`lb`** | **[Tibetan](http://en.wikipedia.org/wiki/Tibetan_language)** <br/> **བོད་ཡིག** | **`bo`** | 
+| **[Dutch](http://en.wikipedia.org/wiki/Dutch_language)** <br/> **Nederlands** | **`nl`** | **[Macedonian](http://en.wikipedia.org/wiki/Macedonian_language)** <br/> **Македонски** | **`mk`** | **[Tigrinya](http://en.wikipedia.org/wiki/Tigrinya_language)** <br/> **ትግርኛ** | **`ti`** | 
+| **[Dzongkha](http://en.wikipedia.org/wiki/Dzongkha_language)** <br/> **རྫོང་ཁ** | **`dz`** | **[Malagasy](http://en.wikipedia.org/wiki/Malagasy_language)** <br/> **Malagasy** | **`mg`** | **[Turkish](http://en.wikipedia.org/wiki/Turkish_language)** <br/> **Türkçe** | **`tr`** | 
+| **[English](http://en.wikipedia.org/wiki/English_language)** <br/> **English** | **`en`** | **[Malay](http://en.wikipedia.org/wiki/Malay_language)** <br/> **Bahasa Melayu** | **`ms`** | **[Turkmen](http://en.wikipedia.org/wiki/Turkmen_language)** <br/> **Türkmen** | **`tk`** | 
+| **[Esperanto](http://en.wikipedia.org/wiki/Esperanto_language)** <br/> **Esperanto** | **`eo`** | **[Malayalam](http://en.wikipedia.org/wiki/Malayalam_language)** <br/> **മലയാളം** | **`ml`** | **[Ukrainian](http://en.wikipedia.org/wiki/Ukrainian_language)** <br/> **Українська** | **`uk`** | 
+| **[Estonian](http://en.wikipedia.org/wiki/Estonian_language)** <br/> **Eesti** | **`et`** | **[Maltese](http://en.wikipedia.org/wiki/Maltese_language)** <br/> **Malti** | **`mt`** | **[Urdu](http://en.wikipedia.org/wiki/Urdu_language)** <br/> **اُردُو** | **`ur`** | 
+| **[Faroese](http://en.wikipedia.org/wiki/Faroese_language)** <br/> **Føroyskt** | **`fo`** | **[Maori](http://en.wikipedia.org/wiki/Maori_language)** <br/> **Māori** | **`mi`** | **[Uyghur](http://en.wikipedia.org/wiki/Uyghur_language)** <br/> **ئۇيغۇر تىلى** | **`ug`** | 
+| **[Fijian](http://en.wikipedia.org/wiki/Fijian_language)** <br/> **Vosa Vakaviti** | **`fj`** | **[Marathi](http://en.wikipedia.org/wiki/Marathi_language)** <br/> **मराठी** | **`mr`** | **[Uzbek](http://en.wikipedia.org/wiki/Uzbek_language)** <br/> **Oʻzbek tili** | **`uz`** | 
+| **[Filipino](http://en.wikipedia.org/wiki/Filipino_language)** <br/> **Tagalog** | **`tl`** | **[Mongolian](http://en.wikipedia.org/wiki/Mongolian_language)** <br/> **Монгол** | **`mn`** | **[Vietnamese](http://en.wikipedia.org/wiki/Vietnamese_language)** <br/> **Tiếng Việt** | **`vi`** | 
+| **[Finnish](http://en.wikipedia.org/wiki/Finnish_language)** <br/> **Suomi** | **`fi`** | **[Myanmar](http://en.wikipedia.org/wiki/Myanmar_language)** <br/> **မြန်မာစာ** | **`my`** | **[Volapük](http://en.wikipedia.org/wiki/Volapük_language)** <br/> **Volapük** | **`vo`** | 
+| **[French](http://en.wikipedia.org/wiki/French_language)** <br/> **Français** | **`fr`** | **[Nepali](http://en.wikipedia.org/wiki/Nepali_language)** <br/> **नेपाली** | **`ne`** | **[Welsh](http://en.wikipedia.org/wiki/Welsh_language)** <br/> **Cymraeg** | **`cy`** | 
+| **[Galician](http://en.wikipedia.org/wiki/Galician_language)** <br/> **Galego** | **`gl`** | **[Norwegian](http://en.wikipedia.org/wiki/Norwegian_language)** <br/> **Norsk** | **`no`** | **[Western Frisian](http://en.wikipedia.org/wiki/Western_language)** <br/> **Frysk** | **`fy`** | 
+| **[Georgian](http://en.wikipedia.org/wiki/Georgian_language)** <br/> **ქართული** | **`ka`** | **[Occitan](http://en.wikipedia.org/wiki/Occitan_language)** <br/> **Occitan** | **`oc`** | **[Wolof](http://en.wikipedia.org/wiki/Wolof_language)** <br/> **Wollof** | **`wo`** | 
+| **[German](http://en.wikipedia.org/wiki/German_language)** <br/> **Deutsch** | **`de`** | **[Oriya](http://en.wikipedia.org/wiki/Oriya_language)** <br/> **ଓଡ଼ିଆ** | **`or`** | **[Xhosa](http://en.wikipedia.org/wiki/Xhosa_language)** <br/> **isiXhosa** | **`xh`** | 
+| **[Greek](http://en.wikipedia.org/wiki/Greek_language)** <br/> **Ελληνικά** | **`el`** | **[Oromo](http://en.wikipedia.org/wiki/Oromo_language)** <br/> **Afaan Oromoo** | **`om`** | **[Yiddish](http://en.wikipedia.org/wiki/Yiddish_language)** <br/> **ייִדיש** | **`yi`** | 
+| **[Guarani](http://en.wikipedia.org/wiki/Guarani_language)** <br/> **Avañe'ẽ** | **`gn`** | **[Pashto](http://en.wikipedia.org/wiki/Pashto_language)** <br/> **پښتو** | **`ps`** | **[Yoruba](http://en.wikipedia.org/wiki/Yoruba_language)** <br/> **Yorùbá** | **`yo`** | 
+| **[Gujarati](http://en.wikipedia.org/wiki/Gujarati_language)** <br/> **ગુજરાતી** | **`gu`** | **[Persian](http://en.wikipedia.org/wiki/Persian_language)** <br/> **فارسی** | **`fa`** | **[Zulu](http://en.wikipedia.org/wiki/Zulu_language)** <br/> **isiZulu** | **`zu`** | 
+| **[Haitian Creole](http://en.wikipedia.org/wiki/Haitian_language)** <br/> **Kreyòl Ayisyen** | **`ht`** | **[Polish](http://en.wikipedia.org/wiki/Polish_language)** <br/> **Polski** | **`pl`** | 
+| **[Hausa](http://en.wikipedia.org/wiki/Hausa_language)** <br/> **Hausa** | **`ha`** | **[Portuguese](http://en.wikipedia.org/wiki/Portuguese_language)** <br/> **Português** | **`pt`** | 
 
-    $ export TARGET_LANG=zh
-    $ trans text
-    $ trans word
 
-## Language Codes
+## Wiki
 
-Use `$ trans -R` to view the list of language codes.
+Lists of all languages, writing systems and fonts for reference:
 
-```
-┌─────────────────────────────┬──────────────────────┬─────────────────┐
-│ Afrikaans           - af    │ Hausa          - ha  │ Persian    - fa │
-│ Albanian            - sq    │ Hebrew         - he  │ Polish     - pl │
-│ Arabic              - ar    │ Hindi          - hi  │ Portuguese - pt │
-│ Armenian            - hy    │ Hmong          - hmn │ Punjabi    - pa │
-│ Azerbaijani         - az    │ Hungarian      - hu  │ Romanian   - ro │
-│ Basque              - eu    │ Icelandic      - is  │ Russian    - ru │
-│ Belarusian          - be    │ Igbo           - ig  │ Serbian    - sr │
-│ Bengali             - bn    │ Indonesian     - id  │ Sesotho    - st │
-│ Bosnian             - bs    │ Irish          - ga  │ Sinhala    - si │
-│ Bulgarian           - bg    │ Italian        - it  │ Slovak     - sk │
-│ Catalan             - ca    │ Japanese       - ja  │ Slovenian  - sl │
-│ Cebuano             - ceb   │ Javanese       - jv  │ Somali     - so │
-│ Chichewa            - ny    │ Kannada        - kn  │ Spanish    - es │
-│ Chinese Simplified  - zh-CN │ Kazakh         - kk  │ Sundanese  - su │
-│ Chinese Traditional - zh-TW │ Khmer          - km  │ Swahili    - sw │
-│ Croatian            - hr    │ Korean         - ko  │ Swedish    - sv │
-│ Czech               - cs    │ Lao            - lo  │ Tajik      - tg │
-│ Danish              - da    │ Latin          - la  │ Tamil      - ta │
-│ Dutch               - nl    │ Latvian        - lv  │ Telugu     - te │
-│ English             - en    │ Lithuanian     - lt  │ Thai       - th │
-│ Esperanto           - eo    │ Macedonian     - mk  │ Turkish    - tr │
-│ Estonian            - et    │ Malagasy       - mg  │ Ukrainian  - uk │
-│ Filipino            - tl    │ Malay          - ms  │ Urdu       - ur │
-│ Finnish             - fi    │ Malayalam      - ml  │ Uzbek      - uz │
-│ French              - fr    │ Maltese        - mt  │ Vietnamese - vi │
-│ Galician            - gl    │ Maori          - mi  │ Welsh      - cy │
-│ Georgian            - ka    │ Marathi        - mr  │ Yiddish    - yi │
-│ German              - de    │ Mongolian      - mn  │ Yoruba     - yo │
-│ Greek               - el    │ Myanmar        - my  │ Zulu       - zu │
-│ Gujarati            - gu    │ Nepali         - ne  │                 │
-│ Haitian Creole      - ht    │ Norwegian      - no  │                 │
-└─────────────────────────────┴──────────────────────┴─────────────────┘
-```
+* **[Languages](https://github.com/soimort/translate-shell/wiki/Languages)**
+* **[Writing Systems and Fonts](https://github.com/soimort/translate-shell/wiki/Writing-Systems-and-Fonts)**
 
-## FAQ
+The following pages demonstrate the advanced usage of **Translate Shell**:
 
-* **Q**: *How many languages does Google Translate support?*
+* **[REPL](https://github.com/soimort/translate-shell/wiki/REPL)**
+* **[Text Editor Integration](https://github.com/soimort/translate-shell/wiki/Text-Editor-Integration)**
+* **[Configuration](https://github.com/soimort/translate-shell/wiki/Configuration)**
+* **[Themes](https://github.com/soimort/translate-shell/wiki/Themes)**
 
-* **A**: 90 languages, as far as we know. There are 91 distinct language codes in total (including two codes for the Chinese language). A few aliases of these codes exist.
+Find out whether your Linux distribution has included **Translate Shell** in its official repository. If not, contribute one:
 
-* **Q**: *What are these language codes?*
+* **[Distros](https://github.com/soimort/translate-shell/wiki/Distros)**
 
-* **A**: A language code is used to identify a language. Most of these codes are ISO 639-1 codes (alpha-2), consisted of two alphabet letters; very few languages supported by Google Translate use the ISO 639-2 code (alpha-3), e.g., Hmong (`hmn`); the Chinese language has two language codes, distinguished by the uppercase region code after its ISO 639-1 code.
+Frequently Asked Questions, historical stuff, AWK coding style, etc.:
 
-* **Q**: *Why are there two codes for Chinese? When to use them?*
+* **[FAQ](https://github.com/soimort/translate-shell/wiki/FAQ)**
+* **[History](https://github.com/soimort/translate-shell/wiki/History)**
+* **[AWK Style Guide](https://github.com/soimort/translate-shell/wiki/AWK-Style-Guide)**
 
-* **A**: Two writing systems exist for the Chinese language: Simplified Chinese (`zh-CN`), used in China and Singapore; and Traditional Chinese (`zh-TW`), used in Taiwan and Hong Kong. Language code "`zh`" is an alias of "`zh-CN`".
+## How to Report Bugs / Contribute
 
-* **Q**: *What about writing systems? What is the writing system of my language?*
+**Please review the [guidelines for contributing](https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md) before reporting an issue or sending a pull request.**
 
-* **A**: Some languages other than Chinese, also have multiple writing systems. Unfortunately, Google Translate seems to support only one of them:
-    * Belarusian (`be`): Cyrillic alphabet
-    * Bosnian (`bs`): Latin alphabet
-    * Hausa (`ha`): Latin / Boko alphabet
-    * Javanese (`jv` or `jw`): Latin alphabet
-    * Kazakh (`kk`): Cyrillic alphabet
-    * Mongolian (`mn`): Cyrillic alphabet
-    * Punjabi (`pa`): Brahmic / Gurmukhī alphabet
-    * Serbian (`sr`): Cyrillic alphabet
-    * Sundanese (`su`): Latin alphabet
-    * Tajik (`tg`): Cyrillic alphabet
-    * Uzbek (`uz`): Latin alphabet
+## Disclaimer
 
-* **Q**: *What are right-to-left (RTL) languages, and why do I need GNU FriBidi for them?*
+This software is provided for the purpose of **reasonable personal use** of the Google Translate service, i.e., for those who prefer command line to web interface. For other purposes, please refer to the official [Google Translate API](https://developers.google.com/translate/).
 
-* **A**: 5 languages supported by Google Translate are written from right to left. In order to display bi-directional text correctly for these languages, GNU FriBidi, which implements Unicode bidirectional algorithm, will be used:
-    * Arabic (`ar`)
-    * Persian (`fa`)
-    * Hebrew (`he` or `iw`)
-    * Urdu (`ur`)
-    * Yiddish (`yi` or `ji`)
+By using this software, you ("the user") are aware that:
 
-* **Q**: *What is my "home" language?*
+1. **Google Translate** is a proprietary service provided and owned by Google Inc.
+2. **Translate Shell** is **NOT** a Google product. Neither this software nor its author is affiliated with Google Inc.
+3. The software is provided "**AS IS**", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
 
-* **A**: By default, home language is set to the language of your current locale (i.e. environment variable `LC_CTYPE` and `LANG`). It will affect the display in verbose mode. If you are comfortable with your current locale (e.g. `en_US.UTF-8`), just leave it alone.
+## Copyright Waiver
 
-* **Q**: *What is the target language, if I don't specify one?*
-
-* **A**: If no target language is specified, text will be translated into the language of your locale, i.e., your most preferable language.
-
-* **Q**: *I tried to translate some very long text but failed to get the complete translation.*
-
-* **A**: There is a limit of length for each translation. As a general suggestion, don't try to do everything in one hit. Split your text into sentences or lines and translate one at a time.
-
-* **Q**: *My terminal does not support ANSI escape sequences and the display looks like a mess. How do I disable them?*
-
-* **A**: Translate Shell uses ANSI escape sequences to display colors and other effects. You can disable them by either using the option `-no-ansi`, or telling Translate Shell that your terminal type is dumb via the environment variable `TERM`: `$ TERM=dumb trans ...`
-
-## Reporting Bugs
-
-**Please review the [guidelines for contributing](https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md) before reporting an issue.**
-
-## Contributing
-
-**Please review the [guidelines for contributing](https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md) before sending a pull request.**
-
-## Licensing
-
-This is free and unencumbered software released into the public domain.
+This is free and unencumbered software released into the public domain. See **[LICENSE](https://github.com/soimort/translate-shell/blob/stable/LICENSE)** and **[WAIVER](https://github.com/soimort/translate-shell/blob/stable/WAIVER)** for details.
