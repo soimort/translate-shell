@@ -1,5 +1,6 @@
 # Translate Shell
 
+[![Icon](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/icon.png)](http://www.soimort.org/translate-shell)
 [![Build Status](https://travis-ci.org/soimort/translate-shell.png)](https://travis-ci.org/soimort/translate-shell)
 [![Version](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-release.png)](https://github.com/soimort/translate-shell/releases)
 [![Download](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png)](http://www.soimort.org/translate-shell/trans)
