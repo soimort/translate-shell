@@ -234,10 +234,6 @@ function clean() {
 }
 
 function release(    content, group, sha1, size, temp, text) {
-    ("sha1sum " Trans) | getline temp
-    split(temp, group)
-    sha1 = group[1]
-
     d("Updating registry ...")
     # Update registry
     text = readFrom(MainRegistryTemplate)
@@ -261,6 +257,9 @@ function release(    content, group, sha1, size, temp, text) {
 
     d("Updating gh-pages/translate-shell.rb ...")
     # Update gh-pages/translate-shell.rb
+    ("sha1sum " PagesPath "translate-shell.tar.gz") | getline temp
+    split(temp, group)
+    sha1 = group[1]
     text = readFrom(HomebrewFormula ".temp")
     gsub(/\$sha1\$/, sha1, text)
     gsub(/\$Version\$/, Version, text)
@@ -268,6 +267,9 @@ function release(    content, group, sha1, size, temp, text) {
 
     d("Updating gh-pages/index.md ...")
     # Update gh-pages/index.md
+    ("sha1sum " Trans) | getline temp
+    split(temp, group)
+    sha1 = group[1]
     content = readFrom(Readme)
     text = readFrom(Index ".temp")
     gsub(/\$sha1\$/, sha1, text)
