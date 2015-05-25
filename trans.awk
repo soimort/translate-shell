@@ -26,7 +26,7 @@
 BEGIN {
     Name        = "Translate Shell"
     Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.9.0.2"
+    Version     = "0.9.0.3"
     ReleaseDate = "2015-05-26"
     Command     = "trans"
     EntryPoint  = "translate.awk"
@@ -3065,8 +3065,9 @@ function upgrade(    gitHead, i, newVersion, registry, tokens, trans) {
     if (newerVersion(newVersion, Version)) {
         trans = curl(TransExecutable)
         if (trans) {
-            print trans > ENVIRON["TRANS_ABSPATH"]
             print "Successfully upgraded to " newVersion "." > STDERR
+            print trans > ENVIRON["TRANS_ABSPATH"]
+            exit 0
         } else
             e("[ERROR] Upgrading failed due to network errors.")
     } else
