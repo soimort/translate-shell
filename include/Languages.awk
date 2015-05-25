@@ -1945,11 +1945,24 @@ function parseLang(lang,    code, group) {
 }
 
 # Initialize `UserLang`.
-function initUserLang() {
-    UserLocale = ENVIRON["LANGUAGE"] ? ENVIRON["LANGUAGE"] :
-        (ENVIRON["LC_ALL"] ? ENVIRON["LC_ALL"] :
-         (ENVIRON["LANG"] ? ENVIRON["LANG"] : "en_US.UTF-8"))
-    if (tolower(UserLocale) !~ /utf-?8$/)
+function initUserLang(    lang, utf) {
+    if (lang = ENVIRON["LANGUAGE"]) {
+        if (!UserLocale) UserLocale = lang
+        utf = utf || tolower(lang) ~ /utf-?8$/
+    }
+    if (lang = ENVIRON["LC_ALL"]) {
+        if (!UserLocale) UserLocale = lang
+        utf = utf || tolower(lang) ~ /utf-?8$/
+    }
+    if (lang = ENVIRON["LANG"]) {
+        if (!UserLocale) UserLocale = lang
+        utf = utf || tolower(lang) ~ /utf-?8$/
+    }
+    if (!UserLocale) {
+        UserLocale = "en_US.UTF-8"
+        utf = 1
+    }
+    if (!utf)
         w("[WARNING] Your locale codeset (" UserLocale ") is not UTF-8.")
 
     UserLang = parseLang(UserLocale)
