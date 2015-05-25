@@ -73,8 +73,9 @@ function upgrade(    gitHead, i, newVersion, registry, tokens, trans) {
     if (newerVersion(newVersion, Version)) {
         trans = curl(TransExecutable)
         if (trans) {
-            print trans > ENVIRON["TRANS_ABSPATH"]
             print "Successfully upgraded to " newVersion "." > STDERR
+            print trans > ENVIRON["TRANS_ABSPATH"]
+            exit 0
         } else
             e("[ERROR] Upgrading failed due to network errors.")
     } else
