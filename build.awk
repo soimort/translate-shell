@@ -233,7 +233,7 @@ function clean() {
     return 0
 }
 
-function release() {
+function release(    content, group, sha1, size, temp, text) {
     ("sha1sum " Trans) | getline temp
     split(temp, group)
     sha1 = group[1]
