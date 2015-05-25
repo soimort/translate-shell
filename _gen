@@ -1,0 +1,35 @@
+#!/bin/bash
+SRCPATH=.
+OUTDIR=.
+EXT=md
+PANDOC=pandoc
+PANDOC_OPTIONS='-s --mathml --toc --toc-depth=2'
+TEMPLATE=_templates/main.html
+#IGNORE_EXTS=(Makefile)
+
+if [ -z "$SRCPATH" ]; then SRCPATH=.; fi
+if [ -z "$OUTDIR" ]; then OUTDIR=_site; fi
+if [ -z "$EXT" ]; then EXT=md; fi
+if [ -z "$PANDOC" ]; then PANDOC=pandoc; fi
+a=()
+while IFS= read -d $'\0' -r f ; do
+    a=("${a[@]}" "$f")
+done < <(find $SRCPATH -print0)
+for f in ${a[@]}; do
+    if [ -f "$f" -a -n "${f##./_*}" -a -n "${f##./.*}" ]; then
+        echo $f
+        if [ -z "${f%%*.$EXT}" ]; then
+            mkdir -p $SRCPATH/$OUTDIR/${f%/*.$EXT}
+            $PANDOC $PANDOC_OPTIONS --template $TEMPLATE $f -o $SRCPATH/$OUTDIR/${f%.$EXT}.html
+        else
+            mkdir -p $SRCPATH/$OUTDIR/${f%/*}
+            cp $f $SRCPATH/$OUTDIR/$f
+        fi
+    fi
+done
+# what if SRCPATH == OUTDIR ?
+#for f in ${IGNORE_EXTS[@]}; do
+#    find $SRCPATH/$OUTDIR -name \*$f -delete
+#done
+
+ruby -run -e httpd $OUTDIR -p 4000
