@@ -57,21 +57,15 @@ function m(string) {
 }
 
 # Return 1 if the first version is newer than the second; otherwise return 0.
-function newerVersion(ver1, ver2,    group1, group2) {
+function newerVersion(ver1, ver2,    i, group1, group2) {
     split(ver1, group1, ".")
     split(ver2, group2, ".")
-    if (group1[1] + 0 > group2[1] + 0)
-        return 1
-    else if (group1[1] + 0 < group2[1] + 0)
-        return 0
-    if (group1[2] + 0 > group2[2] + 0)
-        return 1
-    else if (group1[2] + 0 < group2[2] + 0)
-        return 0
-    if (group1[3] + 0 > group2[3] + 0)
-        return 1
-    else if (group1[3] + 0 < group2[3] + 0)
-        return 0
+    for (i = 1; i <= 4; i++) {
+        if (group1[i] + 0 > group2[i] + 0)
+            return 1
+        else if (group1[i] + 0 < group2[i] + 0)
+            return 0
+    }
     return 0
 }
 
