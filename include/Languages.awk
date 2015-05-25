@@ -15,6 +15,7 @@
 function initLocale(    i) {
 
     #? Amharic
+    Locale["am"]["support"]            = "unstable"
     Locale["am"]["name"]               = "Amharic"
     Locale["am"]["endonym"]            = "አማርኛ"
     #Locale["am"]["translations-of"]
@@ -28,6 +29,7 @@ function initLocale(    i) {
     Locale["am"]["script"]             = "Ethi"
 
     #? Assamese
+    Locale["as"]["support"]            = "unstable"
     Locale["as"]["name"]               = "Assamese"
     Locale["as"]["endonym"]            = "অসমীয়া"
     #Locale["as"]["translations-of"]
@@ -41,6 +43,7 @@ function initLocale(    i) {
     Locale["as"]["script"]             = "Beng"
 
     #? Bashkir
+    Locale["ba"]["support"]            = "unstable"
     Locale["ba"]["name"]               = "Bashkir"
     Locale["ba"]["endonym"]            = "башҡорт теле"
     #Locale["ba"]["translations-of"]
@@ -54,6 +57,7 @@ function initLocale(    i) {
     Locale["ba"]["script"]             = "Cyrl"
 
     #? Breton
+    Locale["br"]["support"]            = "unstable"
     Locale["br"]["name"]               = "Breton"
     Locale["br"]["endonym"]            = "Brezhoneg"
     #Locale["br"]["translations-of"]
@@ -67,6 +71,7 @@ function initLocale(    i) {
     Locale["br"]["script"]             = "Latn"
 
     #? Corsican
+    Locale["co"]["support"]            = "unstable"
     Locale["co"]["name"]               = "Corsican"
     Locale["co"]["endonym"]            = "Corsu"
     #Locale["co"]["translations-of"]
@@ -80,6 +85,7 @@ function initLocale(    i) {
     Locale["co"]["script"]             = "Latn"
 
     #? Dzongkha
+    Locale["dz"]["support"]            = "unstable"
     Locale["dz"]["name"]               = "Dzongkha"
     Locale["dz"]["endonym"]            = "རྫོང་ཁ"
     #Locale["dz"]["translations-of"]
@@ -93,6 +99,7 @@ function initLocale(    i) {
     Locale["dz"]["script"]             = "Tibt"
 
     #? Faroese
+    Locale["fo"]["support"]            = "unstable"
     Locale["fo"]["name"]               = "Faroese"
     Locale["fo"]["endonym"]            = "Føroyskt"
     #Locale["fo"]["translations-of"]
@@ -106,6 +113,7 @@ function initLocale(    i) {
     Locale["fo"]["script"]             = "Latn"
 
     #? Fijian
+    Locale["fj"]["support"]            = "unstable"
     Locale["fj"]["name"]               = "Fijian"
     Locale["fj"]["endonym"]            = "Vosa Vakaviti"
     #Locale["fj"]["translations-of"]
@@ -119,6 +127,7 @@ function initLocale(    i) {
     Locale["fj"]["script"]             = "Latn"
 
     #? Guarani
+    Locale["gn"]["support"]            = "unstable"
     Locale["gn"]["name"]               = "Guarani"
     Locale["gn"]["endonym"]            = "Avañe'ẽ"
     #Locale["gn"]["translations-of"]
@@ -132,6 +141,7 @@ function initLocale(    i) {
     Locale["gn"]["script"]             = "Latn"
 
     #? Interlingue
+    Locale["ie"]["support"]            = "unstable"
     Locale["ie"]["name"]               = "Interlingue"
     Locale["ie"]["endonym"]            = "Interlingue"
     #Locale["ie"]["translations-of"]
@@ -145,6 +155,7 @@ function initLocale(    i) {
     Locale["ie"]["script"]             = "Latn"
 
     #? Kinyarwanda
+    Locale["rw"]["support"]            = "unstable"
     Locale["rw"]["name"]               = "Kinyarwanda"
     Locale["rw"]["endonym"]            = "Ikinyarwanda"
     #Locale["rw"]["translations-of"]
@@ -158,6 +169,7 @@ function initLocale(    i) {
     Locale["rw"]["script"]             = "Latn"
 
     #? Kyrgyz
+    Locale["ky"]["support"]            = "unstable"
     Locale["ky"]["name"]               = "Kyrgyz"
     Locale["ky"]["endonym"]            = "Кыргызча"
     #Locale["ky"]["translations-of"]
@@ -171,6 +183,7 @@ function initLocale(    i) {
     Locale["ky"]["script"]             = "Cyrl"
 
     #? Kurdish (Central Kurdish, Sorani), Latin alphabet
+    Locale["ku"]["support"]            = "unstable"
     Locale["ku"]["name"]               = "Kurdish"
     Locale["ku"]["endonym"]            = "Kurdî"
     #Locale["ku"]["translations-of"]
@@ -184,6 +197,7 @@ function initLocale(    i) {
     Locale["ku"]["script"]             = "Latn"
 
     #? Luxembourgish
+    Locale["lb"]["support"]            = "unstable"
     Locale["lb"]["name"]               = "Luxembourgish"
     Locale["lb"]["endonym"]            = "Lëtzebuergesch"
     #Locale["lb"]["translations-of"]
@@ -197,6 +211,7 @@ function initLocale(    i) {
     Locale["lb"]["script"]             = "Latn"
 
     #? Occitan
+    Locale["oc"]["support"]            = "unstable"
     Locale["oc"]["name"]               = "Occitan"
     Locale["oc"]["endonym"]            = "Occitan"
     #Locale["oc"]["translations-of"]
@@ -210,6 +225,7 @@ function initLocale(    i) {
     Locale["oc"]["script"]             = "Latn"
 
     #? Oromo
+    Locale["om"]["support"]            = "unstable"
     Locale["om"]["name"]               = "Oromo"
     Locale["om"]["endonym"]            = "Afaan Oromoo"
     #Locale["om"]["translations-of"]
@@ -223,6 +239,7 @@ function initLocale(    i) {
     Locale["om"]["script"]             = "Latn"
 
     #? Oriya
+    Locale["or"]["support"]            = "unstable"
     Locale["or"]["name"]               = "Oriya"
     Locale["or"]["endonym"]            = "ଓଡ଼ିଆ"
     #Locale["or"]["translations-of"]
@@ -236,6 +253,7 @@ function initLocale(    i) {
     Locale["or"]["script"]             = "Orya"
 
     #? Pashto
+    Locale["ps"]["support"]            = "unstable"
     Locale["ps"]["name"]               = "Pashto"
     Locale["ps"]["endonym"]            = "پښتو"
     #Locale["ps"]["translations-of"]
@@ -250,6 +268,7 @@ function initLocale(    i) {
     Locale["ps"]["rtl"]                = "true" # RTL language
 
     #? Romansh
+    Locale["rm"]["support"]            = "unstable"
     Locale["rm"]["name"]               = "Romansh"
     Locale["rm"]["endonym"]            = "Rumantsch"
     #Locale["rm"]["translations-of"]
@@ -263,6 +282,7 @@ function initLocale(    i) {
     Locale["rm"]["script"]             = "Latn"
 
     #? Sindhi
+    Locale["sd"]["support"]            = "unstable"
     Locale["sd"]["name"]               = "Sindhi"
     Locale["sd"]["endonym"]            = "سنڌي"
     #Locale["sd"]["translations-of"]
@@ -277,6 +297,7 @@ function initLocale(    i) {
     Locale["sd"]["rtl"]                = "true" # RTL language
 
     #? Samoan
+    Locale["sm"]["support"]            = "unstable"
     Locale["sm"]["name"]               = "Samoan"
     Locale["sm"]["endonym"]            = "Gagana Sāmoa"
     #Locale["sm"]["translations-of"]
@@ -290,6 +311,7 @@ function initLocale(    i) {
     Locale["sm"]["script"]             = "Latn"
 
     #? Scottish Gaelic
+    Locale["gd"]["support"]            = "unstable"
     Locale["gd"]["name"]               = "Scottish Gaelic"
     Locale["gd"]["endonym"]            = "Gàidhlig"
     #Locale["gd"]["translations-of"]
@@ -303,6 +325,7 @@ function initLocale(    i) {
     Locale["gd"]["script"]             = "Latn"
 
     #? Shona
+    Locale["sn"]["support"]            = "unstable"
     Locale["sn"]["name"]               = "Shona"
     Locale["sn"]["endonym"]            = "chiShona"
     #Locale["sn"]["translations-of"]
@@ -316,6 +339,7 @@ function initLocale(    i) {
     Locale["sn"]["script"]             = "Latn"
 
     #? Tigrinya
+    Locale["ti"]["support"]            = "unstable"
     Locale["ti"]["name"]               = "Tigrinya"
     Locale["ti"]["endonym"]            = "ትግርኛ"
     #Locale["ti"]["translations-of"]
@@ -329,6 +353,7 @@ function initLocale(    i) {
     Locale["ti"]["script"]             = "Ethi"
 
     #? Tibetan (Standard Tibetan)
+    Locale["bo"]["support"]            = "unstable"
     Locale["bo"]["name"]               = "Tibetan"
     Locale["bo"]["endonym"]            = "བོད་ཡིག"
     #Locale["bo"]["translations-of"]
@@ -342,6 +367,7 @@ function initLocale(    i) {
     Locale["bo"]["script"]             = "Tibt"
 
     #? Turkmen
+    Locale["tk"]["support"]            = "unstable"
     Locale["tk"]["name"]               = "Turkmen"
     Locale["tk"]["endonym"]            = "Türkmen"
     #Locale["tk"]["translations-of"]
@@ -355,6 +381,7 @@ function initLocale(    i) {
     Locale["tk"]["script"]             = "Latn"
 
     #? Tatar
+    Locale["tt"]["support"]            = "unstable"
     Locale["tt"]["name"]               = "Tatar"
     Locale["tt"]["endonym"]            = "татарча"
     #Locale["tt"]["translations-of"]
@@ -368,6 +395,7 @@ function initLocale(    i) {
     Locale["tt"]["script"]             = "Cyrl"
 
     #? Uyghur
+    Locale["ug"]["support"]            = "unstable"
     Locale["ug"]["name"]               = "Uyghur"
     Locale["ug"]["endonym"]            = "ئۇيغۇر تىلى"
     #Locale["ug"]["translations-of"]
@@ -382,6 +410,7 @@ function initLocale(    i) {
     Locale["ug"]["rtl"]                = "true" # RTL language
 
     #? Volapük
+    Locale["vo"]["support"]            = "unstable"
     Locale["vo"]["name"]               = "Volapük"
     Locale["vo"]["endonym"]            = "Volapük"
     #Locale["vo"]["translations-of"]
@@ -395,6 +424,7 @@ function initLocale(    i) {
     Locale["vo"]["script"]             = "Latn"
 
     #? Wolof
+    Locale["wo"]["support"]            = "unstable"
     Locale["wo"]["name"]               = "Wolof"
     Locale["wo"]["endonym"]            = "Wollof"
     #Locale["wo"]["translations-of"]
@@ -408,6 +438,7 @@ function initLocale(    i) {
     Locale["wo"]["script"]             = "Latn"
 
     #? Western Frisian
+    Locale["fy"]["support"]            = "unstable"
     Locale["fy"]["name"]               = "Western Frisian"
     Locale["fy"]["endonym"]            = "Frysk"
     #Locale["fy"]["translations-of"]
@@ -421,6 +452,7 @@ function initLocale(    i) {
     Locale["fy"]["script"]             = "Latn"
 
     #? Xhosa
+    Locale["xh"]["support"]            = "unstable"
     Locale["xh"]["name"]               = "Xhosa"
     Locale["xh"]["endonym"]            = "isiXhosa"
     #Locale["xh"]["translations-of"]
@@ -434,6 +466,7 @@ function initLocale(    i) {
     Locale["xh"]["script"]             = "Latn"
 
     #? Cherokee
+    Locale["chr"]["support"]            = "unstable"
     Locale["chr"]["name"]               = "Cherokee"
     Locale["chr"]["endonym"]            = "ᏣᎳᎩ"
     #Locale["chr"]["translations-of"]
