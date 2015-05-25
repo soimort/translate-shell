@@ -26,8 +26,8 @@ $endif$
 
 <link href='css/theme.css' media="all" rel="stylesheet" type="text/css">
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
+<!-- link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css' -->
+<!-- link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css' -->
 
 $for(css)$
   <link rel="stylesheet" href="$css$">
@@ -53,8 +53,8 @@ $endfor$
   <div id="desc">
     <h1>$project-name$</h1>
     <h2>version $project-version$</h2>
-    <a href="https://github.com/$github$">Star・<i class="fa fa-github-square fa-2x"></i></a>
-    <a href="$download-url$">Download・<i class="fa fa-download fa-2x"></i></a>
+    <a href="https://github.com/$github$">Star <i class="fa fa-github-square fa-2x"></i></a>
+    <a href="$download-url$">Download <i class="fa fa-download fa-2x"></i></a>
     <div id="msg">
       <span id="checksum" onmouseover="this.innerHTML='$download-checksum-data$'" onmouseout="this.innerHTML='$download-checksum-type$'">$download-checksum-type$</span>
       <a href="$download-signature$">PGP SIGNATURE</a>
@@ -90,7 +90,7 @@ $body$
 <hr/>
 
 <footer>
-<p>This project is maintained by <a href="https://github.com/soimort">@soimort</a>.</p>
+<p>This project is maintained by <strong><a href="https://github.com/soimort">@soimort</a></strong>.</p>
 </footer>
 
 </article>
