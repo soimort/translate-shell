@@ -243,6 +243,10 @@ function release() {
     return 0
 }
 
+function temp() {
+    return 0
+}
+
 BEGIN {
     init()
 
@@ -308,6 +312,10 @@ BEGIN {
 
         case "release":
             status = release()
+            break
+
+        case "temp":
+            status = temp()
             break
 
         default: # unknown task
