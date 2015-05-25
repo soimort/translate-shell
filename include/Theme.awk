@@ -120,8 +120,13 @@ function setDefaultTheme() {
 function setTheme(    file, line, script) {
     if (Option["theme"] && Option["theme"] != "default") {
         file = Option["theme"]
-        if (!fileExists(file))
+        if (!fileExists(file)) {
             file = ENVIRON["HOME"] "/.translate-shell/" Option["theme"]
+            if (!fileExists(file)) {
+                file = ENVIRON["HOME"] "/.config/translate-shell/" Option["theme"]
+                if (!fileExists(file)) return
+            }
+        }
     }
 
     if (file && fileExists(file)) {
