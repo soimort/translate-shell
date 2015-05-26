@@ -488,17 +488,17 @@ BEGIN {
 
         ## Language preference options
 
-        # -l CODE, -lang CODE
-        match(ARGV[pos], /^--?l(a(ng?)?)?(=(.*)?)?$/, group)
+        # -l CODE, -hl CODE, -lang CODE
+        match(ARGV[pos], /^--?(l(a(ng?)?)?|hl)(=(.*)?)?$/, group)
         if (RSTART) {
-            Option["hl"] = group[3] ?
-                (group[4] ? group[4] : Option["hl"]) :
+            Option["hl"] = group[4] ?
+                (group[5] ? group[5] : Option["hl"]) :
                 ARGV[++pos]
             continue
         }
 
-        # -s CODE, -source CODE
-        match(ARGV[pos], /^--?s(o(u(r(ce?)?)?)?)?(=(.*)?)?$/, group)
+        # -s CODE, -sl CODE, -source CODE
+        match(ARGV[pos], /^--?s(o(u(r(ce?)?)?)?|l)?(=(.*)?)?$/, group)
         if (RSTART) {
             Option["sl"] = group[5] ?
                 (group[6] ? group[6] : Option["sl"]) :
@@ -506,8 +506,8 @@ BEGIN {
             continue
         }
 
-        # -t CODES, -target CODES
-        match(ARGV[pos], /^--?t(a(r(g(et?)?)?)?)?(=(.*)?)?$/, group)
+        # -t CODES, -tl CODE, -target CODES
+        match(ARGV[pos], /^--?t(a(r(g(et?)?)?)?|l)?(=(.*)?)?$/, group)
         if (RSTART) {
             if (group[5]) {
                 if (group[6]) split(group[6], Option["tl"], "+")
