@@ -14,7 +14,7 @@ function getVersion(    build, gitHead, platform) {
         build = gitHead ? "-git:" gitHead : ""
     }
 
-    return sprintf(ansi("bold", "%-22s%s%s") "\n\n", Name, Version, build) \
+    return ansi("bold", sprintf("%-22s%s%s\n\n", Name, Version, build)) \
         sprintf("%-22s%s\n", "platform", platform)                      \
         sprintf("%-22s%s\n", "gawk (GNU Awk)", PROCINFO["version"])     \
         sprintf("%s\n", FriBidi ? FriBidi :

@@ -552,8 +552,6 @@ BEGIN {
         break # no more option from here
     }
 
-    setTheme() # theme overrides command-line options
-
     # Handle interactive shell
     if (Option["interactive"] && !Option["no-rlwrap"])
         rlwrapMe() # interactive mode
@@ -565,7 +563,7 @@ BEGIN {
 
     initMisc()
 
-    # Handle information options
+    # Information-only session
     switch (InfoOnly) {
     case "version":
         print getVersion()
@@ -591,6 +589,9 @@ BEGIN {
     case "nothing":
         exit ExitCode
     }
+
+    # Load theme (overrides command-line options) - slow
+    setTheme()
 
     if (Option["interactive"])
         welcome()
