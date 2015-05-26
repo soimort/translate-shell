@@ -26,7 +26,7 @@
 BEGIN {
     Name        = "Translate Shell"
     Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.9.0.3"
+    Version     = "0.9.0.4"
     ReleaseDate = "2015-05-26"
     Command     = "trans"
     EntryPoint  = "translate.awk"
@@ -259,6 +259,9 @@ function w(text) {
     print ansi("yellow", text) > STDERR
 }
 function e(text) {
+    print ansi("bold", ansi("yellow", text)) > STDERR
+}
+function wtf(text) {
     print ansi("bold", ansi("red", text)) > STDERR
 }
 function d(text) {
@@ -327,6 +330,23 @@ function initUriSchemes() {
     UriSchemes[0] = "file://"
     UriSchemes[1] = "http://"
     UriSchemes[2] = "https://"
+}
+function readFrom(file,    line, text) {
+    if (!file) file = "/dev/stdin"
+    text = NULLSTR
+    while (getline line < file)
+        text = (text ? text "\n" : NULLSTR) line
+    return text
+}
+function writeTo(text, file) {
+    if (!file) file = "/dev/stdout"
+    print text > file
+}
+function getOutput(command,    content, line) {
+    content = NULLSTR
+    while ((command |& getline line) > 0)
+        content = (content ? content "\n" : NULLSTR) line
+    return content
 }
 function fileExists(file) {
     return !system("test -f " parameterize(file))
@@ -1983,7 +2003,7 @@ function getHelp() {
             ", " ansi("bold", "-list ") ansi("underline", "CODES")) RS\
         ins(2, "Print details of languages and exit.") RS\
         ins(1, ansi("bold", "-U") ", " ansi("bold", "-upgrade")) RS\
-        ins(2, "Upgrade this program to latest version.") RS\
+        ins(2, "Check for upgrade of this program.") RS\
         RS "Display options:" RS\
         ins(1, ansi("bold", "-verbose")) RS\
         ins(2, "Verbose mode. (default)") RS\
@@ -3038,23 +3058,11 @@ function loadOptions(script,    i, j, tokens, name, value) {
         }
     }
 }
-function upgrade(    gitHead, i, newVersion, registry, tokens, trans) {
-    if (!ENVIRON["TRANS_ABSPATH"]) {
-        w("[ERROR] Not running from a single executable.")
-        gitHead = getGitHead()
-        if (gitHead)
-            w("        Please try to upgrade via git commands.")
-        else
-            w("        Please download the latest release from here:" RS\
-              "        https://github.com/soimort/translate-shell/releases")
-        ExitCode = 1
-        return
-    }
+function upgrade(    i, newVersion, registry, tokens) {
     RegistryIndex = "https://raw.githubusercontent.com/soimort/translate-shell/registry/index.trans"
-    TransExecutable = "http://www.soimort.org/translate-shell/trans"
     registry = curl(RegistryIndex)
     if (!registry) {
-        e("[ERROR] Upgrading failed.")
+        e("[ERROR] Failed to check for upgrade.")
         ExitCode = 1
         return
     }
@@ -3063,15 +3071,13 @@ function upgrade(    gitHead, i, newVersion, registry, tokens, trans) {
         if (tokens[i] == ":translate-shell")
             newVersion = literal(tokens[i + 1])
     if (newerVersion(newVersion, Version)) {
-        trans = curl(TransExecutable)
-        if (trans) {
-            print "Successfully upgraded to " newVersion "." > STDERR
-            print trans > ENVIRON["TRANS_ABSPATH"]
-            exit 0
-        } else
-            e("[ERROR] Upgrading failed due to network errors.")
-    } else
-        e("[ERROR] Already up-to-date.")
+        w("Current version: \t" Version)
+        w("New version available: \t" newVersion)
+        w("Download from: \t" "http://www.soimort.org/translate-shell/trans")
+    } else {
+        w("Current version: \t" Version)
+        w("Already up-to-date.")
+    }
 }
 function welcome() {
     if (Option["fmt-welcome-message"])

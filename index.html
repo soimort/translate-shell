@@ -27,11 +27,11 @@
   <a href="http://www.soimort.org/translate-shell/"><img src="images/logo.jpg"/></a>
   <div id="desc">
     <h1>Translate Shell</h1>
-    <h2>version 0.9.0.3</h2>
+    <h2>version 0.9.0.4</h2>
     <a href="https://github.com/soimort/translate-shell">Star <i class="fa fa-github-square fa-2x"></i></a>
     <a href="http://www.soimort.org/translate-shell/trans">Download <i class="fa fa-download fa-2x"></i></a>
     <div id="msg">
-      <span id="checksum" onmouseover="this.innerHTML='d1cb53a9cd25cae026d4a2d691234014eb47e23b'" onmouseout="this.innerHTML='SHA1SUM'">SHA1SUM</span>
+      <span id="checksum" onmouseover="this.innerHTML='f91cc2aac493bfb184fc5aeb94761c3dffb09798'" onmouseout="this.innerHTML='SHA1SUM'">SHA1SUM</span>
       <a href="http://www.soimort.org/translate-shell/trans.sig">PGP SIGNATURE</a>
     </div>
   </div>
@@ -134,7 +134,7 @@ In order to be happy, the best way is to be loved by people.</code></pre>
 </ul></li>
 <li><strong><a href="http://curl.haxx.se/">curl</a></strong> with <strong>OpenSSL</strong> support
 <ul>
-<li>required for secured URL fetching (self-upgrading, etc.)</li>
+<li>required for secured URL fetching (checking for upgrade, etc.)</li>
 </ul></li>
 </ul>
 <h3 id="environment-and-fonts">Environment and Fonts</h3>
@@ -256,10 +256,6 @@ $ trans -L de+en</code></pre>
 <p>You may specify the source language and the target language(s) before starting an interactive shell:</p>
 <pre><code>$ trans -shell en:fr</code></pre>
 <p>You may also change these settings during an interactive session. See <strong><a href="https://github.com/soimort/translate-shell/wiki/REPL">wiki: REPL</a></strong> for more advanced usage of the interactive Translate Shell.</p>
-<h3 id="upgrading">Upgrading</h3>
-<p>It is possible for the program to upgrade itself:</p>
-<pre><code>$ trans -U</code></pre>
-<p>To enable this kind of upgrading, <code>curl</code> with OpenSSL must be installed on the system (since <code>gawk</code> does not come with SSL/TLS support).</p>
 <h2 id="usage">Usage</h2>
 <p>For more details on command-line options, see the man page <strong><a href="http://www.soimort.org/translate-shell/trans.1.html">trans(1)</a></strong> or use <code>trans -M</code> in a terminal.</p>
 <pre><code>Usage:  trans [OPTIONS] [SOURCE]:[TARGETS] [TEXT]...
@@ -278,7 +274,7 @@ Information options:
     -L CODES, -list CODES
         Print details of languages and exit.
     -U, -upgrade
-        Upgrade this program to latest version.
+        Check for upgrade of this program.
 
 Display options:
     -verbose
