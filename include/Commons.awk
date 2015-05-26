@@ -328,6 +328,11 @@ function w(text) {
 
 # Print error message.
 function e(text) {
+    print ansi("bold", ansi("yellow", text)) > STDERR
+}
+
+# What a terrible failure.
+function wtf(text) {
     print ansi("bold", ansi("red", text)) > STDERR
 }
 
