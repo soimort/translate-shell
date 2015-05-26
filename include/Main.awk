@@ -28,7 +28,7 @@ function init() {
     Option["show-original-dictionary"] = 0
     Option["show-dictionary"] = 1
     Option["show-alternatives"] = 1
-    Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] - 2 : 64
+    Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] - 2 : 0
     Option["indent"] = 4
     Option["no-ansi"] = 0
     Option["theme"] = "default"
@@ -91,9 +91,15 @@ function initScript(    file, line, script, temp) {
 }
 
 # Miscellany initialization.
-function initMisc(    group) {
+function initMisc(    group, temp) {
     # (Translate.awk)
     initHttpService()
+
+    # Initialize screen width if not set
+    if (!Option["width"] && detectProgram("tput", "-V")) {
+        "tput cols" | getline temp
+        Option["width"] = temp ? temp - 2 : 64
+    }
 
     # Disable ANSI escape codes if required
     if (Option["no-ansi"])
