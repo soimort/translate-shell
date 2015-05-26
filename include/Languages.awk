@@ -1849,17 +1849,16 @@ function getDetails(code,    group, iso, language, script) {
     iso = group[1]
     split(getName(code), group, " ")
     language = group[1]
-    return sprintf("%s\n", prettify("translation", getDisplay(code)))   \
-        prettify("languages",
-                 sprintf("%-22s%s\n", "Name", ansi("bold", getName(code))) \
-                 sprintf("%-22s%s\n", "Family", ansi("bold", getFamily(code))) \
-                 sprintf("%-22s%s\n", "Writing system", ansi("bold", script)) \
-                 sprintf("%-22s%s\n", "Code", ansi("bold", getCode(code))) \
-                 sprintf("%-22s%s\n", "ISO 639-3", ansi("bold", iso))   \
-                 sprintf("%-22s%s\n", "Ethnologue", ansi("bold", "http://www.ethnologue.com/language/" iso)) \
-                 sprintf("%-22s%s\n", "Glottolog", getGlotto(code) ?
-                         ansi("bold", "http://glottolog.org/resource/languoid/id/" getGlotto(code)) : "") \
-                 sprintf("%-22s%s", "Wikipedia", ansi("bold", "http://en.wikipedia.org/wiki/" language "_language")))
+    return ansi("bold", sprintf("%s\n", getDisplay(code)))              \
+        sprintf("%-22s%s\n", "Name", ansi("bold", getName(code)))       \
+        sprintf("%-22s%s\n", "Family", ansi("bold", getFamily(code)))   \
+        sprintf("%-22s%s\n", "Writing system", ansi("bold", script))    \
+        sprintf("%-22s%s\n", "Code", ansi("bold", getCode(code)))       \
+        sprintf("%-22s%s\n", "ISO 639-3", ansi("bold", iso))            \
+        sprintf("%-22s%s\n", "Ethnologue", ansi("bold", "http://www.ethnologue.com/language/" iso)) \
+        sprintf("%-22s%s\n", "Glottolog", getGlotto(code) ?
+                ansi("bold", "http://glottolog.org/resource/languoid/id/" getGlotto(code)) : "") \
+        sprintf("%-22s%s", "Wikipedia", ansi("bold", "http://en.wikipedia.org/wiki/" language "_language"))
 }
 
 # Add /slashes/ for IPA phonemic notations and (parentheses) for others.
