@@ -131,12 +131,15 @@ function getHelp() {
         ins(2, "Specify the output file.") RS                           \
         RS "Language preference options:" RS                            \
         ins(1, ansi("bold", "-l ") ansi("underline", "CODE")            \
+            ", " ansi("bold", "-hl ") ansi("underline", "CODE")         \
             ", " ansi("bold", "-lang ") ansi("underline", "CODE")) RS   \
         ins(2, "Specify your home language.") RS                        \
         ins(1, ansi("bold", "-s ") ansi("underline", "CODE")            \
+            ", " ansi("bold", "-sl ") ansi("underline", "CODE")         \
             ", " ansi("bold", "-source ") ansi("underline", "CODE")) RS \
         ins(2, "Specify the source language.") RS                       \
         ins(1, ansi("bold", "-t ") ansi("underline", "CODES")           \
+            ", " ansi("bold", "-tl ") ansi("underline", "CODE")         \
             ", " ansi("bold", "-target ") ansi("underline", "CODES")) RS \
         ins(2, "Specify the target language(s), joined by '+'.") RS     \
         RS "Other options:" RS                                          \
