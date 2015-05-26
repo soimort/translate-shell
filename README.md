@@ -78,7 +78,7 @@ In order to be happy, the best way is to be loved by people.
 * **[rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/#rlwrap)**: *a GNU readline wrapper*
     * required for readline-style editing and history in the interactive shell
 * **[curl](http://curl.haxx.se/)** with **OpenSSL** support
-    * required for secured URL fetching (self-upgrading, etc.)
+    * required for secured URL fetching (checking for upgrade, etc.)
 
 ### Environment and Fonts
 
@@ -306,14 +306,6 @@ You may specify the source language and the target language(s) before starting a
 
 You may also change these settings during an interactive session. See **[wiki: REPL](https://github.com/soimort/translate-shell/wiki/REPL)** for more advanced usage of the interactive Translate Shell.
 
-### Upgrading
-
-It is possible for the program to upgrade itself:
-
-    $ trans -U
-
-To enable this kind of upgrading, `curl` with OpenSSL must be installed on the system (since `gawk` does not come with SSL/TLS support).
-
 ## Usage
 
 For more details on command-line options, see the man page **[trans(1)](http://www.soimort.org/translate-shell/trans.1.html)** or use `trans -M` in a terminal.
@@ -335,7 +327,7 @@ Information options:
     -L CODES, -list CODES
         Print details of languages and exit.
     -U, -upgrade
-        Upgrade this program to latest version.
+        Check for upgrade of this program.
 
 Display options:
     -verbose
