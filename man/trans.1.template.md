@@ -184,7 +184,7 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 
 ## Language preference options
 
-**-l** *CODE*, **-lang** *CODE*
+**-l** *CODE*, **-hl** *CODE*, **-lang** *CODE*
 :   Specify your home language (the language you would like to see for displaying prompt messages in the translation).
 
     This option affects only the display in verbose mode (anything other than source language and target language will be displayed in your home language). This option has no effect in brief mode.
@@ -193,14 +193,14 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 
     This option overrides the setting of environment variables $**LANGUAGE**, $**LC_ALL**, $**LANG** and $**HOME_LANG**.
 
-**-s** *CODE*, **-source** *CODE*
+**-s** *CODE*, **-sl** *CODE*, **-source** *CODE*
 :   Specify the source language (the language of original text).
 
     This option is optional. When its setting is omitted, the language of original text will be identified automatically (with a possibility of misidentification).
 
     This option overrides the setting of environment variable $**SOURCE_LANG**.
 
-**-t** *CODES*, **-target** *CODES*
+**-t** *CODES*, **-tl** *CODE*, **-target** *CODES*
 :   Specify the target language(s) (the language(s) of translated text). When specifying two or more language codes, concatenate them by plus sign "+".
 
     This option is optional. When its setting is omitted, everything will be translated into English.
