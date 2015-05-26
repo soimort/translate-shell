@@ -41,7 +41,7 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 :   Print details of languages and exit. When specifying two or more language codes, concatenate them by plus sign "+".
 
 **-U**, **-upgrade**
-:   Upgrade this program to latest version.
+:   Check for upgrade of this program.
 
 ## Display options
 
