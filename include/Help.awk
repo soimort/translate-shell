@@ -55,7 +55,7 @@ function getHelp() {
             ", " ansi("bold", "-list ") ansi("underline", "CODES")) RS  \
         ins(2, "Print details of languages and exit.") RS               \
         ins(1, ansi("bold", "-U") ", " ansi("bold", "-upgrade")) RS     \
-        ins(2, "Upgrade this program to latest version.") RS            \
+        ins(2, "Check for upgrade of this program.") RS                 \
         RS "Display options:" RS                                        \
         ins(1, ansi("bold", "-verbose")) RS                             \
         ins(2, "Verbose mode. (default)") RS                            \

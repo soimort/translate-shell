@@ -42,7 +42,7 @@ function loadOptions(script,    i, j, tokens, name, value) {
     }
 }
 
-# Upgrade script.
+# Check for upgrade.
 function upgrade(    i, newVersion, registry, tokens) {
     RegistryIndex = "https://raw.githubusercontent.com/soimort/translate-shell/registry/index.trans"
 
