@@ -7,26 +7,6 @@
 @include "include/Languages.awk"
 @include "metainfo.awk"
 
-function readFrom(file,    line, text) {
-    if (!file) file = "/dev/stdin"
-    text = NULLSTR
-    while (getline line < file)
-        text = (text ? text "\n" : NULLSTR) line
-    return text
-}
-
-function writeTo(text, file) {
-    if (!file) file = "/dev/stdout"
-    print text > file
-}
-
-function getOutput(command,    content, line) {
-    content = NULLSTR
-    while ((command |& getline line) > 0)
-        content = (content ? content "\n" : NULLSTR) line
-    return content
-}
-
 function init() {
     BuildPath            = "build/"
     Trans                = BuildPath Command

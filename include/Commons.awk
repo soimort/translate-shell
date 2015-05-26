@@ -433,6 +433,29 @@ function initUriSchemes() {
 
 ## System:
 
+# Read from a file and return its content.
+function readFrom(file,    line, text) {
+    if (!file) file = "/dev/stdin"
+    text = NULLSTR
+    while (getline line < file)
+        text = (text ? text "\n" : NULLSTR) line
+    return text
+}
+
+# Write text to file.
+function writeTo(text, file) {
+    if (!file) file = "/dev/stdout"
+    print text > file
+}
+
+# Return the output of a command.
+function getOutput(command,    content, line) {
+    content = NULLSTR
+    while ((command |& getline line) > 0)
+        content = (content ? content "\n" : NULLSTR) line
+    return content
+}
+
 # Return non-zero if file exists; otherwise return 0.
 function fileExists(file) {
     return !system("test -f " parameterize(file))
