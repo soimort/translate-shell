@@ -285,16 +285,30 @@ function getTranslation(text, sl, tl, hl,
                 r = r m("-- display prompt message (Definitions of ...)")
                 if (isRTL(hl)) # home language is R-to-L
                     r = r prettify("prompt-message", s(showDefinitionsOf(hl, join(original))))
-                else # home language is L-to-R
-                    r = r prettify("prompt-message", showDefinitionsOf(hl, prettify("prompt-message-original", show(join(original), il))))
+                else { # home language is L-to-R
+                    split(showDefinitionsOf(hl, "\0%s\0"), group, "\0")
+                    for (i = 1; i <= length(group); i++) {
+                        if (group[i] == "%s")
+                            r = r prettify("prompt-message-original", show(join(original), il))
+                        else
+                            r = r prettify("prompt-message", group[i])
+                    }
+                }
             } else if (hasAltTranslations) {
                 # Display: prompt message (Translations of ...)
                 if (r) r = r RS
                 r = r m("-- display prompt message (Translations of ...)")
                 if (isRTL(hl)) # home language is R-to-L
                     r = r prettify("prompt-message", s(showTranslationsOf(hl, join(original))))
-                else # home language is L-to-R
-                    r = r prettify("prompt-message", showTranslationsOf(hl, prettify("prompt-message-original", show(join(original), il))))
+                else { # home language is L-to-R
+                    split(showTranslationsOf(hl, "\0%s\0"), group, "\0")
+                    for (i = 1; i <= length(group); i++) {
+                        if (group[i] == "%s")
+                            r = r prettify("prompt-message-original", show(join(original), il))
+                        else
+                            r = r prettify("prompt-message", group[i])
+                    }
+                }
             }
         }
         if (wShowLanguages) {
