@@ -6,7 +6,7 @@
 function getVersion(    build, gitHead, platform) {
     initAudioPlayer()
     initPager()
-    platform = detectProgram("uname", "-o", 1)
+    platform = detectProgram("uname", "-s", 1)
     if (ENVIRON["TRANS_BUILD"])
         build = "-" ENVIRON["TRANS_BUILD"]
     else {
