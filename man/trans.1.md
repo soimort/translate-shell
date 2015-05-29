@@ -1,4 +1,4 @@
-% TRANS(1) 0.9.0.5
+% TRANS(1) 0.9.0.6
 % Mort Yao <soi@mort.ninja>
 % 2015-05-29
 
