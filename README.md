@@ -404,11 +404,11 @@ I/O options:
         Specify the output file.
 
 Language preference options:
-    -l CODE, -lang CODE
+    -l CODE, -hl CODE, -lang CODE
         Specify your home language.
-    -s CODE, -source CODE
+    -s CODE, -sl CODE, -source CODE
         Specify the source language.
-    -t CODES, -target CODES
+    -t CODES, -tl CODE, -target CODES
         Specify the target language(s), joined by '+'.
 
 Other options:
