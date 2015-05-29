@@ -28,6 +28,10 @@ function getVersion(    build, gitHead, platform) {
         sprintf("%-22s%s\n", "home language", Option["hl"])             \
         sprintf("%-22s%s\n", "source language", Option["sl"])           \
         sprintf("%-22s%s\n", "target language", join(Option["tl"], "+")) \
+        sprintf("%-22s%s\n", "proxy", Option["proxy"] ? Option["proxy"] :
+                "[NONE]")                                               \
+        sprintf("%-22s%s\n", "user-agent", Option["user-agent"] ? Option["user-agent"] :
+                "[NONE]")                                               \
         sprintf("%-22s%s\n", "theme", Option["theme"])                  \
         sprintf("%-22s%s\n", "init file", InitScript ? InitScript : "[NONE]") \
         sprintf("\n%-22s%s", "Report bugs to:", "https://github.com/soimort/translate-shell/issues")
