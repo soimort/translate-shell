@@ -141,7 +141,7 @@ function getTranslation(text, sl, tl, hl,
     l(content, "content", 1, 1)
     l(tokens, "tokens", 1, 0, 1)
     l(ast, "ast")
-    if (!anything(ast)) {
+    if (!isarray(ast) || !anything(ast)) {
         e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
         ExitCode = 1
         return
