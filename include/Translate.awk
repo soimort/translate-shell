@@ -74,7 +74,7 @@ function getResponse(text, sl, tl, hl,    content, header, url) {
 
     print header |& HttpService
     while ((HttpService |& getline) > 0) {
-        if (length($0) > 1) content = $0
+        if ($0 ~ /^\[.*\]/) content = $0
         l(sprintf("%4s bytes > %s", length($0), $0))
     }
     close(HttpService)
