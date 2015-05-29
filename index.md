@@ -1,14 +1,14 @@
 ---
 title: Translate Shell
 project-name: Translate Shell
-project-version: 0.9.0.4
+project-version: 0.9.0.5
 project-logo: images/logo.jpg
 background: images/background.png
 github: soimort/translate-shell
 url: http://www.soimort.org/translate-shell/
 download-url: http://www.soimort.org/translate-shell/trans
 download-checksum-type: SHA1SUM
-download-checksum-data: f91cc2aac493bfb184fc5aeb94761c3dffb09798
+download-checksum-data: d114e0e9e426a61dee058f4d036c664c2edc1579
 download-signature: http://www.soimort.org/translate-shell/trans.sig
 
 ---
@@ -418,11 +418,11 @@ I/O options:
         Specify the output file.
 
 Language preference options:
-    -l CODE, -lang CODE
+    -l CODE, -hl CODE, -lang CODE
         Specify your home language.
-    -s CODE, -source CODE
+    -s CODE, -sl CODE, -source CODE
         Specify the source language.
-    -t CODES, -target CODES
+    -t CODES, -tl CODE, -target CODES
         Specify the target language(s), joined by '+'.
 
 Other options:

@@ -5,8 +5,8 @@
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta name="author" content="Mort Yao soi@mort.ninja">
-      <meta name="dcterms.date" content="2015-05-26">
-    <title>TRANS(1) 0.9.0.4</title>
+      <meta name="dcterms.date" content="2015-05-29">
+    <title>TRANS(1) 0.9.0.5</title>
   <style type='text/css' media='all'>
   /* style: man */
   body#manpage {margin:0}
@@ -87,7 +87,7 @@
     </div>
 
   <ol class='man-decor man-head man head'>
-    <li class='tl'>TRANS(1) 0.9.0.4</li>
+    <li class='tl'>TRANS(1) 0.9.0.5</li>
     <li class='tc'></li>
     <li class='tr'></li>
   </ol>
@@ -255,18 +255,18 @@
   </dl>
   <h2 id="language-preference-options">Language preference options</h2>
   <dl>
-  <dt><strong>-l</strong> <em>CODE</em>, <strong>-lang</strong> <em>CODE</em></dt>
+  <dt><strong>-l</strong> <em>CODE</em>, <strong>-hl</strong> <em>CODE</em>, <strong>-lang</strong> <em>CODE</em></dt>
   <dd><p>Specify your home language (the language you would like to see for displaying prompt messages in the translation).</p>
   <p>This option affects only the display in verbose mode (anything other than source language and target language will be displayed in your home language). This option has no effect in brief mode.</p>
   <p>This option is optional. When its setting is omitted, English will be used.</p>
   <p>This option overrides the setting of environment variables $<strong>LANGUAGE</strong>, $<strong>LC_ALL</strong>, $<strong>LANG</strong> and $<strong>HOME_LANG</strong>.</p>
   </dd>
-  <dt><strong>-s</strong> <em>CODE</em>, <strong>-source</strong> <em>CODE</em></dt>
+  <dt><strong>-s</strong> <em>CODE</em>, <strong>-sl</strong> <em>CODE</em>, <strong>-source</strong> <em>CODE</em></dt>
   <dd><p>Specify the source language (the language of original text).</p>
   <p>This option is optional. When its setting is omitted, the language of original text will be identified automatically (with a possibility of misidentification).</p>
   <p>This option overrides the setting of environment variable $<strong>SOURCE_LANG</strong>.</p>
   </dd>
-  <dt><strong>-t</strong> <em>CODES</em>, <strong>-target</strong> <em>CODES</em></dt>
+  <dt><strong>-t</strong> <em>CODES</em>, <strong>-tl</strong> <em>CODE</em>, <strong>-target</strong> <em>CODES</em></dt>
   <dd><p>Specify the target language(s) (the language(s) of translated text). When specifying two or more language codes, concatenate them by plus sign &quot;+&quot;.</p>
   <p>This option is optional. When its setting is omitted, everything will be translated into English.</p>
   <p>This option overrides the setting of environment variables $<strong>LANGUAGE</strong>, $<strong>LC_ALL</strong>, $<strong>LANG</strong> and $<strong>TARGET_LANG</strong>.</p>
@@ -355,7 +355,7 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
     <li class='tc'></li>
-    <li class='tr'>2015-05-26</li>
+    <li class='tr'>2015-05-29</li>
   </ol>
 
   </div>

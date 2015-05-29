@@ -26,8 +26,8 @@
 BEGIN {
     Name        = "Translate Shell"
     Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.9.0.4"
-    ReleaseDate = "2015-05-26"
+    Version     = "0.9.0.5"
+    ReleaseDate = "2015-05-29"
     Command     = "trans"
     EntryPoint  = "translate.awk"
 }
@@ -1871,17 +1871,16 @@ function getDetails(code,    group, iso, language, script) {
     iso = group[1]
     split(getName(code), group, " ")
     language = group[1]
-    return sprintf("%s\n", prettify("translation", getDisplay(code)))\
-        prettify("languages",
-                 sprintf("%-22s%s\n", "Name", ansi("bold", getName(code)))\
-                 sprintf("%-22s%s\n", "Family", ansi("bold", getFamily(code)))\
-                 sprintf("%-22s%s\n", "Writing system", ansi("bold", script))\
-                 sprintf("%-22s%s\n", "Code", ansi("bold", getCode(code)))\
-                 sprintf("%-22s%s\n", "ISO 639-3", ansi("bold", iso))\
-                 sprintf("%-22s%s\n", "Ethnologue", ansi("bold", "http://www.ethnologue.com/language/" iso))\
-                 sprintf("%-22s%s\n", "Glottolog", getGlotto(code) ?
-                         ansi("bold", "http://glottolog.org/resource/languoid/id/" getGlotto(code)) : "")\
-                 sprintf("%-22s%s", "Wikipedia", ansi("bold", "http://en.wikipedia.org/wiki/" language "_language")))
+    return ansi("bold", sprintf("%s\n", getDisplay(code)))\
+        sprintf("%-22s%s\n", "Name", ansi("bold", getName(code)))\
+        sprintf("%-22s%s\n", "Family", ansi("bold", getFamily(code)))\
+        sprintf("%-22s%s\n", "Writing system", ansi("bold", script))\
+        sprintf("%-22s%s\n", "Code", ansi("bold", getCode(code)))\
+        sprintf("%-22s%s\n", "ISO 639-3", ansi("bold", iso))\
+        sprintf("%-22s%s\n", "Ethnologue", ansi("bold", "http://www.ethnologue.com/language/" iso))\
+        sprintf("%-22s%s\n", "Glottolog", getGlotto(code) ?
+                ansi("bold", "http://glottolog.org/resource/languoid/id/" getGlotto(code)) : "")\
+        sprintf("%-22s%s", "Wikipedia", ansi("bold", "http://en.wikipedia.org/wiki/" language "_language"))
 }
 function showPhonetics(phonetics, code) {
     if (code && getCode(code) == "en")
@@ -1957,14 +1956,14 @@ function initUserLang(    lang, utf) {
 function getVersion(    build, gitHead, platform) {
     initAudioPlayer()
     initPager()
-    platform = detectProgram("uname", "-o", 1)
+    platform = detectProgram("uname", "-s", 1)
     if (ENVIRON["TRANS_BUILD"])
         build = "-" ENVIRON["TRANS_BUILD"]
     else {
         gitHead = getGitHead()
         build = gitHead ? "-git:" gitHead : ""
     }
-    return sprintf(ansi("bold", "%-22s%s%s") "\n\n", Name, Version, build)\
+    return ansi("bold", sprintf("%-22s%s%s\n\n", Name, Version, build))\
         sprintf("%-22s%s\n", "platform", platform)\
         sprintf("%-22s%s\n", "gawk (GNU Awk)", PROCINFO["version"])\
         sprintf("%s\n", FriBidi ? FriBidi :
@@ -2079,12 +2078,15 @@ function getHelp() {
         ins(2, "Specify the output file.") RS\
         RS "Language preference options:" RS\
         ins(1, ansi("bold", "-l ") ansi("underline", "CODE")\
+            ", " ansi("bold", "-hl ") ansi("underline", "CODE")\
             ", " ansi("bold", "-lang ") ansi("underline", "CODE")) RS\
         ins(2, "Specify your home language.") RS\
         ins(1, ansi("bold", "-s ") ansi("underline", "CODE")\
+            ", " ansi("bold", "-sl ") ansi("underline", "CODE")\
             ", " ansi("bold", "-source ") ansi("underline", "CODE")) RS\
         ins(2, "Specify the source language.") RS\
         ins(1, ansi("bold", "-t ") ansi("underline", "CODES")\
+            ", " ansi("bold", "-tl ") ansi("underline", "CODE")\
             ", " ansi("bold", "-target ") ansi("underline", "CODES")) RS\
         ins(2, "Specify the target language(s), joined by '+'.") RS\
         RS "Other options:" RS\
@@ -2640,8 +2642,10 @@ function getResponse(text, sl, tl, hl,    content, header, url) {
     if (Option["user-agent"])
         header = header "User-Agent: " Option["user-agent"] "\n"
     print header |& HttpService
-    while ((HttpService |& getline) > 0)
-        content = $0
+    while ((HttpService |& getline) > 0) {
+        if (length($0) > 1) content = $0
+        l(sprintf("%4s bytes > %s", length($0), $0))
+    }
     close(HttpService)
     return assert(content, "[ERROR] Null response.")
 }
@@ -2691,7 +2695,7 @@ function getTranslation(text, sl, tl, hl,
     l(content, "content", 1, 1)
     l(tokens, "tokens", 1, 0, 1)
     l(ast, "ast")
-    if (!anything(ast)) {
+    if (!isarray(ast) || !anything(ast)) {
         e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
         ExitCode = 1
         return
@@ -3213,7 +3217,7 @@ function init() {
     Option["show-original-dictionary"] = 0
     Option["show-dictionary"] = 1
     Option["show-alternatives"] = 1
-    Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] - 2 : 64
+    Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] - 2 : 0
     Option["indent"] = 4
     Option["no-ansi"] = 0
     Option["theme"] = "default"
@@ -3256,8 +3260,12 @@ function initScript(    file, line, script, temp) {
         Option["tl"][1] = temp
     }
 }
-function initMisc(    group) {
+function initMisc(    group, temp) {
     initHttpService()
+    if (!Option["width"] && detectProgram("tput", "-V")) {
+        "tput cols" | getline temp
+        Option["width"] = temp ? temp - 2 : 64
+    }
     if (Option["no-ansi"])
         delete AnsiCode
     if (Option["play"]) {
@@ -3535,21 +3543,21 @@ BEGIN {
                 ARGV[++pos]
             continue
         }
-        match(ARGV[pos], /^--?l(a(ng?)?)?(=(.*)?)?$/, group)
+        match(ARGV[pos], /^--?(l(a(ng?)?)?|hl)(=(.*)?)?$/, group)
         if (RSTART) {
-            Option["hl"] = group[3] ?
-                (group[4] ? group[4] : Option["hl"]) :
+            Option["hl"] = group[4] ?
+                (group[5] ? group[5] : Option["hl"]) :
                 ARGV[++pos]
             continue
         }
-        match(ARGV[pos], /^--?s(o(u(r(ce?)?)?)?)?(=(.*)?)?$/, group)
+        match(ARGV[pos], /^--?s(o(u(r(ce?)?)?)?|l)?(=(.*)?)?$/, group)
         if (RSTART) {
             Option["sl"] = group[5] ?
                 (group[6] ? group[6] : Option["sl"]) :
                 ARGV[++pos]
             continue
         }
-        match(ARGV[pos], /^--?t(a(r(g(et?)?)?)?)?(=(.*)?)?$/, group)
+        match(ARGV[pos], /^--?t(a(r(g(et?)?)?)?|l)?(=(.*)?)?$/, group)
         if (RSTART) {
             if (group[5]) {
                 if (group[6]) split(group[6], Option["tl"], "+")
@@ -3579,7 +3587,6 @@ BEGIN {
         }
         break
     }
-    setTheme()
     if (Option["interactive"] && !Option["no-rlwrap"])
         rlwrapMe()
     else if (Option["emacs"] && !Option["interactive"] && !Option["no-rlwrap"])
@@ -3611,6 +3618,7 @@ BEGIN {
     case "nothing":
         exit ExitCode
     }
+    setTheme()
     if (Option["interactive"])
         welcome()
     if (pos < ARGC) {

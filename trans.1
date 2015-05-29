@@ -1,4 +1,4 @@
-.TH "TRANS" "1" "2015\-05\-26" "0.9.0.4" ""
+.TH "TRANS" "1" "2015\-05\-29" "0.9.0.5" ""
 .SH NAME
 .PP
 trans \- Google Translate served as a command\-line tool
@@ -290,7 +290,7 @@ output.
 .RE
 .SS Language preference options
 .TP
-.B \f[B]\-l\f[] \f[I]CODE\f[], \f[B]\-lang\f[] \f[I]CODE\f[]
+.B \f[B]\-l\f[] \f[I]CODE\f[], \f[B]\-hl\f[] \f[I]CODE\f[], \f[B]\-lang\f[] \f[I]CODE\f[]
 Specify your home language (the language you would like to see for
 displaying prompt messages in the translation).
 .RS
@@ -308,7 +308,7 @@ $\f[B]LANGUAGE\f[], $\f[B]LC_ALL\f[], $\f[B]LANG\f[] and
 $\f[B]HOME_LANG\f[].
 .RE
 .TP
-.B \f[B]\-s\f[] \f[I]CODE\f[], \f[B]\-source\f[] \f[I]CODE\f[]
+.B \f[B]\-s\f[] \f[I]CODE\f[], \f[B]\-sl\f[] \f[I]CODE\f[], \f[B]\-source\f[] \f[I]CODE\f[]
 Specify the source language (the language of original text).
 .RS
 .PP
@@ -320,7 +320,7 @@ This option overrides the setting of environment variable
 $\f[B]SOURCE_LANG\f[].
 .RE
 .TP
-.B \f[B]\-t\f[] \f[I]CODES\f[], \f[B]\-target\f[] \f[I]CODES\f[]
+.B \f[B]\-t\f[] \f[I]CODES\f[], \f[B]\-tl\f[] \f[I]CODE\f[], \f[B]\-target\f[] \f[I]CODES\f[]
 Specify the target language(s) (the language(s) of translated text).
 When specifying two or more language codes, concatenate them by plus
 sign "+".
