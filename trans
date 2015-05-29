@@ -26,7 +26,7 @@ read -r -d '' TRANS_PROGRAM << 'EOF'
 BEGIN {
 Name        = "Translate Shell"
 Description = "Google Translate to serve as a command-line tool"
-Version     = "0.9.0.5"
+Version     = "0.9.0.6"
 ReleaseDate = "2015-05-29"
 Command     = "trans"
 EntryPoint  = "translate.awk"
@@ -1975,6 +1975,10 @@ sprintf("%-22s%s (%s)\n", "user locale", UserLocale, getName(UserLang))\
 sprintf("%-22s%s\n", "home language", Option["hl"])\
 sprintf("%-22s%s\n", "source language", Option["sl"])\
 sprintf("%-22s%s\n", "target language", join(Option["tl"], "+"))\
+sprintf("%-22s%s\n", "proxy", Option["proxy"] ? Option["proxy"] :
+"[NONE]")\
+sprintf("%-22s%s\n", "user-agent", Option["user-agent"] ? Option["user-agent"] :
+"[NONE]")\
 sprintf("%-22s%s\n", "theme", Option["theme"])\
 sprintf("%-22s%s\n", "init file", InitScript ? InitScript : "[NONE]")\
 sprintf("\n%-22s%s", "Report bugs to:", "https://github.com/soimort/translate-shell/issues")
@@ -2641,7 +2645,7 @@ if (Option["user-agent"])
 header = header "User-Agent: " Option["user-agent"] "\n"
 print header |& HttpService
 while ((HttpService |& getline) > 0) {
-if (length($0) > 1) content = $0
+if ($0 ~ /^\[.*\]/) content = $0
 l(sprintf("%4s bytes > %s", length($0), $0))
 }
 close(HttpService)
@@ -2803,15 +2807,29 @@ if (r) r = r RS
 r = r m("-- display prompt message (Definitions of ...)")
 if (isRTL(hl))
 r = r prettify("prompt-message", s(showDefinitionsOf(hl, join(original))))
+else {
+split(showDefinitionsOf(hl, "\0%s\0"), group, "\0")
+for (i = 1; i <= length(group); i++) {
+if (group[i] == "%s")
+r = r prettify("prompt-message-original", show(join(original), il))
 else
-r = r prettify("prompt-message", showDefinitionsOf(hl, prettify("prompt-message-original", show(join(original), il))))
+r = r prettify("prompt-message", group[i])
+}
+}
 } else if (hasAltTranslations) {
 if (r) r = r RS
 r = r m("-- display prompt message (Translations of ...)")
 if (isRTL(hl))
 r = r prettify("prompt-message", s(showTranslationsOf(hl, join(original))))
+else {
+split(showTranslationsOf(hl, "\0%s\0"), group, "\0")
+for (i = 1; i <= length(group); i++) {
+if (group[i] == "%s")
+r = r prettify("prompt-message-original", show(join(original), il))
 else
-r = r prettify("prompt-message", showTranslationsOf(hl, prettify("prompt-message-original", show(join(original), il))))
+r = r prettify("prompt-message", group[i])
+}
+}
 }
 }
 if (wShowLanguages) {
@@ -3633,7 +3651,7 @@ exit ExitCode
 }
 EOF
 read -r -d '' TRANS_MANPAGE << 'EOF'
-.TH "TRANS" "1" "2015\-05\-29" "0.9.0.5" ""
+.TH "TRANS" "1" "2015\-05\-29" "0.9.0.6" ""
 .SH NAME
 .PP
 trans \- Google Translate served as a command\-line tool

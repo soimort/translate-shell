@@ -26,7 +26,7 @@
 BEGIN {
     Name        = "Translate Shell"
     Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.9.0.5"
+    Version     = "0.9.0.6"
     ReleaseDate = "2015-05-29"
     Command     = "trans"
     EntryPoint  = "translate.awk"
@@ -1977,6 +1977,10 @@ function getVersion(    build, gitHead, platform) {
         sprintf("%-22s%s\n", "home language", Option["hl"])\
         sprintf("%-22s%s\n", "source language", Option["sl"])\
         sprintf("%-22s%s\n", "target language", join(Option["tl"], "+"))\
+        sprintf("%-22s%s\n", "proxy", Option["proxy"] ? Option["proxy"] :
+                "[NONE]")\
+        sprintf("%-22s%s\n", "user-agent", Option["user-agent"] ? Option["user-agent"] :
+                "[NONE]")\
         sprintf("%-22s%s\n", "theme", Option["theme"])\
         sprintf("%-22s%s\n", "init file", InitScript ? InitScript : "[NONE]")\
         sprintf("\n%-22s%s", "Report bugs to:", "https://github.com/soimort/translate-shell/issues")
@@ -2643,7 +2647,7 @@ function getResponse(text, sl, tl, hl,    content, header, url) {
         header = header "User-Agent: " Option["user-agent"] "\n"
     print header |& HttpService
     while ((HttpService |& getline) > 0) {
-        if (length($0) > 1) content = $0
+        if ($0 ~ /^\[.*\]/) content = $0
         l(sprintf("%4s bytes > %s", length($0), $0))
     }
     close(HttpService)
@@ -2805,15 +2809,29 @@ function getTranslation(text, sl, tl, hl,
                 r = r m("-- display prompt message (Definitions of ...)")
                 if (isRTL(hl))
                     r = r prettify("prompt-message", s(showDefinitionsOf(hl, join(original))))
-                else
-                    r = r prettify("prompt-message", showDefinitionsOf(hl, prettify("prompt-message-original", show(join(original), il))))
+                else {
+                    split(showDefinitionsOf(hl, "\0%s\0"), group, "\0")
+                    for (i = 1; i <= length(group); i++) {
+                        if (group[i] == "%s")
+                            r = r prettify("prompt-message-original", show(join(original), il))
+                        else
+                            r = r prettify("prompt-message", group[i])
+                    }
+                }
             } else if (hasAltTranslations) {
                 if (r) r = r RS
                 r = r m("-- display prompt message (Translations of ...)")
                 if (isRTL(hl))
                     r = r prettify("prompt-message", s(showTranslationsOf(hl, join(original))))
-                else
-                    r = r prettify("prompt-message", showTranslationsOf(hl, prettify("prompt-message-original", show(join(original), il))))
+                else {
+                    split(showTranslationsOf(hl, "\0%s\0"), group, "\0")
+                    for (i = 1; i <= length(group); i++) {
+                        if (group[i] == "%s")
+                            r = r prettify("prompt-message-original", show(join(original), il))
+                        else
+                            r = r prettify("prompt-message", group[i])
+                    }
+                }
             }
         }
         if (wShowLanguages) {
