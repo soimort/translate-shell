@@ -466,18 +466,32 @@ function initLocale(    i) {
     Locale["xh"]["script"]             = "Latn"
 
     #? Cherokee
-    Locale["chr"]["support"]            = "unstable"
-    Locale["chr"]["name"]               = "Cherokee"
-    Locale["chr"]["endonym"]            = "ᏣᎳᎩ"
+    Locale["chr"]["support"]           = "unstable"
+    Locale["chr"]["name"]              = "Cherokee"
+    Locale["chr"]["endonym"]           = "ᏣᎳᎩ"
     #Locale["chr"]["translations-of"]
     #Locale["chr"]["definitions-of"]
     #Locale["chr"]["synonyms"]
     #Locale["chr"]["examples"]
     #Locale["chr"]["see-also"]
-    Locale["chr"]["family"]             = "Iroquoian"
-    Locale["chr"]["iso"]                = "chr"
-    Locale["chr"]["glotto"]             = "cher1273"
-    Locale["chr"]["script"]             = "Cher"
+    Locale["chr"]["family"]            = "Iroquoian"
+    Locale["chr"]["iso"]               = "chr"
+    Locale["chr"]["glotto"]            = "cher1273"
+    Locale["chr"]["script"]            = "Cher"
+
+    #? Hawaiian
+    Locale["haw"]["support"]           = "unstable"
+    Locale["haw"]["name"]              = "Hawaiian"
+    Locale["haw"]["endonym"]           = "ʻŌlelo Hawaiʻi"
+    #Locale["haw"]["translations-of"]
+    #Locale["haw"]["definitions-of"]
+    #Locale["haw"]["synonyms"]
+    #Locale["haw"]["examples"]
+    #Locale["haw"]["see-also"]
+    Locale["haw"]["family"]            = "Austronesian"
+    Locale["haw"]["iso"]               = "haw"
+    Locale["haw"]["glotto"]            = "hawa1245"
+    Locale["haw"]["script"]            = "Latn"
 
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"

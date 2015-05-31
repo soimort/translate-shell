@@ -232,6 +232,7 @@ function getReference(displayName,
                         (cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW" &&
                          length(getEndonym(cols[j][i])) < 6) ? "\t\t " :
                         cols[j][i] == "id" ? "" :
+                        cols[j][i] == "haw" ? " " :
                         "\t "
                     tt = length(cols[j][i]) == 3 ? " │" :
                         (cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW") ? "  │" : ""
