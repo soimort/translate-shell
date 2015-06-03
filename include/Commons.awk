@@ -157,6 +157,8 @@ function escapeChar(char) {
         return "\t" # Horizontal Tab
     case "v":
         return "\v" # Vertical Tab
+    case "u0026":
+        return "&" # Unicode Character 'AMPERSAND'
     default:
         return char
     }
@@ -165,7 +167,7 @@ function escapeChar(char) {
 # Convert a literal-formatted string into its original string.
 function literal(string,
                  ####
-                 c, escaping, i, s) {
+                 c, cc, escaping, i, s) {
     if (string !~ /^".*"$/)
         return string
 
@@ -175,8 +177,19 @@ function literal(string,
     for (i = 2; i < length(s); i++) {
         c = s[i]
         if (escaping) {
-            string = string escapeChar(c)
-            escaping = 0 # escape ends
+            if (cc) {
+                cc = cc c
+                if (length(cc) == 5) {
+                    string = string escapeChar(cc)
+                    escaping = 0 # escape ends
+                    cc = NULLSTR
+                }
+            } else if (c == "u") {
+                cc = c
+            } else {
+                string = string escapeChar(c)
+                escaping = 0 # escape ends
+            }
         } else {
             if (c == "\\")
                 escaping = 1 # escape begins
