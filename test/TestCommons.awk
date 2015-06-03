@@ -98,12 +98,14 @@ BEGIN {
         assertEqual(escapeChar("_"), "_")
         assertNotEqual(escapeChar("_"), "\\_")
     }
-    T("literal()", 4)
+    T("literal()", 6)
     {
         assertEqual(literal(""), "")
         assertEqual(literal("foo"), "foo")
         assertEqual(literal("\"foo\""), "foo")
         assertEqual(literal("\"\\\"foo\\\"\""), "\"foo\"")
+        assertEqual(literal("\"foo\\nbar\""), "foo\nbar")
+        assertEqual(literal("\"foo\\u0026bar\""), "foo&bar")
     }
     T("escape()", 4)
     {
