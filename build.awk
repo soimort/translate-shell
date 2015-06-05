@@ -133,6 +133,8 @@ function build(target, type,    group, inline, line, temp) {
         print "#!/usr/bin/env " target > Trans
         print > Trans
 
+        print "if ! [[ $LANG =~ '[UTF|utf]-?8$' ]]; then export LANG=en_US.UTF-8; fi" > Trans
+
         print "read -r -d '' TRANS_PROGRAM << 'EOF'" > Trans
         if (fileExists(EntryPoint))
             while (getline line < EntryPoint) {
