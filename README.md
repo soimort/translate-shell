@@ -82,9 +82,7 @@ In order to be happy, the best way is to be loved by people.
 
 ### Environment and Fonts
 
-It is strongly recommended to use a UTF-8 codeset in your default [locale](http://en.wikipedia.org/wiki/Locale), as it has potential support for all languages. You can check whether your codeset is UTF-8 using the `locale` command.
-
-In addition, you must have corresponding fonts for the language(s) / script(s) you wish to display in your terminal. See **[wiki: Writing Systems and Fonts](https://github.com/soimort/translate-shell/wiki/Writing-Systems-and-Fonts#unicode-fonts)** for more details on scripts and recommended Unicode fonts.
+It is a must to have corresponding fonts for the language(s) / script(s) you wish to display in your terminal. See **[wiki: Writing Systems and Fonts](https://github.com/soimort/translate-shell/wiki/Writing-Systems-and-Fonts#unicode-fonts)** for more details on scripts and recommended Unicode fonts.
 
 ## Try It Out!
 
