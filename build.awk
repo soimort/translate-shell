@@ -75,8 +75,8 @@ function readme(    code, col, cols, content, group, i, j, language, r, rows, te
         for (j = 0; j < 3; j++)
             if (cols[j][i]) {
                 split(getName(cols[j][i]), group, " ")
-                language = group[1]
-                r = r "**[" getName(cols[j][i]) "](" "http://en.wikipedia.org/wiki/" language "_language" ")** <br/> **" getEndonym(cols[j][i]) "** | **`" cols[j][i] "`** | "
+                language = length(group) == 1 ? group[1] "_language" : join(group, "_")
+                r = r "**[" getName(cols[j][i]) "](" "http://en.wikipedia.org/wiki/" language ")** <br/> **" getEndonym(cols[j][i]) "** | **`" cols[j][i] "`** | "
             }
         r = r RS
     }
@@ -102,10 +102,10 @@ function wiki(    code, group, iso, language, saveSortedIn) {
         split(getISO(code), group, "-")
         iso = group[1]
         split(getName(code), group, " ")
-        language = group[1]
+        language = length(group) == 1 ? group[1] "_language" : join(group, "_")
         print sprintf("| **`%s`** <br/> [`%s`](%s) | **[%s](%s)** <br/> **%s** | %s | `%s` | %s | %s |",
                       getCode(code), iso, "http://www.ethnologue.com/language/" iso,
-                      getName(code), "http://en.wikipedia.org/wiki/" language "_language", getEndonym(code),
+                      getName(code), "http://en.wikipedia.org/wiki/" language, getEndonym(code),
                       getFamily(code), getScript(code),
                       isRTL(code) ? "✓" : NULLSTR,
                       hasDictionary(code) ? "✓" : NULLSTR) > WikiLanguages

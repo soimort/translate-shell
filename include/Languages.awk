@@ -1862,7 +1862,7 @@ function getDetails(code,    group, iso, language, script) {
     split(getISO(code), group, "-")
     iso = group[1]
     split(getName(code), group, " ")
-    language = group[1]
+    language = length(group) == 1 ? group[1] "_language" : join(group, "_")
     return ansi("bold", sprintf("%s\n", getDisplay(code)))              \
         sprintf("%-22s%s\n", "Name", ansi("bold", getName(code)))       \
         sprintf("%-22s%s\n", "Family", ansi("bold", getFamily(code)))   \
@@ -1872,7 +1872,7 @@ function getDetails(code,    group, iso, language, script) {
         sprintf("%-22s%s\n", "Ethnologue", ansi("bold", "http://www.ethnologue.com/language/" iso)) \
         sprintf("%-22s%s\n", "Glottolog", getGlotto(code) ?
                 ansi("bold", "http://glottolog.org/resource/languoid/id/" getGlotto(code)) : "") \
-        sprintf("%-22s%s", "Wikipedia", ansi("bold", "http://en.wikipedia.org/wiki/" language "_language"))
+        sprintf("%-22s%s", "Wikipedia", ansi("bold", "http://en.wikipedia.org/wiki/" language))
 }
 
 # Add /slashes/ for IPA phonemic notations and (parentheses) for others.
