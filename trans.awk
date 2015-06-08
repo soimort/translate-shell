@@ -1,33 +1,10 @@
 #!/usr/bin/gawk -f
 
-# This is free and unencumbered software released into the public domain.
-#
-# This software is provided for the purpose of reasonable personal use of
-# the Google Translate service, i.e., for those who prefer command line to
-# web interface. For other purposes, please refer to the official Google
-# Translate API <https://developers.google.com/translate/>.
-#
-# By using this software, you ("the user") are aware that:
-#
-# 1. Google Translate is a proprietary service provided and owned by
-# Google Inc.
-#
-# 2. Translate Shell is NOT a Google product. Neither this software nor
-# its author is affiliated with Google Inc.
-#
-# 3. The software is provided "AS IS", without warranty of any kind,
-# express or implied, including but not limited to the warranties of
-# merchantability, fitness for a particular purpose and noninfringement. In
-# no event shall the authors be liable for any claim, damages or other
-# liability, whether in an action of contract, tort or otherwise, arising
-# from, out of or in connection with the software or the use or other
-# dealings in the software.
-
 BEGIN {
     Name        = "Translate Shell"
     Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.9.0.6"
-    ReleaseDate = "2015-05-29"
+    Version     = "0.9.0.7"
+    ReleaseDate = "2015-06-08"
     Command     = "trans"
     EntryPoint  = "translate.awk"
 }
@@ -132,12 +109,14 @@ function escapeChar(char) {
         return "\t"
     case "v":
         return "\v"
+    case "u0026":
+        return "&"
     default:
         return char
     }
 }
 function literal(string,
-                 c, escaping, i, s) {
+                 c, cc, escaping, i, s) {
     if (string !~ /^".*"$/)
         return string
     explode(string, s)
@@ -146,8 +125,19 @@ function literal(string,
     for (i = 2; i < length(s); i++) {
         c = s[i]
         if (escaping) {
-            string = string escapeChar(c)
-            escaping = 0
+            if (cc) {
+                cc = cc c
+                if (length(cc) == 5) {
+                    string = string escapeChar(cc)
+                    escaping = 0
+                    cc = NULLSTR
+                }
+            } else if (c == "u") {
+                cc = c
+            } else {
+                string = string escapeChar(c)
+                escaping = 0
+            }
         } else {
             if (c == "\\")
                 escaping = 1
@@ -730,13 +720,20 @@ function initLocale(    i) {
     Locale["xh"]["iso"]                = "xho"
     Locale["xh"]["glotto"]             = "xhos1239"
     Locale["xh"]["script"]             = "Latn"
-    Locale["chr"]["support"]            = "unstable"
-    Locale["chr"]["name"]               = "Cherokee"
-    Locale["chr"]["endonym"]            = "ᏣᎳᎩ"
-    Locale["chr"]["family"]             = "Iroquoian"
-    Locale["chr"]["iso"]                = "chr"
-    Locale["chr"]["glotto"]             = "cher1273"
-    Locale["chr"]["script"]             = "Cher"
+    Locale["chr"]["support"]           = "unstable"
+    Locale["chr"]["name"]              = "Cherokee"
+    Locale["chr"]["endonym"]           = "ᏣᎳᎩ"
+    Locale["chr"]["family"]            = "Iroquoian"
+    Locale["chr"]["iso"]               = "chr"
+    Locale["chr"]["glotto"]            = "cher1273"
+    Locale["chr"]["script"]            = "Cher"
+    Locale["haw"]["support"]           = "unstable"
+    Locale["haw"]["name"]              = "Hawaiian"
+    Locale["haw"]["endonym"]           = "ʻŌlelo Hawaiʻi"
+    Locale["haw"]["family"]            = "Austronesian"
+    Locale["haw"]["iso"]               = "haw"
+    Locale["haw"]["glotto"]            = "hawa1245"
+    Locale["haw"]["script"]            = "Latn"
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
     Locale["af"]["translations-of"]    = "Vertalings van %s"
@@ -1642,7 +1639,7 @@ function initLocale(    i) {
     Locale["th"]["synonyms"]           = "คำพ้องความหมาย"
     Locale["th"]["examples"]           = "ตัวอย่าง"
     Locale["th"]["see-also"]           = "ดูเพิ่มเติม"
-    Locale["th"]["family"]             = "Tai–Kadai"
+    Locale["th"]["family"]             = "Tai-Kadai"
     Locale["th"]["iso"]                = "tha"
     Locale["th"]["glotto"]             = "thai1261"
     Locale["th"]["script"]             = "Thai"
@@ -1870,7 +1867,7 @@ function getDetails(code,    group, iso, language, script) {
     split(getISO(code), group, "-")
     iso = group[1]
     split(getName(code), group, " ")
-    language = group[1]
+    language = length(group) == 1 ? group[1] "_language" : join(group, "_")
     return ansi("bold", sprintf("%s\n", getDisplay(code)))\
         sprintf("%-22s%s\n", "Name", ansi("bold", getName(code)))\
         sprintf("%-22s%s\n", "Family", ansi("bold", getFamily(code)))\
@@ -1880,7 +1877,7 @@ function getDetails(code,    group, iso, language, script) {
         sprintf("%-22s%s\n", "Ethnologue", ansi("bold", "http://www.ethnologue.com/language/" iso))\
         sprintf("%-22s%s\n", "Glottolog", getGlotto(code) ?
                 ansi("bold", "http://glottolog.org/resource/languoid/id/" getGlotto(code)) : "")\
-        sprintf("%-22s%s", "Wikipedia", ansi("bold", "http://en.wikipedia.org/wiki/" language "_language"))
+        sprintf("%-22s%s", "Wikipedia", ansi("bold", "http://en.wikipedia.org/wiki/" language))
 }
 function showPhonetics(phonetics, code) {
     if (code && getCode(code) == "en")
@@ -2171,6 +2168,7 @@ function getReference(displayName,
                         (cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW" &&
                          length(getEndonym(cols[j][i])) < 6) ? "\t\t " :
                         cols[j][i] == "id" ? "" :
+                        cols[j][i] == "haw" ? " " :
                         "\t "
                     tt = length(cols[j][i]) == 3 ? " │" :
                         (cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW") ? "  │" : ""
