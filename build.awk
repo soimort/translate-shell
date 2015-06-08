@@ -94,6 +94,8 @@ function wiki(    code, group, iso, language, saveSortedIn) {
 
     print "***" length(Locale) "*** *languages in total. "              \
         "Generated from the source code of Translate Shell " Version ".*\n" > WikiLanguages
+    print "*Version: [English](https://github.com/soimort/translate-shell/wiki/Languages) " \
+        "| [Chinese Simplified](https://github.com/soimort/translate-shell/wiki/Languages-%28%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%29)*\n" > WikiLanguages
     print "| Code | Name | Family | [Writing system](https://github.com/soimort/translate-shell/wiki/Writing-Systems-and-Fonts) | Is [RTL](http://en.wikipedia.org/wiki/Right-to-left)? | Has dictionary? |" > WikiLanguages
     print "| :--: | ---: | -----: | :------------: | :---------------------------------------------------: | :-------------: |" > WikiLanguages
     saveSortedIn = PROCINFO["sorted_in"]
