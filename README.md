@@ -54,7 +54,7 @@ In order to be happy, the best way is to be loved by people.
 * GNU/Linux
 * OS X
 * FreeBSD
-* Cygwin
+* Windows (Cygwin or MSYS2)
 
 ### Dependencies
 
