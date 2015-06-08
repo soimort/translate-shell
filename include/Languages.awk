@@ -1569,7 +1569,7 @@ function initLocale(    i) {
     Locale["th"]["synonyms"]           = "คำพ้องความหมาย"
     Locale["th"]["examples"]           = "ตัวอย่าง"
     Locale["th"]["see-also"]           = "ดูเพิ่มเติม"
-    Locale["th"]["family"]             = "Tai–Kadai"
+    Locale["th"]["family"]             = "Tai-Kadai"
     Locale["th"]["iso"]                = "tha"
     Locale["th"]["glotto"]             = "thai1261"
     Locale["th"]["script"]             = "Thai"
