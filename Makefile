@@ -31,6 +31,7 @@ check: test
 
 install:
 	@install $(BUILDDIR)/$(COMMAND) $(PREFIX)/bin/$(COMMAND) &&\
+	mkdir -p $(PREFIX)/share/man/man1 &&\
 	cp $(MANDIR)/$(COMMAND).1 $(PREFIX)/share/man/man1/$(COMMAND).1 &&\
 	echo "[OK] $(NAME) installed."
 
