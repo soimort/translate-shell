@@ -3,8 +3,8 @@
 BEGIN {
     Name        = "Translate Shell"
     Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.9.0.7"
-    ReleaseDate = "2015-06-08"
+    Version     = "0.9.0.8"
+    ReleaseDate = "2015-09-01"
     Command     = "trans"
     EntryPoint  = "translate.awk"
 }
@@ -2658,7 +2658,7 @@ function p(string) {
         print string > Option["output"]
 }
 function play(text, tl,    url) {
-    url = HttpProtocol HttpHost "/translate_tts?ie=UTF-8"\
+    url = HttpProtocol HttpHost "/translate_tts?ie=UTF-8&client=t"\
         "&tl=" tl "&q=" preprocess(text)
     system(Option["player"] " " parameterize(url) SUPOUT SUPERR)
 }
@@ -3243,7 +3243,7 @@ function init() {
     Option["pager"] = ENVIRON["PAGER"]
     Option["browser"] = ENVIRON["BROWSER"]
     Option["proxy"] = ENVIRON["HTTP_PROXY"] ? ENVIRON["HTTP_PROXY"] : ENVIRON["http_proxy"]
-    Option["user-agent"] = ENVIRON["USER_AGENT"]
+    Option["user-agent"] = ENVIRON["USER_AGENT"] ? ENVIRON["USER_AGENT"] : "Mozilla/5.0 (X11; Linux x86_64; rv:40.0) Gecko/20100101 Firefox/40.0"
     Option["no-rlwrap"] = 0
     Option["interactive"] = 0
     Option["emacs"] = 0
