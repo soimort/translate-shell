@@ -3,8 +3,8 @@
 BEGIN {
     Name        = "Translate Shell"
     Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.9.0.8"
-    ReleaseDate = "2015-09-01"
+    Version     = "0.9.0.9"
+    ReleaseDate = "2015-10-05"
     Command     = "trans"
     EntryPoint  = "translate.awk"
 }
@@ -2637,7 +2637,7 @@ function getResponse(text, sl, tl, hl,    content, header, url) {
     url = HttpPathPrefix "/translate_a/single?client=t"\
         "&ie=UTF-8&oe=UTF-8"\
         "&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at"\
-        "&q=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl
+        "&q=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl "&tk"
     header = "GET " url " HTTP/1.1\n"\
         "Host: " HttpHost "\n"\
         "Connection: close\n"
