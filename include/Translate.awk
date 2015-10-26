@@ -93,7 +93,7 @@ function p(string) {
 # Play using Google Text-to-Speech engine.
 function play(text, tl,    url) {
     url = HttpProtocol HttpHost "/translate_tts?ie=UTF-8&client=t"	\
-        "&tl=" tl "&q=" preprocess(text)
+        "&tl=" tl "&tk" "&q=" preprocess(text)
 
     # Don't use getline from pipe here - the same pipe will be run only once for each AWK script!
     system(Option["player"] " " parameterize(url) SUPOUT SUPERR)
