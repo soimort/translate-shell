@@ -359,10 +359,17 @@ BEGIN {
             continue
         }
 
+        # -speak
+        match(ARGV[pos], /^--?speak$/)
+        if (RSTART) {
+            Option["play"] = 2
+            continue
+        }
+
         # -player PROGRAM
         match(ARGV[pos], /^--?player(=(.*)?)?$/, group)
         if (RSTART) {
-            Option["play"] = 1
+            if (!Option["play"]) Option["play"] = 1 # -play by default
             Option["player"] = group[1] ?
                 (group[2] ? group[2] : Option["player"]) :
                 ARGV[++pos]

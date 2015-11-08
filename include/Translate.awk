@@ -101,7 +101,7 @@ function play(text, tl,    url) {
 
 # Get the translation of a string.
 function getTranslation(text, sl, tl, hl,
-                        isVerbose, toSpeech, returnPlaylist,
+                        isVerbose, toSpeech, returnPlaylist, returnIl,
                         ####
                         r,
                         content, tokens, ast,
@@ -215,7 +215,7 @@ function getTranslation(text, sl, tl, hl,
 
     translation = join(translations)
 
-    il = !anything(ils) || belongsTo(sl, ils) ? sl : ils[0]
+    returnIl[0] = il = !anything(ils) || belongsTo(sl, ils) ? sl : ils[0]
 
     # Generate output
     if (!isVerbose) {
@@ -497,7 +497,7 @@ function webTranslation(uri, sl, tl, hl) {
 # Translate the source text (into all target languages).
 function translate(text, inline,
                    ####
-                   i, j, playlist, saveSortedIn) {
+                   i, j, playlist, il, saveSortedIn) {
 
     if (!getCode(Option["hl"])) {
         # Check if home language is supported
@@ -536,15 +536,21 @@ function translate(text, inline,
             # translate URL only from command-line parameters (inline)
             webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
         } else {
-            p(getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist))
+            p(getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist, il))
 
-            if (Option["play"])
+            if (Option["play"] == 1) {
                 if (Option["player"])
                     for (j in playlist)
                         play(playlist[j]["text"], playlist[j]["tl"])
                 else if (SpeechSynthesizer)
                     for (j in playlist)
                         print playlist[j]["text"] | SpeechSynthesizer
+            } else if (Option["play"] == 2) {
+                if (Option["player"])
+                    play(text, il[0])
+                else if (SpeechSynthesizer)
+                    print text | SpeechSynthesizer
+            }
         }
     }
     PROCINFO["sorted_in"] = saveSortedIn

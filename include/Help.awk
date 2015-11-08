@@ -99,6 +99,8 @@ function getHelp() {
         RS "Audio options:" RS                                          \
         ins(1, ansi("bold", "-p, -play")) RS                            \
         ins(2, "Listen to the translation.") RS                         \
+        ins(1, ansi("bold", "-speak")) RS                               \
+        ins(2, "Listen to the original text.") RS                       \
         ins(1, ansi("bold", "-player ") ansi("underline", "PROGRAM")) RS \
         ins(2, "Specify the audio player to use, and listen to the translation.") RS \
         ins(1, ansi("bold", "-no-play")) RS                             \
