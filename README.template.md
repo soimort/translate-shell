@@ -232,11 +232,21 @@ To enable dictionary mode no matter whether the source language and the target l
 
 **Note:** Not every language supported by Google Translate has provided dictionary data. See **[wiki: Languages](https://github.com/soimort/translate-shell/wiki/Languages)** to find out which language(s) has dictionary support.
 
+### Language Identification
+
+Use the `-identify` (`-id`) option to identify the language of the text:
+
+    $ trans -id 言葉
+
 ### Text-to-Speech
 
 Use the `-play` (`-p`) option to listen to the translation:
 
     $ trans -b -p :ja "Saluton, Mondo"
+
+Use the `-speak` (`-sp`) option to listen to the original text:
+
+    $ trans -sp "你好，世界"
 
 ### Terminal Paging
 
