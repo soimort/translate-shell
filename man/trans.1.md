@@ -1,6 +1,6 @@
-% TRANS(1) 0.9.0.9
+% TRANS(1) 0.9.1
 % Mort Yao <soi@mort.ninja>
-% 2015-10-05
+% 2015-11-08
 
 # NAME
 
@@ -62,6 +62,11 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 
     Show the definition of the original word in the dictionary.
 
+**-identify**
+:   Language identification.
+
+    Show the identified language of the original text.
+
 **-show-original** *Y/n*
 :   Show original text or not. (default: yes)
 
@@ -114,6 +119,9 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 :   Listen to the translation.
 
     You must have at least one of the supported audio players (**mplayer**, **mpv** or **mpg123**) installed to stream from Google Text-to-Speech engine. Otherwise, a local speech synthesizer may be used instead (**say** on Mac OS X, **espeak** on Linux or other platforms).
+
+**-speak**
+:   Listen to the original text.
 
 **-player** *PROGRAM*
 :   Specify the audio player to use, and listen to the translation.
