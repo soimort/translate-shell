@@ -218,9 +218,14 @@ $ trans :zh &#39;To-morrow, and to-morrow, and to-morrow,&#39;</code></pre>
 <p>To enable dictionary mode no matter whether the source language and the target language are identical, use the <code>-dictionary</code> (<code>-d</code>) option.</p>
 <pre><code>$ trans -d fr: mot</code></pre>
 <p><strong>Note:</strong> Not every language supported by Google Translate has provided dictionary data. See <strong><a href="https://github.com/soimort/translate-shell/wiki/Languages">wiki: Languages</a></strong> to find out which language(s) has dictionary support.</p>
+<h3 id="language-identification">Language Identification</h3>
+<p>Use the <code>-identify</code> (<code>-id</code>) option to identify the language of the text:</p>
+<pre><code>$ trans -id 言葉</code></pre>
 <h3 id="text-to-speech">Text-to-Speech</h3>
 <p>Use the <code>-play</code> (<code>-p</code>) option to listen to the translation:</p>
 <pre><code>$ trans -b -p :ja &quot;Saluton, Mondo&quot;</code></pre>
+<p>Use the <code>-speak</code> (<code>-sp</code>) option to listen to the original text:</p>
+<pre><code>$ trans -sp &quot;你好，世界&quot;</code></pre>
 <h3 id="terminal-paging">Terminal Paging</h3>
 <p>Sometimes the content of translation can be too much for display in one screen. Use the <code>-view</code> (<code>-v</code>) option to view the translation in a terminal pager such as <code>less</code> or <code>more</code>:</p>
 <pre><code>$ trans -d -v word</code></pre>
@@ -282,6 +287,8 @@ Display options:
         Brief mode.
     -d, -dictionary
         Dictionary mode.
+    -identify
+        Language identification.
     -show-original Y/n
         Show original text or not.
     -show-original-phonetics Y/n
@@ -314,6 +321,8 @@ Display options:
 Audio options:
     -p, -play
         Listen to the translation.
+    -speak
+        Listen to the original text.
     -player PROGRAM
         Specify the audio player to use, and listen to the translation.
     -no-play
