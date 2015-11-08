@@ -67,6 +67,8 @@ function getHelp() {
         ins(2, "Brief mode.") RS                                        \
         ins(1, ansi("bold", "-d") ", " ansi("bold", "-dictionary")) RS  \
         ins(2, "Dictionary mode.") RS                                   \
+        ins(1, ansi("bold", "-identify")) RS                            \
+        ins(2, "Language identification.") RS                           \
         ins(1, ansi("bold", "-show-original ") ansi("underline", "Y/n")) RS \
         ins(2, "Show original text or not.") RS                         \
         ins(1, ansi("bold", "-show-original-phonetics ") ansi("underline", "Y/n")) RS \

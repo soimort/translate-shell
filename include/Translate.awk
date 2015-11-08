@@ -216,6 +216,8 @@ function getTranslation(text, sl, tl, hl,
     translation = join(translations)
 
     returnIl[0] = il = !anything(ils) || belongsTo(sl, ils) ? sl : ils[0]
+    if (Option["verbose"] < 0)
+        return getList(il)
 
     # Generate output
     if (!isVerbose) {
