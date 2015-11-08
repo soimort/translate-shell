@@ -563,16 +563,22 @@ function translateMain(    i, line) {
     if (Option["interactive"])
         prompt()
 
-    i = 0
-    while (getline line < Option["input"]) {
-        # Non-interactive verbose mode: separator between sources
-        if (!Option["interactive"])
-            if (Option["verbose"] && i++ > 0)
-                p(prettify("source-seperator", replicate(Option["chr-source-seperator"], Option["width"])))
+    if (Option["input"] == STDIN || fileExists(Option["input"])) {
+        i = 0
+        while (getline line < Option["input"])
+            if (line) {
+                # Non-interactive verbose mode: separator between sources
+                if (!Option["interactive"])
+                    if (Option["verbose"] && i++ > 0)
+                        p(prettify("source-seperator",
+                                   replicate(Option["chr-source-seperator"],
+                                             Option["width"])))
 
-        if (Option["interactive"])
-            repl(line)
-        else
-            translate(line)
-    }
+                if (Option["interactive"])
+                    repl(line)
+                else
+                    translate(line)
+            }
+    } else
+        e("[ERROR] File not found: " Option["input"])
 }
