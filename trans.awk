@@ -3,8 +3,8 @@
 BEGIN {
     Name        = "Translate Shell"
     Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.9.0.9"
-    ReleaseDate = "2015-10-05"
+    Version     = "0.9.1"
+    ReleaseDate = "2015-11-08"
     Command     = "trans"
     EntryPoint  = "translate.awk"
 }
@@ -1747,6 +1747,8 @@ function initLocale(    i) {
     for (i in Locale) {
         Locale[i]["display"] = show(Locale[i]["endonym"], i)
         LocaleAlias[Locale[i]["iso"]] = i
+        LocaleAlias[tolower(Locale[i]["name"])] = i
+        LocaleAlias[tolower(Locale[i]["endonym"])] = i
     }
     LocaleAlias["in"] = "id"
     LocaleAlias["iw"] = "he"
@@ -1758,12 +1760,15 @@ function initLocale(    i) {
     LocaleAlias["sh"] = "sr"
     LocaleAlias["zh"] = "zh-CN"
     LocaleAlias["zho"] = "zh-CN"
+    LocaleAlias["chinese"] = "zh-CN"
 }
 function getCode(code) {
     if (code == "auto" || code in Locale)
         return code
     else if (code in LocaleAlias)
         return LocaleAlias[code]
+    else if (tolower(code) in LocaleAlias)
+        return LocaleAlias[tolower(code)]
     else
         return
 }
@@ -2011,6 +2016,8 @@ function getHelp() {
         ins(2, "Brief mode.") RS\
         ins(1, ansi("bold", "-d") ", " ansi("bold", "-dictionary")) RS\
         ins(2, "Dictionary mode.") RS\
+        ins(1, ansi("bold", "-identify")) RS\
+        ins(2, "Language identification.") RS\
         ins(1, ansi("bold", "-show-original ") ansi("underline", "Y/n")) RS\
         ins(2, "Show original text or not.") RS\
         ins(1, ansi("bold", "-show-original-phonetics ") ansi("underline", "Y/n")) RS\
@@ -2043,6 +2050,8 @@ function getHelp() {
         RS "Audio options:" RS\
         ins(1, ansi("bold", "-p, -play")) RS\
         ins(2, "Listen to the translation.") RS\
+        ins(1, ansi("bold", "-speak")) RS\
+        ins(2, "Listen to the original text.") RS\
         ins(1, ansi("bold", "-player ") ansi("underline", "PROGRAM")) RS\
         ins(2, "Specify the audio player to use, and listen to the translation.") RS\
         ins(1, ansi("bold", "-no-play")) RS\
@@ -2659,11 +2668,11 @@ function p(string) {
 }
 function play(text, tl,    url) {
     url = HttpProtocol HttpHost "/translate_tts?ie=UTF-8&client=t"\
-        "&tl=" tl "&q=" preprocess(text)
+        "&tl=" tl "&tk" "&q=" preprocess(text)
     system(Option["player"] " " parameterize(url) SUPOUT SUPERR)
 }
 function getTranslation(text, sl, tl, hl,
-                        isVerbose, toSpeech, returnPlaylist,
+                        isVerbose, toSpeech, returnPlaylist, returnIl,
                         r,
                         content, tokens, ast,
                         _sl, _tl, _hl, il, ils, isPhonetic,
@@ -2752,7 +2761,9 @@ function getTranslation(text, sl, tl, hl,
     }
     PROCINFO["sorted_in"] = saveSortedIn
     translation = join(translations)
-    il = !anything(ils) || belongsTo(sl, ils) ? sl : ils[0]
+    returnIl[0] = il = !anything(ils) || belongsTo(sl, ils) ? sl : ils[0]
+    if (Option["verbose"] < 0)
+        return getList(il)
     if (!isVerbose) {
         r = isPhonetic && anything(phonetics) ?
             prettify("brief-translation-phonetics", join(phonetics)) :
@@ -2992,7 +3003,7 @@ function webTranslation(uri, sl, tl, hl) {
                                               "hl=" hl "&sl=" sl "&tl=" tl "&u=" uri) "&")
 }
 function translate(text, inline,
-                   i, j, playlist, saveSortedIn) {
+                   i, j, playlist, il, saveSortedIn) {
     if (!getCode(Option["hl"])) {
         w("[WARNING] Unknown language code: " Option["hl"] ", fallback to English: en")
         Option["hl"] = "en"
@@ -3020,14 +3031,20 @@ function translate(text, inline,
                    startsWithAny(text, UriSchemes) == "https://") {
             webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
         } else {
-            p(getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist))
-            if (Option["play"])
+            p(getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist, il))
+            if (Option["play"] == 1) {
                 if (Option["player"])
                     for (j in playlist)
                         play(playlist[j]["text"], playlist[j]["tl"])
                 else if (SpeechSynthesizer)
                     for (j in playlist)
                         print playlist[j]["text"] | SpeechSynthesizer
+            } else if (Option["play"] == 2) {
+                if (Option["player"])
+                    play(text, il[0])
+                else if (SpeechSynthesizer)
+                    print text | SpeechSynthesizer
+            }
         }
     }
     PROCINFO["sorted_in"] = saveSortedIn
@@ -3035,16 +3052,22 @@ function translate(text, inline,
 function translateMain(    i, line) {
     if (Option["interactive"])
         prompt()
-    i = 0
-    while (getline line < Option["input"]) {
-        if (!Option["interactive"])
-            if (Option["verbose"] && i++ > 0)
-                p(prettify("source-seperator", replicate(Option["chr-source-seperator"], Option["width"])))
-        if (Option["interactive"])
-            repl(line)
-        else
-            translate(line)
-    }
+    if (Option["input"] == STDIN || fileExists(Option["input"])) {
+        i = 0
+        while (getline line < Option["input"])
+            if (line) {
+                if (!Option["interactive"])
+                    if (Option["verbose"] && i++ > 0)
+                        p(prettify("source-seperator",
+                                   replicate(Option["chr-source-seperator"],
+                                             Option["width"])))
+                if (Option["interactive"])
+                    repl(line)
+                else
+                    translate(line)
+            }
+    } else
+        e("[ERROR] File not found: " Option["input"])
 }
 function loadOptions(script,    i, j, tokens, name, value) {
     tokenize(tokens, script)
@@ -3385,6 +3408,11 @@ BEGIN {
             Option["show-alternatives"] = 0
             continue
         }
+        match(ARGV[pos], /^--?id(e(n(t(i(fy?)?)?)?)?)?$/)
+        if (RSTART) {
+            Option["verbose"] = -1
+            continue
+        }
         match(ARGV[pos], /^--?show-original(=(.*)?)?$/, group)
         if (RSTART) {
             Option["show-original"] = yn(group[1] ? group[2] : ARGV[++pos])
@@ -3466,9 +3494,14 @@ BEGIN {
             Option["play"] = 1
             continue
         }
+        match(ARGV[pos], /^--?sp(e(ak?)?)?$/)
+        if (RSTART) {
+            Option["play"] = 2
+            continue
+        }
         match(ARGV[pos], /^--?player(=(.*)?)?$/, group)
         if (RSTART) {
-            Option["play"] = 1
+            if (!Option["play"]) Option["play"] = 1
             Option["player"] = group[1] ?
                 (group[2] ? group[2] : Option["player"]) :
                 ARGV[++pos]

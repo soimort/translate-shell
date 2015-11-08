@@ -1,4 +1,4 @@
-.TH "TRANS" "1" "2015\-10\-05" "0.9.0.9" ""
+.TH "TRANS" "1" "2015\-11\-08" "0.9.1" ""
 .SH NAME
 .PP
 trans \- Google Translate served as a command\-line tool
@@ -84,6 +84,13 @@ Dictionary mode.
 .RS
 .PP
 Show the definition of the original word in the dictionary.
+.RE
+.TP
+.B \f[B]\-identify\f[]
+Language identification.
+.RS
+.PP
+Show the identified language of the original text.
 .RE
 .TP
 .B \f[B]\-show\-original\f[] \f[I]Y/n\f[]
@@ -182,6 +189,11 @@ You must have at least one of the supported audio players
 from Google Text\-to\-Speech engine.
 Otherwise, a local speech synthesizer may be used instead (\f[B]say\f[]
 on Mac OS X, \f[B]espeak\f[] on Linux or other platforms).
+.RE
+.TP
+.B \f[B]\-speak\f[]
+Listen to the original text.
+.RS
 .RE
 .TP
 .B \f[B]\-player\f[] \f[I]PROGRAM\f[]
