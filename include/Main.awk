@@ -367,7 +367,7 @@ BEGIN {
         }
 
         # -speak
-        match(ARGV[pos], /^--?speak$/)
+        match(ARGV[pos], /^--?sp(e(ak?)?)?$/)
         if (RSTART) {
             Option["play"] = 2
             continue
