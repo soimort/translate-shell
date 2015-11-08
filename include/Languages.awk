@@ -1699,6 +1699,10 @@ function initLocale(    i) {
 
         # ISO 639-3 codes as aliases
         LocaleAlias[Locale[i]["iso"]] = i
+
+        # Names and endonyms as aliases
+        LocaleAlias[tolower(Locale[i]["name"])] = i
+        LocaleAlias[tolower(Locale[i]["endonym"])] = i
     }
 
     # Other aliases
@@ -1713,6 +1717,7 @@ function initLocale(    i) {
     LocaleAlias["sh"] = "sr" # Serbo-Croatian: default to Serbian
     LocaleAlias["zh"] = "zh-CN" # Chinese: default to Chinese Simplified
     LocaleAlias["zho"] = "zh-CN"
+    LocaleAlias["chinese"] = "zh-CN"
     # TODO: more aliases
 }
 
@@ -1722,6 +1727,8 @@ function getCode(code) {
         return code
     else if (code in LocaleAlias)
         return LocaleAlias[code]
+    else if (tolower(code) in LocaleAlias)
+        return LocaleAlias[tolower(code)]
     else
         return # return nothing if not found
 }
