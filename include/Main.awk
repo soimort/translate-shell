@@ -150,6 +150,7 @@ BEGIN {
 
     # Command-line options override initialization script
     pos = 0
+    noargc = 0
     while (ARGV[++pos]) {
         ## Information options
 
@@ -569,7 +570,8 @@ BEGIN {
             break # no more option from here
         }
 
-        break # no more option from here
+        # non-option argument
+        noargv[noargc++] = ARGV[pos]
     }
 
     # Handle interactive shell
@@ -616,22 +618,23 @@ BEGIN {
     if (Option["interactive"])
         welcome()
 
-    if (pos < ARGC) {
-        # More parameters
+    # More remaining non-option arguments
+    if (pos < ARGC)
+        for (i = pos; i < ARGC; i++)
+            noargv[noargc++] = ARGV[i]
 
-        # Translate remaining parameters
-        for (i = pos; i < ARGC; i++) {
+    if (noargc) {
+        # Translate all non-option arguments
+        for (i = 0; i < noargc; i++) {
             # Verbose mode: separator between sources
             if (Option["verbose"] && i > pos)
                 p(prettify("source-seperator", replicate(Option["chr-source-seperator"], Option["width"])))
 
-            translate(ARGV[i], 1) # inline mode
+            translate(noargv[i], 1) # inline mode
         }
 
         # If input not specified, we're done
     } else {
-        # No more parameter besides options
-
         # If input not specified, use stdin
         if (!Option["input"]) Option["input"] = STDIN
     }
