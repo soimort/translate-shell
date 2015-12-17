@@ -30,5 +30,17 @@ BEGIN {
         assertTrue(newerVersion("2", "1.9.9999"))
     }
 
+    T("dump()", 3)
+    {
+        delete group
+        assertEqual(dump("a", group), 1)
+
+        delete group
+        assertEqual(dump("Århus", group), 6)
+
+        delete group
+        assertEqual(dump("안녕하세요 세계", group), 22)
+    }
+
     END_TEST()
 }
