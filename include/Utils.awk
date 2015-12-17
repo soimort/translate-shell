@@ -153,3 +153,11 @@ function curl(url,    command, content, line) {
         return content
     }
 }
+
+# Dump a Unicode string into a byte array. Return the length of the array.
+function dump(text, group,    command, temp) {
+    command = "hexdump" " -e'1/1 \"%03d\" \" \"'"
+    ("echo " parameterize(text) PIPE command) | getline temp
+    split(temp, group, " ")
+    return length(group) - 1
+}
