@@ -37,5 +37,10 @@ function genTK(text,
     a = genRL(a, ub)
     0 > a && (a = and(a, 2147483647) + 2147483648)
     a %= 1e6
-    return TK[text] = a "." xor(a, tkk)
+    TK[text] = a "." xor(a, tkk)
+
+    l(text, "text")
+    l(tkk, "tkk")
+    l(TK[text], "tk")
+    return TK[text]
 }
