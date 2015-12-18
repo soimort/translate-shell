@@ -65,7 +65,8 @@ function getResponse(text, sl, tl, hl,    content, header, url) {
     url = HttpPathPrefix "/translate_a/single?client=t"                 \
         "&ie=UTF-8&oe=UTF-8"                                            \
         "&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at"  \
-        "&q=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl "&tk"
+        "&sl=" sl "&tl=" tl "&hl=" hl                                   \
+        "&tk=" genTK(text) "&q=" preprocess(text)
     header = "GET " url " HTTP/1.1\n"           \
         "Host: " HttpHost "\n"                  \
         "Connection: close\n"
@@ -93,7 +94,7 @@ function p(string) {
 # Play using Google Text-to-Speech engine.
 function play(text, tl,    url) {
     url = HttpProtocol HttpHost "/translate_tts?ie=UTF-8&client=t"	\
-        "&tl=" tl "&tk" "&q=" preprocess(text)
+        "&tl=" tl "&tk=" genTK(text) "&q=" preprocess(text)
 
     # Don't use getline from pipe here - the same pipe will be run only once for each AWK script!
     system(Option["player"] " " parameterize(url) SUPOUT SUPERR)
