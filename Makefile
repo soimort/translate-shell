@@ -27,7 +27,8 @@ test: build
 
 check: test
 	$(BUILDDIR)/$(COMMAND) -V
-	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b 忍者`" = 'Ninja' ]
+	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b 忍者`" = 'Ninja' ] &&\
+	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b 'hello world'`" = 'hello world' ]
 
 install:
 	@install -D $(BUILDDIR)/$(COMMAND) $(PREFIX)/bin/$(COMMAND) &&\
