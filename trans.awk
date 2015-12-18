@@ -3,7 +3,7 @@
 BEGIN {
     Name        = "Translate Shell"
     Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.9.2"
+    Version     = "0.9.2.1"
     ReleaseDate = "2015-12-18"
     Command     = "trans"
     EntryPoint  = "translate.awk"
@@ -526,7 +526,11 @@ function genTK(text,
     a = genRL(a, ub)
     0 > a && (a = and(a, 2147483647) + 2147483648)
     a %= 1e6
-    return TK[text] = a "." xor(a, tkk)
+    TK[text] = a "." xor(a, tkk)
+    l(text, "text")
+    l(tkk, "tkk")
+    l(TK[text], "tk")
+    return TK[text]
 }
 
 function initLocale(    i) {

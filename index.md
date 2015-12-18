@@ -1,14 +1,14 @@
 ---
 title: Translate Shell
 project-name: Translate Shell
-project-version: 0.9.2
+project-version: 0.9.2.1
 project-logo: images/logo.jpg
 background: images/background.png
 github: soimort/translate-shell
 url: https://www.soimort.org/translate-shell/
 download-url: https://www.soimort.org/translate-shell/trans
 download-checksum-type: SHA1SUM
-download-checksum-data: a08644b70988109d8f19207625a6ca6b5df46406
+download-checksum-data: 06f6922e753d0e3035f513252f0bd0dfde6a3514
 download-signature: https://www.soimort.org/translate-shell/trans.sig
 
 ---
