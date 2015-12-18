@@ -24,6 +24,8 @@ function genRL(a, x,
 function genTK(text,
                ####
                a, d, dLen, e, tkk, ub, vb) {
+    if (TK[text]) return TK[text]
+
     tkk = systime() / 3600
     ub = "[43,45,51,94,43,98,43,45,102]"
     vb = "[43,45,97,94,43,54]"
@@ -35,5 +37,5 @@ function genTK(text,
     a = genRL(a, ub)
     0 > a && (a = and(a, 2147483647) + 2147483648)
     a %= 1e6
-    return a "." xor(a, tkk)
+    return TK[text] = a "." xor(a, tkk)
 }
