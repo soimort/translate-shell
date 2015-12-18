@@ -27,7 +27,7 @@ test: build
 
 check: test
 	$(BUILDDIR)/$(COMMAND) -V
-	[ "`$(BUILDDIR)/$(COMMAND) -b 忍者`" = 'Ninja' ]
+	[ "`$(BUILDDIR)/$(COMMAND) -no-init -b 忍者`" = 'Ninja' ]
 
 install:
 	@install -D $(BUILDDIR)/$(COMMAND) $(PREFIX)/bin/$(COMMAND) &&\
