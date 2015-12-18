@@ -3,8 +3,8 @@ require "formula"
 class TranslateShell < Formula
   homepage "http://www.soimort.org/translate-shell"
   url "http://www.soimort.org/translate-shell/translate-shell.tar.gz"
-  sha1 "c1d7f3eee1f6cf8039b2298443dd70bec689648a"
-  version "0.9.1"
+  sha1 "0f74f41c696291651a0c15211ec70de5194109f8"
+  version "0.9.2"
 
   depends_on 'curl' => :optional
   depends_on 'fribidi' => :optional

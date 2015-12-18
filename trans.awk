@@ -3,8 +3,8 @@
 BEGIN {
     Name        = "Translate Shell"
     Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.9.1"
-    ReleaseDate = "2015-11-08"
+    Version     = "0.9.2"
+    ReleaseDate = "2015-12-18"
     Command     = "trans"
     EntryPoint  = "translate.awk"
 }
@@ -491,6 +491,42 @@ function curl(url,    command, content, line) {
             content = (content ? content "\n" : NULLSTR) line
         return content
     }
+}
+function dump(text, group,    command, temp) {
+    command = "hexdump" " -v -e'1/1 \"%03u\" \" \"'"
+    ("echo " parameterize(text) PIPE command) | getline temp
+    split(temp, group, " ")
+    return length(group) - 1
+}
+
+function genRL(a, x,
+               b, c, d, i, y) {
+    tokenize(y, x)
+    parseList(b, y)
+    i = SUBSEP 0
+    for (c = 0; c < length(b[i]) - 2; c += 3) {
+        d = b[i][c + 2]
+        d = d >= 97 ? d - 87 :
+            d - 48
+        d = b[i][c + 1] == 43 ? rshift(a, d) : lshift(a, d)
+        a = b[i][c] == 43 ? and(a + d, 4294967295) : xor(a, d)
+    }
+    return a
+}
+function genTK(text,
+               a, d, dLen, e, tkk, ub, vb) {
+    if (TK[text]) return TK[text]
+    tkk = systime() / 3600
+    ub = "[43,45,51,94,43,98,43,45,102]"
+    vb = "[43,45,97,94,43,54]"
+    dLen = dump(text, d)
+    a = tkk
+    for (e = 1; e <= dLen; e++)
+        a = genRL(a + d[e], vb)
+    a = genRL(a, ub)
+    0 > a && (a = and(a, 2147483647) + 2147483648)
+    a %= 1e6
+    return TK[text] = a "." xor(a, tkk)
 }
 
 function initLocale(    i) {
@@ -2646,7 +2682,8 @@ function getResponse(text, sl, tl, hl,    content, header, url) {
     url = HttpPathPrefix "/translate_a/single?client=t"\
         "&ie=UTF-8&oe=UTF-8"\
         "&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at"\
-        "&q=" preprocess(text) "&sl=" sl "&tl=" tl "&hl=" hl "&tk"
+        "&sl=" sl "&tl=" tl "&hl=" hl\
+        "&tk=" genTK(text) "&q=" preprocess(text)
     header = "GET " url " HTTP/1.1\n"\
         "Host: " HttpHost "\n"\
         "Connection: close\n"
@@ -2668,7 +2705,7 @@ function p(string) {
 }
 function play(text, tl,    url) {
     url = HttpProtocol HttpHost "/translate_tts?ie=UTF-8&client=t"\
-        "&tl=" tl "&tk" "&q=" preprocess(text)
+        "&tl=" tl "&tk=" genTK(text) "&q=" preprocess(text)
     system(Option["player"] " " parameterize(url) SUPOUT SUPERR)
 }
 function getTranslation(text, sl, tl, hl,
@@ -3340,6 +3377,7 @@ BEGIN {
     if (!(belongsTo("-no-init", ARGV) || belongsTo("--no-init", ARGV)))
         initScript()
     pos = 0
+    noargc = 0
     while (ARGV[++pos]) {
         match(ARGV[pos], /^--?(V|vers(i(on?)?)?)$/)
         if (RSTART) {
@@ -3634,7 +3672,7 @@ BEGIN {
             ++pos
             break
         }
-        break
+        noargv[noargc++] = ARGV[pos]
     }
     if (Option["interactive"] && !Option["no-rlwrap"])
         rlwrapMe()
@@ -3670,11 +3708,14 @@ BEGIN {
     setTheme()
     if (Option["interactive"])
         welcome()
-    if (pos < ARGC) {
-        for (i = pos; i < ARGC; i++) {
+    if (pos < ARGC)
+        for (i = pos; i < ARGC; i++)
+            noargv[noargc++] = ARGV[i]
+    if (noargc) {
+        for (i = 0; i < noargc; i++) {
             if (Option["verbose"] && i > pos)
                 p(prettify("source-seperator", replicate(Option["chr-source-seperator"], Option["width"])))
-            translate(ARGV[i], 1)
+            translate(noargv[i], 1)
         }
     } else {
         if (!Option["input"]) Option["input"] = STDIN
