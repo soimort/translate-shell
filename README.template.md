@@ -117,11 +117,11 @@ Add the following line to your `.zshrc`:
 
 #### Using [Homebrew](https://github.com/Homebrew/homebrew)
 
-    $ brew install http://www.soimort.org/translate-shell/translate-shell.rb
+    $ brew install https://www.soimort.org/translate-shell/translate-shell.rb
 
 On Linux with [Linuxbrew](https://github.com/Homebrew/linuxbrew), you may ignore its dependencies (e.g. gawk) if you already have them in your system:
 
-    $ brew install --ignore-dependencies http://www.soimort.org/translate-shell/translate-shell.rb
+    $ brew install --ignore-dependencies https://www.soimort.org/translate-shell/translate-shell.rb
 
 #### Using your favorite package manager
 
