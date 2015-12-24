@@ -107,7 +107,27 @@ Download [the self-contained executable](http://git.io/trans) and place it into 
 
 There is a [GPG signature](http://www.soimort.org/translate-shell/trans.sig).
 
-### Option #2. From Git
+### Option #2. From A Package Manager
+
+#### Using [Antigen](https://github.com/zsh-users/antigen)
+
+Add the following line to your `.zshrc`:
+
+    antigen bundle soimort/translate-shell
+
+#### Using [Homebrew](https://github.com/Homebrew/homebrew)
+
+    $ brew install http://www.soimort.org/translate-shell/translate-shell.rb
+
+On Linux with [Linuxbrew](https://github.com/Homebrew/linuxbrew), you may ignore its dependencies (e.g. gawk) if you already have them in your system:
+
+    $ brew install --ignore-dependencies http://www.soimort.org/translate-shell/translate-shell.rb
+
+#### Using your favorite package manager
+
+See **[wiki: Distros](https://github.com/soimort/translate-shell/wiki/Distros)** on how to install from a specific package manager on your distro.
+
+### Option #3. From Git
 
     $ git clone https://github.com/soimort/translate-shell
     $ cd translate-shell/
@@ -121,18 +141,6 @@ In case you have only zsh but not bash in your system, build with:
 The default `PREFIX` of installation is `/usr/local`. To install the program to somewhere else (e.g. `/usr`, `~/.local`), use:
 
     $ [sudo] make PREFIX=/usr install
-
-### Option #3. From A Package Manager
-
-On OS X with Homebrew:
-
-    $ brew install http://www.soimort.org/translate-shell/translate-shell.rb
-
-On Linux, you may ignore its dependencies (e.g. gawk) if you already have them in your system:
-
-    $ brew install --ignore-dependencies http://www.soimort.org/translate-shell/translate-shell.rb
-
-See **[wiki: Distros](https://github.com/soimort/translate-shell/wiki/Distros)** on how to install from a specific package manager on your distro.
 
 ## Introduction by Examples
 
