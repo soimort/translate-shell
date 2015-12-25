@@ -5,8 +5,6 @@
 @include "include/Commons"
 @include "include/Utils"
 
-@include "include/GenTK"
-
 @include "include/Languages"
 @include "include/Help"
 @include "include/Parser"
@@ -14,5 +12,7 @@
 @include "include/Translate"
 @include "include/Script"
 @include "include/REPL"
+
+@include "include/Translators/GoogleTranslate"
 
 @include "include/Main"
