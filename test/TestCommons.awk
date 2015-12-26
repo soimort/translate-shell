@@ -134,6 +134,19 @@ BEGIN {
         assertEqual(parameterize("foo 'bar", "\""), "\"foo 'bar\"")
         assertEqual(parameterize("foo \"bar\"", "\""), "\"foo \\\"bar\\\"\"")
     }
+    T("unparameterize()", 10)
+    {
+        assertEqual(unparameterize("''"), "")
+        assertEqual(unparameterize("'foo'"), "foo")
+        assertEqual(unparameterize("'foo bar'"), "foo bar")
+        assertEqual(unparameterize("'foo '\\''bar'"), "foo 'bar")
+        assertEqual(unparameterize("'foo \"bar\"'"), "foo \"bar\"")
+        assertEqual(unparameterize("\"\""), "")
+        assertEqual(unparameterize("\"foo\""), "foo")
+        assertEqual(unparameterize("\"foo bar\""), "foo bar")
+        assertEqual(unparameterize("\"foo 'bar\""), "foo 'bar")
+        assertEqual(unparameterize("\"foo \\\"bar\\\"\""), "foo \"bar\"")
+    }
     T("toString()", 4)
     {
         assertEqual(toString(""), "")
