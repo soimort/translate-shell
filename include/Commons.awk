@@ -229,6 +229,22 @@ function parameterize(string, quotationMark) {
     }
 }
 
+# Reverse of parameterize(string, quotationMark).
+function unparameterize(string,    temp) {
+    match(string, /^'(.*)'$/, temp)
+    if (temp[0]) { # use temp[0] (there IS a match for quoted empty string)
+        string = temp[1]
+        gsub(/'\\''/, "'", string)
+        return string
+    }
+    match(string, /^"(.*)"$/, temp)
+    if (temp[0]) {
+        string = temp[1]
+        return unescape(string)
+    }
+    return string
+}
+
 # Convert any value to human-readable string.
 function toString(value, inline, heredoc, valOnly, numSub, level, sortedIn,
                   ####
