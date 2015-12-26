@@ -14,5 +14,6 @@
 @include "include/REPL"
 
 @include "include/Translators/GoogleTranslate"
+@include "include/Translators/BingTranslator"
 
 @include "include/Main"
