@@ -1724,6 +1724,15 @@ function initLocale(    i) {
     Locale["otq"]["glotto"]            = "quer1236"
     Locale["otq"]["script"]            = "Latn"
 
+    #* Yucatec Maya
+    Locale["yua"]["support"]           = "bing-only"
+    Locale["yua"]["name"]              = "Yucatec Maya"
+    Locale["yua"]["endonym"]           = "Màaya T'àan"
+    Locale["yua"]["family"]            = "Mayan"
+    Locale["yua"]["iso"]               = "yua"
+    Locale["yua"]["glotto"]            = "yuca1254"
+    Locale["yua"]["script"]            = "Latn"
+
     for (i in Locale) {
         # Initialize strings for displaying endonyms of locales
         Locale[i]["display"] = show(Locale[i]["endonym"], i)
