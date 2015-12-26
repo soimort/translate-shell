@@ -208,6 +208,14 @@ function escape(string) {
     return string
 }
 
+# Reverse of escape(string).
+function unescape(string) {
+    gsub(/\\\"/, "\"", string)
+    gsub(/\\\\/, "\\", string) # substitute backslashes last
+
+    return string
+}
+
 # Return the escaped, quoted string.
 function parameterize(string, quotationMark) {
     if (!quotationMark)
