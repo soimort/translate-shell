@@ -1733,6 +1733,24 @@ function initLocale(    i) {
     Locale["yua"]["glotto"]            = "yuca1254"
     Locale["yua"]["script"]            = "Latn"
 
+    #* Klingon, Latin alphabet
+    Locale["tlh"]["support"]           = "bing-only"
+    Locale["tlh"]["name"]              = "Klingon"
+    Locale["tlh"]["endonym"]           = "tlhIngan Hol"
+    Locale["tlh"]["family"]            = "Artificial Language"
+    Locale["tlh"]["iso"]               = "tlh"
+    #Locale["tlh"]["glotto"]
+    Locale["tlh"]["script"]            = "Latn"
+
+    #* Klingon, pIqaD
+    Locale["tlh-Qaak"]["support"]      = "bing-only"
+    Locale["tlh-Qaak"]["name"]         = "Klingon (pIqaD)"
+    Locale["tlh-Qaak"]["endonym"]      = " "
+    Locale["tlh-Qaak"]["family"]       = "Artificial Language"
+    Locale["tlh-Qaak"]["iso"]          = "tlh"
+    #Locale["tlh-Qaak"]["glotto"]
+    Locale["tlh-Qaak"]["script"]       = "Piqd"
+
     for (i in Locale) {
         # Initialize strings for displaying endonyms of locales
         Locale[i]["display"] = show(Locale[i]["endonym"], i)
@@ -1761,6 +1779,8 @@ function initLocale(    i) {
     LocaleAlias["zh"]      = "zh-CN" # Chinese: default to Chinese Simplified
     LocaleAlias["zho"]     = "zh-CN"
     LocaleAlias["chinese"] = "zh-CN"
+    LocaleAlias["tlh-Latn"] = "tlh"
+    LocaleAlias["tlh-Piqd"] = "tlh-Qaak"
     # TODO: more aliases
 }
 
@@ -1893,6 +1913,7 @@ function scriptName(code) {
     case "Mlym": return "Malayalam"
     case "Mymr": return "Myanmar"
     case "Orya": return "Oriya"
+    case "Piqd": return "Klingon (pIqaD)"
     case "Sinh": return "Sinhala"
     case "Taml": return "Tamil"
     case "Telu": return "Telugu"
