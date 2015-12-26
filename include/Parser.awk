@@ -245,7 +245,53 @@ function parseJsonArray(returnAST, tokens,
     }
 }
 
-#
+# JSON parser.
+function parseJson(returnAST, tokens,
+                   arrayStartTokens, arrayEndTokens,
+                   objectStartTokens, objectEndTokens,
+                   commas, colons,
+                   ####
+                   flag, i, j, key, name, p, stack, token) {
+    # Default parameters
+    if (!arrayStartTokens[0])  arrayStartTokens[0]  = "["
+    if (!arrayEndTokens[0])    arrayEndTokens[0]    = "]"
+    if (!objectStartTokens[0]) objectStartTokens[0] = "{"
+    if (!objectEndTokens[0])   objectEndTokens[0]   = "}"
+    if (!commas[0])            commas[0]            = ","
+    if (!colons[0])            colons[0]            = ":"
+
+    stack[p = 0] = 0
+    flag = 0 # ready to read key
+    for (i = 0; i < length(tokens); i++) {
+        token = tokens[i]
+
+        if (belongsTo(token, arrayStartTokens))
+            stack[++p] = 0
+        else if (belongsTo(token, objectStartTokens))
+            stack[++p] = NULLSTR
+        else if (belongsTo(token, objectEndTokens) ||
+                 belongsTo(token, arrayEndTokens))
+            --p
+        else if (belongsTo(token, commas)) {
+            if (isnum(stack[p])) # array
+                stack[p]++ # increase index
+        } else if (belongsTo(token, colons)) {
+            flag = 1 # ready to read value
+        } else if (isnum(stack[p]) || flag) {
+            # Read a value
+            key = stack[0]
+            for (j = 1; j <= p; j++)
+                key = key SUBSEP stack[j]
+            returnAST[key] = token
+            flag = 0 # ready to read key
+        } else {
+            # Read a key
+            stack[p] = unparameterize(token)
+        }
+    }
+}
+
+# S-expr parser.
 function parseList(returnAST, tokens,
                    leftBrackets,
                    rightBrackets,
