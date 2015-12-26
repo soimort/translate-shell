@@ -1885,7 +1885,8 @@ function getDetails(code,    group, iso, language, script) {
     split(getISO(code), group, "-")
     iso = group[1]
     split(getName(code), group, " ")
-    language = length(group) == 1 ? group[1] "_language" : join(group, "_")
+    language = length(group) == 1 ? group[1] "_language" :
+        group[2] ~ /^\(.*\)$/ ? group[1] "_language" : join(group, "_")
     return ansi("bold", sprintf("%s\n", getDisplay(code)))              \
         sprintf("%-22s%s\n", "Name", ansi("bold", getName(code)))       \
         sprintf("%-22s%s\n", "Family", ansi("bold", getFamily(code)))   \
