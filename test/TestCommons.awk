@@ -114,6 +114,13 @@ BEGIN {
         assertEqual(escape("\""), "\\\"")
         assertEqual(escape("\"foo\""), "\\\"foo\\\"")
     }
+    T("unescape()", 4)
+    {
+        assertEqual(unescape(""), "")
+        assertEqual(unescape("foo"), "foo")
+        assertEqual(unescape("\\\""), "\"")
+        assertEqual(unescape("\\\"foo\\\""), "\"foo\"")
+    }
     T("parameterize()", 10)
     {
         assertEqual(parameterize(""), "''")
