@@ -1391,18 +1391,31 @@ function initLocale(    i) {
     Locale["ru"]["script"]             = "Cyrl"
     Locale["ru"]["dictionary"]         = "true" # has dictionary
 
-    #68 Serbian, Cyrillic alphabet
-    Locale["sr"]["name"]               = "Serbian"
-    Locale["sr"]["endonym"]            = "српски"
-    Locale["sr"]["translations-of"]    = "Преводи за „%s“"
-    Locale["sr"]["definitions-of"]     = "Дефиниције за %s"
-    Locale["sr"]["synonyms"]           = "Синоними"
-    Locale["sr"]["examples"]           = "Примери"
-    Locale["sr"]["see-also"]           = "Погледајте такође"
-    Locale["sr"]["family"]             = "Indo-European"
-    Locale["sr"]["iso"]                = "srp"
-    Locale["sr"]["glotto"]             = "serb1264"
-    Locale["sr"]["script"]             = "Cyrl"
+    #68a Serbian, Cyrillic alphabet
+    Locale["sr-Cyrl"]["name"]          = "Serbian (Cyrillic)"
+    Locale["sr-Cyrl"]["endonym"]       = "српски"
+    Locale["sr-Cyrl"]["translations-of"] = "Преводи за „%s“"
+    Locale["sr-Cyrl"]["definitions-of"]  = "Дефиниције за %s"
+    Locale["sr-Cyrl"]["synonyms"]      = "Синоними"
+    Locale["sr-Cyrl"]["examples"]      = "Примери"
+    Locale["sr-Cyrl"]["see-also"]      = "Погледајте такође"
+    Locale["sr-Cyrl"]["family"]        = "Indo-European"
+    Locale["sr-Cyrl"]["iso"]           = "srp-Cyrl"
+    Locale["sr-Cyrl"]["glotto"]        = "serb1264"
+    Locale["sr-Cyrl"]["script"]        = "Cyrl"
+
+    #68b Serbian, Latin alphabet
+    Locale["sr-Latn"]["name"]          = "Serbian (Latin)"
+    Locale["sr-Latn"]["endonym"]       = "srpski"
+    Locale["sr-Latn"]["translations-of"] = "Prevodi za „%s“"
+    Locale["sr-Latn"]["definitions-of"]  = "Definicije za %s"
+    Locale["sr-Latn"]["synonyms"]      = "Sinonimi"
+    Locale["sr-Latn"]["examples"]      = "Primeri"
+    Locale["sr-Latn"]["see-also"]      = "Pogledajte takođe"
+    Locale["sr-Latn"]["family"]        = "Indo-European"
+    Locale["sr-Latn"]["iso"]           = "srp-Latn"
+    Locale["sr-Latn"]["glotto"]        = "serb1264"
+    Locale["sr-Latn"]["script"]        = "Latn"
 
     #69 Sesotho (Southern Sotho)
     Locale["st"]["name"]               = "Sesotho"
@@ -1714,9 +1727,12 @@ function initLocale(    i) {
     LocaleAlias["mo"] = "ro" # Moldavian or Moldovan considered a variant of the Romanian language
     LocaleAlias["nb"] = "no" # Google Translate does not distinguish between Bokmål and Nynorsk
     LocaleAlias["nn"] = "no"
-    LocaleAlias["sh"] = "sr" # Serbo-Croatian: default to Serbian
-    LocaleAlias["zh"] = "zh-CN" # Chinese: default to Chinese Simplified
-    LocaleAlias["zho"] = "zh-CN"
+    LocaleAlias["sh"]      = "sr-Cyrl" # Serbo-Croatian: default to Serbian
+    LocaleAlias["sr"]      = "sr-Cyrl" # Serbian: default to Serbian Cyrillic
+    LocaleAlias["srp"]     = "sr-Cyrl"
+    LocaleAlias["serbian"] = "sr-Cyrl"
+    LocaleAlias["zh"]      = "zh-CN" # Chinese: default to Chinese Simplified
+    LocaleAlias["zho"]     = "zh-CN"
     LocaleAlias["chinese"] = "zh-CN"
     # TODO: more aliases
 }
