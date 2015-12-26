@@ -44,7 +44,7 @@ function init() {
 
     # Networking
     Option["proxy"] = ENVIRON["HTTP_PROXY"] ? ENVIRON["HTTP_PROXY"] : ENVIRON["http_proxy"]
-    Option["user-agent"] = ENVIRON["USER_AGENT"] ? ENVIRON["USER_AGENT"] : "Mozilla/5.0 (X11; Linux x86_64; rv:40.0) Gecko/20100101 Firefox/40.0"
+    Option["user-agent"] = ENVIRON["USER_AGENT"] ? ENVIRON["USER_AGENT"] : "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/602.1 (KHTML, like Gecko) Version/8.0 Safari/602.1 Epiphany/3.18.2"
 
     # Interactive shell
     Option["no-rlwrap"] = 0
