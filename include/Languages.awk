@@ -1706,6 +1706,15 @@ function initLocale(    i) {
     Locale["zu"]["glotto"]             = "zulu1248"
     Locale["zu"]["script"]             = "Latn"
 
+    #* Hmong Daw
+    Locale["mww"]["support"]           = "bing-only"
+    Locale["mww"]["name"]              = "Hmong Daw"
+    Locale["mww"]["endonym"]           = "Hmoob Daw"
+    Locale["mww"]["family"]            = "Hmong-Mien"
+    Locale["mww"]["iso"]               = "mww"
+    Locale["mww"]["glotto"]            = "hmon1333"
+    Locale["mww"]["script"]            = "Latn"
+
     for (i in Locale) {
         # Initialize strings for displaying endonyms of locales
         Locale[i]["display"] = show(Locale[i]["endonym"], i)
