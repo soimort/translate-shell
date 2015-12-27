@@ -17,6 +17,9 @@ function init() {
 
     Option["debug"] = 0
 
+    # Translation engine
+    Option["engine"] = "google"
+
     # Display
     Option["verbose"] = 1
     Option["show-original"] = 1
@@ -208,6 +211,13 @@ BEGIN {
             continue
         }
 
+        # -S, -list-engines
+        match(ARGV[pos], /^--?(S|list-e(n(g(i(n(es?)?)?)?)?)?)$/)
+        if (RSTART) {
+            InfoOnly = "list-engines"
+            continue
+        }
+
         # -U, -upgrade
         match(ARGV[pos], /^--?(U|upgrade)$/)
         if (RSTART) {
@@ -219,6 +229,17 @@ BEGIN {
         match(ARGV[pos], /^--?(N|nothing)$/)
         if (RSTART) {
             InfoOnly = "nothing"
+            continue
+        }
+
+        ## Translator options
+
+        # -e, -engine
+        match(ARGV[pos], /^--?(e|engine)(=(.*)?)?$/, group)
+        if (RSTART) {
+            Option["engine"] = group[2] ?
+                (group[3] ? group[3] : Option["engine"]) :
+                ARGV[++pos]
             continue
         }
 
@@ -604,6 +625,10 @@ BEGIN {
         exit ExitCode
     case "list":
         print getList(Option["tl"])
+        exit ExitCode
+    case "list-engines":
+        for (translator in Translator)
+            print (Option["engine"] == translator ? "* " : "  ") translator
         exit ExitCode
     case "upgrade":
         upgrade()

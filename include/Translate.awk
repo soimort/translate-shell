@@ -11,8 +11,8 @@ function engineMethod(op) {
         fun = Option["engine"] op
         return fun
     } else {
-        e("[ERROR] Translator '" Option["engine"] "' not found. \n"     \
-          "        Run '-list-engines' to see a list of available engines.")
+        e("[ERROR] Translator not found: " Option["engine"] "\n"        \
+          "        Run '-list-engines / -S' to see a list of available engines.")
         exit 1
     }
 }
