@@ -4,6 +4,7 @@
 #
 # Last Updated: 18 Dec 2015
 # https://translate.google.com/translate/releases/twsfe_w_20151214_RC03/r/js/desktop_module_main.js
+BEGIN { provides("google") }
 
 function genRL(a, x,
                ####
@@ -71,24 +72,24 @@ function googleWebTranslateUrl(uri, sl, tl, hl) {
 
 # Get the translation of a string.
 function googleTranslate(text, sl, tl, hl,
-                        isVerbose, toSpeech, returnPlaylist, returnIl,
-                        ####
-                        r,
-                        content, tokens, ast,
-                        _sl, _tl, _hl, il, ils, isPhonetic,
-                        article, example, explanation, ref, word,
-                        translation, translations, phonetics,
-                        wordClasses, words, segments, altTranslations,
-                        original, oPhonetics, oWordClasses, oWords,
-                        oRefs, oSynonymClasses, oSynonyms,
-                        oExamples, oSeeAlso,
-                        wShowOriginal, wShowOriginalPhonetics,
-                        wShowTranslation, wShowTranslationPhonetics,
-                        wShowPromptMessage, wShowLanguages,
-                        wShowOriginalDictionary, wShowDictionary,
-                        wShowAlternatives,
-                        hasWordClasses, hasAltTranslations,
-                        i, j, k, group, temp, saveSortedIn) {
+                         isVerbose, toSpeech, returnPlaylist, returnIl,
+                         ####
+                         r,
+                         content, tokens, ast,
+                         _sl, _tl, _hl, il, ils, isPhonetic,
+                         article, example, explanation, ref, word,
+                         translation, translations, phonetics,
+                         wordClasses, words, segments, altTranslations,
+                         original, oPhonetics, oWordClasses, oWords,
+                         oRefs, oSynonymClasses, oSynonyms,
+                         oExamples, oSeeAlso,
+                         wShowOriginal, wShowOriginalPhonetics,
+                         wShowTranslation, wShowTranslationPhonetics,
+                         wShowPromptMessage, wShowLanguages,
+                         wShowOriginalDictionary, wShowDictionary,
+                         wShowAlternatives,
+                         hasWordClasses, hasAltTranslations,
+                         i, j, k, group, temp, saveSortedIn) {
     isPhonetic = match(tl, /^@/)
     tl = substr(tl, 1 + isPhonetic)
 

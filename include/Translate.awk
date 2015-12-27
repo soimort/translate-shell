@@ -2,6 +2,21 @@
 # Translate.awk                                                    #
 ####################################################################
 
+function provides(engineName) {
+    Translator[engineName] = TRUE
+}
+
+function engineMethod(op) {
+    if (Translator[Option["engine"]]) {
+        fun = Option["engine"] op
+        return fun
+    } else {
+        e("[ERROR] Translator '" Option["engine"] "' not found. \n"     \
+          "        Run '-list-engines' to see a list of available engines.")
+        exit 1
+    }
+}
+
 # Detect external audio player (mplayer, mpv, mpg123).
 function initAudioPlayer() {
     AudioPlayer = !system("mplayer" SUPOUT SUPERR) ?
@@ -35,7 +50,7 @@ function initPager() {
 
 # Initialize `HttpService`.
 function initHttpService() {
-    googleInit()
+    _Init()
 
     if (Option["proxy"]) {
         match(Option["proxy"], /^(http:\/*)?([^\/]*):([^\/:]*)/, HttpProxySpec)
@@ -59,9 +74,9 @@ function postprocess(text) {
     return text
 }
 
-# Send an HTTP request and get response from Google Translate.
-function getResponse(text, sl, tl, hl,    content, header, url) {
-    url = googleRequestUrl(text, sl, tl, hl)
+# Send an HTTP request and get response from an online translator.
+function getResponse(text, sl, tl, hl,    content, header, isBody, url) {
+    url = _RequestUrl(text, sl, tl, hl)
 
     header = "GET " url " HTTP/1.1\n"           \
         "Host: " HttpHost "\n"                  \
@@ -69,9 +84,13 @@ function getResponse(text, sl, tl, hl,    content, header, url) {
     if (Option["user-agent"])
         header = header "User-Agent: " Option["user-agent"] "\n"
 
+    content = NULLSTR; isBody = 0
     print header |& HttpService
     while ((HttpService |& getline) > 0) {
-        if ($0 ~ /^\[.*\]/) content = $0
+        if (isBody)
+            content = content ? content "\n" $0 : $0
+        else if (length($0) <= 1)
+            isBody = 1
         l(sprintf("%4s bytes > %s", length($0), $0))
     }
     close(HttpService)
@@ -87,9 +106,9 @@ function p(string) {
         print string > Option["output"]
 }
 
-# Play using Google Text-to-Speech engine.
+# Play using a Text-to-Speech engine.
 function play(text, tl,    url) {
-    url = googleTTSUrl(text, tl)
+    url = _TTSUrl(text, tl)
 
     # Don't use getline from pipe here - the same pipe will be run only once for each AWK script!
     system(Option["player"] " " parameterize(url) SUPOUT SUPERR)
@@ -98,8 +117,8 @@ function play(text, tl,    url) {
 # Get the translation of a string.
 function getTranslation(text, sl, tl, hl,
                         isVerbose, toSpeech, returnPlaylist, returnIl) {
-    return googleTranslate(text, sl, tl, hl,
-                           isVerbose, toSpeech, returnPlaylist, returnIl)
+    return _Translate(text, sl, tl, hl,
+                      isVerbose, toSpeech, returnPlaylist, returnIl)
 }
 
 # Translate a file.
@@ -119,7 +138,8 @@ function fileTranslation(uri,    group, temp1, temp2) {
 
 # Start a browser session and translate a web page.
 function webTranslation(uri, sl, tl, hl) {
-    system(Option["browser"] " " parameterize(googleWebTranslateUrl(uri, sl, tl, hl)) "&")
+    system(Option["browser"] " "                                \
+           parameterize(_WebTranslateUrl(uri, sl, tl, hl)) "&")
 }
 
 # Translate the source text (into all target languages).

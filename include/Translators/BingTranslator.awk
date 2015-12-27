@@ -4,6 +4,7 @@
 #
 # Last Updated: 26 Dec 2015
 # https://www.bing.com/translator/dynamic/226010/js/LandingPage.js
+BEGIN { provides("bing") }
 
 function genRTTAppId(    content, group, header, isBody) {
     HttpProtocol = "http://"
