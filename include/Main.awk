@@ -234,12 +234,20 @@ BEGIN {
 
         ## Translator options
 
-        # -e, -engine
+        # -e ENGINE, -engine ENGINE
         match(ARGV[pos], /^--?(e|engine)(=(.*)?)?$/, group)
         if (RSTART) {
             Option["engine"] = group[2] ?
                 (group[3] ? group[3] : Option["engine"]) :
                 ARGV[++pos]
+            continue
+        }
+
+        # Shortcut format
+        # '/ENGINE'
+        match(ARGV[pos], /^\/(.*)$/, group)
+        if (RSTART) {
+            Option["engine"] = group[1]
             continue
         }
 
