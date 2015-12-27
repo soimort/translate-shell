@@ -192,100 +192,114 @@ function showMan(    temp) {
 #     displayName = "endonym" or "name"
 function getReference(displayName,
                       ####
-                      code, col, cols, i, j, name, r, rows, saveSortedIn, t, tt) {
-    rows = int(length(Locale) / 3) + 1
+                      code, col, cols, i, j, name, num, r, rows, saveSortedIn,
+                      t1, t2) {
+    # number of language codes with stable support
+    num = 0
+    for (code in Locale)
+        if (Locale[code]["support"] != "unstable")
+            num++
+    rows = int(num / 3) + 1
     cols[0][0] = cols[1][0] = cols[2][0] = NULLSTR
     i = 0
     saveSortedIn = PROCINFO["sorted_in"]
     PROCINFO["sorted_in"] = displayName == "endonym" ? "@ind_num_asc" :
         "compName"
     for (code in Locale) {
-        col = int(i / rows)
-        append(cols[col], code)
-        i++
+        # show languages only with stable support
+        if (Locale[code]["support"] != "unstable") {
+            col = int(i / rows)
+            append(cols[col], code)
+            i++
+        }
     }
     PROCINFO["sorted_in"] = saveSortedIn
 
     if (displayName == "endonym") {
-        r = "┌" replicate("─", 22) "┬" replicate("─", 23) "┬" replicate("─", 23) "┐" RS
+        r = "┌" replicate("─", 23) "┬" replicate("─", 23) "┬" replicate("─", 23) "┐" RS
         for (i = 0; i < rows; i++) {
-            r = r "│ "
+            r = r "│"
             for (j = 0; j < 3; j++) {
                 if (cols[j][i]) {
-                    t = cols[j][i] == "bo" ||
-                        cols[j][i] == "dz" ||
-                        cols[j][i] == "he" ||
-                        cols[j][i] == "hi" ||
-                        cols[j][i] == "hu" ||
-                        cols[j][i] == "la" ||
-                        cols[j][i] == "ml" ||
-                        cols[j][i] == "mn" ||
-                        cols[j][i] == "ne" ||
-                        cols[j][i] == "ny" ||
-                        cols[j][i] == "pa" ||
-                        cols[j][i] == "pl" ||
-                        cols[j][i] == "ro" ||
-                        cols[j][i] == "sr" ||
-                        cols[j][i] == "te" ||
-                        cols[j][i] == "tg" ||
-                        cols[j][i] == "tr" ||
-                        cols[j][i] == "ur" ||
-                        cols[j][i] == "wo" ||
-                        cols[j][i] == "yi" ||
-                        cols[j][i] == "yo" ||
-                        (cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW" &&
-                         length(getEndonym(cols[j][i])) < 6) ? "\t\t " :
-                        cols[j][i] == "id" ? "" :
-                        cols[j][i] == "haw" ? " " :
-                        "\t "
-                    tt = length(cols[j][i]) == 3 ? " │" :
-                        (cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW") ? "  │" : ""
-                    r = r getDisplay(cols[j][i]) t "- " ansi("bold", cols[j][i]) tt " "
+                    t1 = getDisplay(cols[j][i])
+                    switch (cols[j][i]) { # fix rendered text width
+                    case "he":
+                        t1 = sprintf(" %-18s", t1)
+                        break
+                    case "ur":
+                        t1 = sprintf(" %-17s", t1)
+                        break
+                    case "hi": case "gu": case "km": case "kn":
+                    case "my": case "ne": case "pa": case "si":
+                    case "ta": case "te": case "yi":
+                        t1 = sprintf(" %-16s", t1)
+                        break
+                    case "ja": case "ko":
+                        t1 = sprintf(" %-12s", t1)
+                        break
+                    case "zh-CN": case "zh-TW":
+                        t1 = sprintf(" %-11s", t1)
+                        break
+                    default:
+                        if (length(t1) <= 15)
+                            t1 = sprintf(" %-15s", t1)
+                    }
+                    switch (length(cols[j][i])) {
+                    case 1: case 2: case 3: case 4:
+                        t2 = sprintf("- %s |", ansi("bold", sprintf("%4s", cols[j][i])))
+                        break
+                    case 5:
+                        t2 = sprintf("- %s|", ansi("bold", cols[j][i]))
+                        break
+                    case 6:
+                        t2 = sprintf("-%s|", ansi("bold", cols[j][i]))
+                        break
+                    case 7:
+                        t2 = sprintf("-%s", ansi("bold", cols[j][i]))
+                        break
+                    default:
+                        t2 = ansi("bold", cols[j][i])
+                    }
+                    r = r t1 t2
                 } else
-                    r = r "\t\t       │"
+                    r = r sprintf("%23s│", NULLSTR)
             }
             r = r RS
         }
-        r = r "└" replicate("─", 22) "┴" replicate("─", 23) "┴" replicate("─", 23) "┘"
+        r = r "└" replicate("─", 23) "┴" replicate("─", 23) "┴" replicate("─", 23) "┘"
     } else {
-        r = "┌" replicate("─", 22) "┬" replicate("─", 23) "┬" replicate("─", 23) "┐" RS
+        r = "┌" replicate("─", 23) "┬" replicate("─", 23) "┬" replicate("─", 23) "┐" RS
         for (i = 0; i < rows; i++) {
-            r = r "│ "
+            r = r "│"
             for (j = 0; j < 3; j++) {
                 if (cols[j][i]) {
-                    t = cols[j][i] == "he" ||
-                        cols[j][i] == "kk" ||
-                        cols[j][i] == "ko" ||
-                        cols[j][i] == "ky" ||
-                        cols[j][i] == "ne" ||
-                        cols[j][i] == "pl" ||
-                        cols[j][i] == "ps" ||
-                        cols[j][i] == "sd" ||
-                        cols[j][i] == "sk" ||
-                        cols[j][i] == "sm" ||
-                        cols[j][i] == "so" ||
-                        cols[j][i] == "te" ||
-                        cols[j][i] == "ug" ||
-                        cols[j][i] == "yo" ||
-                        (cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW" &&
-                         length(getName(cols[j][i])) < 6) ? "\t\t " :
-                        cols[j][i] == "fy" ||
-                        cols[j][i] == "gd" ||
-                        cols[j][i] == "ht" ? " " :
-                        "\t "
-                    tt = length(cols[j][i]) == 3 ? " │" :
-                        (cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW") ? "  │" : ""
-                    name = getName(cols[j][i])
-                    if (cols[j][i] == "zh-CN" ||
-                        cols[j][i] == "zh-TW")
-                        name = substr(name, 1, 12) "."
-                    r = r name t "- " ansi("bold", cols[j][i]) tt " "
+                    t1 = getName(cols[j][i])
+                    if (length(t1) > 15)
+                        t1 = substr(t1, 1, 12) "..."
+                    t1 = sprintf(" %-15s", t1)
+                    switch (length(cols[j][i])) {
+                    case 1: case 2: case 3: case 4:
+                        t2 = sprintf("- %s |", ansi("bold", sprintf("%4s", cols[j][i])))
+                        break
+                    case 5:
+                        t2 = sprintf("- %s|", ansi("bold", cols[j][i]))
+                        break
+                    case 6:
+                        t2 = sprintf("-%s|", ansi("bold", cols[j][i]))
+                        break
+                    case 7:
+                        t2 = sprintf("-%s", ansi("bold", cols[j][i]))
+                        break
+                    default:
+                        t2 = ansi("bold", cols[j][i])
+                    }
+                    r = r t1 t2
                 } else
-                    r = r "\t\t       │"
+                    r = r sprintf("%23s│", NULLSTR)
             }
             r = r RS
         }
-        r = r "└" replicate("─", 22) "┴" replicate("─", 23) "┴" replicate("─", 23) "┘"
+        r = r "└" replicate("─", 23) "┴" replicate("─", 23) "┴" replicate("─", 23) "┘"
     }
     return r
 }
