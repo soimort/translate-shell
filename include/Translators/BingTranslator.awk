@@ -68,10 +68,12 @@ function bingRequestUrl(text, sl, tl, hl,
         "&texts=" preprocess("[" parameterize(text, "\"") "]")
 }
 
-function bingTTSUrl(text, tl) {
+function bingTTSUrl(text, tl,    narrator) {
+    narrator = Option["narrator"] ~ /^[AFaf]/ ? "female" : "male"
+
     return HttpProtocol HttpHost "/v2/http.svc/speak?" "appId=" RTTAppId \
         "&language=" tl "&text=" preprocess(text)                       \
-        "&format=audio/mp3" "&options=MinSize|male"
+        "&format=audio/mp3" "&options=MinSize|" narrator
 }
 
 function bingWebTranslateUrl(uri, sl, tl, hl) {

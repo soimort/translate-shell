@@ -38,6 +38,7 @@ function init() {
 
     # Audio
     Option["play"] = 0
+    Option["narrator"] = "default"
     Option["player"] = ENVIRON["PLAYER"]
 
     # Terminal paging and browsing
@@ -400,6 +401,16 @@ BEGIN {
         match(ARGV[pos], /^--?sp(e(ak?)?)?$/)
         if (RSTART) {
             Option["play"] = 2
+            continue
+        }
+
+        # -n VOICE, -narrator VOICE
+        match(ARGV[pos], /^--?(n|narrator)(=(.*)?)?$/, group)
+        if (RSTART) {
+            if (!Option["play"]) Option["play"] = 1 # -play by default
+            Option["narrator"] = group[2] ?
+                (group[3] ? group[3] : Option["narrator"]) :
+                ARGV[++pos]
             continue
         }
 
