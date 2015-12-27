@@ -1925,8 +1925,11 @@ function scriptName(code) {
 
 # Return detailed information of a language as a string.
 function getDetails(code,    group, iso, language, script) {
-    if (code == "auto" || !getCode(code))
-        return prettify("languages", sprintf("%-22s%s\n", "Unknown code", ansi("bold", code)))
+    if (code == "auto" || !getCode(code)) {
+        e("[ERROR] Language not found: " code "\n"                      \
+          "        Run '-reference / -R' to see a list of available languages.")
+        exit 1
+    }
 
     script = scriptName(getScript(code))
     if (isRTL(code)) script = script " (R-to-L)"
