@@ -3,18 +3,28 @@
 ####################################################################
 
 function provides(engineName) {
-    Translator[engineName] = TRUE
+    Translator[tolower(engineName)] = TRUE
 }
 
-function engineMethod(op) {
-    if (Translator[Option["engine"]]) {
-        fun = Option["engine"] op
-        return fun
-    } else {
-        e("[ERROR] Translator not found: " Option["engine"] "\n"        \
-          "        Run '-list-engines / -S' to see a list of available engines.")
-        exit 1
+function engineMethod(methodName,    engine, translator) {
+    if (!Translator[Option["engine"]]) {
+        # case-insensitive match engine name
+        engine = tolower(Option["engine"])
+        if (!Translator[engine]) # fuzzy match engine name
+            for (translator in Translator)
+                if (Translator[translator] && # there IS such a translator
+                    translator ~ "^"engine) {
+                    engine = translator
+                    break
+                }
+        if (!Translator[engine]) {
+            e("[ERROR] Translator not found: " Option["engine"] "\n"    \
+              "        Run '-list-engines / -S' to see a list of available engines.")
+            exit 1
+        }
+        Option["engine"] = engine
     }
+    return Option["engine"] methodName
 }
 
 # Detect external audio player (mplayer, mpv, mpg123).
