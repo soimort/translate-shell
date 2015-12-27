@@ -547,17 +547,17 @@ BEGIN {
             continue
         }
 
-        # -s CODE, -sl CODE, -source CODE
-        match(ARGV[pos], /^--?s(o(u(r(ce?)?)?)?|l)?(=(.*)?)?$/, group)
+        # -s CODE, -sl CODE, -source CODE, -f CODE, -from CODE
+        match(ARGV[pos], /^--?(s(o(u(r(ce?)?)?)?|l)?|f|from)(=(.*)?)?$/, group)
         if (RSTART) {
-            Option["sl"] = group[5] ?
-                (group[6] ? group[6] : Option["sl"]) :
+            Option["sl"] = group[6] ?
+                (group[7] ? group[7] : Option["sl"]) :
                 ARGV[++pos]
             continue
         }
 
-        # -t CODES, -tl CODE, -target CODES
-        match(ARGV[pos], /^--?t(a(r(g(et?)?)?)?|l)?(=(.*)?)?$/, group)
+        # -t CODES, -tl CODES, -target CODES, -to CODES
+        match(ARGV[pos], /^--?t(a(r(g(et?)?)?)?|l|o)?(=(.*)?)?$/, group)
         if (RSTART) {
             if (group[5]) {
                 if (group[6]) split(group[6], Option["tl"], "+")
