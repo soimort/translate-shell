@@ -1785,15 +1785,20 @@ function initLocale(    i) {
 }
 
 # Get locale key by language code or alias.
-function getCode(code) {
+function getCode(code,    group) {
     if (code == "auto" || code in Locale)
         return code
     else if (code in LocaleAlias)
         return LocaleAlias[code]
     else if (tolower(code) in LocaleAlias)
         return LocaleAlias[tolower(code)]
-    else
-        return # return nothing if not found
+
+    # Remove unidentified region or script code
+    match(code, /^([[:alpha:]][[:alpha:]][[:alpha:]]?)-(.*)$/, group)
+    if (group[1])
+        return group[1]
+
+    return # return nothing if not found
 }
 
 # Return the name of a language.
