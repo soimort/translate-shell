@@ -107,7 +107,11 @@ function bingTranslate(text, sl, tl, hl,
     # Strip the content and get a valid JSON string
     match(content, /(\[.*\])$/, group)
     if (!group[0]) {
-        e("[ERROR] " content)
+        # Display the error message
+        match(content, /"(.*)"$/, group)
+        gsub(/\\u000d/, "\r", group[1])
+        gsub(/\\u000a/, "\n", group[1])
+        e("[ERROR] " group[1])
         ExitCode = 1
         return
     }
