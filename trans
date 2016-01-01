@@ -1,40 +1,17 @@
 #!/usr/bin/env bash
-#
-# This is free and unencumbered software released into the public domain.
-# 
-# This software is provided for the purpose of reasonable personal use of
-# the Google Translate service, i.e., for those who prefer command line to
-# web interface. For other purposes, please refer to the official Google
-# Translate API <https://developers.google.com/translate/>.
-# 
-# By using this software, you ("the user") are aware that:
-# 
-# 1. Google Translate is a proprietary service provided and owned by
-# Google Inc.
-# 
-# 2. Translate Shell is NOT a Google product. Neither this software nor
-# its author is affiliated with Google Inc.
-# 
-# 3. The software is provided "AS IS", without warranty of any kind,
-# express or implied, including but not limited to the warranties of
-# merchantability, fitness for a particular purpose and noninfringement. In
-# no event shall the authors be liable for any claim, damages or other
-# liability, whether in an action of contract, tort or otherwise, arising
-# from, out of or in connection with the software or the use or other
-# dealings in the software.
-#
 if ! [[ $LANG =~ '[UTF|utf]-?8$' ]]; then export LANG=en_US.UTF-8; fi
 read -r -d '' TRANS_PROGRAM << 'EOF'
 BEGIN {
 Name        = "Translate Shell"
-Description = "Google Translate to serve as a command-line tool"
-Version     = "0.9.2.1"
-ReleaseDate = "2015-12-18"
+Description = "Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc."
+Version     = "0.9.3"
+ReleaseDate = "2016-01-01"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 }
 function initConst() {
 NULLSTR = ""
+TRUE = 1
 STDIN  = "/dev/stdin"
 STDOUT = "/dev/stdout"
 STDERR = "/dev/stderr"
@@ -176,6 +153,11 @@ gsub(/\\/, "\\\\", string)
 gsub(/"/, "\\\"", string)
 return string
 }
+function unescape(string) {
+gsub(/\\\"/, "\"", string)
+gsub(/\\\\/, "\\", string)
+return string
+}
 function parameterize(string, quotationMark) {
 if (!quotationMark)
 quotationMark = "'"
@@ -185,6 +167,20 @@ return "'" string "'"
 } else {
 return "\"" escape(string) "\""
 }
+}
+function unparameterize(string,    temp) {
+match(string, /^'(.*)'$/, temp)
+if (temp[0]) {
+string = temp[1]
+gsub(/'\\''/, "'", string)
+return string
+}
+match(string, /^"(.*)"$/, temp)
+if (temp[0]) {
+string = temp[1]
+return unescape(string)
+}
+return string
 }
 function toString(value, inline, heredoc, valOnly, numSub, level, sortedIn,
 i, items, j, k, p, saveSortedIn, temp, v) {
@@ -522,39 +518,6 @@ command = "hexdump" " -v -e'1/1 \"%03u\" \" \"'"
 split(temp, group, " ")
 return length(group) - 1
 }
-function genRL(a, x,
-b, c, d, i, y) {
-tokenize(y, x)
-parseList(b, y)
-i = SUBSEP 0
-for (c = 0; c < length(b[i]) - 2; c += 3) {
-d = b[i][c + 2]
-d = d >= 97 ? d - 87 :
-d - 48
-d = b[i][c + 1] == 43 ? rshift(a, d) : lshift(a, d)
-a = b[i][c] == 43 ? and(a + d, 4294967295) : xor(a, d)
-}
-return a
-}
-function genTK(text,
-a, d, dLen, e, tkk, ub, vb) {
-if (TK[text]) return TK[text]
-tkk = systime() / 3600
-ub = "[43,45,51,94,43,98,43,45,102]"
-vb = "[43,45,97,94,43,54]"
-dLen = dump(text, d)
-a = tkk
-for (e = 1; e <= dLen; e++)
-a = genRL(a + d[e], vb)
-a = genRL(a, ub)
-0 > a && (a = and(a, 2147483647) + 2147483648)
-a %= 1e6
-TK[text] = a "." xor(a, tkk)
-l(text, "text")
-l(tkk, "tkk")
-l(TK[text], "tk")
-return TK[text]
-}
 function initLocale(    i) {
 Locale["am"]["support"]            = "unstable"
 Locale["am"]["name"]               = "Amharic"
@@ -740,7 +703,7 @@ Locale["tk"]["family"]             = "Turkic"
 Locale["tk"]["iso"]                = "tuk"
 Locale["tk"]["glotto"]             = "turk1304"
 Locale["tk"]["script"]             = "Latn"
-Locale["tt"]["support"]            = "unstable"
+Locale["tt"]["support"]            = "yandex-only"
 Locale["tt"]["name"]               = "Tatar"
 Locale["tt"]["endonym"]            = "татарча"
 Locale["tt"]["family"]             = "Turkic"
@@ -1550,17 +1513,28 @@ Locale["ru"]["iso"]                = "rus"
 Locale["ru"]["glotto"]             = "russ1263"
 Locale["ru"]["script"]             = "Cyrl"
 Locale["ru"]["dictionary"]         = "true"
-Locale["sr"]["name"]               = "Serbian"
-Locale["sr"]["endonym"]            = "српски"
-Locale["sr"]["translations-of"]    = "Преводи за „%s“"
-Locale["sr"]["definitions-of"]     = "Дефиниције за %s"
-Locale["sr"]["synonyms"]           = "Синоними"
-Locale["sr"]["examples"]           = "Примери"
-Locale["sr"]["see-also"]           = "Погледајте такође"
-Locale["sr"]["family"]             = "Indo-European"
-Locale["sr"]["iso"]                = "srp"
-Locale["sr"]["glotto"]             = "serb1264"
-Locale["sr"]["script"]             = "Cyrl"
+Locale["sr-Cyrl"]["name"]          = "Serbian (Cyrillic)"
+Locale["sr-Cyrl"]["endonym"]       = "српски"
+Locale["sr-Cyrl"]["translations-of"] = "Преводи за „%s“"
+Locale["sr-Cyrl"]["definitions-of"]  = "Дефиниције за %s"
+Locale["sr-Cyrl"]["synonyms"]      = "Синоними"
+Locale["sr-Cyrl"]["examples"]      = "Примери"
+Locale["sr-Cyrl"]["see-also"]      = "Погледајте такође"
+Locale["sr-Cyrl"]["family"]        = "Indo-European"
+Locale["sr-Cyrl"]["iso"]           = "srp-Cyrl"
+Locale["sr-Cyrl"]["glotto"]        = "serb1264"
+Locale["sr-Cyrl"]["script"]        = "Cyrl"
+Locale["sr-Latn"]["name"]          = "Serbian (Latin)"
+Locale["sr-Latn"]["endonym"]       = "srpski"
+Locale["sr-Latn"]["translations-of"] = "Prevodi za „%s“"
+Locale["sr-Latn"]["definitions-of"]  = "Definicije za %s"
+Locale["sr-Latn"]["synonyms"]      = "Sinonimi"
+Locale["sr-Latn"]["examples"]      = "Primeri"
+Locale["sr-Latn"]["see-also"]      = "Pogledajte takođe"
+Locale["sr-Latn"]["family"]        = "Indo-European"
+Locale["sr-Latn"]["iso"]           = "srp-Latn"
+Locale["sr-Latn"]["glotto"]        = "serb1264"
+Locale["sr-Latn"]["script"]        = "Latn"
 Locale["st"]["name"]               = "Sesotho"
 Locale["st"]["endonym"]            = "Sesotho"
 Locale["st"]["translations-of"]    = "Liphetolelo tsa %s"
@@ -1806,6 +1780,39 @@ Locale["zu"]["family"]             = "Atlantic-Congo"
 Locale["zu"]["iso"]                = "zul"
 Locale["zu"]["glotto"]             = "zulu1248"
 Locale["zu"]["script"]             = "Latn"
+Locale["mww"]["support"]           = "bing-only"
+Locale["mww"]["name"]              = "Hmong Daw"
+Locale["mww"]["endonym"]           = "Hmoob Daw"
+Locale["mww"]["family"]            = "Hmong-Mien"
+Locale["mww"]["iso"]               = "mww"
+Locale["mww"]["glotto"]            = "hmon1333"
+Locale["mww"]["script"]            = "Latn"
+Locale["otq"]["support"]           = "bing-only"
+Locale["otq"]["name"]              = "Querétaro Otomi"
+Locale["otq"]["endonym"]           = "Hñąñho"
+Locale["otq"]["family"]            = "Oto-Manguean"
+Locale["otq"]["iso"]               = "otq"
+Locale["otq"]["glotto"]            = "quer1236"
+Locale["otq"]["script"]            = "Latn"
+Locale["yua"]["support"]           = "bing-only"
+Locale["yua"]["name"]              = "Yucatec Maya"
+Locale["yua"]["endonym"]           = "Màaya T'àan"
+Locale["yua"]["family"]            = "Mayan"
+Locale["yua"]["iso"]               = "yua"
+Locale["yua"]["glotto"]            = "yuca1254"
+Locale["yua"]["script"]            = "Latn"
+Locale["tlh"]["support"]           = "bing-only"
+Locale["tlh"]["name"]              = "Klingon"
+Locale["tlh"]["endonym"]           = "tlhIngan Hol"
+Locale["tlh"]["family"]            = "Artificial Language"
+Locale["tlh"]["iso"]               = "tlh"
+Locale["tlh"]["script"]            = "Latn"
+Locale["tlh-Qaak"]["support"]      = "bing-only"
+Locale["tlh-Qaak"]["name"]         = "Klingon (pIqaD)"
+Locale["tlh-Qaak"]["endonym"]      = " "
+Locale["tlh-Qaak"]["family"]       = "Artificial Language"
+Locale["tlh-Qaak"]["iso"]          = "tlh"
+Locale["tlh-Qaak"]["script"]       = "Piqd"
 for (i in Locale) {
 Locale[i]["display"] = show(Locale[i]["endonym"], i)
 LocaleAlias[Locale[i]["iso"]] = i
@@ -1819,19 +1826,28 @@ LocaleAlias["jw"] = "jv"
 LocaleAlias["mo"] = "ro"
 LocaleAlias["nb"] = "no"
 LocaleAlias["nn"] = "no"
-LocaleAlias["sh"] = "sr"
-LocaleAlias["zh"] = "zh-CN"
-LocaleAlias["zho"] = "zh-CN"
+LocaleAlias["sh"]      = "sr-Cyrl"
+LocaleAlias["sr"]      = "sr-Cyrl"
+LocaleAlias["srp"]     = "sr-Cyrl"
+LocaleAlias["serbian"] = "sr-Cyrl"
+LocaleAlias["zh"]      = "zh-CN"
+LocaleAlias["zh-CHS"]  = "zh-CN"
+LocaleAlias["zh-CHT"]  = "zh-TW"
+LocaleAlias["zho"]     = "zh-CN"
 LocaleAlias["chinese"] = "zh-CN"
+LocaleAlias["tlh-Latn"] = "tlh"
+LocaleAlias["tlh-Piqd"] = "tlh-Qaak"
 }
-function getCode(code) {
+function getCode(code,    group) {
 if (code == "auto" || code in Locale)
 return code
 else if (code in LocaleAlias)
 return LocaleAlias[code]
 else if (tolower(code) in LocaleAlias)
 return LocaleAlias[tolower(code)]
-else
+match(code, /^([[:alpha:]][[:alpha:]][[:alpha:]]?)-(.*)$/, group)
+if (group[1])
+return group[1]
 return
 }
 function getName(code) {
@@ -1918,6 +1934,7 @@ case "Latn": return "Latin"
 case "Mlym": return "Malayalam"
 case "Mymr": return "Myanmar"
 case "Orya": return "Oriya"
+case "Piqd": return "Klingon (pIqaD)"
 case "Sinh": return "Sinhala"
 case "Taml": return "Tamil"
 case "Telu": return "Telugu"
@@ -1927,21 +1944,25 @@ default: return "Unknown"
 }
 }
 function getDetails(code,    group, iso, language, script) {
-if (code == "auto" || !getCode(code))
-return prettify("languages", sprintf("%-22s%s\n", "Unknown code", ansi("bold", code)))
+if (code == "auto" || !getCode(code)) {
+e("[ERROR] Language not found: " code "\n"\
+"        Run '-reference / -R' to see a list of available languages.")
+exit 1
+}
 script = scriptName(getScript(code))
 if (isRTL(code)) script = script " (R-to-L)"
 split(getISO(code), group, "-")
 iso = group[1]
 split(getName(code), group, " ")
-language = length(group) == 1 ? group[1] "_language" : join(group, "_")
+language = length(group) == 1 ? group[1] "_language" :
+group[2] ~ /^\(.*\)$/ ? group[1] "_language" : join(group, "_")
 return ansi("bold", sprintf("%s\n", getDisplay(code)))\
 sprintf("%-22s%s\n", "Name", ansi("bold", getName(code)))\
 sprintf("%-22s%s\n", "Family", ansi("bold", getFamily(code)))\
 sprintf("%-22s%s\n", "Writing system", ansi("bold", script))\
 sprintf("%-22s%s\n", "Code", ansi("bold", getCode(code)))\
 sprintf("%-22s%s\n", "ISO 639-3", ansi("bold", iso))\
-sprintf("%-22s%s\n", "Ethnologue", ansi("bold", "http://www.ethnologue.com/language/" iso))\
+sprintf("%-22s%s\n", "SIL", ansi("bold", "http://www-01.sil.org/iso639-3/documentation.asp?id=" iso))\
 sprintf("%-22s%s\n", "Glottolog", getGlotto(code) ?
 ansi("bold", "http://glottolog.org/resource/languoid/id/" getGlotto(code)) : "")\
 sprintf("%-22s%s", "Wikipedia", ansi("bold", "http://en.wikipedia.org/wiki/" language))
@@ -2041,6 +2062,7 @@ sprintf("%-22s%s (%s)\n", "user locale", UserLocale, getName(UserLang))\
 sprintf("%-22s%s\n", "home language", Option["hl"])\
 sprintf("%-22s%s\n", "source language", Option["sl"])\
 sprintf("%-22s%s\n", "target language", join(Option["tl"], "+"))\
+sprintf("%-22s%s\n", "translation engine", Option["engine"])\
 sprintf("%-22s%s\n", "proxy", Option["proxy"] ? Option["proxy"] :
 "[NONE]")\
 sprintf("%-22s%s\n", "user-agent", Option["user-agent"] ? Option["user-agent"] :
@@ -2069,8 +2091,14 @@ ins(2, "Print reference table of languages (in English names) and exit.") RS\
 ins(1, ansi("bold", "-L ") ansi("underline", "CODES")\
 ", " ansi("bold", "-list ") ansi("underline", "CODES")) RS\
 ins(2, "Print details of languages and exit.") RS\
+ins(1, ansi("bold", "-S") ", " ansi("bold", "-list-engines")) RS\
+ins(2, "List available translation engines and exit.") RS\
 ins(1, ansi("bold", "-U") ", " ansi("bold", "-upgrade")) RS\
 ins(2, "Check for upgrade of this program.") RS\
+RS "Translator options:" RS\
+ins(1, ansi("bold", "-e ") ansi("underline", "ENGINE")\
+", " ansi("bold", "-engine ") ansi("underline", "ENGINE")) RS\
+ins(2, "Specify the translation engine to use.") RS\
 RS "Display options:" RS\
 ins(1, ansi("bold", "-verbose")) RS\
 ins(2, "Verbose mode. (default)") RS\
@@ -2114,6 +2142,9 @@ ins(1, ansi("bold", "-p, -play")) RS\
 ins(2, "Listen to the translation.") RS\
 ins(1, ansi("bold", "-speak")) RS\
 ins(2, "Listen to the original text.") RS\
+ins(1, ansi("bold", "-n ") ansi("underline", "VOICE")\
+", " ansi("bold", "-narrator ") ansi("underline", "VOICE")) RS\
+ins(2, "Specify the narrator, and listen to the translation.") RS\
 ins(1, ansi("bold", "-player ") ansi("underline", "PROGRAM")) RS\
 ins(2, "Specify the audio player to use, and listen to the translation.") RS\
 ins(1, ansi("bold", "-no-play")) RS\
@@ -2155,11 +2186,13 @@ ins(1, ansi("bold", "-l ") ansi("underline", "CODE")\
 ins(2, "Specify your home language.") RS\
 ins(1, ansi("bold", "-s ") ansi("underline", "CODE")\
 ", " ansi("bold", "-sl ") ansi("underline", "CODE")\
-", " ansi("bold", "-source ") ansi("underline", "CODE")) RS\
+", " ansi("bold", "-source ") ansi("underline", "CODE")\
+", " ansi("bold", "-from ") ansi("underline", "CODE")) RS\
 ins(2, "Specify the source language.") RS\
 ins(1, ansi("bold", "-t ") ansi("underline", "CODES")\
 ", " ansi("bold", "-tl ") ansi("underline", "CODE")\
-", " ansi("bold", "-target ") ansi("underline", "CODES")) RS\
+", " ansi("bold", "-target ") ansi("underline", "CODES")\
+", " ansi("bold", "-to ") ansi("underline", "CODES")) RS\
 ins(2, "Specify the target language(s), joined by '+'.") RS\
 RS "Other options:" RS\
 ins(1, ansi("bold", "-no-init")) RS\
@@ -2196,99 +2229,111 @@ else if (system("man " Command SUPERR))
 print getHelp()
 }
 function getReference(displayName,
-code, col, cols, i, j, name, r, rows, saveSortedIn, t, tt) {
-rows = int(length(Locale) / 3) + 1
+code, col, cols, i, j, name, num, r, rows, saveSortedIn,
+t1, t2) {
+num = 0
+for (code in Locale)
+if (Locale[code]["support"] != "unstable")
+num++
+rows = int(num / 3) + 1
 cols[0][0] = cols[1][0] = cols[2][0] = NULLSTR
 i = 0
 saveSortedIn = PROCINFO["sorted_in"]
 PROCINFO["sorted_in"] = displayName == "endonym" ? "@ind_num_asc" :
 "compName"
 for (code in Locale) {
+if (Locale[code]["support"] != "unstable") {
 col = int(i / rows)
 append(cols[col], code)
 i++
 }
+}
 PROCINFO["sorted_in"] = saveSortedIn
 if (displayName == "endonym") {
-r = "┌" replicate("─", 22) "┬" replicate("─", 23) "┬" replicate("─", 23) "┐" RS
+r = "┌" replicate("─", 23) "┬" replicate("─", 23) "┬" replicate("─", 23) "┐" RS
 for (i = 0; i < rows; i++) {
-r = r "│ "
+r = r "│"
 for (j = 0; j < 3; j++) {
 if (cols[j][i]) {
-t = cols[j][i] == "bo" ||
-cols[j][i] == "dz" ||
-cols[j][i] == "he" ||
-cols[j][i] == "hi" ||
-cols[j][i] == "hu" ||
-cols[j][i] == "la" ||
-cols[j][i] == "ml" ||
-cols[j][i] == "mn" ||
-cols[j][i] == "ne" ||
-cols[j][i] == "ny" ||
-cols[j][i] == "pa" ||
-cols[j][i] == "pl" ||
-cols[j][i] == "ro" ||
-cols[j][i] == "sr" ||
-cols[j][i] == "te" ||
-cols[j][i] == "tg" ||
-cols[j][i] == "tr" ||
-cols[j][i] == "ur" ||
-cols[j][i] == "wo" ||
-cols[j][i] == "yi" ||
-cols[j][i] == "yo" ||
-(cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW" &&
-length(getEndonym(cols[j][i])) < 6) ? "\t\t " :
-cols[j][i] == "id" ? "" :
-cols[j][i] == "haw" ? " " :
-"\t "
-tt = length(cols[j][i]) == 3 ? " │" :
-(cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW") ? "  │" : ""
-r = r getDisplay(cols[j][i]) t "- " ansi("bold", cols[j][i]) tt " "
+t1 = getDisplay(cols[j][i])
+switch (cols[j][i]) {
+case "he":
+t1 = sprintf(" %-18s", t1)
+break
+case "ur":
+t1 = sprintf(" %-17s", t1)
+break
+case "hi": case "gu": case "km": case "kn":
+case "my": case "ne": case "pa": case "si":
+case "ta": case "te": case "yi":
+t1 = sprintf(" %-16s", t1)
+break
+case "ja": case "ko":
+t1 = sprintf(" %-12s", t1)
+break
+case "zh-CN": case "zh-TW":
+t1 = sprintf(" %-11s", t1)
+break
+default:
+if (length(t1) <= 15)
+t1 = sprintf(" %-15s", t1)
+}
+switch (length(cols[j][i])) {
+case 1: case 2: case 3: case 4:
+t2 = sprintf("- %s |", ansi("bold", sprintf("%4s", cols[j][i])))
+break
+case 5:
+t2 = sprintf("- %s|", ansi("bold", cols[j][i]))
+break
+case 6:
+t2 = sprintf("-%s|", ansi("bold", cols[j][i]))
+break
+case 7:
+t2 = sprintf("-%s", ansi("bold", cols[j][i]))
+break
+default:
+t2 = ansi("bold", cols[j][i])
+}
+r = r t1 t2
 } else
-r = r "\t\t       │"
+r = r sprintf("%23s│", NULLSTR)
 }
 r = r RS
 }
-r = r "└" replicate("─", 22) "┴" replicate("─", 23) "┴" replicate("─", 23) "┘"
+r = r "└" replicate("─", 23) "┴" replicate("─", 23) "┴" replicate("─", 23) "┘"
 } else {
-r = "┌" replicate("─", 22) "┬" replicate("─", 23) "┬" replicate("─", 23) "┐" RS
+r = "┌" replicate("─", 23) "┬" replicate("─", 23) "┬" replicate("─", 23) "┐" RS
 for (i = 0; i < rows; i++) {
-r = r "│ "
+r = r "│"
 for (j = 0; j < 3; j++) {
 if (cols[j][i]) {
-t = cols[j][i] == "he" ||
-cols[j][i] == "kk" ||
-cols[j][i] == "ko" ||
-cols[j][i] == "ky" ||
-cols[j][i] == "ne" ||
-cols[j][i] == "pl" ||
-cols[j][i] == "ps" ||
-cols[j][i] == "sd" ||
-cols[j][i] == "sk" ||
-cols[j][i] == "sm" ||
-cols[j][i] == "so" ||
-cols[j][i] == "te" ||
-cols[j][i] == "ug" ||
-cols[j][i] == "yo" ||
-(cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW" &&
-length(getName(cols[j][i])) < 6) ? "\t\t " :
-cols[j][i] == "fy" ||
-cols[j][i] == "gd" ||
-cols[j][i] == "ht" ? " " :
-"\t "
-tt = length(cols[j][i]) == 3 ? " │" :
-(cols[j][i] != "zh-CN" && cols[j][i] != "zh-TW") ? "  │" : ""
-name = getName(cols[j][i])
-if (cols[j][i] == "zh-CN" ||
-cols[j][i] == "zh-TW")
-name = substr(name, 1, 12) "."
-r = r name t "- " ansi("bold", cols[j][i]) tt " "
+t1 = getName(cols[j][i])
+if (length(t1) > 15)
+t1 = substr(t1, 1, 12) "..."
+t1 = sprintf(" %-15s", t1)
+switch (length(cols[j][i])) {
+case 1: case 2: case 3: case 4:
+t2 = sprintf("- %s |", ansi("bold", sprintf("%4s", cols[j][i])))
+break
+case 5:
+t2 = sprintf("- %s|", ansi("bold", cols[j][i]))
+break
+case 6:
+t2 = sprintf("-%s|", ansi("bold", cols[j][i]))
+break
+case 7:
+t2 = sprintf("-%s", ansi("bold", cols[j][i]))
+break
+default:
+t2 = ansi("bold", cols[j][i])
+}
+r = r t1 t2
 } else
-r = r "\t\t       │"
+r = r sprintf("%23s│", NULLSTR)
 }
 r = r RS
 }
-r = r "└" replicate("─", 22) "┴" replicate("─", 23) "┴" replicate("─", 23) "┘"
+r = r "└" replicate("─", 23) "┴" replicate("─", 23) "┴" replicate("─", 23) "┘"
 }
 return r
 }
@@ -2494,6 +2539,44 @@ returnAST[key] = token
 }
 }
 }
+function parseJson(returnAST, tokens,
+arrayStartTokens, arrayEndTokens,
+objectStartTokens, objectEndTokens,
+commas, colons,
+flag, i, j, key, name, p, stack, token) {
+if (!arrayStartTokens[0])  arrayStartTokens[0]  = "["
+if (!arrayEndTokens[0])    arrayEndTokens[0]    = "]"
+if (!objectStartTokens[0]) objectStartTokens[0] = "{"
+if (!objectEndTokens[0])   objectEndTokens[0]   = "}"
+if (!commas[0])            commas[0]            = ","
+if (!colons[0])            colons[0]            = ":"
+stack[p = 0] = 0
+flag = 0
+for (i = 0; i < length(tokens); i++) {
+token = tokens[i]
+if (belongsTo(token, arrayStartTokens))
+stack[++p] = 0
+else if (belongsTo(token, objectStartTokens))
+stack[++p] = NULLSTR
+else if (belongsTo(token, objectEndTokens) ||
+belongsTo(token, arrayEndTokens))
+--p
+else if (belongsTo(token, commas)) {
+if (isnum(stack[p]))
+stack[p]++
+} else if (belongsTo(token, colons)) {
+flag = 1
+} else if (isnum(stack[p]) || flag) {
+key = stack[0]
+for (j = 1; j <= p; j++)
+key = key SUBSEP stack[j]
+returnAST[key] = token
+flag = 0
+} else {
+stack[p] = unparameterize(token)
+}
+}
+}
 function parseList(returnAST, tokens,
 leftBrackets,
 rightBrackets,
@@ -2658,6 +2741,28 @@ setRandomTheme()
 else
 setDefaultTheme()
 }
+function provides(engineName) {
+Translator[tolower(engineName)] = TRUE
+}
+function engineMethod(methodName,    engine, translator) {
+if (!Translator[Option["engine"]]) {
+engine = tolower(Option["engine"])
+if (!Translator[engine])
+for (translator in Translator)
+if (Translator[translator] &&
+translator ~ "^"engine) {
+engine = translator
+break
+}
+if (!Translator[engine]) {
+e("[ERROR] Translator not found: " Option["engine"] "\n"\
+"        Run '-list-engines / -S' to see a list of available engines.")
+exit 1
+}
+Option["engine"] = engine
+}
+return Option["engine"] methodName
+}
 function initAudioPlayer() {
 AudioPlayer = !system("mplayer" SUPOUT SUPERR) ?
 "mplayer" :
@@ -2684,9 +2789,7 @@ Pager = !system("less -V" SUPOUT SUPERR) ?
 ""))
 }
 function initHttpService() {
-HttpProtocol = "http://"
-HttpHost = "translate.google.com"
-HttpPort = 80
+_Init()
 if (Option["proxy"]) {
 match(Option["proxy"], /^(http:\/*)?([^\/]*):([^\/:]*)/, HttpProxySpec)
 HttpService = "/inet/tcp/0/" HttpProxySpec[2] "/" HttpProxySpec[3]
@@ -2704,20 +2807,20 @@ text = gensub(/ ([.,;:?!"])/, "\\1", "g", text)
 text = gensub(/(["]) /, "\\1", "g", text)
 return text
 }
-function getResponse(text, sl, tl, hl,    content, header, url) {
-url = HttpPathPrefix "/translate_a/single?client=t"\
-"&ie=UTF-8&oe=UTF-8"\
-"&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at"\
-"&sl=" sl "&tl=" tl "&hl=" hl\
-"&tk=" genTK(text) "&q=" preprocess(text)
+function getResponse(text, sl, tl, hl,    content, header, isBody, url) {
+url = _RequestUrl(text, sl, tl, hl)
 header = "GET " url " HTTP/1.1\n"\
 "Host: " HttpHost "\n"\
 "Connection: close\n"
 if (Option["user-agent"])
 header = header "User-Agent: " Option["user-agent"] "\n"
+content = NULLSTR; isBody = 0
 print header |& HttpService
 while ((HttpService |& getline) > 0) {
-if ($0 ~ /^\[.*\]/) content = $0
+if (isBody)
+content = content ? content "\n" $0 : $0
+else if (length($0) <= 1)
+isBody = 1
 l(sprintf("%4s bytes > %s", length($0), $0))
 }
 close(HttpService)
@@ -2730,11 +2833,173 @@ else
 print string > Option["output"]
 }
 function play(text, tl,    url) {
-url = HttpProtocol HttpHost "/translate_tts?ie=UTF-8&client=t"\
-"&tl=" tl "&tk=" genTK(text) "&q=" preprocess(text)
+url = _TTSUrl(text, tl)
 system(Option["player"] " " parameterize(url) SUPOUT SUPERR)
 }
 function getTranslation(text, sl, tl, hl,
+isVerbose, toSpeech, returnPlaylist, returnIl) {
+return _Translate(text, sl, tl, hl,
+isVerbose, toSpeech, returnPlaylist, returnIl)
+}
+function fileTranslation(uri,    group, temp1, temp2) {
+temp1 = Option["input"]
+temp2 = Option["verbose"]
+match(uri, /^file:\/\/(.*)/, group)
+Option["input"] = group[1]
+Option["verbose"] = 0
+translateMain()
+Option["input"] = temp1
+Option["verbose"] = temp2
+}
+function webTranslation(uri, sl, tl, hl) {
+system(Option["browser"] " "\
+parameterize(_WebTranslateUrl(uri, sl, tl, hl)) "&")
+}
+function translate(text, inline,
+i, j, playlist, il, saveSortedIn) {
+if (!getCode(Option["hl"])) {
+w("[WARNING] Unknown language code: " Option["hl"] ", fallback to English: en")
+Option["hl"] = "en"
+} else if (isRTL(Option["hl"])) {
+if (!FriBidi)
+w("[WARNING] " getName(Option["hl"]) " is a right-to-left language, but FriBidi is not found.")
+}
+if (!getCode(Option["sl"])) {
+w("[WARNING] Unknown source language code: " Option["sl"])
+} else if (isRTL(Option["sl"])) {
+if (!FriBidi)
+w("[WARNING] " getName(Option["sl"]) " is a right-to-left language, but FriBidi is not found.")
+}
+saveSortedIn = PROCINFO["sorted_in"]
+PROCINFO["sorted_in"] = "@ind_num_asc"
+for (i in Option["tl"]) {
+if (!Option["interactive"])
+if (Option["verbose"] && i > 1)
+p(prettify("target-seperator", replicate(Option["chr-target-seperator"], Option["width"])))
+if (inline &&
+startsWithAny(text, UriSchemes) == "file://") {
+fileTranslation(text)
+} else if (inline &&
+startsWithAny(text, UriSchemes) == "http://" ||
+startsWithAny(text, UriSchemes) == "https://") {
+webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
+} else {
+p(getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist, il))
+if (Option["play"] == 1) {
+if (Option["player"])
+for (j in playlist)
+play(playlist[j]["text"], playlist[j]["tl"])
+else if (SpeechSynthesizer)
+for (j in playlist)
+print playlist[j]["text"] | SpeechSynthesizer
+} else if (Option["play"] == 2) {
+if (Option["player"])
+play(text, il[0])
+else if (SpeechSynthesizer)
+print text | SpeechSynthesizer
+}
+}
+}
+PROCINFO["sorted_in"] = saveSortedIn
+}
+function translateMain(    i, line) {
+if (Option["interactive"])
+prompt()
+if (Option["input"] == STDIN || fileExists(Option["input"])) {
+i = 0
+while (getline line < Option["input"])
+if (line) {
+if (!Option["interactive"])
+if (Option["verbose"] && i++ > 0)
+p(prettify("source-seperator",
+replicate(Option["chr-source-seperator"],
+Option["width"])))
+if (Option["interactive"])
+repl(line)
+else
+translate(line)
+}
+} else
+e("[ERROR] File not found: " Option["input"])
+}
+function _Init(    vm) {
+vm = engineMethod("Init")
+return @vm()
+}
+function _RequestUrl(text, sl, tl, hl,    vm) {
+vm = engineMethod("RequestUrl")
+return @vm(text, sl, tl, hl)
+}
+function _TTSUrl(text, tl,    vm) {
+vm = engineMethod("TTSUrl")
+return @vm(text, tl)
+}
+function _WebTranslateUrl(uri, sl, tl, hl,    vm) {
+vm = engineMethod("WebTranslateUrl")
+return @vm(uri, sl, tl, hl)
+}
+function _Translate(text, sl, tl, hl,
+isVerbose, toSpeech, returnPlaylist, returnIl,
+vm) {
+vm = engineMethod("Translate")
+return @vm(text, sl, tl, hl,
+isVerbose, toSpeech, returnPlaylist, returnIl)
+}
+BEGIN { provides("google") }
+function genRL(a, x,
+b, c, d, i, y) {
+tokenize(y, x)
+parseList(b, y)
+i = SUBSEP 0
+for (c = 0; c < length(b[i]) - 2; c += 3) {
+d = b[i][c + 2]
+d = d >= 97 ? d - 87 :
+d - 48
+d = b[i][c + 1] == 43 ? rshift(a, d) : lshift(a, d)
+a = b[i][c] == 43 ? and(a + d, 4294967295) : xor(a, d)
+}
+return a
+}
+function genTK(text,
+a, d, dLen, e, tkk, ub, vb) {
+if (TK[text]) return TK[text]
+tkk = systime() / 3600
+ub = "[43,45,51,94,43,98,43,45,102]"
+vb = "[43,45,97,94,43,54]"
+dLen = dump(text, d)
+a = tkk
+for (e = 1; e <= dLen; e++)
+a = genRL(a + d[e], vb)
+a = genRL(a, ub)
+0 > a && (a = and(a, 2147483647) + 2147483648)
+a %= 1e6
+TK[text] = a "." xor(a, tkk)
+l(text, "text")
+l(tkk, "tkk")
+l(TK[text], "tk")
+return TK[text]
+}
+function googleInit() {
+HttpProtocol = "http://"
+HttpHost = "translate.google.com"
+HttpPort = 80
+}
+function googleRequestUrl(text, sl, tl, hl) {
+return HttpPathPrefix "/translate_a/single?client=t"\
+"&ie=UTF-8&oe=UTF-8"\
+"&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at"\
+"&sl=" sl "&tl=" tl "&hl=" hl\
+"&tk=" genTK(text) "&q=" preprocess(text)
+}
+function googleTTSUrl(text, tl) {
+return HttpProtocol HttpHost "/translate_tts?ie=UTF-8&client=t"\
+"&tl=" tl "&tk=" genTK(text) "&q=" preprocess(text)
+}
+function googleWebTranslateUrl(uri, sl, tl, hl) {
+return "https://translate.google.com/translate?"\
+"hl=" hl "&sl=" sl "&tl=" tl "&u=" uri
+}
+function googleTranslate(text, sl, tl, hl,
 isVerbose, toSpeech, returnPlaylist, returnIl,
 r,
 content, tokens, ast,
@@ -3051,86 +3316,283 @@ returnPlaylist[2]["tl"] = tl
 }
 return r
 }
-function fileTranslation(uri,    group, temp1, temp2) {
-temp1 = Option["input"]
-temp2 = Option["verbose"]
-match(uri, /^file:\/\/(.*)/, group)
-Option["input"] = group[1]
-Option["verbose"] = 0
-translateMain()
-Option["input"] = temp1
-Option["verbose"] = temp2
-}
-function webTranslation(uri, sl, tl, hl) {
-system(Option["browser"] " " parameterize("https://translate.google.com/translate?"\
-"hl=" hl "&sl=" sl "&tl=" tl "&u=" uri) "&")
-}
-function translate(text, inline,
-i, j, playlist, il, saveSortedIn) {
-if (!getCode(Option["hl"])) {
-w("[WARNING] Unknown language code: " Option["hl"] ", fallback to English: en")
-Option["hl"] = "en"
-} else if (isRTL(Option["hl"])) {
-if (!FriBidi)
-w("[WARNING] " getName(Option["hl"]) " is a right-to-left language, but FriBidi is not found.")
-}
-if (!getCode(Option["sl"])) {
-w("[WARNING] Unknown source language code: " Option["sl"])
-} else if (isRTL(Option["sl"])) {
-if (!FriBidi)
-w("[WARNING] " getName(Option["sl"]) " is a right-to-left language, but FriBidi is not found.")
-}
-saveSortedIn = PROCINFO["sorted_in"]
-PROCINFO["sorted_in"] = "@ind_num_asc"
-for (i in Option["tl"]) {
-if (!Option["interactive"])
-if (Option["verbose"] && i > 1)
-p(prettify("target-seperator", replicate(Option["chr-target-seperator"], Option["width"])))
-if (inline &&
-startsWithAny(text, UriSchemes) == "file://") {
-fileTranslation(text)
-} else if (inline &&
-startsWithAny(text, UriSchemes) == "http://" ||
-startsWithAny(text, UriSchemes) == "https://") {
-webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
+BEGIN { provides("bing") }
+function genRTTAppId(    content, group, header, isBody) {
+HttpProtocol = "http://"
+HttpHost = "www.bing.com"
+HttpPort = 80
+LandingPage = "/translator/dynamic/226010/js/LandingPage.js"
+if (Option["proxy"]) {
+match(Option["proxy"], /^(http:\/*)?([^\/]*):([^\/:]*)/, HttpProxySpec)
+HttpService = "/inet/tcp/0/" HttpProxySpec[2] "/" HttpProxySpec[3]
+HttpPathPrefix = HttpProtocol HttpHost
 } else {
-p(getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist, il))
-if (Option["play"] == 1) {
-if (Option["player"])
-for (j in playlist)
-play(playlist[j]["text"], playlist[j]["tl"])
-else if (SpeechSynthesizer)
-for (j in playlist)
-print playlist[j]["text"] | SpeechSynthesizer
-} else if (Option["play"] == 2) {
-if (Option["player"])
-play(text, il[0])
-else if (SpeechSynthesizer)
-print text | SpeechSynthesizer
+HttpService = "/inet/tcp/0/" HttpHost "/" HttpPort
+HttpPathPrefix = ""
+}
+header = "GET " LandingPage " HTTP/1.1\n"\
+"Host: " HttpHost "\n"\
+"Connection: close\n"
+if (Option["user-agent"])
+header = header "User-Agent: " Option["user-agent"] "\n"
+content = NULLSTR; isBody = 0
+print header |& HttpService
+while ((HttpService |& getline) > 0) {
+if (isBody)
+content = content ? content "\n" $0 : $0
+else if (length($0) <= 1)
+isBody = 1
+l(sprintf("%4s bytes > %s", length($0), length($0) < 1024 ? $0 : "..."))
+}
+close(HttpService)
+match(content, /rttAppId:"([^"]+)"/, group)
+if (group[1]) {
+RTTAppId = group[1]
+} else {
+e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
+exit 1
 }
 }
+function bingInit() {
+genRTTAppId()
+HttpProtocol = "http://"
+HttpHost = "api.microsofttranslator.com"
+HttpPort = 80
 }
-PROCINFO["sorted_in"] = saveSortedIn
+function bingRequestUrl(text, sl, tl, hl) {
+if (sl == "auto") sl = NULLSTR
+return HttpPathPrefix "/v2/ajax.svc/TranslateArray2?"\
+"appId="  preprocess(parameterize(RTTAppId, "\""))\
+"&from="  preprocess(parameterize(sl, "\""))\
+"&to="    preprocess(parameterize(tl, "\""))\
+"&texts=" preprocess("[" parameterize(text, "\"") "]")
 }
-function translateMain(    i, line) {
-if (Option["interactive"])
-prompt()
-if (Option["input"] == STDIN || fileExists(Option["input"])) {
-i = 0
-while (getline line < Option["input"])
-if (line) {
-if (!Option["interactive"])
-if (Option["verbose"] && i++ > 0)
-p(prettify("source-seperator",
-replicate(Option["chr-source-seperator"],
-Option["width"])))
-if (Option["interactive"])
-repl(line)
-else
-translate(line)
+function bingTTSUrl(text, tl,    narrator) {
+narrator = Option["narrator"] ~ /^[AFaf]/ ? "female" : "male"
+return HttpProtocol HttpHost "/v2/http.svc/speak?" "appId=" RTTAppId\
+"&language=" tl "&text=" preprocess(text)\
+"&format=audio/mp3" "&options=MinSize|" narrator
 }
-} else
-e("[ERROR] File not found: " Option["input"])
+function bingWebTranslateUrl(uri, sl, tl, hl) {
+return "http://www.microsofttranslator.com/bv.aspx?"\
+"from=" sl "&to=" tl "&a=" uri
+}
+function bingTranslate(text, sl, tl, hl,
+isVerbose, toSpeech, returnPlaylist, returnIl,
+r,
+content, tokens, ast,
+_sl, _tl, _hl, il,
+translation,
+wShowOriginal, wShowTranslation, wShowLanguages,
+group, temp) {
+if (!getCode(tl)) {
+w("[WARNING] Unknown target language code: " tl)
+} else if (isRTL(tl)) {
+if (!FriBidi)
+w("[WARNING] " getName(tl) " is a right-to-left language, but FriBidi is not found.")
+}
+_sl = getCode(sl); if (!_sl) _sl = sl
+_tl = getCode(tl); if (!_tl) _tl = tl
+_hl = getCode(hl); if (!_hl) _hl = hl
+content = getResponse(text, _sl, _tl, _hl)
+match(content, /(\[.*\])$/, group)
+if (!group[0]) {
+match(content, /"(.*)"$/, group)
+gsub(/\\u000d/, "\r", group[1])
+gsub(/\\u000a/, "\n", group[1])
+e("[ERROR] " group[1])
+ExitCode = 1
+return
+}
+content = group[1]
+tokenize(tokens, content)
+parseJson(ast, tokens)
+l(content, "content", 1, 1)
+l(tokens, "tokens", 1, 0, 1)
+l(ast, "ast")
+if (!isarray(ast) || !anything(ast)) {
+e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
+ExitCode = 1
+return
+}
+translation = unparameterize(ast[0 SUBSEP 0 SUBSEP "TranslatedText"])
+returnIl[0] = il = unparameterize(ast[0 SUBSEP 0 SUBSEP "From"])
+if (Option["verbose"] < 0)
+return getList(il)
+if (!isVerbose) {
+r = translation
+} else {
+wShowOriginal = Option["show-original"]
+wShowTranslation = Option["show-translation"]
+wShowLanguages = Option["show-languages"]
+if (wShowOriginal) {
+if (r) r = r RS RS
+r = r m("-- display original text")
+r = r prettify("original", s(text, il))
+}
+if (wShowTranslation) {
+if (r) r = r RS RS
+r = r m("-- display major translation")
+r = r prettify("translation", s(translation, tl))
+}
+if (wShowLanguages) {
+if (r) r = r RS RS
+r = r m("-- display source language -> target language")
+temp = Option["fmt-languages"]
+if (!temp) temp = "[ %s -> %t ]"
+split(temp, group, /(%s|%S|%t|%T)/)
+r = r prettify("languages", group[1])
+if (temp ~ /%s/)
+r = r prettify("languages-sl", getDisplay(il))
+if (temp ~ /%S/)
+r = r prettify("languages-sl", getName(il))
+r = r prettify("languages", group[2])
+if (temp ~ /%t/)
+r = r prettify("languages-tl", getDisplay(tl))
+if (temp ~ /%T/)
+r = r prettify("languages-tl", getName(tl))
+r = r prettify("languages", group[3])
+}
+}
+if (toSpeech) {
+returnPlaylist[0]["text"] = translation
+returnPlaylist[0]["tl"] = tl
+}
+return r
+}
+BEGIN { provides("yandex") }
+function genSID(    content, group) {
+content = curl("http://translate.yandex.com")
+match(content, /SID:[[:space:]]*'([^']+)'/, group)
+if (group[1]) {
+SID = group[1]
+} else {
+e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
+exit 1
+}
+}
+function yandexInit() {
+genSID()
+YandexWebTranslate = "z5h64q92x9.net"
+HttpProtocol = "http://"
+HttpHost = "translate.yandex.net"
+HttpPort = 80
+}
+function yandexRequestUrl(text, sl, tl, hl,    group) {
+split(sl, group, "-"); sl = group[1]
+split(tl, group, "-"); tl = group[1]
+return HttpPathPrefix "/api/v1/tr.json/translate?"\
+"id=" SID "&srv=tr-text"\
+"&text=" preprocess(text) "&lang=" (sl == "auto" ? tl : sl "-" tl)
+}
+function yandexTTSUrl(text, tl) {
+switch (tl) {
+case "ar": tl = "ar_AE"; break
+case "cs": tl = "cs_CZ"; break
+case "da": tl = "da_DK"; break
+case "de": tl = "de_DE"; break
+case "el": tl = "el_GR"; break
+case "en": tl = "en_GB"; break
+case "es": tl = "es_ES"; break
+case "fi": tl = "fi_FI"; break
+case "fr": tl = "fr_FR"; break
+case "it": tl = "it_IT"; break
+case "nl": tl = "nl_NL"; break
+case "no": tl = "no_NO"; break
+case "pl": tl = "pl_PL"; break
+case "pt": tl = "pt_PT"; break
+case "ru": tl = "ru_RU"; break
+case "sv": tl = "sv_SE"; break
+case "tr": tl = "tr_TR"; break
+default: tl = NULLSTR
+}
+return HttpProtocol "tts.voicetech.yandex.net" "/tts?"\
+"text=" preprocess(text) (tl ? "&lang=" tl : tl)\
+"&format=mp3" "&quality=hi"
+}
+function yandexWebTranslateUrl(uri, sl, tl, hl) {
+gsub(/:\/\//, "/", uri)
+return HttpProtocol YandexWebTranslate "/proxy_u/"\
+(sl == "auto" ? tl : sl "-" tl)"/" uri
+}
+function yandexTranslate(text, sl, tl, hl,
+isVerbose, toSpeech, returnPlaylist, returnIl,
+r,
+content, tokens, ast,
+_sl, _tl, _hl, il,
+translation,
+wShowOriginal, wShowTranslation, wShowLanguages,
+group, temp) {
+if (!getCode(tl)) {
+w("[WARNING] Unknown target language code: " tl)
+} else if (isRTL(tl)) {
+if (!FriBidi)
+w("[WARNING] " getName(tl) " is a right-to-left language, but FriBidi is not found.")
+}
+_sl = getCode(sl); if (!_sl) _sl = sl
+_tl = getCode(tl); if (!_tl) _tl = tl
+_hl = getCode(hl); if (!_hl) _hl = hl
+content = getResponse(text, _sl, _tl, _hl)
+tokenize(tokens, content)
+parseJson(ast, tokens)
+l(content, "content", 1, 1)
+l(tokens, "tokens", 1, 0, 1)
+l(ast, "ast")
+if (!isarray(ast) || !anything(ast)) {
+e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
+ExitCode = 1
+return
+}
+if (ast[0 SUBSEP "code"] != "200") {
+e("[ERROR] " unparameterize(ast[0 SUBSEP "message"]))
+ExitCode = 1
+return
+}
+translation = unparameterize(ast[0 SUBSEP "text" SUBSEP 0])
+split(unparameterize(ast[0 SUBSEP "lang"]), group, "-")
+returnIl[0] = il = group[1]
+if (Option["verbose"] < 0)
+return getList(il)
+if (!isVerbose) {
+r = translation
+} else {
+wShowOriginal = Option["show-original"]
+wShowTranslation = Option["show-translation"]
+wShowLanguages = Option["show-languages"]
+if (wShowOriginal) {
+if (r) r = r RS RS
+r = r m("-- display original text")
+r = r prettify("original", s(text, il))
+}
+if (wShowTranslation) {
+if (r) r = r RS RS
+r = r m("-- display major translation")
+r = r prettify("translation", s(translation, tl))
+}
+if (wShowLanguages) {
+if (r) r = r RS RS
+r = r m("-- display source language -> target language")
+temp = Option["fmt-languages"]
+if (!temp) temp = "[ %s -> %t ]"
+split(temp, group, /(%s|%S|%t|%T)/)
+r = r prettify("languages", group[1])
+if (temp ~ /%s/)
+r = r prettify("languages-sl", getDisplay(il))
+if (temp ~ /%S/)
+r = r prettify("languages-sl", getName(il))
+r = r prettify("languages", group[2])
+if (temp ~ /%t/)
+r = r prettify("languages-tl", getDisplay(tl))
+if (temp ~ /%T/)
+r = r prettify("languages-tl", getName(tl))
+r = r prettify("languages", group[3])
+}
+}
+if (toSpeech) {
+returnPlaylist[0]["text"] = translation
+returnPlaylist[0]["tl"] = tl
+}
+return r
 }
 function loadOptions(script,    i, j, tokens, name, value) {
 tokenize(tokens, script)
@@ -3272,7 +3734,7 @@ gsub(/%\?/, temp, p)
 }
 printf(prettify("prompt", p), getDisplay(Option["sl"])) > STDERR
 }
-function repl(line,    command, group, i, words) {
+function repl(line,    command, group, name, i, value, words) {
 split(line, words, " ")
 command = words[1]
 if (command ~ /^:(q|quit)$/) {
@@ -3284,8 +3746,12 @@ Option[name] = value
 } else if (command ~ /^:show$/) {
 name = words[2]
 print prettify("welcome-submessage", toString(Option[name], 1, 0, 1))
+} else if (command ~ /^:engine$/) {
+value = words[2]
+Option["engine"] = value
+initHttpService()
 } else {
-match(command, /^[{(\[]?([[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?)?)[})\]]?$/, group)
+match(command, /^[{(\[]?([[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)[})\]]?$/, group)
 if (RSTART) {
 if (group[1]) Option["sl"] = group[1]
 if (group[4]) split(group[4], Option["tl"], "+")
@@ -3308,6 +3774,7 @@ initUserLang()
 RS = "\n"
 ExitCode = 0
 Option["debug"] = 0
+Option["engine"] = "google"
 Option["verbose"] = 1
 Option["show-original"] = 1
 Option["show-original-phonetics"] = 1
@@ -3323,12 +3790,16 @@ Option["indent"] = 4
 Option["no-ansi"] = 0
 Option["theme"] = "default"
 Option["play"] = 0
+Option["narrator"] = "default"
 Option["player"] = ENVIRON["PLAYER"]
 Option["view"] = 0
 Option["pager"] = ENVIRON["PAGER"]
 Option["browser"] = ENVIRON["BROWSER"]
 Option["proxy"] = ENVIRON["HTTP_PROXY"] ? ENVIRON["HTTP_PROXY"] : ENVIRON["http_proxy"]
-Option["user-agent"] = ENVIRON["USER_AGENT"] ? ENVIRON["USER_AGENT"] : "Mozilla/5.0 (X11; Linux x86_64; rv:40.0) Gecko/20100101 Firefox/40.0"
+Option["user-agent"] = ENVIRON["USER_AGENT"] ? ENVIRON["USER_AGENT"] :
+"Mozilla/5.0 (X11; Linux x86_64) "\
+"AppleWebKit/602.1 (KHTML, like Gecko) Version/8.0 "\
+"Safari/602.1 Epiphany/3.18.2"
 Option["no-rlwrap"] = 0
 Option["interactive"] = 0
 Option["emacs"] = 0
@@ -3444,6 +3915,11 @@ if (group[3]) split(group[3], Option["tl"], "+")
 split(ARGV[++pos], Option["tl"], "+")
 continue
 }
+match(ARGV[pos], /^--?(S|list-e(n(g(i(n(es?)?)?)?)?)?)$/)
+if (RSTART) {
+InfoOnly = "list-engines"
+continue
+}
 match(ARGV[pos], /^--?(U|upgrade)$/)
 if (RSTART) {
 InfoOnly = "upgrade"
@@ -3452,6 +3928,18 @@ continue
 match(ARGV[pos], /^--?(N|nothing)$/)
 if (RSTART) {
 InfoOnly = "nothing"
+continue
+}
+match(ARGV[pos], /^--?(e|engine)(=(.*)?)?$/, group)
+if (RSTART) {
+Option["engine"] = group[2] ?
+(group[3] ? group[3] : Option["engine"]) :
+ARGV[++pos]
+continue
+}
+match(ARGV[pos], /^\/(.*)$/, group)
+if (RSTART) {
+Option["engine"] = group[1]
 continue
 }
 match(ARGV[pos], /^--?verbose$/)
@@ -3562,6 +4050,14 @@ if (RSTART) {
 Option["play"] = 2
 continue
 }
+match(ARGV[pos], /^--?(n|narrator)(=(.*)?)?$/, group)
+if (RSTART) {
+if (!Option["play"]) Option["play"] = 1
+Option["narrator"] = group[2] ?
+(group[3] ? group[3] : Option["narrator"]) :
+ARGV[++pos]
+continue
+}
 match(ARGV[pos], /^--?player(=(.*)?)?$/, group)
 if (RSTART) {
 if (!Option["play"]) Option["play"] = 1
@@ -3662,14 +4158,14 @@ Option["hl"] = group[4] ?
 ARGV[++pos]
 continue
 }
-match(ARGV[pos], /^--?s(o(u(r(ce?)?)?)?|l)?(=(.*)?)?$/, group)
+match(ARGV[pos], /^--?(s(o(u(r(ce?)?)?)?|l)?|f|from)(=(.*)?)?$/, group)
 if (RSTART) {
-Option["sl"] = group[5] ?
-(group[6] ? group[6] : Option["sl"]) :
+Option["sl"] = group[6] ?
+(group[7] ? group[7] : Option["sl"]) :
 ARGV[++pos]
 continue
 }
-match(ARGV[pos], /^--?t(a(r(g(et?)?)?)?|l)?(=(.*)?)?$/, group)
+match(ARGV[pos], /^--?t(a(r(g(et?)?)?)?|l|o)?(=(.*)?)?$/, group)
 if (RSTART) {
 if (group[5]) {
 if (group[6]) split(group[6], Option["tl"], "+")
@@ -3677,7 +4173,7 @@ if (group[6]) split(group[6], Option["tl"], "+")
 split(ARGV[++pos], Option["tl"], "+")
 continue
 }
-match(ARGV[pos], /^[{(\[]?([[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]])?)?)[})\]]?$/, group)
+match(ARGV[pos], /^[{(\[]?([[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)[})\]]?$/, group)
 if (RSTART) {
 if (group[1]) Option["sl"] = group[1]
 if (group[4]) split(group[4], Option["tl"], "+")
@@ -3724,6 +4220,10 @@ exit ExitCode
 case "list":
 print getList(Option["tl"])
 exit ExitCode
+case "list-engines":
+for (translator in Translator)
+print (Option["engine"] == translator ? "* " : "  ") translator
+exit ExitCode
 case "upgrade":
 upgrade()
 exit ExitCode
@@ -3754,20 +4254,23 @@ read -r -d '' TRANS_MANPAGE << 'EOF'
 .\" Automatically generated by Pandoc 1.15.2.1
 .\"
 .hy
-.TH "TRANS" "1" "2015\-12\-18" "0.9.2.1" ""
+.TH "TRANS" "1" "2016\-01\-01" "0.9.3" ""
 .SH NAME
 .PP
-trans \- Google Translate served as a command\-line tool
+trans \- Command\-line translator using Google Translate, Bing
+Translator, Yandex.Translate, etc.
 .SH SYNOPSIS
 .PP
 \f[B]trans\f[] [\f[I]OPTIONS\f[]] [\f[I]SOURCE\f[]]:[\f[I]TARGETS\f[]]
 [\f[I]TEXT\f[]]...
 .SH DESCRIPTION
 .PP
-This tool uses Google Translate to translate text into any language.
+This tool translates text into any language from the command\-line,
+using a translation engine such as Google Translate, Bing Translator and
+Yandex.Translate.
 .PP
-Each command\-line argument which is not a valid option is treated as
-\f[I]TEXT\f[] to be translated.
+Each argument which is not a valid option is treated as \f[I]TEXT\f[] to
+be translated.
 .PP
 If neither \f[I]TEXT\f[] nor the input file is specified by
 command\-line arguments, the program will read and translate from
@@ -3810,8 +4313,20 @@ sign "+".
 .RS
 .RE
 .TP
+.B \f[B]\-S\f[], \f[B]\-list\-engines\f[]
+List available translation engines and exit.
+.RS
+.RE
+.TP
 .B \f[B]\-U\f[], \f[B]\-upgrade\f[]
 Check for upgrade of this program.
+.RS
+.RE
+.SS Translator options
+.TP
+.B \f[B]\-e\f[] \f[I]ENGINE\f[], \f[B]\-engine\f[] \f[I]ENGINE\f[]
+Specify the translation engine to use.
+(default: google)
 .RS
 .RE
 .SS Display options
@@ -3952,6 +4467,13 @@ Listen to the original text.
 .RS
 .RE
 .TP
+.B \f[B]\-n\f[] \f[I]VOICE\f[], \f[B]\-narrator\f[] \f[I]VOICE\f[]
+Specify the narrator, and listen to the translation.
+.RS
+.PP
+Common values for this option are \f[B]male\f[] and \f[B]female\f[].
+.RE
+.TP
 .B \f[B]\-player\f[] \f[I]PROGRAM\f[]
 Specify the audio player to use, and listen to the translation.
 .RS
@@ -4076,7 +4598,7 @@ $\f[B]LANGUAGE\f[], $\f[B]LC_ALL\f[], $\f[B]LANG\f[] and
 $\f[B]HOME_LANG\f[].
 .RE
 .TP
-.B \f[B]\-s\f[] \f[I]CODE\f[], \f[B]\-sl\f[] \f[I]CODE\f[], \f[B]\-source\f[] \f[I]CODE\f[]
+.B \f[B]\-s\f[] \f[I]CODE\f[], \f[B]\-sl\f[] \f[I]CODE\f[], \f[B]\-source\f[] \f[I]CODE\f[], \f[B]\-from\f[] \f[I]CODE\f[]
 Specify the source language (the language of original text).
 .RS
 .PP
@@ -4088,7 +4610,7 @@ This option overrides the setting of environment variable
 $\f[B]SOURCE_LANG\f[].
 .RE
 .TP
-.B \f[B]\-t\f[] \f[I]CODES\f[], \f[B]\-tl\f[] \f[I]CODE\f[], \f[B]\-target\f[] \f[I]CODES\f[]
+.B \f[B]\-t\f[] \f[I]CODES\f[], \f[B]\-tl\f[] \f[I]CODE\f[], \f[B]\-target\f[] \f[I]CODES\f[], \f[B]\-to\f[] \f[I]CODES\f[]
 Specify the target language(s) (the language(s) of translated text).
 When specifying two or more language codes, concatenate them by plus
 sign "+".

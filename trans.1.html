@@ -5,8 +5,8 @@
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta name="author" content="Mort Yao soi@mort.ninja">
-      <meta name="dcterms.date" content="2015-12-18">
-    <title>TRANS(1) 0.9.2.1</title>
+      <meta name="dcterms.date" content="2016-01-01">
+    <title>TRANS(1) 0.9.3</title>
   <style type='text/css' media='all'>
   /* style: man */
   body#manpage {margin:0}
@@ -87,18 +87,18 @@
     </div>
 
   <ol class='man-decor man-head man head'>
-    <li class='tl'>TRANS(1) 0.9.2.1</li>
+    <li class='tl'>TRANS(1) 0.9.3</li>
     <li class='tc'></li>
     <li class='tr'></li>
   </ol>
 
   <h1 id="name">NAME</h1>
-  <p>trans - Google Translate served as a command-line tool</p>
+  <p>trans - Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc.</p>
   <h1 id="synopsis">SYNOPSIS</h1>
   <p><strong>trans</strong> [<em>OPTIONS</em>] [<em>SOURCE</em>]:[<em>TARGETS</em>] [<em>TEXT</em>]...</p>
   <h1 id="description">DESCRIPTION</h1>
-  <p>This tool uses Google Translate to translate text into any language.</p>
-  <p>Each command-line argument which is not a valid option is treated as <em>TEXT</em> to be translated.</p>
+  <p>This tool translates text into any language from the command-line, using a translation engine such as Google Translate, Bing Translator and Yandex.Translate.</p>
+  <p>Each argument which is not a valid option is treated as <em>TEXT</em> to be translated.</p>
   <p>If neither <em>TEXT</em> nor the input file is specified by command-line arguments, the program will read and translate from standard input.</p>
   <h1 id="options">OPTIONS</h1>
   <h2 id="information-options">Information options</h2>
@@ -121,8 +121,17 @@
   <dt><strong>-L</strong> <em>CODES</em>, <strong>-list</strong> <em>CODES</em></dt>
   <dd>Print details of languages and exit. When specifying two or more language codes, concatenate them by plus sign &quot;+&quot;.
   </dd>
+  <dt><strong>-S</strong>, <strong>-list-engines</strong></dt>
+  <dd>List available translation engines and exit.
+  </dd>
   <dt><strong>-U</strong>, <strong>-upgrade</strong></dt>
   <dd>Check for upgrade of this program.
+  </dd>
+  </dl>
+  <h2 id="translator-options">Translator options</h2>
+  <dl>
+  <dt><strong>-e</strong> <em>ENGINE</em>, <strong>-engine</strong> <em>ENGINE</em></dt>
+  <dd>Specify the translation engine to use. (default: google)
   </dd>
   </dl>
   <h2 id="display-options">Display options</h2>
@@ -198,6 +207,10 @@
   <dt><strong>-speak</strong></dt>
   <dd>Listen to the original text.
   </dd>
+  <dt><strong>-n</strong> <em>VOICE</em>, <strong>-narrator</strong> <em>VOICE</em></dt>
+  <dd><p>Specify the narrator, and listen to the translation.</p>
+  <p>Common values for this option are <strong>male</strong> and <strong>female</strong>.</p>
+  </dd>
   <dt><strong>-player</strong> <em>PROGRAM</em></dt>
   <dd><p>Specify the audio player to use, and listen to the translation.</p>
   <p>Option <strong>-play</strong> will try to use <strong>mplayer</strong>, <strong>mpv</strong> or <strong>mpg123</strong> by default, since these players are known to work for streaming URLs. Not all command-line audio players can work this way. Use this option only when you have your own preference.</p>
@@ -268,12 +281,12 @@
   <p>This option is optional. When its setting is omitted, English will be used.</p>
   <p>This option overrides the setting of environment variables $<strong>LANGUAGE</strong>, $<strong>LC_ALL</strong>, $<strong>LANG</strong> and $<strong>HOME_LANG</strong>.</p>
   </dd>
-  <dt><strong>-s</strong> <em>CODE</em>, <strong>-sl</strong> <em>CODE</em>, <strong>-source</strong> <em>CODE</em></dt>
+  <dt><strong>-s</strong> <em>CODE</em>, <strong>-sl</strong> <em>CODE</em>, <strong>-source</strong> <em>CODE</em>, <strong>-from</strong> <em>CODE</em></dt>
   <dd><p>Specify the source language (the language of original text).</p>
   <p>This option is optional. When its setting is omitted, the language of original text will be identified automatically (with a possibility of misidentification).</p>
   <p>This option overrides the setting of environment variable $<strong>SOURCE_LANG</strong>.</p>
   </dd>
-  <dt><strong>-t</strong> <em>CODES</em>, <strong>-tl</strong> <em>CODE</em>, <strong>-target</strong> <em>CODES</em></dt>
+  <dt><strong>-t</strong> <em>CODES</em>, <strong>-tl</strong> <em>CODE</em>, <strong>-target</strong> <em>CODES</em>, <strong>-to</strong> <em>CODES</em></dt>
   <dd><p>Specify the target language(s) (the language(s) of translated text). When specifying two or more language codes, concatenate them by plus sign &quot;+&quot;.</p>
   <p>This option is optional. When its setting is omitted, everything will be translated into English.</p>
   <p>This option overrides the setting of environment variables $<strong>LANGUAGE</strong>, $<strong>LC_ALL</strong>, $<strong>LANG</strong> and $<strong>TARGET_LANG</strong>.</p>
@@ -362,7 +375,7 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
     <li class='tc'></li>
-    <li class='tr'>2015-12-18</li>
+    <li class='tr'>2016-01-01</li>
   </ol>
 
   </div>
