@@ -58,8 +58,14 @@ function getHelp() {
         ins(1, ansi("bold", "-L ") ansi("underline", "CODES")           \
             ", " ansi("bold", "-list ") ansi("underline", "CODES")) RS  \
         ins(2, "Print details of languages and exit.") RS               \
+        ins(1, ansi("bold", "-S") ", " ansi("bold", "-list-engines")) RS \
+        ins(2, "List available translation engines and exit.") RS       \
         ins(1, ansi("bold", "-U") ", " ansi("bold", "-upgrade")) RS     \
         ins(2, "Check for upgrade of this program.") RS                 \
+        RS "Translator options:" RS                                     \
+        ins(1, ansi("bold", "-e ") ansi("underline", "ENGINE")          \
+            ", " ansi("bold", "-engine ") ansi("underline", "ENGINE")) RS \
+        ins(2, "Specify the translation engine to use.") RS             \
         RS "Display options:" RS                                        \
         ins(1, ansi("bold", "-verbose")) RS                             \
         ins(2, "Verbose mode. (default)") RS                            \
@@ -103,6 +109,9 @@ function getHelp() {
         ins(2, "Listen to the translation.") RS                         \
         ins(1, ansi("bold", "-speak")) RS                               \
         ins(2, "Listen to the original text.") RS                       \
+        ins(1, ansi("bold", "-n ") ansi("underline", "VOICE")           \
+            ", " ansi("bold", "-narrator ") ansi("underline", "VOICE")) RS \
+        ins(2, "Specify the narrator, and listen to the translation.") RS \
         ins(1, ansi("bold", "-player ") ansi("underline", "PROGRAM")) RS \
         ins(2, "Specify the audio player to use, and listen to the translation.") RS \
         ins(1, ansi("bold", "-no-play")) RS                             \
@@ -144,11 +153,13 @@ function getHelp() {
         ins(2, "Specify your home language.") RS                        \
         ins(1, ansi("bold", "-s ") ansi("underline", "CODE")            \
             ", " ansi("bold", "-sl ") ansi("underline", "CODE")         \
-            ", " ansi("bold", "-source ") ansi("underline", "CODE")) RS \
+            ", " ansi("bold", "-source ") ansi("underline", "CODE")     \
+            ", " ansi("bold", "-from ") ansi("underline", "CODE")) RS   \
         ins(2, "Specify the source language.") RS                       \
         ins(1, ansi("bold", "-t ") ansi("underline", "CODES")           \
             ", " ansi("bold", "-tl ") ansi("underline", "CODE")         \
-            ", " ansi("bold", "-target ") ansi("underline", "CODES")) RS \
+            ", " ansi("bold", "-target ") ansi("underline", "CODES")    \
+            ", " ansi("bold", "-to ") ansi("underline", "CODES")) RS    \
         ins(2, "Specify the target language(s), joined by '+'.") RS     \
         RS "Other options:" RS                                          \
         ins(1, ansi("bold", "-no-init")) RS                             \
