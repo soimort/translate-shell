@@ -6,7 +6,7 @@
 [![Download](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png)](http://www.soimort.org/translate-shell/trans)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/soimort/translate-shell?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-**[Translate Shell](http://www.soimort.org/translate-shell)** (formerly _Google Translate CLI_) is a command-line translator powered by **[Google Translate](https://translate.google.com/)**. It gives you easy access to Google Translate in your terminal:
+**[Translate Shell](http://www.soimort.org/translate-shell)** (formerly _Google Translate CLI_) is a command-line translator powered by **[Google Translate](https://translate.google.com/)** (default), **[Bing Translator](https://www.bing.com/translator)**, and **[Yandex.Translate](https://translate.yandex.com/)**. It gives you easy access to one of these translation engines your terminal:
 
 ```
 $ trans 'Saluton, Mondo!'
@@ -67,8 +67,11 @@ In order to be happy, the best way is to be loved by people.
 * **[GNU Bash](http://www.gnu.org/software/bash/)** or **[Zsh](http://www.zsh.org/)**
     * You may use Translate Shell from any Unix shell of your choice (bash, zsh, ksh, tcsh, fish, etc.); however, the wrapper script requires either **bash** or **zsh** installed.
 
-### Optional Dependencies
+### Recommended Dependencies
 
+These dependecies are optional, but strongly recommended for full functionality:
+
+* **[curl](http://curl.haxx.se/)** with **OpenSSL** support
 * **[GNU FriBidi](http://fribidi.org/)**: _an implementation of the Unicode Bidirectional Algorithm (bidi)_
     * required for displaying text in Right-to-Left scripts (e.g. Arabic, Hebrew)
 * **[mplayer](http://www.mplayerhq.hu/)**, **[mplayer2](http://www.mplayer2.org/)**, **[mpv](http://mpv.io/)**, **[mpg123](http://mpg123.org/)**, or **[eSpeak](http://espeak.sourceforge.net/)**
@@ -77,8 +80,6 @@ In order to be happy, the best way is to be loved by people.
     * required for terminal paging
 * **[rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/#rlwrap)**: *a GNU readline wrapper*
     * required for readline-style editing and history in the interactive shell
-* **[curl](http://curl.haxx.se/)** with **OpenSSL** support
-    * required for secured URL fetching (checking for upgrade, etc.)
 
 ### Environment and Fonts
 
@@ -93,8 +94,6 @@ Start an interactive shell and translate anything you input into your native lan
 (in **fish**)
 
     $ gawk -f (curl -Ls git.io/translate | psub) -shell
-
-**Please make sure to read [the disclaimer](#disclaimer) before using.**
 
 ## Installation
 
@@ -342,20 +341,10 @@ $code-list$
 
 $wiki-home$
 
-## How to Report Bugs / Contribute
+## Reporting Bugs / Contributing
 
-**Please review the [guidelines for contributing](https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md) before reporting an issue or sending a pull request.**
+Please review the [guidelines for contributing](https://github.com/soimort/translate-shell/blob/stable/CONTRIBUTING.md) before reporting an issue or sending a pull request.
 
-## Disclaimer
-
-This software is provided for the purpose of **reasonable personal use** of the Google Translate service, i.e., for those who prefer command line to web interface. For other purposes, please refer to the official [Google Translate API](https://developers.google.com/translate/).
-
-By using this software, you ("the user") are aware that:
-
-1. **Google Translate** is a proprietary service provided and owned by Google Inc.
-2. **Translate Shell** is **NOT** a Google product. Neither this software nor its author is affiliated with Google Inc.
-3. The software is provided "**AS IS**", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
-
-## Copyright Waiver
+## Licensing
 
 This is free and unencumbered software released into the public domain. See **[LICENSE](https://github.com/soimort/translate-shell/blob/stable/LICENSE)** and **[WAIVER](https://github.com/soimort/translate-shell/blob/stable/WAIVER)** for details.
