@@ -4,7 +4,7 @@
 
 # NAME
 
-trans - Google Translate served as a command-line tool
+trans - Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc.
 
 # SYNOPSIS
 
@@ -12,9 +12,9 @@ trans - Google Translate served as a command-line tool
 
 # DESCRIPTION
 
-This tool uses Google Translate to translate text into any language.
+This tool translates text into any language from the command-line, using a translation engine such as Google Translate, Bing Translator and Yandex.Translate.
 
-Each command-line argument which is not a valid option is treated as *TEXT* to be translated.
+Each argument which is not a valid option is treated as *TEXT* to be translated.
 
 If neither *TEXT* nor the input file is specified by command-line arguments, the program will read and translate from standard input.
 
@@ -40,8 +40,16 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 **-L** *CODES*, **-list** *CODES*
 :   Print details of languages and exit. When specifying two or more language codes, concatenate them by plus sign "+".
 
+**-S**, **-list-engines**
+:   List available translation engines and exit.
+
 **-U**, **-upgrade**
 :   Check for upgrade of this program.
+
+## Translator options
+
+**-e** *ENGINE*, **-engine** *ENGINE*
+:   Specify the translation engine to use. (default: google)
 
 ## Display options
 
@@ -123,6 +131,11 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 **-speak**
 :   Listen to the original text.
 
+**-n** *VOICE*, **-narrator** *VOICE*
+:   Specify the narrator, and listen to the translation.
+
+    Common values for this option are **male** and **female**.
+
 **-player** *PROGRAM*
 :   Specify the audio player to use, and listen to the translation.
 
@@ -201,14 +214,14 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 
     This option overrides the setting of environment variables $**LANGUAGE**, $**LC_ALL**, $**LANG** and $**HOME_LANG**.
 
-**-s** *CODE*, **-sl** *CODE*, **-source** *CODE*
+**-s** *CODE*, **-sl** *CODE*, **-source** *CODE*, **-from** *CODE*
 :   Specify the source language (the language of original text).
 
     This option is optional. When its setting is omitted, the language of original text will be identified automatically (with a possibility of misidentification).
 
     This option overrides the setting of environment variable $**SOURCE_LANG**.
 
-**-t** *CODES*, **-tl** *CODE*, **-target** *CODES*
+**-t** *CODES*, **-tl** *CODE*, **-target** *CODES*, **-to** *CODES*
 :   Specify the target language(s) (the language(s) of translated text). When specifying two or more language codes, concatenate them by plus sign "+".
 
     This option is optional. When its setting is omitted, everything will be translated into English.
