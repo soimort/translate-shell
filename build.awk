@@ -63,6 +63,9 @@ function readme(    code, col, cols, content, group, i, j, language, r, rows, te
     saveSortedIn = PROCINFO["sorted_in"]
     PROCINFO["sorted_in"] = "compName"
     for (code in Locale) {
+        # Ignore unstable languages
+        if (Locale[code]["support"] == "unstable") continue
+
         col = int(i / rows)
         append(cols[col], code)
         i++
@@ -92,8 +95,8 @@ function readme(    code, col, cols, content, group, i, j, language, r, rows, te
 function wiki(    code, group, iso, language, saveSortedIn) {
     initBiDi(); initLocale()
 
-    print "***" length(Locale) "*** *languages in total. "              \
-        "Generated from the source code of Translate Shell " Version ".*\n" > WikiLanguages
+    #print "***" length(Locale) "*** *languages in total. "
+    print "*Generated from the source code of Translate Shell " Version ".*\n" > WikiLanguages
     print "*Version: [English](https://github.com/soimort/translate-shell/wiki/Languages) " \
         "| [Chinese Simplified](https://github.com/soimort/translate-shell/wiki/Languages-%28%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%29)*\n" > WikiLanguages
     print "| Code | Name | Family | [Writing system](https://github.com/soimort/translate-shell/wiki/Writing-Systems-and-Fonts) | Is [RTL](http://en.wikipedia.org/wiki/Right-to-left)? | Has dictionary? |" > WikiLanguages
@@ -101,10 +104,14 @@ function wiki(    code, group, iso, language, saveSortedIn) {
     saveSortedIn = PROCINFO["sorted_in"]
     PROCINFO["sorted_in"] = "@ind_num_asc"
     for (code in Locale) {
+        # Ignore unstable languages
+        if (Locale[code]["support"] == "unstable") continue
+
         split(getISO(code), group, "-")
         iso = group[1]
         split(getName(code), group, " ")
-        language = length(group) == 1 ? group[1] "_language" : join(group, "_")
+        language = length(group) == 1 ? group[1] "_language" :
+            group[2] ~ /^\(.*\)$/ ? group[1] "_language" : join(group, "_")
         print sprintf("| **`%s`** <br/> [`%s`](%s) | **[%s](%s)** <br/> **%s** | %s | `%s` | %s | %s |",
                       getCode(code), iso, "http://www.ethnologue.com/language/" iso,
                       getName(code), "http://en.wikipedia.org/wiki/" language, getEndonym(code),
