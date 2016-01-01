@@ -1,8 +1,8 @@
 BEGIN {
     Name        = "Translate Shell"
-    Description = "Google Translate to serve as a command-line tool"
-    Version     = "0.9.2.1"
-    ReleaseDate = "2015-12-18"
+    Description = "Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc."
+    Version     = "0.9.3"
+    ReleaseDate = "2016-01-01"
     Command     = "trans"
     EntryPoint  = "translate.awk"
 }
