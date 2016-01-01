@@ -55,9 +55,7 @@ function bingInit() {
     HttpPort = 80
 }
 
-function bingRequestUrl(text, sl, tl, hl,
-                        ####
-                        appId) {
+function bingRequestUrl(text, sl, tl, hl) {
     # Quick hack: Bing doesn't have an "auto" language code
     if (sl == "auto") sl = NULLSTR
 
