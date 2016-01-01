@@ -138,6 +138,10 @@ function repl(line,    command, group, name, i, value, words) {
     } else if (command ~ /^:show$/) {
         name = words[2]
         print prettify("welcome-submessage", toString(Option[name], 1, 0, 1))
+    } else if (command ~ /^:engine$/) {
+        value = words[2]
+        Option["engine"] = value
+        initHttpService()
     } else {
         match(command, /^[{(\[]?([[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)[})\]]?$/, group)
         if (RSTART) {
