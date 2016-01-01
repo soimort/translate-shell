@@ -124,6 +124,25 @@ function doc() {
     return 0
 }
 
+function readSqueezed(fileName, squeezed,    group, line, ret) {
+    if (fileName ~ /\*$/) # glob simulation
+        return readSqueezed(fileName ".awk", squeezed)
+
+    ret = NULLSTR
+    if (fileExists(fileName))
+        while (getline line < fileName) {
+            match(line, /^[[:space:]]*@include[[:space:]]*"(.*)"$/, group)
+            if (RSTART) { # @include
+                if (ret) ret = ret RS
+                ret = ret readSqueezed(group[1] ".awk", squeezed)
+            } else if (!squeezed || line = squeeze(line)) { # effective LOC
+                if (ret) ret = ret RS
+                ret = ret line
+            }
+        }
+    return ret
+}
+
 function build(target, type,    group, inline, line, temp) {
     # Default target: bash
     if (!target) target = "bash"
@@ -143,23 +162,7 @@ function build(target, type,    group, inline, line, temp) {
         print "if ! [[ $LANG =~ '[UTF|utf]-?8$' ]]; then export LANG=en_US.UTF-8; fi" > Trans
 
         print "read -r -d '' TRANS_PROGRAM << 'EOF'" > Trans
-        if (fileExists(EntryPoint))
-            while (getline line < EntryPoint) {
-                match(line, /^[[:space:]]*@include[[:space:]]*"(.*)"$/, group)
-                if (RSTART) {
-                    # Include file
-                    if (fileExists(group[1] ".awk"))
-                        while (getline inline < (group[1] ".awk"))
-                            if (inline = squeeze(inline))
-                                print inline > Trans # effective LOC
-                } else {
-                    if (line && line !~ /^[[:space:]]*#!/) {
-                        # Remove preceding spaces
-                        gsub(/^[[:space:]]+/, "", line)
-                        print line > Trans
-                    }
-                }
-            }
+        print readSqueezed(EntryPoint, TRUE) > Trans
         print "EOF" > Trans
 
         print "read -r -d '' TRANS_MANPAGE << 'EOF'" > Trans
@@ -185,24 +188,11 @@ function build(target, type,    group, inline, line, temp) {
     } else if (target == "awk" || target == "gawk") {
 
         "uname -s" | getline temp
+        print (temp == "Darwin" ?
+               "#!/usr/bin/env gawk -f" : # OS X
+               "#!/usr/bin/gawk -f") > TransAwk
 
-        if (fileExists(EntryPoint))
-            while (getline line < EntryPoint) {
-                match(line, /^[[:space:]]*@include[[:space:]]*"(.*)"$/, group)
-                if (RSTART) {
-                    # Include file
-                    if (fileExists(group[1] ".awk"))
-                        while (getline inline < (group[1] ".awk"))
-                            if (inline = squeeze(inline, 1))
-                                print inline > TransAwk
-                } else {
-                    if (temp == "Darwin" && line == "#!/usr/bin/gawk -f")
-                        # OS X: gawk not in /usr/bin, use a better shebang
-                        print "#!/usr/bin/env gawk -f" > TransAwk
-                    else
-                        print line > TransAwk
-                }
-            }
+        print readSqueezed(EntryPoint, TRUE) > TransAwk
 
         ("chmod +x " parameterize(TransAwk)) | getline
         return 0
