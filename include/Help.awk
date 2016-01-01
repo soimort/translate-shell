@@ -28,6 +28,7 @@ function getVersion(    build, gitHead, platform) {
         sprintf("%-22s%s\n", "home language", Option["hl"])             \
         sprintf("%-22s%s\n", "source language", Option["sl"])           \
         sprintf("%-22s%s\n", "target language", join(Option["tl"], "+")) \
+        sprintf("%-22s%s\n", "translation engine", Option["engine"])    \
         sprintf("%-22s%s\n", "proxy", Option["proxy"] ? Option["proxy"] :
                 "[NONE]")                                               \
         sprintf("%-22s%s\n", "user-agent", Option["user-agent"] ? Option["user-agent"] :
