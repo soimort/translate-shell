@@ -50,14 +50,19 @@ function man(    text) {
     return system("pandoc -s -t man " ManMarkdown " -o " Man)
 }
 
-function readme(    code, col, cols, content, group, i, j, language, r, rows, text) {
+function readme(    code, col, cols, content, group, i, j, num, language, r, rows, text) {
     text = readFrom(ReadmeTemplate)
 
     content = getOutput("gawk -f translate.awk -- -no-ansi -h")
     gsub(/\$usage\$/, content, text)
 
     initBiDi(); initLocale()
-    rows = int(length(Locale) / 3) + 1
+    # number of language codes with stable support
+    num = 0
+    for (code in Locale)
+        if (Locale[code]["support"] != "unstable")
+            num++
+    rows = int(num / 3) + 1
     cols[0][0] = cols[1][0] = cols[2][0] = NULLSTR
     i = 0
     saveSortedIn = PROCINFO["sorted_in"]
