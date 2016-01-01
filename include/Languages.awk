@@ -381,7 +381,7 @@ function initLocale(    i) {
     Locale["tk"]["script"]             = "Latn"
 
     #? Tatar
-    Locale["tt"]["support"]            = "unstable"
+    Locale["tt"]["support"]            = "yandex-only"
     Locale["tt"]["name"]               = "Tatar"
     Locale["tt"]["endonym"]            = "татарча"
     #Locale["tt"]["translations-of"]
