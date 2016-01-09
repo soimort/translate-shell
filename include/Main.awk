@@ -34,6 +34,7 @@ function init() {
     Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] - 2 : 0
     Option["indent"] = 4
     Option["no-ansi"] = 0
+    Option["no-bidi"] = 0
     Option["theme"] = "default"
 
     # Audio
@@ -111,6 +112,10 @@ function initMisc(    group, temp) {
     # Disable ANSI escape codes if required
     if (Option["no-ansi"])
         delete AnsiCode
+
+    # Disable conversion of bidirectional texts if required
+    if (Option["no-bidi"])
+        BiDi = BiDiNoPad = NULLSTR
 
     # Initialize audio player or speech synthesizer
     if (Option["play"]) {
@@ -388,6 +393,13 @@ BEGIN {
         match(ARGV[pos], /^--?no-ansi$/)
         if (RSTART) {
             Option["no-ansi"] = 1
+            continue
+        }
+
+        # -no-bidi
+        match(ARGV[pos], /^--?no-bidi/)
+        if (RSTART) {
+            Option["no-bidi"] = 1
             continue
         }
 

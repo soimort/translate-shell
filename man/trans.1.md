@@ -121,6 +121,9 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 **-no-ansi**
 :   Do not use ANSI escape codes.
 
+**-no-bidi**
+:   Do not convert bidirectional texts.
+
 ## Audio options
 
 **-p**, **-play**
