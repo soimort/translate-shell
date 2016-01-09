@@ -387,6 +387,8 @@ Display options:
         Do not use any other theme than default.
     -no-ansi
         Do not use ANSI escape codes.
+    -no-bidi
+        Do not convert bidirectional texts.
 
 Audio options:
     -p, -play
