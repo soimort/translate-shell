@@ -247,15 +247,14 @@ function initLocale(    i) {
     Locale["or"]["glotto"]             = "macr1269"
     Locale["or"]["script"]             = "Orya"
 
-    #? Pashto
-    Locale["ps"]["support"]            = "unstable"
+    # Pashto
     Locale["ps"]["name"]               = "Pashto"
     Locale["ps"]["endonym"]            = "پښتو"
-    #Locale["ps"]["translations-of"]
-    #Locale["ps"]["definitions-of"]
-    #Locale["ps"]["synonyms"]
-    #Locale["ps"]["examples"]
-    #Locale["ps"]["see-also"]
+    Locale["ps"]["translations-of"]    = "د %sژباړې"
+    Locale["ps"]["definitions-of"]     = "د%s تعریفونه"
+    Locale["ps"]["synonyms"]           = "مترادف لغتونه"
+    Locale["ps"]["examples"]           = "بېلګې"
+    Locale["ps"]["see-also"]           = "دا هم ووینئ"
     Locale["ps"]["family"]             = "Indo-European"
     Locale["ps"]["iso"]                = "pus"
     Locale["ps"]["glotto"]             = "pash1269"
