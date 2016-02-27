@@ -179,8 +179,7 @@ function initLocale(    i) {
     Locale["ky"]["glotto"]             = "kirg1245"
     Locale["ky"]["script"]             = "Cyrl"
 
-    #? Kurdish (Central Kurdish, Sorani), Latin alphabet
-    Locale["ku"]["support"]            = "unstable"
+    # Kurdish (Central Kurdish, Sorani), Latin alphabet
     Locale["ku"]["name"]               = "Kurdish"
     Locale["ku"]["endonym"]            = "Kurdî"
     #Locale["ku"]["translations-of"]
