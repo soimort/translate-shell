@@ -317,15 +317,14 @@ function initLocale(    i) {
     Locale["gd"]["glotto"]             = "scot1245"
     Locale["gd"]["script"]             = "Latn"
 
-    #? Shona
-    Locale["sn"]["support"]            = "unstable"
+    # Shona
     Locale["sn"]["name"]               = "Shona"
     Locale["sn"]["endonym"]            = "chiShona"
-    #Locale["sn"]["translations-of"]
-    #Locale["sn"]["definitions-of"]
-    #Locale["sn"]["synonyms"]
-    #Locale["sn"]["examples"]
-    #Locale["sn"]["see-also"]
+    Locale["sn"]["translations-of"]    = "Shanduro dze %s"
+    Locale["sn"]["definitions-of"]     = "Zvinoreva %s"
+    Locale["sn"]["synonyms"]           = "Mashoko anoreva zvakafana nemamwe"
+    Locale["sn"]["examples"]           = "Mienzaniso"
+    Locale["sn"]["see-also"]           = "Onawo"
     Locale["sn"]["family"]             = "Atlantic-Congo"
     Locale["sn"]["iso"]                = "sna"
     Locale["sn"]["glotto"]             = "core1255"
