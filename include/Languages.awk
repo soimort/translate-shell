@@ -475,8 +475,7 @@ function initLocale(    i) {
     Locale["chr"]["glotto"]            = "cher1273"
     Locale["chr"]["script"]            = "Cher"
 
-    #? Hawaiian
-    Locale["haw"]["support"]           = "unstable"
+    # Hawaiian
     Locale["haw"]["name"]              = "Hawaiian"
     Locale["haw"]["endonym"]           = "ʻŌlelo Hawaiʻi"
     #Locale["haw"]["translations-of"]
