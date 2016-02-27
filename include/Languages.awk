@@ -166,15 +166,14 @@ function initLocale(    i) {
     Locale["rw"]["glotto"]             = "kiny1244"
     Locale["rw"]["script"]             = "Latn"
 
-    #? Kyrgyz
-    Locale["ky"]["support"]            = "unstable"
+    # Kyrgyz
     Locale["ky"]["name"]               = "Kyrgyz"
     Locale["ky"]["endonym"]            = "Кыргызча"
-    #Locale["ky"]["translations-of"]
-    #Locale["ky"]["definitions-of"]
-    #Locale["ky"]["synonyms"]
-    #Locale["ky"]["examples"]
-    #Locale["ky"]["see-also"]
+    Locale["ky"]["translations-of"]    = "%s котормосу"
+    Locale["ky"]["definitions-of"]     = "%s аныктамасы"
+    Locale["ky"]["synonyms"]           = "Синонимдер"
+    Locale["ky"]["examples"]           = "Мисалдар"
+    Locale["ky"]["see-also"]           = "Дагы караңыз"
     Locale["ky"]["family"]             = "Turkic"
     Locale["ky"]["iso"]                = "kir"
     Locale["ky"]["glotto"]             = "kirg1245"
