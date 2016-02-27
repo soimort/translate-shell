@@ -14,15 +14,14 @@
 #      <http://glottolog.org/>
 function initLocale(    i) {
 
-    #? Amharic
-    Locale["am"]["support"]            = "unstable"
+    # Amharic
     Locale["am"]["name"]               = "Amharic"
     Locale["am"]["endonym"]            = "አማርኛ"
-    #Locale["am"]["translations-of"]
-    #Locale["am"]["definitions-of"]
-    #Locale["am"]["synonyms"]
-    #Locale["am"]["examples"]
-    #Locale["am"]["see-also"]
+    Locale["am"]["translations-of"]    = "የ %s ትርጉሞች"
+    Locale["am"]["definitions-of"]     = "የ %s ቃላት ፍችዎች"
+    Locale["am"]["synonyms"]           = "ተመሳሳይ ቃላት"
+    Locale["am"]["examples"]           = "ምሳሌዎች"
+    Locale["am"]["see-also"]           = "የሚከተለውንም ይመልከቱ"
     Locale["am"]["family"]             = "Afro-Asiatic"
     Locale["am"]["iso"]                = "amh"
     Locale["am"]["glotto"]             = "amha1245"
