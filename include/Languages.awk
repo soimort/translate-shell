@@ -192,8 +192,7 @@ function initLocale(    i) {
     Locale["ku"]["glotto"]             = "kurd1259"
     Locale["ku"]["script"]             = "Latn"
 
-    #? Luxembourgish
-    Locale["lb"]["support"]            = "unstable"
+    # Luxembourgish
     Locale["lb"]["name"]               = "Luxembourgish"
     Locale["lb"]["endonym"]            = "Lëtzebuergesch"
     #Locale["lb"]["translations-of"]
