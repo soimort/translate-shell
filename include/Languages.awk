@@ -435,15 +435,14 @@ function initLocale(    i) {
     Locale["wo"]["glotto"]             = "wolo1247"
     Locale["wo"]["script"]             = "Latn"
 
-    #? Western Frisian
-    Locale["fy"]["support"]            = "unstable"
-    Locale["fy"]["name"]               = "Western Frisian"
+    # West Frisian
+    Locale["fy"]["name"]               = "Frisian"
     Locale["fy"]["endonym"]            = "Frysk"
-    #Locale["fy"]["translations-of"]
-    #Locale["fy"]["definitions-of"]
-    #Locale["fy"]["synonyms"]
-    #Locale["fy"]["examples"]
-    #Locale["fy"]["see-also"]
+    Locale["fy"]["translations-of"]    = "Oersettings fan %s"
+    Locale["fy"]["definitions-of"]     = "Definysjes fan %s"
+    Locale["fy"]["synonyms"]           = "Synonimen"
+    Locale["fy"]["examples"]           = "Foarbylden"
+    Locale["fy"]["see-also"]           = "Sjoch ek"
     Locale["fy"]["family"]             = "Indo-European"
     Locale["fy"]["iso"]                = "fry"
     Locale["fy"]["glotto"]             = "west2354"
