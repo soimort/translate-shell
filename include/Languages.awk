@@ -304,15 +304,14 @@ function initLocale(    i) {
     Locale["sm"]["glotto"]             = "samo1305"
     Locale["sm"]["script"]             = "Latn"
 
-    #? Scottish Gaelic
-    Locale["gd"]["support"]            = "unstable"
-    Locale["gd"]["name"]               = "Scottish Gaelic"
+    # Scots Gaelic
+    Locale["gd"]["name"]               = "Scots Gaelic"
     Locale["gd"]["endonym"]            = "Gàidhlig"
-    #Locale["gd"]["translations-of"]
-    #Locale["gd"]["definitions-of"]
-    #Locale["gd"]["synonyms"]
-    #Locale["gd"]["examples"]
-    #Locale["gd"]["see-also"]
+    Locale["gd"]["translations-of"]    = "Eadar-theangachadh airson %s"
+    Locale["gd"]["definitions-of"]     = "Deifiniseanan airson %s"
+    Locale["gd"]["synonyms"]           = "Co-fhaclan"
+    Locale["gd"]["examples"]           = "Buill-eisimpleir"
+    Locale["gd"]["see-also"]           = "Faic na leanas cuideachd"
     Locale["gd"]["family"]             = "Indo-European"
     Locale["gd"]["iso"]                = "gla"
     Locale["gd"]["glotto"]             = "scot1245"
