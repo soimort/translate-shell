@@ -62,7 +62,7 @@ function readme(    code, col, cols, content, group, i, j, num, language, r, row
     for (code in Locale)
         if (Locale[code]["support"] != "unstable")
             num++
-    rows = int(num / 3) + 1
+    rows = int(num / 3) + (num % 3 ? 1 : 0)
     cols[0][0] = cols[1][0] = cols[2][0] = NULLSTR
     i = 0
     saveSortedIn = PROCINFO["sorted_in"]
