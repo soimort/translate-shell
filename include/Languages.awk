@@ -276,15 +276,14 @@ function initLocale(    i) {
     Locale["rm"]["glotto"]             = "roma1326"
     Locale["rm"]["script"]             = "Latn"
 
-    #? Sindhi
-    Locale["sd"]["support"]            = "unstable"
+    # Sindhi
     Locale["sd"]["name"]               = "Sindhi"
     Locale["sd"]["endonym"]            = "سنڌي"
-    #Locale["sd"]["translations-of"]
-    #Locale["sd"]["definitions-of"]
-    #Locale["sd"]["synonyms"]
-    #Locale["sd"]["examples"]
-    #Locale["sd"]["see-also"]
+    Locale["sd"]["translations-of"]    = "%s جو ترجمو"
+    Locale["sd"]["definitions-of"]     = "%s جون وصفون"
+    Locale["sd"]["synonyms"]           = "هم معني"
+    Locale["sd"]["examples"]           = "مثالون"
+    Locale["sd"]["see-also"]           = "به ڏسو"
     Locale["sd"]["family"]             = "Indo-European"
     Locale["sd"]["iso"]                = "snd"
     Locale["sd"]["glotto"]             = "sind1272"
