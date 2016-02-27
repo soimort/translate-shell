@@ -291,8 +291,7 @@ function initLocale(    i) {
     Locale["sd"]["script"]             = "Arab"
     Locale["sd"]["rtl"]                = "true" # RTL language
 
-    #? Samoan
-    Locale["sm"]["support"]            = "unstable"
+    # Samoan
     Locale["sm"]["name"]               = "Samoan"
     Locale["sm"]["endonym"]            = "Gagana Sāmoa"
     #Locale["sm"]["translations-of"]
