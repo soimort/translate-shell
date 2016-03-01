@@ -420,6 +420,7 @@ function assert(x, message) {
 # Initialize `UrlEncoding`.
 # See: <https://en.wikipedia.org/wiki/Percent-encoding>
 function initUrlEncoding() {
+    UrlEncoding["\t"] = "%09"
     UrlEncoding["\n"] = "%0A"
     UrlEncoding[" "]  = "%20"
     UrlEncoding["!"]  = "%21"
