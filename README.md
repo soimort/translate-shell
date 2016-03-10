@@ -108,19 +108,19 @@ There is a [GPG signature](http://www.soimort.org/translate-shell/trans.sig).
 
 ### Option #2. From A Package Manager
 
-#### Using [Antigen](https://github.com/zsh-users/antigen)
+#### Using [Antigen](http://antigen.sharats.me/)
 
 Add the following line to your `.zshrc`:
 
     antigen bundle soimort/translate-shell
 
-#### Using [Homebrew](https://github.com/Homebrew/homebrew)
+#### Using [Homebrew](http://brew.sh/)
 
-    $ brew install https://www.soimort.org/translate-shell/translate-shell.rb
+    $ brew install translate-shell
 
 On Linux with [Linuxbrew](https://github.com/Homebrew/linuxbrew), you may ignore its dependencies (e.g. gawk) if you already have them in your system:
 
-    $ brew install --ignore-dependencies https://www.soimort.org/translate-shell/translate-shell.rb
+    $ brew install --ignore-dependencies translate-shell
 
 #### Using your favorite package manager
 
