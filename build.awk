@@ -251,11 +251,12 @@ function release(    content, group, sha1, size, temp, text) {
 
     d("Updating gh-pages/translate-shell.rb ...")
     # Update gh-pages/translate-shell.rb
-    ("sha1sum " PagesPath "translate-shell.tar.gz") | getline temp
+    system("git archive --format=tar.gz --prefix=translate-shell-"Version"/ v"Version" >"PagesPath"/v"Version".tar.gz")
+    ("sha256sum " PagesPath"/v"Version".tar.gz") | getline temp
     split(temp, group)
-    sha1 = group[1]
+    sha256 = group[1]
     text = readFrom(HomebrewFormula ".temp")
-    gsub(/\$sha1\$/, sha1, text)
+    gsub(/\$sha256\$/, sha256, text)
     gsub(/\$Version\$/, Version, text)
     writeTo(text, HomebrewFormula)
 
