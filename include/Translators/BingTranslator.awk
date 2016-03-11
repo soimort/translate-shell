@@ -2,15 +2,15 @@
 # BingTranslator.awk                                               #
 ####################################################################
 #
-# Last Updated: 26 Dec 2015
-# https://www.bing.com/translator/dynamic/226010/js/LandingPage.js
+# Last Updated: 11 Mar 2016
+# http://ssl.microsofttranslator.com/dynamic/226010/js/LandingPage.js
 BEGIN { provides("bing") }
 
 function genRTTAppId(    content, group, header, isBody) {
     HttpProtocol = "http://"
-    HttpHost = "www.bing.com"
+    HttpHost = "ssl.microsofttranslator.com"
     HttpPort = 80
-    LandingPage = "/translator/dynamic/226010/js/LandingPage.js"
+    LandingPage = "/dynamic/226010/js/LandingPage.js"
 
     if (Option["proxy"]) {
         match(Option["proxy"], /^(http:\/*)?([^\/]*):([^\/:]*)/, HttpProxySpec)
