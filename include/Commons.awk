@@ -109,6 +109,16 @@ function replicate(string, len,
     return temp
 }
 
+# Reverse a string.
+function reverse(string,
+                 ####
+                 i, temp) {
+    temp = NULLSTR
+    for (i = length(string); i > 0; i--)
+        temp = temp substr(string, i, 1);
+    return temp
+}
+
 # Join an array into one string;
 # Return the string.
 function join(array, separator, sortedIn, preserveNull,
