@@ -71,6 +71,13 @@ BEGIN {
         assertEqual(replicate("foo bar", 1), "foo bar")
         assertEqual(replicate("foo bar", 3), "foo barfoo barfoo bar")
     }
+    T("reverse()", 4)
+    {
+        assertEqual(reverse(""), "")
+        assertEqual(reverse("god"), "dog")
+        assertEqual(reverse("0123456789"), "9876543210")
+        assertEqual(reverse("さしすせそ"), "そせすしさ")
+    }
     T("join()", 4)
     {
         assertEqual(join("", "-"), "")
