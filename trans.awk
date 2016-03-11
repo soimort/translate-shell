@@ -2,8 +2,8 @@
 BEGIN {
 Name        = "Translate Shell"
 Description = "Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc."
-Version     = "0.9.3.1"
-ReleaseDate = "2016-02-27"
+Version     = "0.9.3.2"
+ReleaseDate = "2016-03-11"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 }
@@ -70,6 +70,13 @@ i, temp) {
 temp = NULLSTR
 for (i = 0; i < len; i++)
 temp = temp string
+return temp
+}
+function reverse(string,
+i, temp) {
+temp = NULLSTR
+for (i = length(string); i > 0; i--)
+temp = temp substr(string, i, 1);
 return temp
 }
 function join(array, separator, sortedIn, preserveNull,
@@ -292,6 +299,7 @@ else
 e(message)
 }
 function initUrlEncoding() {
+UrlEncoding["\t"] = "%09"
 UrlEncoding["\n"] = "%0A"
 UrlEncoding[" "]  = "%20"
 UrlEncoding["!"]  = "%21"
@@ -3351,9 +3359,9 @@ return r
 BEGIN { provides("bing") }
 function genRTTAppId(    content, group, header, isBody) {
 HttpProtocol = "http://"
-HttpHost = "www.bing.com"
+HttpHost = "ssl.microsofttranslator.com"
 HttpPort = 80
-LandingPage = "/translator/dynamic/226010/js/LandingPage.js"
+LandingPage = "/dynamic/226010/js/LandingPage.js"
 if (Option["proxy"]) {
 match(Option["proxy"], /^(http:\/*)?([^\/]*):([^\/:]*)/, HttpProxySpec)
 HttpService = "/inet/tcp/0/" HttpProxySpec[2] "/" HttpProxySpec[3]
@@ -3493,11 +3501,12 @@ returnPlaylist[0]["tl"] = tl
 return r
 }
 BEGIN { provides("yandex") }
-function genSID(    content, group) {
+function genSID(    content, group, temp) {
 content = curl("http://translate.yandex.com")
 match(content, /SID:[[:space:]]*'([^']+)'/, group)
 if (group[1]) {
-SID = group[1]
+split(group[1], temp, ".")
+SID = reverse(temp[1]) "." reverse(temp[2]) "." reverse(temp[3])
 } else {
 e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
 exit 1
