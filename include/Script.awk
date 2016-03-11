@@ -60,7 +60,7 @@ function upgrade(    i, newVersion, registry, tokens) {
     if (newerVersion(newVersion, Version)) {
         w("Current version: \t" Version)
         w("New version available: \t" newVersion)
-        w("Download from: \t" "http://www.soimort.org/translate-shell/trans")
+        w("Download from: \t" "https://www.soimort.org/translate-shell/trans")
     } else {
         w("Current version: \t" Version)
         w("Already up-to-date.")
