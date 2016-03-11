@@ -2,15 +2,16 @@
 # YandexTranslate.awk                                              #
 ####################################################################
 #
-# Last Updated: 1 Jan 2016
+# Last Updated: 11 Mar 2016
 BEGIN { provides("yandex") }
 
-function genSID(    content, group) {
+function genSID(    content, group, temp) {
     content = curl("http://translate.yandex.com")
 
     match(content, /SID:[[:space:]]*'([^']+)'/, group)
     if (group[1]) {
-        SID = group[1]
+        split(group[1], temp, ".")
+        SID = reverse(temp[1]) "." reverse(temp[2]) "." reverse(temp[3])
     } else {
         e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
         exit 1
