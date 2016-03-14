@@ -22,7 +22,6 @@ function init() {
     PagesPath            = "gh-pages/"
     BadgeDownload        = PagesPath "images/badge-download"
     BadgeRelease         = PagesPath "images/badge-release"
-    HomebrewFormula      = PagesPath "translate-shell.rb"
     Index                = PagesPath "index.md"
 
     ReadmePath           = "./"
@@ -248,17 +247,6 @@ function release(    content, group, sha1, size, temp, text) {
     gsub(/\$Size\$/, size, text)
     writeTo(text, BadgeDownload)
     system("save-to-png " BadgeDownload)
-
-    d("Updating gh-pages/translate-shell.rb ...")
-    # Update gh-pages/translate-shell.rb
-    system("git archive --format=tar.gz --prefix=translate-shell-"Version"/ v"Version" >"PagesPath"/v"Version".tar.gz")
-    ("sha256sum " PagesPath"/v"Version".tar.gz") | getline temp
-    split(temp, group)
-    sha256 = group[1]
-    text = readFrom(HomebrewFormula ".temp")
-    gsub(/\$sha256\$/, sha256, text)
-    gsub(/\$Version\$/, Version, text)
-    writeTo(text, HomebrewFormula)
 
     d("Updating gh-pages/index.md ...")
     # Update gh-pages/index.md

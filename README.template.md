@@ -114,14 +114,6 @@ Add the following line to your `.zshrc`:
 
     antigen bundle soimort/translate-shell
 
-#### Using [Homebrew](https://github.com/Homebrew/homebrew)
-
-    $ brew install https://www.soimort.org/translate-shell/translate-shell.rb
-
-On Linux with [Linuxbrew](https://github.com/Homebrew/linuxbrew), you may ignore its dependencies (e.g. gawk) if you already have them in your system:
-
-    $ brew install --ignore-dependencies https://www.soimort.org/translate-shell/translate-shell.rb
-
 #### Using your favorite package manager
 
 See **[wiki: Distros](https://github.com/soimort/translate-shell/wiki/Distros)** on how to install from a specific package manager on your distro.
