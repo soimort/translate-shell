@@ -62,7 +62,7 @@
 
 <h1 id="translate-shell">Translate Shell</h1>
 <p><a href="http://www.soimort.org/translate-shell"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/icon.png" alt="Icon" /></a> <a href="https://travis-ci.org/soimort/translate-shell"><img src="https://travis-ci.org/soimort/translate-shell.png" alt="Build Status" /></a> <a href="https://github.com/soimort/translate-shell/releases"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-release.png" alt="Version" /></a> <a href="http://www.soimort.org/translate-shell/trans"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png" alt="Download" /></a> <a href="https://gitter.im/soimort/translate-shell?utm_source=badge$readme$utm_medium=badge$readme$utm_campaign=pr-badge$readme$utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter" /></a></p>
-<p><strong><a href="http://www.soimort.org/translate-shell">Translate Shell</a></strong> (formerly <em>Google Translate CLI</em>) is a command-line translator powered by <strong><a href="https://translate.google.com/">Google Translate</a></strong> (default), <strong><a href="https://www.bing.com/translator">Bing Translator</a></strong>, and <strong><a href="https://translate.yandex.com/">Yandex.Translate</a></strong>. It gives you easy access to one of these translation engines your terminal:</p>
+<p><strong><a href="http://www.soimort.org/translate-shell">Translate Shell</a></strong> (formerly <em>Google Translate CLI</em>) is a command-line translator powered by <strong><a href="https://translate.google.com/">Google Translate</a></strong> (default), <strong><a href="https://www.bing.com/translator">Bing Translator</a></strong>, <strong><a href="https://translate.yandex.com/">Yandex.Translate</a></strong> and <strong><a href="https://www.apertium.org/">Apertium</a></strong>. It gives you easy access to one of these translation engines your terminal:</p>
 <pre><code>$ trans &#39;Saluton, Mondo!&#39;
 Saluton, Mondo!
 
@@ -148,16 +148,12 @@ In order to be happy, the best way is to be loved by people.</code></pre>
 $ chmod +x ./trans</code></pre>
 <p>There is a <a href="http://www.soimort.org/translate-shell/trans.sig">GPG signature</a>.</p>
 <h3 id="option-2.-from-a-package-manager">Option #2. From A Package Manager</h3>
-<h4 id="using-antigen">Using <a href="http://antigen.sharats.me/">Antigen</a></h4>
+<h4 id="using-antigen-recommended-for-zsh-users">Using <a href="https://github.com/zsh-users/antigen">Antigen</a> (Recommended for Zsh users)</h4>
 <p>Add the following line to your <code>.zshrc</code>:</p>
 <pre><code>antigen bundle soimort/translate-shell</code></pre>
-<h4 id="using-homebrew">Using <a href="http://brew.sh/">Homebrew</a></h4>
-<pre><code>$ brew install translate-shell</code></pre>
-<p>On Linux with <a href="https://github.com/Homebrew/linuxbrew">Linuxbrew</a>, you may ignore its dependencies (e.g. gawk) if you already have them in your system:</p>
-<pre><code>$ brew install --ignore-dependencies translate-shell</code></pre>
 <h4 id="using-your-favorite-package-manager">Using your favorite package manager</h4>
 <p>See <strong><a href="https://github.com/soimort/translate-shell/wiki/Distros">wiki: Distros</a></strong> on how to install from a specific package manager on your distro.</p>
-<h3 id="option-3.-from-git">Option #3. From Git</h3>
+<h3 id="option-3.-from-git-recommended-for-seasoned-hackers">Option #3. From Git (Recommended for seasoned hackers)</h3>
 <pre><code>$ git clone https://github.com/soimort/translate-shell
 $ cd translate-shell/
 $ make
@@ -714,6 +710,7 @@ See the man page trans(1) for more information.</code></pre>
 <li><strong><a href="https://github.com/soimort/translate-shell/wiki/Text-Editor-Integration">Text Editor Integration</a></strong></li>
 <li><strong><a href="https://github.com/soimort/translate-shell/wiki/Configuration">Configuration</a></strong></li>
 <li><strong><a href="https://github.com/soimort/translate-shell/wiki/Themes">Themes</a></strong></li>
+<li><strong><a href="https://github.com/soimort/translate-shell/wiki/AppleScript">AppleScript</a></strong></li>
 </ul>
 <p>Find out whether your Linux distribution has included <strong>Translate Shell</strong> in its official repository. If not, contribute one:</p>
 <ul>
