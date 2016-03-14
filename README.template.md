@@ -1,12 +1,12 @@
 # Translate Shell
 
-[![Icon](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/icon.png)](http://www.soimort.org/translate-shell)
+[![Icon](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/icon.png)](https://www.soimort.org/translate-shell)
 [![Build Status](https://travis-ci.org/soimort/translate-shell.png)](https://travis-ci.org/soimort/translate-shell)
 [![Version](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-release.png)](https://github.com/soimort/translate-shell/releases)
-[![Download](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png)](http://www.soimort.org/translate-shell/trans)
+[![Download](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png)](https://www.soimort.org/translate-shell/trans)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/soimort/translate-shell?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-**[Translate Shell](http://www.soimort.org/translate-shell)** (formerly _Google Translate CLI_) is a command-line translator powered by **[Google Translate](https://translate.google.com/)** (default), **[Bing Translator](https://www.bing.com/translator)**, **[Yandex.Translate](https://translate.yandex.com/)** and **[Apertium](https://www.apertium.org/)**. It gives you easy access to one of these translation engines your terminal:
+**[Translate Shell](https://www.soimort.org/translate-shell)** (formerly _Google Translate CLI_) is a command-line translator powered by **[Google Translate](https://translate.google.com/)** (default), **[Bing Translator](https://www.bing.com/translator)**, **[Yandex.Translate](https://translate.yandex.com/)** and **[Apertium](https://www.apertium.org/)**. It gives you easy access to one of these translation engines your terminal:
 
 ```
 $ trans 'Saluton, Mondo!'
@@ -104,7 +104,7 @@ Download [the self-contained executable](http://git.io/trans) and place it into 
     $ wget git.io/trans
     $ chmod +x ./trans
 
-There is a [GPG signature](http://www.soimort.org/translate-shell/trans.sig).
+There is a [GPG signature](https://www.soimort.org/translate-shell/trans.sig).
 
 ### Option #2. From A Package Manager
 
@@ -315,7 +315,7 @@ You may also change these settings during an interactive session. See **[wiki: R
 
 ## Usage
 
-For more details on command-line options, see the man page **[trans(1)](http://www.soimort.org/translate-shell/trans.1.html)** or use `trans -M` in a terminal.
+For more details on command-line options, see the man page **[trans(1)](https://www.soimort.org/translate-shell/trans.1.html)** or use `trans -M` in a terminal.
 
 ```
 $usage$
