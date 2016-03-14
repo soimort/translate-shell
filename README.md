@@ -133,7 +133,7 @@ The default `PREFIX` of installation is `/usr/local`. To install the program to 
 
     $ [sudo] make PREFIX=/usr install
 
-## Introduction by Examples
+## Getting Started by Examples
 
 ### Translate a Word
 
