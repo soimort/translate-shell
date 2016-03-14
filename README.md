@@ -6,7 +6,7 @@
 [![Download](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png)](http://www.soimort.org/translate-shell/trans)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/soimort/translate-shell?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-**[Translate Shell](http://www.soimort.org/translate-shell)** (formerly _Google Translate CLI_) is a command-line translator powered by **[Google Translate](https://translate.google.com/)** (default), **[Bing Translator](https://www.bing.com/translator)**, and **[Yandex.Translate](https://translate.yandex.com/)**. It gives you easy access to one of these translation engines your terminal:
+**[Translate Shell](http://www.soimort.org/translate-shell)** (formerly _Google Translate CLI_) is a command-line translator powered by **[Google Translate](https://translate.google.com/)** (default), **[Bing Translator](https://www.bing.com/translator)**, **[Yandex.Translate](https://translate.yandex.com/)** and **[Apertium](https://www.apertium.org/)**. It gives you easy access to one of these translation engines your terminal:
 
 ```
 $ trans 'Saluton, Mondo!'
@@ -108,7 +108,7 @@ There is a [GPG signature](http://www.soimort.org/translate-shell/trans.sig).
 
 ### Option #2. From A Package Manager
 
-#### Using [Antigen](http://antigen.sharats.me/)
+#### Using [Antigen](https://github.com/zsh-users/antigen) (Recommended for Zsh users)
 
 Add the following line to your `.zshrc`:
 
@@ -118,7 +118,7 @@ Add the following line to your `.zshrc`:
 
 See **[wiki: Distros](https://github.com/soimort/translate-shell/wiki/Distros)** on how to install from a specific package manager on your distro.
 
-### Option #3. From Git
+### Option #3. From Git (Recommended for seasoned hackers)
 
     $ git clone https://github.com/soimort/translate-shell
     $ cd translate-shell/
@@ -499,6 +499,7 @@ The following pages demonstrate the advanced usage of **Translate Shell**:
 * **[Text Editor Integration](https://github.com/soimort/translate-shell/wiki/Text-Editor-Integration)**
 * **[Configuration](https://github.com/soimort/translate-shell/wiki/Configuration)**
 * **[Themes](https://github.com/soimort/translate-shell/wiki/Themes)**
+* **[AppleScript](https://github.com/soimort/translate-shell/wiki/AppleScript)**
 
 Find out whether your Linux distribution has included **Translate Shell** in its official repository. If not, contribute one:
 
