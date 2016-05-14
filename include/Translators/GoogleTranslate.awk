@@ -48,21 +48,21 @@ function genTK(text,
 
 function googleInit() {
     HttpProtocol = "http://"
-    HttpHost = "translate.google.com"
+    HttpHost = "translate.googleapis.com"
     HttpPort = 80
 }
 
 function googleRequestUrl(text, sl, tl, hl) {
-    return HttpPathPrefix "/translate_a/single?client=t"                \
+    return HttpPathPrefix "/translate_a/single?client=gtx"              \
         "&ie=UTF-8&oe=UTF-8"                                            \
         "&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at"  \
         "&sl=" sl "&tl=" tl "&hl=" hl                                   \
-        "&tk=" genTK(text) "&q=" preprocess(text)
+        "&q=" preprocess(text)
 }
 
 function googleTTSUrl(text, tl) {
-    return HttpProtocol HttpHost "/translate_tts?ie=UTF-8&client=t"	\
-        "&tl=" tl "&tk=" genTK(text) "&q=" preprocess(text)
+    return HttpProtocol HttpHost "/translate_tts?ie=UTF-8&client=gtx"	\
+        "&tl=" tl "&q=" preprocess(text)
 }
 
 function googleWebTranslateUrl(uri, sl, tl, hl) {
