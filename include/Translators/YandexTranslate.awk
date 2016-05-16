@@ -2,7 +2,7 @@
 # YandexTranslate.awk                                              #
 ####################################################################
 #
-# Last Updated: 11 Mar 2016
+# Last Updated: 16 May 2016
 BEGIN { provides("yandex") }
 
 function genSID(    content, group, temp) {
@@ -33,7 +33,7 @@ function yandexRequestUrl(text, sl, tl, hl,    group) {
     split(tl, group, "-"); tl = group[1]
 
     return HttpPathPrefix "/api/v1/tr.json/translate?"                  \
-        "id=" SID "&srv=tr-text"                                        \
+        "id=" SID "-0-0&srv=tr-text"                                    \
         "&text=" preprocess(text) "&lang=" (sl == "auto" ? tl : sl "-" tl)
 }
 
