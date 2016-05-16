@@ -71,7 +71,7 @@ BEGIN {
         assertEqual(tokens, expected)
     }
 
-    T("parseJson()", 5)
+    T("parseJson()", 10)
     {
         delete tokens; delete ast; delete expected
         tokenize(tokens, "0")
@@ -103,6 +103,38 @@ BEGIN {
         tokenize(tokens, "{\"answer\": [42], \"Answer\": null}")
         parseJson(ast, tokens)
         expected[0 SUBSEP "answer" SUBSEP 0] = 42
+        expected[0 SUBSEP "Answer"] = "null"
+        assertEqual(ast, expected)
+
+        delete tokens; delete ast; delete expected
+        tokenize(tokens, "{\"answer\": {42}, \"Answer\": null}")
+        parseJson(ast, tokens)
+        expected[0 SUBSEP "answer" SUBSEP] = 42
+        expected[0 SUBSEP "Answer"] = "null"
+        assertEqual(ast, expected)
+
+        delete tokens; delete ast; delete expected
+        tokenize(tokens, "{\"answer\": {[42]}, \"Answer\": null}")
+        parseJson(ast, tokens)
+        expected[0 SUBSEP "answer" SUBSEP SUBSEP 0] = 42
+        expected[0 SUBSEP "Answer"] = "null"
+        assertEqual(ast, expected)
+
+        # empty object - what is the "correct" parsing result?
+
+        delete tokens; delete ast; delete expected
+        tokenize(tokens, "{}")
+        parseJson(ast, tokens)
+        assertEqual(ast, expected)
+
+        delete tokens; delete ast; delete expected
+        tokenize(tokens, "{\"answer\": {}}")
+        parseJson(ast, tokens)
+        assertEqual(ast, expected)
+
+        delete tokens; delete ast; delete expected
+        tokenize(tokens, "{\"answer\": {}, \"Answer\": null}")
+        parseJson(ast, tokens)
         expected[0 SUBSEP "Answer"] = "null"
         assertEqual(ast, expected)
     }
