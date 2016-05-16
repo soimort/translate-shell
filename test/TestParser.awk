@@ -107,17 +107,15 @@ BEGIN {
         assertEqual(ast, expected)
 
         delete tokens; delete ast; delete expected
-        tokenize(tokens, "{\"answer\": {42}, \"Answer\": null}")
+        tokenize(tokens, "{\"answer\": {\"everything\": 42}}")
         parseJson(ast, tokens)
-        expected[0 SUBSEP "answer" SUBSEP] = 42
-        expected[0 SUBSEP "Answer"] = "null"
+        expected[0 SUBSEP "answer" SUBSEP "everything"] = "42"
         assertEqual(ast, expected)
 
         delete tokens; delete ast; delete expected
-        tokenize(tokens, "{\"answer\": {[42]}, \"Answer\": null}")
+        tokenize(tokens, "{\"answer\": {\"everything\": [42]}}")
         parseJson(ast, tokens)
-        expected[0 SUBSEP "answer" SUBSEP SUBSEP 0] = 42
-        expected[0 SUBSEP "Answer"] = "null"
+        expected[0 SUBSEP "answer" SUBSEP "everything" SUBSEP 0] = "42"
         assertEqual(ast, expected)
 
         # empty object - what is the "correct" parsing result?
