@@ -265,17 +265,18 @@ function parseJson(returnAST, tokens,
     for (i = 0; i < length(tokens); i++) {
         token = tokens[i]
 
-        if (belongsTo(token, arrayStartTokens))
+        if (belongsTo(token, arrayStartTokens)) {
             stack[++p] = 0
-        else if (belongsTo(token, objectStartTokens))
+        } else if (belongsTo(token, objectStartTokens)) {
             stack[++p] = NULLSTR
-        else if (belongsTo(token, objectEndTokens) ||
-                 belongsTo(token, arrayEndTokens))
+            flag = 0 # ready to read key
+        } else if (belongsTo(token, objectEndTokens) ||
+                   belongsTo(token, arrayEndTokens)) {
             --p
-        else if (belongsTo(token, commas)) {
+        } else if (belongsTo(token, commas)) {
             if (isnum(stack[p])) # array
                 stack[p]++ # increase index
-            else # anyway
+            else # object
                 flag = 0 # ready to read key
         } else if (belongsTo(token, colons)) {
             flag = 1 # ready to read value
