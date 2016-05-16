@@ -275,6 +275,8 @@ function parseJson(returnAST, tokens,
         else if (belongsTo(token, commas)) {
             if (isnum(stack[p])) # array
                 stack[p]++ # increase index
+            else # anyway
+                flag = 0 # ready to read key
         } else if (belongsTo(token, colons)) {
             flag = 1 # ready to read value
         } else if (isnum(stack[p]) || flag) {
