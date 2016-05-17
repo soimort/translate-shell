@@ -1765,7 +1765,7 @@ function initLocale(    i) {
     }
 
     # Other aliases
-    # See: <http://www.loc.gov/standards/iso639-2/php/code_changes.php>
+    # See: <https://www.loc.gov/standards/iso639-2/php/code_changes.php>
     LocaleAlias["in"] = "id" # withdrawn language code for Indonesian
     LocaleAlias["iw"] = "he" # withdrawn language code for Hebrew
     LocaleAlias["ji"] = "yi" # withdrawn language code for Yiddish
@@ -1955,7 +1955,7 @@ function getDetails(code,    group, iso, language, script) {
         sprintf("%-22s%s\n", "SIL", ansi("bold", "http://www-01.sil.org/iso639-3/documentation.asp?id=" iso)) \
         sprintf("%-22s%s\n", "Glottolog", getGlotto(code) ?
                 ansi("bold", "http://glottolog.org/resource/languoid/id/" getGlotto(code)) : "") \
-        sprintf("%-22s%s", "Wikipedia", ansi("bold", "http://en.wikipedia.org/wiki/" language))
+        sprintf("%-22s%s", "Wikipedia", ansi("bold", "https://en.wikipedia.org/wiki/" language))
 }
 
 # Add /slashes/ for IPA phonemic notations and (parentheses) for others.

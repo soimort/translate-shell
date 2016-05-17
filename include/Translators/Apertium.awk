@@ -6,9 +6,9 @@
 BEGIN { provides("apertium") }
 
 function apertiumInit() {
-    HttpProtocol = "http://"
+    HttpProtocol = "https://"
     HttpHost = "www.apertium.org"
-    HttpPort = 80
+    HttpPort = 443
 }
 
 function apertiumRequestUrl(text, sl, tl, hl) {
