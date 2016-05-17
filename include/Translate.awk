@@ -84,7 +84,7 @@ function postprocess(text) {
     return text
 }
 
-# Send an HTTP request and get response from an online translator.
+# Send an HTTP GET request and get response from an online translator.
 function getResponse(text, sl, tl, hl,    content, header, isBody, url) {
     url = _RequestUrl(text, sl, tl, hl)
 
@@ -93,6 +93,8 @@ function getResponse(text, sl, tl, hl,    content, header, isBody, url) {
         "Connection: close\n"
     if (Option["user-agent"])
         header = header "User-Agent: " Option["user-agent"] "\n"
+    if (Cookie)
+        header = header "Cookie: " Cookie "\n"
 
     content = NULLSTR; isBody = 0
     print header |& HttpService
