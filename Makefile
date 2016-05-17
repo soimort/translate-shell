@@ -30,8 +30,9 @@ check: test
 	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b 忍者`" = 'Ninja' ] &&\
 	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b 'hello world'`" = 'hello world' ]
 
-install:
-	@install -D $(BUILDDIR)/$(COMMAND) $(PREFIX)/bin/$(COMMAND) &&\
+install: build
+	@mkdir -p $(PREFIX)/bin &&\
+	install $(BUILDDIR)/$(COMMAND) $(PREFIX)/bin/$(COMMAND) &&\
 	mkdir -p $(PREFIX)/share/man/man1 &&\
 	cp $(MANDIR)/$(COMMAND).1 $(PREFIX)/share/man/man1/$(COMMAND).1 &&\
 	echo "[OK] $(NAME) installed."
