@@ -37,6 +37,35 @@ function yandexRequestUrl(text, sl, tl, hl,    group) {
         "&text=" preprocess(text) "&lang=" (sl == "auto" ? tl : sl "-" tl)
 }
 
+function yandexGetDictionaryResponse(text, sl, tl, hl,    content, header, isBody, url) {
+    # Quick hack: Yandex doesn't support digraphia code (yet)
+    split(sl, group, "-"); sl = group[1]
+    split(tl, group, "-"); tl = group[1]
+
+    url = HttpPathPrefix "/dicservice.json/lookup?"                     \
+        "sid=" SID                                                      \
+        "&text=" preprocess(text) "&lang=" (sl == "auto" ? tl : sl "-" tl)
+
+    header = "GET " url " HTTP/1.1\n"           \
+        "Host: " "dictionary.yandex.net" "\n"   \
+        "Connection: close\n"
+    if (Option["user-agent"])
+        header = header "User-Agent: " Option["user-agent"] "\n"
+
+    content = NULLSTR; isBody = 0
+    print header |& HttpService
+    while ((HttpService |& getline) > 0) {
+        if (isBody)
+            content = content ? content "\n" $0 : $0
+        else if (length($0) <= 1)
+            isBody = 1
+        l(sprintf("%4s bytes > %s", length($0), $0))
+    }
+    close(HttpService)
+
+    return assert(content, "[ERROR] Null response.")
+}
+
 function yandexTTSUrl(text, tl) {
     switch (tl) { # List of available TTS language codes
     case "ar": tl = "ar_AE"; break
@@ -78,6 +107,8 @@ function yandexTranslate(text, sl, tl, hl,
                          _sl, _tl, _hl, il,
                          translation,
                          wShowOriginal, wShowTranslation, wShowLanguages,
+                         wShowDictionary, dicContent, dicTokens, dicAst,
+                         i, syn, mean,
                          group, temp) {
     if (!getCode(tl)) {
         # Check if target language is supported
@@ -123,9 +154,11 @@ function yandexTranslate(text, sl, tl, hl,
 
     } else {
         # Verbose mode
+
         wShowOriginal = Option["show-original"]
         wShowTranslation = Option["show-translation"]
         wShowLanguages = Option["show-languages"]
+        wShowDictionary = Option["show-dictionary"]
 
         if (wShowOriginal) {
             # Display: original text
@@ -159,6 +192,66 @@ function yandexTranslate(text, sl, tl, hl,
             if (temp ~ /%T/)
                 r = r prettify("languages-tl", getName(tl))
             r = r prettify("languages", group[3])
+        }
+
+        if (wShowDictionary) {
+            # Dictionary API
+            dicContent = yandexGetDictionaryResponse(text, _sl, _tl, _hl)
+            tokenize(dicTokens, dicContent)
+            parseJson(dicAst, dicTokens)
+
+            if (anything(dicAst)) {
+                # Display: dictionary entries
+                if (r) r = r RS
+                r = r m("-- display dictionary entries")
+
+                saveSortedIn = PROCINFO["sorted_in"]
+                PROCINFO["sorted_in"] = "@ind_num_asc"
+                for (i in dicAst) {
+                    if (i ~ "^0" SUBSEP "def" SUBSEP "[[:digit:]]+" SUBSEP \
+                        "pos$") {
+                        r = r RS prettify("dictionary-word-class", s((literal(dicAst[i])), hl))
+                        syn = mean = ""
+                    }
+
+                    # TODO: ex, gen, ...
+
+                    if (i ~ "^0" SUBSEP "def" SUBSEP "[[:digit:]]+" SUBSEP \
+                        "tr" SUBSEP "[[:digit:]]+" SUBSEP               \
+                        "mean" SUBSEP "[[:digit:]]+" SUBSEP "text") {
+                        if (mean) {
+                            mean = mean prettify("dictionary-explanation", ", ") \
+                                prettify("dictionary-explanation-item", s((literal(dicAst[i])), sl))
+                        } else {
+                            mean = prettify("dictionary-explanation-item", s((literal(dicAst[i])), sl))
+                        }
+                    }
+
+                    if (i ~ "^0" SUBSEP "def" SUBSEP "[[:digit:]]+" SUBSEP \
+                        "tr" SUBSEP "[[:digit:]]+" SUBSEP               \
+                        "syn" SUBSEP "[[:digit:]]+" SUBSEP "text") {
+                        if (syn) {
+                            syn = syn prettify("dictionary-explanation", ", ") \
+                                prettify("dictionary-word", s((literal(dicAst[i])), il))
+                        } else {
+                            syn = prettify("dictionary-word", s((literal(dicAst[i])), il))
+                        }
+                    }
+
+                    if (i ~ "^0" SUBSEP "def" SUBSEP "[[:digit:]]+" SUBSEP \
+                        "tr" SUBSEP "[[:digit:]]+" SUBSEP "text$") {
+                        text = prettify("dictionary-word", s((literal(dicAst[i])), il))
+                        if (syn) {
+                            r = r RS ins(1, text prettify("dictionary-explanation", ", ") syn)
+                        } else {
+                            r = r RS ins(1, text)
+                        }
+                        r = r RS ins(2, mean)
+                        syn = mean = ""
+                    }
+                }
+                PROCINFO["sorted_in"] = saveSortedIn
+            }
         }
     }
 
