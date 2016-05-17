@@ -1681,6 +1681,20 @@ function initLocale(    i) {
     Locale["tt"]["glotto"]             = "tata1255"
     Locale["tt"]["script"]             = "Cyrl"
 
+    #? Udmurt
+    Locale["udm"]["support"]           = "yandex-only"
+    Locale["udm"]["name"]              = "Udmurt"
+    Locale["udm"]["endonym"]           = "удмурт"
+    #Locale["udm"]["translations-of"]
+    #Locale["udm"]["definitions-of"]
+    #Locale["udm"]["synonyms"]
+    #Locale["udm"]["examples"]
+    #Locale["udm"]["see-also"]
+    Locale["udm"]["family"]            = "Uralic"
+    Locale["udm"]["iso"]               = "udm"
+    Locale["udm"]["glotto"]            = "udmu1245"
+    Locale["udm"]["script"]            = "Cyrl"
+
     #? Uyghur
     Locale["ug"]["support"]            = "unstable"
     Locale["ug"]["name"]               = "Uyghur"
