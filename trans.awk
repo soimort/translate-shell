@@ -2,8 +2,8 @@
 BEGIN {
 Name        = "Translate Shell"
 Description = "Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc."
-Version     = "0.9.3.2"
-ReleaseDate = "2016-03-11"
+Version     = "0.9.4"
+ReleaseDate = "2016-05-18"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 }
@@ -1823,6 +1823,13 @@ Locale["tt"]["family"]             = "Turkic"
 Locale["tt"]["iso"]                = "tat"
 Locale["tt"]["glotto"]             = "tata1255"
 Locale["tt"]["script"]             = "Cyrl"
+Locale["udm"]["support"]           = "yandex-only"
+Locale["udm"]["name"]              = "Udmurt"
+Locale["udm"]["endonym"]           = "удмурт"
+Locale["udm"]["family"]            = "Uralic"
+Locale["udm"]["iso"]               = "udm"
+Locale["udm"]["glotto"]            = "udmu1245"
+Locale["udm"]["script"]            = "Cyrl"
 Locale["ug"]["support"]            = "unstable"
 Locale["ug"]["name"]               = "Uyghur"
 Locale["ug"]["endonym"]            = "ئۇيغۇر تىلى"
@@ -2594,16 +2601,19 @@ stack[p = 0] = 0
 flag = 0
 for (i = 0; i < length(tokens); i++) {
 token = tokens[i]
-if (belongsTo(token, arrayStartTokens))
+if (belongsTo(token, arrayStartTokens)) {
 stack[++p] = 0
-else if (belongsTo(token, objectStartTokens))
+} else if (belongsTo(token, objectStartTokens)) {
 stack[++p] = NULLSTR
-else if (belongsTo(token, objectEndTokens) ||
-belongsTo(token, arrayEndTokens))
+flag = 0
+} else if (belongsTo(token, objectEndTokens) ||
+belongsTo(token, arrayEndTokens)) {
 --p
-else if (belongsTo(token, commas)) {
+} else if (belongsTo(token, commas)) {
 if (isnum(stack[p]))
 stack[p]++
+else
+flag = 0
 } else if (belongsTo(token, colons)) {
 flag = 1
 } else if (isnum(stack[p]) || flag) {
@@ -2854,6 +2864,8 @@ header = "GET " url " HTTP/1.1\n"\
 "Connection: close\n"
 if (Option["user-agent"])
 header = header "User-Agent: " Option["user-agent"] "\n"
+if (Cookie)
+header = header "Cookie: " Cookie "\n"
 content = NULLSTR; isBody = 0
 print header |& HttpService
 while ((HttpService |& getline) > 0) {
@@ -3021,19 +3033,19 @@ return TK[text]
 }
 function googleInit() {
 HttpProtocol = "http://"
-HttpHost = "translate.google.com"
+HttpHost = "translate.googleapis.com"
 HttpPort = 80
 }
 function googleRequestUrl(text, sl, tl, hl) {
-return HttpPathPrefix "/translate_a/single?client=t"\
+return HttpPathPrefix "/translate_a/single?client=gtx"\
 "&ie=UTF-8&oe=UTF-8"\
 "&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at"\
 "&sl=" sl "&tl=" tl "&hl=" hl\
-"&tk=" genTK(text) "&q=" preprocess(text)
+"&q=" preprocess(text)
 }
 function googleTTSUrl(text, tl) {
-return HttpProtocol HttpHost "/translate_tts?ie=UTF-8&client=t"\
-"&tl=" tl "&tk=" genTK(text) "&q=" preprocess(text)
+return HttpProtocol HttpHost "/translate_tts?ie=UTF-8&client=gtx"\
+"&tl=" tl "&q=" preprocess(text)
 }
 function googleWebTranslateUrl(uri, sl, tl, hl) {
 return "https://translate.google.com/translate?"\
@@ -3357,65 +3369,71 @@ returnPlaylist[2]["tl"] = tl
 return r
 }
 BEGIN { provides("bing") }
-function genRTTAppId(    content, group, header, isBody) {
+function bingInit() {
 HttpProtocol = "http://"
-HttpHost = "ssl.microsofttranslator.com"
+HttpHost = "www.bing.com"
 HttpPort = 80
-LandingPage = "/dynamic/226010/js/LandingPage.js"
-if (Option["proxy"]) {
-match(Option["proxy"], /^(http:\/*)?([^\/]*):([^\/:]*)/, HttpProxySpec)
-HttpService = "/inet/tcp/0/" HttpProxySpec[2] "/" HttpProxySpec[3]
-HttpPathPrefix = HttpProtocol HttpHost
-} else {
-HttpService = "/inet/tcp/0/" HttpHost "/" HttpPort
-HttpPathPrefix = ""
 }
-header = "GET " LandingPage " HTTP/1.1\n"\
+function bingSetCookie(    cookie, group, header, url) {
+url = HttpPathPrefix "/translator"
+header = "GET " url " HTTP/1.1\n"\
 "Host: " HttpHost "\n"\
 "Connection: close\n"
 if (Option["user-agent"])
 header = header "User-Agent: " Option["user-agent"] "\n"
-content = NULLSTR; isBody = 0
+cookie = NULLSTR
 print header |& HttpService
+while ((HttpService |& getline) > 0 && length($0) > 1) {
+match($0, /Set-Cookie: ([^;]*);/, group)
+if (group[1]) {
+cookie = cookie (cookie ?  "; " : NULLSTR) group[1]
+}
+l(sprintf("%4s bytes > %s", length($0), length($0) < 1024 ? $0 : "..."))
+}
+close(HttpService)
+Cookie = cookie
+}
+function bingTTSUrl(text, tl,    narrator) {
+narrator = Option["narrator"] ~ /^[AFaf]/ ? "female" : "male"
+return HttpProtocol HttpHost "/translator/api/language/Speak?"\
+"locale=" tl "&text=" preprocess(text)\
+"&gender=" narrator "&media=audio/mp3"
+}
+function bingWebTranslateUrl(uri, sl, tl, hl) {
+return "http://www.microsofttranslator.com/bv.aspx?"\
+"from=" sl "&to=" tl "&a=" uri
+}
+function bingPost(text, sl, tl, hl,
+content, contentLength, group,
+header, isBody, reqBody, url) {
+reqBody = "[{" parameterize("text") ":" parameterize(text) "}]"
+contentLength = dump(reqBody, group)
+url = HttpPathPrefix "/translator/api/Translate/TranslateArray?"\
+"from=" sl "&to=" tl
+header = "POST " url " HTTP/1.1\n"\
+"Host: " HttpHost "\n"\
+"Connection: close\n"\
+"Content-Length: " contentLength "\n"\
+"Content-Type: application/json\n"
+if (Option["user-agent"])
+header = header "User-Agent: " Option["user-agent"] "\n"
+if (Cookie)
+header = header "Cookie: " Cookie "\n"
+content = NULLSTR; isBody = 0
+print (header "\n" reqBody) |& HttpService
 while ((HttpService |& getline) > 0) {
 if (isBody)
 content = content ? content "\n" $0 : $0
 else if (length($0) <= 1)
 isBody = 1
-l(sprintf("%4s bytes > %s", length($0), length($0) < 1024 ? $0 : "..."))
+l(sprintf("%4s bytes > %s", length($0), $0))
 }
 close(HttpService)
-match(content, /rttAppId:"([^"]+)"/, group)
-if (group[1]) {
-RTTAppId = group[1]
-} else {
-e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
-exit 1
-}
-}
-function bingInit() {
-genRTTAppId()
-HttpProtocol = "http://"
-HttpHost = "api.microsofttranslator.com"
-HttpPort = 80
+return assert(content, "[ERROR] Null response.")
 }
 function bingRequestUrl(text, sl, tl, hl) {
-if (sl == "auto") sl = NULLSTR
-return HttpPathPrefix "/v2/ajax.svc/TranslateArray2?"\
-"appId="  preprocess(parameterize(RTTAppId, "\""))\
-"&from="  preprocess(parameterize(sl, "\""))\
-"&to="    preprocess(parameterize(tl, "\""))\
-"&texts=" preprocess("[" parameterize(text, "\"") "]")
-}
-function bingTTSUrl(text, tl,    narrator) {
-narrator = Option["narrator"] ~ /^[AFaf]/ ? "female" : "male"
-return HttpProtocol HttpHost "/v2/http.svc/speak?" "appId=" RTTAppId\
-"&language=" tl "&text=" preprocess(text)\
-"&format=audio/mp3" "&options=MinSize|" narrator
-}
-function bingWebTranslateUrl(uri, sl, tl, hl) {
-return "http://www.microsofttranslator.com/bv.aspx?"\
-"from=" sl "&to=" tl "&a=" uri
+return HttpPathPrefix "/translator/api/Dictionary/Lookup?"\
+"from=" sl "&to=" tl "&text=" preprocess(text)
 }
 function bingTranslate(text, sl, tl, hl,
 isVerbose, toSpeech, returnPlaylist, returnIl,
@@ -3434,17 +3452,15 @@ w("[WARNING] " getName(tl) " is a right-to-left language, but FriBidi is not fou
 _sl = getCode(sl); if (!_sl) _sl = sl
 _tl = getCode(tl); if (!_tl) _tl = tl
 _hl = getCode(hl); if (!_hl) _hl = hl
-content = getResponse(text, _sl, _tl, _hl)
-match(content, /(\[.*\])$/, group)
-if (!group[0]) {
-match(content, /"(.*)"$/, group)
-gsub(/\\u000d/, "\r", group[1])
-gsub(/\\u000a/, "\n", group[1])
-e("[ERROR] " group[1])
-ExitCode = 1
-return
-}
-content = group[1]
+if (_sl == "auto")  _sl = "-"
+if (_sl == "bs")    _sl = "bs-Latn"
+if (_sl == "zh-CN") _sl = "zh-CHS"
+if (_sl == "zh-TW") _sl = "zh-CHT"
+if (_tl == "bs")    _tl = "bs-Latn"
+if (_tl == "zh-CN") _tl = "zh-CHS"
+if (_tl == "zh-TW") _tl = "zh-CHT"
+bingSetCookie()
+content = bingPost(text, _sl, _tl, _hl)
 tokenize(tokens, content)
 parseJson(ast, tokens)
 l(content, "content", 1, 1)
@@ -3454,9 +3470,14 @@ if (!isarray(ast) || !anything(ast)) {
 e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
 ExitCode = 1
 return
+} else if (ast[0 SUBSEP "Message"]) {
+e("[ERROR] " unparameterize(ast[0 SUBSEP "Message"]))
+e("[ERROR] " unparameterize(ast[0 SUBSEP "Details" SUBSEP 0]))
+ExitCode = 1
+return
 }
-translation = unparameterize(ast[0 SUBSEP 0 SUBSEP "TranslatedText"])
-returnIl[0] = il = unparameterize(ast[0 SUBSEP 0 SUBSEP "From"])
+translation = unparameterize(ast[0 SUBSEP "items" SUBSEP 0 SUBSEP "text"])
+returnIl[0] = il = unparameterize(ast[0 SUBSEP "from"])
 if (Option["verbose"] < 0)
 return getList(il)
 if (!isVerbose) {
@@ -3465,6 +3486,7 @@ r = translation
 wShowOriginal = Option["show-original"]
 wShowTranslation = Option["show-translation"]
 wShowLanguages = Option["show-languages"]
+wShowDictionary = Option["show-dictionary"]
 if (wShowOriginal) {
 if (r) r = r RS RS
 r = r m("-- display original text")
@@ -3492,6 +3514,15 @@ r = r prettify("languages-tl", getDisplay(tl))
 if (temp ~ /%T/)
 r = r prettify("languages-tl", getName(tl))
 r = r prettify("languages", group[3])
+}
+if (wShowDictionary && false) {
+dicContent = getResponse(text, il, _tl, _hl)
+tokenize(dicTokens, dicContent)
+parseJson(dicAst, dicTokens)
+if (anything(dicAst)) {
+if (r) r = r RS
+r = r m("-- display dictionary entries")
+}
 }
 }
 if (toSpeech) {
@@ -3523,8 +3554,31 @@ function yandexRequestUrl(text, sl, tl, hl,    group) {
 split(sl, group, "-"); sl = group[1]
 split(tl, group, "-"); tl = group[1]
 return HttpPathPrefix "/api/v1/tr.json/translate?"\
-"id=" SID "&srv=tr-text"\
+"id=" SID "-0-0&srv=tr-text"\
 "&text=" preprocess(text) "&lang=" (sl == "auto" ? tl : sl "-" tl)
+}
+function yandexGetDictionaryResponse(text, sl, tl, hl,    content, header, isBody, url) {
+split(sl, group, "-"); sl = group[1]
+split(tl, group, "-"); tl = group[1]
+url = HttpPathPrefix "/dicservice.json/lookup?"\
+"sid=" SID\
+"&text=" preprocess(text) "&lang=" (sl == "auto" ? tl : sl "-" tl)
+header = "GET " url " HTTP/1.1\n"\
+"Host: " "dictionary.yandex.net" "\n"\
+"Connection: close\n"
+if (Option["user-agent"])
+header = header "User-Agent: " Option["user-agent"] "\n"
+content = NULLSTR; isBody = 0
+print header |& HttpService
+while ((HttpService |& getline) > 0) {
+if (isBody)
+content = content ? content "\n" $0 : $0
+else if (length($0) <= 1)
+isBody = 1
+l(sprintf("%4s bytes > %s", length($0), $0))
+}
+close(HttpService)
+return assert(content, "[ERROR] Null response.")
 }
 function yandexTTSUrl(text, tl) {
 switch (tl) {
@@ -3563,6 +3617,8 @@ content, tokens, ast,
 _sl, _tl, _hl, il,
 translation,
 wShowOriginal, wShowTranslation, wShowLanguages,
+wShowDictionary, dicContent, dicTokens, dicAst,
+i, syn, mean,
 group, temp) {
 if (!getCode(tl)) {
 w("[WARNING] Unknown target language code: " tl)
@@ -3592,6 +3648,146 @@ return
 translation = unparameterize(ast[0 SUBSEP "text" SUBSEP 0])
 split(unparameterize(ast[0 SUBSEP "lang"]), group, "-")
 returnIl[0] = il = group[1]
+if (Option["verbose"] < 0)
+return getList(il)
+if (!isVerbose) {
+r = translation
+} else {
+wShowOriginal = Option["show-original"]
+wShowTranslation = Option["show-translation"]
+wShowLanguages = Option["show-languages"]
+wShowDictionary = Option["show-dictionary"]
+if (wShowOriginal) {
+if (r) r = r RS RS
+r = r m("-- display original text")
+r = r prettify("original", s(text, il))
+}
+if (wShowTranslation) {
+if (r) r = r RS RS
+r = r m("-- display major translation")
+r = r prettify("translation", s(translation, tl))
+}
+if (wShowLanguages) {
+if (r) r = r RS RS
+r = r m("-- display source language -> target language")
+temp = Option["fmt-languages"]
+if (!temp) temp = "[ %s -> %t ]"
+split(temp, group, /(%s|%S|%t|%T)/)
+r = r prettify("languages", group[1])
+if (temp ~ /%s/)
+r = r prettify("languages-sl", getDisplay(il))
+if (temp ~ /%S/)
+r = r prettify("languages-sl", getName(il))
+r = r prettify("languages", group[2])
+if (temp ~ /%t/)
+r = r prettify("languages-tl", getDisplay(tl))
+if (temp ~ /%T/)
+r = r prettify("languages-tl", getName(tl))
+r = r prettify("languages", group[3])
+}
+if (wShowDictionary) {
+dicContent = yandexGetDictionaryResponse(text, _sl, _tl, _hl)
+tokenize(dicTokens, dicContent)
+parseJson(dicAst, dicTokens)
+if (anything(dicAst)) {
+if (r) r = r RS
+r = r m("-- display dictionary entries")
+saveSortedIn = PROCINFO["sorted_in"]
+PROCINFO["sorted_in"] = "@ind_num_asc"
+for (i in dicAst) {
+if (i ~ "^0" SUBSEP "def" SUBSEP "[[:digit:]]+" SUBSEP\
+"pos$") {
+r = r RS prettify("dictionary-word-class", s((literal(dicAst[i])), hl))
+syn = mean = ""
+}
+if (i ~ "^0" SUBSEP "def" SUBSEP "[[:digit:]]+" SUBSEP\
+"tr" SUBSEP "[[:digit:]]+" SUBSEP\
+"mean" SUBSEP "[[:digit:]]+" SUBSEP "text") {
+if (mean) {
+mean = mean prettify("dictionary-explanation", ", ")\
+prettify("dictionary-explanation-item", s((literal(dicAst[i])), sl))
+} else {
+mean = prettify("dictionary-explanation-item", s((literal(dicAst[i])), sl))
+}
+}
+if (i ~ "^0" SUBSEP "def" SUBSEP "[[:digit:]]+" SUBSEP\
+"tr" SUBSEP "[[:digit:]]+" SUBSEP\
+"syn" SUBSEP "[[:digit:]]+" SUBSEP "text") {
+if (syn) {
+syn = syn prettify("dictionary-explanation", ", ")\
+prettify("dictionary-word", s((literal(dicAst[i])), il))
+} else {
+syn = prettify("dictionary-word", s((literal(dicAst[i])), il))
+}
+}
+if (i ~ "^0" SUBSEP "def" SUBSEP "[[:digit:]]+" SUBSEP\
+"tr" SUBSEP "[[:digit:]]+" SUBSEP "text$") {
+text = prettify("dictionary-word", s((literal(dicAst[i])), il))
+if (syn) {
+r = r RS ins(1, text prettify("dictionary-explanation", ", ") syn)
+} else {
+r = r RS ins(1, text)
+}
+r = r RS ins(2, mean)
+syn = mean = ""
+}
+}
+PROCINFO["sorted_in"] = saveSortedIn
+}
+}
+}
+if (toSpeech) {
+returnPlaylist[0]["text"] = translation
+returnPlaylist[0]["tl"] = tl
+}
+return r
+}
+BEGIN { provides("apertium") }
+function apertiumInit() {
+HttpProtocol = "http://"
+HttpHost = "www.apertium.org"
+HttpPort = 80
+}
+function apertiumRequestUrl(text, sl, tl, hl) {
+return HttpPathPrefix "/apy/translate?"\
+"langpair=" preprocess(sl) "|" preprocess(tl)\
+"&q=" preprocess(text)
+}
+function apertiumTTSUrl(text, tl,    narrator) {
+}
+function apertiumWebTranslateUrl(uri, sl, tl, hl) {
+}
+function apertiumTranslate(text, sl, tl, hl,
+isVerbose, toSpeech, returnPlaylist, returnIl,
+r,
+content, tokens, ast,
+_sl, _tl, _hl, il,
+translation,
+wShowOriginal, wShowTranslation, wShowLanguages,
+group, temp) {
+if (!getCode(tl)) {
+w("[WARNING] Unknown target language code: " tl)
+} else if (isRTL(tl)) {
+if (!FriBidi)
+w("[WARNING] " getName(tl) " is a right-to-left language, but FriBidi is not found.")
+}
+_sl = getCode(sl); if (!_sl) _sl = sl
+_tl = getCode(tl); if (!_tl) _tl = tl
+_hl = getCode(hl); if (!_hl) _hl = hl
+_sl = "auto" == _sl ? "en" : _sl
+content = getResponse(text, _sl, _tl, _hl)
+tokenize(tokens, content)
+parseJson(ast, tokens)
+l(content, "content", 1, 1)
+l(tokens, "tokens", 1, 0, 1)
+l(ast, "ast")
+if (!isarray(ast) || !anything(ast)) {
+e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
+ExitCode = 1
+return
+}
+translation = unparameterize(ast[0 SUBSEP "responseData" SUBSEP])
+returnIl[0] = il = _sl
 if (Option["verbose"] < 0)
 return getList(il)
 if (!isVerbose) {
@@ -3682,7 +3878,7 @@ newVersion = literal(tokens[i + 1])
 if (newerVersion(newVersion, Version)) {
 w("Current version: \t" Version)
 w("New version available: \t" newVersion)
-w("Download from: \t" "http://www.soimort.org/translate-shell/trans")
+w("Download from: \t" "https://www.soimort.org/translate-shell/trans")
 } else {
 w("Current version: \t" Version)
 w("Already up-to-date.")
