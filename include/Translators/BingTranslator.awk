@@ -2,81 +2,93 @@
 # BingTranslator.awk                                               #
 ####################################################################
 #
-# Last Updated: 11 Mar 2016
-# http://ssl.microsofttranslator.com/dynamic/226010/js/LandingPage.js
+# Last Updated: 18 May 2016
 BEGIN { provides("bing") }
 
-function genRTTAppId(    content, group, header, isBody) {
+function bingInit() {
     HttpProtocol = "http://"
-    HttpHost = "ssl.microsofttranslator.com"
+    HttpHost = "www.bing.com"
     HttpPort = 80
-    LandingPage = "/dynamic/226010/js/LandingPage.js"
+}
 
-    if (Option["proxy"]) {
-        match(Option["proxy"], /^(http:\/*)?([^\/]*):([^\/:]*)/, HttpProxySpec)
-        HttpService = "/inet/tcp/0/" HttpProxySpec[2] "/" HttpProxySpec[3]
-        HttpPathPrefix = HttpProtocol HttpHost
-    } else {
-        HttpService = "/inet/tcp/0/" HttpHost "/" HttpPort
-        HttpPathPrefix = ""
-    }
+# Retrieve the Cookie needed.
+function bingSetCookie(    cookie, group, header, url) {
+    url = HttpPathPrefix "/translator"
 
-    header = "GET " LandingPage " HTTP/1.1\n"                           \
+    header = "GET " url " HTTP/1.1\n"                                   \
         "Host: " HttpHost "\n"                                          \
         "Connection: close\n"
     if (Option["user-agent"])
         header = header "User-Agent: " Option["user-agent"] "\n"
 
-    content = NULLSTR; isBody = 0
+    cookie = NULLSTR
     print header |& HttpService
-    while ((HttpService |& getline) > 0) {
-        if (isBody)
-            content = content ? content "\n" $0 : $0
-        else if (length($0) <= 1)
-            isBody = 1
+    while ((HttpService |& getline) > 0 && length($0) > 1) {
+        match($0, /Set-Cookie: ([^;]*);/, group)
+        if (group[1]) {
+            cookie = cookie (cookie ?  "; " : NULLSTR) group[1]
+        }
         l(sprintf("%4s bytes > %s", length($0), length($0) < 1024 ? $0 : "..."))
     }
     close(HttpService)
-
-    match(content, /rttAppId:"([^"]+)"/, group)
-    if (group[1]) {
-        RTTAppId = group[1]
-    } else {
-        e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
-        exit 1
-    }
+    Cookie = cookie
 }
 
-function bingInit() {
-    genRTTAppId() # generate a one-time key
-
-    HttpProtocol = "http://"
-    HttpHost = "api.microsofttranslator.com"
-    HttpPort = 80
-}
-
-function bingRequestUrl(text, sl, tl, hl) {
-    # Quick hack: Bing doesn't have an "auto" language code
-    if (sl == "auto") sl = NULLSTR
-
-    return HttpPathPrefix "/v2/ajax.svc/TranslateArray2?"               \
-        "appId="  preprocess(parameterize(RTTAppId, "\""))              \
-        "&from="  preprocess(parameterize(sl, "\""))                    \
-        "&to="    preprocess(parameterize(tl, "\""))                    \
-        "&texts=" preprocess("[" parameterize(text, "\"") "]")
-}
-
+# TTS -- FIXME!
 function bingTTSUrl(text, tl,    narrator) {
     narrator = Option["narrator"] ~ /^[AFaf]/ ? "female" : "male"
-
-    return HttpProtocol HttpHost "/v2/http.svc/speak?" "appId=" RTTAppId \
-        "&language=" tl "&text=" preprocess(text)                       \
-        "&format=audio/mp3" "&options=MinSize|" narrator
+    # FIXME:
+    # 1. use digraphia code (en-US) as Alpha-2 code alone doen't work
+    # 2. how to pass cookies to an external player?
+    return HttpProtocol HttpHost "/translator/api/language/Speak?"      \
+        "locale=" tl "&text=" preprocess(text)                          \
+        "&gender=" narrator "&media=audio/mp3"
 }
 
 function bingWebTranslateUrl(uri, sl, tl, hl) {
     return "http://www.microsofttranslator.com/bv.aspx?"        \
         "from=" sl "&to=" tl "&a=" uri
+}
+
+# Send an HTTP POST request and get response from Bing Translator.
+function bingPost(text, sl, tl, hl,
+                  ####
+                  content, contentLength, group,
+                  header, isBody, reqBody, url) {
+    reqBody = "[{" parameterize("text") ":" parameterize(text) "}]"
+    contentLength = dump(reqBody, group)
+
+    url = HttpPathPrefix "/translator/api/Translate/TranslateArray?"    \
+        "from=" sl "&to=" tl
+
+    header = "POST " url " HTTP/1.1\n"                  \
+        "Host: " HttpHost "\n"                          \
+        "Connection: close\n"                           \
+        "Content-Length: " contentLength "\n"           \
+        "Content-Type: application/json\n"     # must!
+    if (Option["user-agent"])
+        header = header "User-Agent: " Option["user-agent"] "\n"
+    if (Cookie)
+        header = header "Cookie: " Cookie "\n" # must!
+
+    content = NULLSTR; isBody = 0
+    print (header "\n" reqBody) |& HttpService
+    while ((HttpService |& getline) > 0) {
+        if (isBody)
+            content = content ? content "\n" $0 : $0
+        else if (length($0) <= 1)
+            isBody = 1
+        l(sprintf("%4s bytes > %s", length($0), $0))
+    }
+    close(HttpService)
+
+    return assert(content, "[ERROR] Null response.")
+}
+
+# Dictionary API (via HTTP GET).
+function bingRequestUrl(text, sl, tl, hl) {
+    return HttpPathPrefix "/translator/api/Dictionary/Lookup?"  \
+        "from=" sl "&to=" tl "&text=" preprocess(text)
 }
 
 # Get the translation of a string.
@@ -101,19 +113,19 @@ function bingTranslate(text, sl, tl, hl,
     _tl = getCode(tl); if (!_tl) _tl = tl
     _hl = getCode(hl); if (!_hl) _hl = hl
 
-    content = getResponse(text, _sl, _tl, _hl)
-    # Strip the content and get a valid JSON string
-    match(content, /(\[.*\])$/, group)
-    if (!group[0]) {
-        # Display the error message
-        match(content, /"(.*)"$/, group)
-        gsub(/\\u000d/, "\r", group[1])
-        gsub(/\\u000a/, "\n", group[1])
-        e("[ERROR] " group[1])
-        ExitCode = 1
-        return
-    }
-    content = group[1]
+    # Hot-patches for Bing's own translator language codes
+    # See: <https://msdn.microsoft.com/en-us/library/hh456380.aspx>
+    if (_sl == "auto")  _sl = "-"
+    if (_sl == "bs")    _sl = "bs-Latn" # 'bs' is not recognized as valid code
+    if (_sl == "zh-CN") _sl = "zh-CHS"
+    if (_sl == "zh-TW") _sl = "zh-CHT"
+    if (_tl == "bs")    _tl = "bs-Latn"
+    if (_tl == "zh-CN") _tl = "zh-CHS"
+    if (_tl == "zh-TW") _tl = "zh-CHT"
+
+    bingSetCookie() # must!
+
+    content = bingPost(text, _sl, _tl, _hl)
     tokenize(tokens, content)
     parseJson(ast, tokens)
 
@@ -124,11 +136,16 @@ function bingTranslate(text, sl, tl, hl,
         e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
         ExitCode = 1
         return
+    } else if (ast[0 SUBSEP "Message"]) {
+        e("[ERROR] " unparameterize(ast[0 SUBSEP "Message"]))
+        e("[ERROR] " unparameterize(ast[0 SUBSEP "Details" SUBSEP 0]))
+        ExitCode = 1
+        return
     }
 
-    translation = unparameterize(ast[0 SUBSEP 0 SUBSEP "TranslatedText"])
+    translation = unparameterize(ast[0 SUBSEP "items" SUBSEP 0 SUBSEP "text"])
 
-    returnIl[0] = il = unparameterize(ast[0 SUBSEP 0 SUBSEP "From"])
+    returnIl[0] = il = unparameterize(ast[0 SUBSEP "from"])
     if (Option["verbose"] < 0)
         return getList(il)
 
@@ -139,9 +156,11 @@ function bingTranslate(text, sl, tl, hl,
 
     } else {
         # Verbose mode
+
         wShowOriginal = Option["show-original"]
         wShowTranslation = Option["show-translation"]
         wShowLanguages = Option["show-languages"]
+        wShowDictionary = Option["show-dictionary"]
 
         if (wShowOriginal) {
             # Display: original text
@@ -175,6 +194,22 @@ function bingTranslate(text, sl, tl, hl,
             if (temp ~ /%T/)
                 r = r prettify("languages-tl", getName(tl))
             r = r prettify("languages", group[3])
+        }
+
+        if (wShowDictionary && false) { # FIXME!
+            # Dictionary API
+            # Note: source language must be identified
+            dicContent = getResponse(text, il, _tl, _hl)
+            tokenize(dicTokens, dicContent)
+            parseJson(dicAst, dicTokens) # FIXME: inefficient parser
+
+            if (anything(dicAst)) {
+                # Display: dictionary entries
+                if (r) r = r RS
+                r = r m("-- display dictionary entries")
+
+                # TODO
+            }
         }
     }
 
