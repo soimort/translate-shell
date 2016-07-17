@@ -248,6 +248,9 @@ function getReference(displayName,
                     case "ta": case "te": case "yi":
                         t1 = sprintf(" %-16s", t1)
                         break
+                    case "yue":
+                        t1 = sprintf(" %-13s", t1)
+                        break
                     case "ja": case "ko":
                         t1 = sprintf(" %-12s", t1)
                         break

@@ -1398,6 +1398,15 @@ function initLocale(    i) {
     Locale["zu"]["glotto"]             = "zulu1248"
     Locale["zu"]["script"]             = "Latn"
 
+    #* Cantonese
+    Locale["yue"]["support"]           = "bing-only"
+    Locale["yue"]["name"]              = "Cantonese"
+    Locale["yue"]["endonym"]           = "粵語"
+    Locale["yue"]["family"]            = "Sino-Tibetan"
+    Locale["yue"]["iso"]               = "yue"
+    Locale["yue"]["glotto"]            = "cant1236"
+    Locale["yue"]["script"]            = "Hant"
+
     #* Hmong Daw
     Locale["mww"]["support"]           = "bing-only"
     Locale["mww"]["name"]              = "Hmong Daw"
