@@ -52,11 +52,12 @@ function googleInit() {
     HttpPort = 80
 }
 
-function googleRequestUrl(text, sl, tl, hl) {
+function googleRequestUrl(text, sl, tl, hl,    qc) {
+    qc = Option["no-autocorrect"] ? "qc" : "qca";
     return HttpPathPrefix "/translate_a/single?client=gtx"              \
         "&ie=UTF-8&oe=UTF-8"                                            \
-        "&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at"  \
-        "&sl=" sl "&tl=" tl "&hl=" hl                                   \
+        "&dt=bd&dt=ex&dt=ld&dt=md&dt=rw&dt=rm&dt=ss&dt=t&dt=at"         \
+        "&dt=" qc "&sl=" sl "&tl=" tl "&hl=" hl                         \
         "&q=" preprocess(text)
 }
 
@@ -147,6 +148,10 @@ function googleTranslate(text, sl, tl, hl,
         }
         if (match(i, "^0" SUBSEP "5" SUBSEP "([[:digit:]]+)" SUBSEP "2" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
             altTranslations[group[1]][group[2]] = postprocess(literal(ast[i]))
+
+        # 7 - autocorrection
+        if (i ~ "^0" SUBSEP "7" SUBSEP "5$")
+            w("Showing translation for:  (use -no-auto to disable autocorrect)")
 
         # 8 - identified source languages
         if (i ~ "^0" SUBSEP "8" SUBSEP "0" SUBSEP "[[:digit:]]+$" ||
