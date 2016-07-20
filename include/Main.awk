@@ -34,6 +34,7 @@ function init() {
     Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] - 2 : 0
     Option["indent"] = 4
     Option["no-ansi"] = 0
+    Option["no-autocorrect"] = 0
     Option["no-bidi"] = 0
     Option["theme"] = "default"
 
@@ -393,6 +394,13 @@ BEGIN {
         match(ARGV[pos], /^--?no-ansi$/)
         if (RSTART) {
             Option["no-ansi"] = 1
+            continue
+        }
+
+        # -no-autocorrect
+        match(ARGV[pos], /^--?no-auto(correct)?$/)
+        if (RSTART) {
+            Option["no-autocorrect"] = 1
             continue
         }
 
