@@ -105,6 +105,8 @@ function getHelp() {
         ins(2, "Do not use any other theme than default.") RS           \
         ins(1, ansi("bold", "-no-ansi")) RS                             \
         ins(2, "Do not use ANSI escape codes.") RS                      \
+        ins(1, ansi("bold", "-no-autocorrect")) RS                      \
+        ins(2, "Do not autocorrect. (if defaulted by the translation engine)") RS \
         ins(1, ansi("bold", "-no-bidi")) RS                             \
         ins(2, "Do not convert bidirectional texts.") RS                \
         RS "Audio options:" RS                                          \
