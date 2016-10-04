@@ -69,7 +69,7 @@ In order to be happy, the best way is to be loved by people.
 
 ### Recommended Dependencies
 
-These dependecies are optional, but strongly recommended for full functionality:
+These dependencies are optional, but strongly recommended for full functionality:
 
 * **[curl](http://curl.haxx.se/)** with **OpenSSL** support
 * **[GNU FriBidi](http://fribidi.org/)**: _an implementation of the Unicode Bidirectional Algorithm (bidi)_
