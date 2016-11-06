@@ -515,6 +515,7 @@ The following pages demonstrate the advanced usage of **Translate Shell**:
 
 * **[REPL](https://github.com/soimort/translate-shell/wiki/REPL)**
 * **[Text Editor Integration](https://github.com/soimort/translate-shell/wiki/Text-Editor-Integration)**
+* **[Narrator Selection](https://github.com/soimort/translate-shell/wiki/Narrator-Selection)**
 * **[Configuration](https://github.com/soimort/translate-shell/wiki/Configuration)**
 * **[Themes](https://github.com/soimort/translate-shell/wiki/Themes)**
 * **[AppleScript](https://github.com/soimort/translate-shell/wiki/AppleScript)**
