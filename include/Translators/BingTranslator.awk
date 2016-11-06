@@ -34,15 +34,67 @@ function bingSetCookie(    cookie, group, header, url) {
     Cookie = cookie
 }
 
-# TTS -- FIXME!
-function bingTTSUrl(text, tl,    narrator) {
-    narrator = Option["narrator"] ~ /^[AFaf]/ ? "female" : "male"
-    # FIXME:
-    # 1. use digraphia code (en-US) as Alpha-2 code alone doen't work
-    # 2. how to pass cookies to an external player?
-    return HttpProtocol HttpHost "/translator/api/language/Speak?"      \
+function bingTTSUrl(text, tl,
+                    ####
+                    country, gender, group,
+                    header, content, isBody, tempfile) {
+    gender = "female"
+    country = NULLSTR
+    split(Option["narrator"], group, ",")
+    for (i in group) {
+        if (group[i] ~ /^(f(emale)?|w(oman)?)$/)
+            gender = "female"
+        else if (group[i] ~ /^m(ale|an)?$/)
+            gender = "male"
+        else
+            country = group[i]
+    }
+
+    # Automatic ISO country code
+    if (country) tl = tl "-" country
+    else if (tl == "ar") tl = tl "-EG" # FIXME: sometimes doesn't work. Why?
+    else if (tl == "da") tl = tl "-DK"
+    else if (tl == "de") tl = tl "-DE"
+    else if (tl == "en") tl = tl "-US"
+    else if (tl == "es") tl = tl "-ES"
+    else if (tl == "fi") tl = tl "-FI"
+    else if (tl == "fr") tl = tl "-FR"
+    else if (tl == "it") tl = tl "-IT"
+    else if (tl == "ja") tl = tl "-JP"
+    else if (tl == "ko") tl = tl "-KR"
+    else if (tl == "nl") tl = tl "-NL"
+    else if (tl == "nb") tl = tl "-NO" # Norwegian Bokmål
+    else if (tl == "pl") tl = tl "-PL"
+    else if (tl == "pt") tl = tl "-PT"
+    else if (tl == "ru") tl = tl "-RU"
+    else if (tl == "sv") tl = tl "-SE"
+    else if (tl == "yue") ;
+    else if (tl == "zh") tl = tl "-CN"
+
+    header = "GET " "/translator/api/language/Speak?"                   \
         "locale=" tl "&text=" preprocess(text)                          \
-        "&gender=" narrator "&media=audio/mp3"
+        "&gender=" gender "&media=audio/mp3" " HTTP/1.1\n"              \
+        "Host: " HttpHost "\n"                                          \
+        "Connection: close\n"
+    if (Option["user-agent"])
+        header = header "User-Agent: " Option["user-agent"] "\n"
+    if (Cookie)
+        header = header "Cookie: " Cookie "\n" # must!
+
+    content = NULLSTR; isBody = 0
+    print header |& HttpService
+    while ((HttpService |& getline) > 0) {
+        if (isBody)
+            content = content ? content "\n" $0 : $0
+        else if (length($0) <= 1)
+            isBody = 1
+        #l(sprintf("%4s bytes > %s", length($0), $0))
+    }
+    close(HttpService)
+
+    tempfile = getOutput("mktemp")
+    printf("%s", content) > tempfile
+    return tempfile
 }
 
 function bingWebTranslateUrl(uri, sl, tl, hl) {

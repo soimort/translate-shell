@@ -40,7 +40,7 @@ function init() {
 
     # Audio
     Option["play"] = 0
-    Option["narrator"] = "default"
+    Option["narrator"] = "female"
     Option["player"] = ENVIRON["PLAYER"]
 
     # Terminal paging and browsing
