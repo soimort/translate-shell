@@ -2,8 +2,8 @@
 BEGIN {
 Name        = "Translate Shell"
 Description = "Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc."
-Version     = "0.9.4"
-ReleaseDate = "2016-05-18"
+Version     = "0.9.5"
+ReleaseDate = "2016-11-06"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 }
@@ -1671,6 +1671,20 @@ Locale["zu"]["family"]             = "Atlantic-Congo"
 Locale["zu"]["iso"]                = "zul"
 Locale["zu"]["glotto"]             = "zulu1248"
 Locale["zu"]["script"]             = "Latn"
+Locale["yue"]["support"]           = "bing-only"
+Locale["yue"]["name"]              = "Cantonese"
+Locale["yue"]["endonym"]           = "粵語"
+Locale["yue"]["family"]            = "Sino-Tibetan"
+Locale["yue"]["iso"]               = "yue"
+Locale["yue"]["glotto"]            = "cant1236"
+Locale["yue"]["script"]            = "Hant"
+Locale["fj"]["support"]           = "bing-only"
+Locale["fj"]["name"]              = "Fijian"
+Locale["fj"]["endonym"]           = "Vosa Vakaviti"
+Locale["fj"]["family"]            = "Austronesian"
+Locale["fj"]["iso"]               = "fij"
+Locale["fj"]["glotto"]            = "fiji1243"
+Locale["fj"]["script"]            = "Latn"
 Locale["mww"]["support"]           = "bing-only"
 Locale["mww"]["name"]              = "Hmong Daw"
 Locale["mww"]["endonym"]           = "Hmoob Daw"
@@ -1685,6 +1699,20 @@ Locale["otq"]["family"]            = "Oto-Manguean"
 Locale["otq"]["iso"]               = "otq"
 Locale["otq"]["glotto"]            = "quer1236"
 Locale["otq"]["script"]            = "Latn"
+Locale["ty"]["support"]           = "bing-only"
+Locale["ty"]["name"]              = "Tahitian"
+Locale["ty"]["endonym"]           = "Reo Tahiti"
+Locale["ty"]["family"]            = "Austronesian"
+Locale["ty"]["iso"]               = "tah"
+Locale["ty"]["glotto"]            = "tahi1242"
+Locale["ty"]["script"]            = "Latn"
+Locale["to"]["support"]           = "bing-only"
+Locale["to"]["name"]              = "Tongan"
+Locale["to"]["endonym"]           = "Lea faka-Tonga"
+Locale["to"]["family"]            = "Austronesian"
+Locale["to"]["iso"]               = "ton"
+Locale["to"]["glotto"]            = "tong1325"
+Locale["to"]["script"]            = "Latn"
 Locale["yua"]["support"]           = "bing-only"
 Locale["yua"]["name"]              = "Yucatec Maya"
 Locale["yua"]["endonym"]           = "Màaya T'àan"
@@ -1739,13 +1767,6 @@ Locale["fo"]["family"]             = "Indo-European"
 Locale["fo"]["iso"]                = "fao"
 Locale["fo"]["glotto"]             = "faro1244"
 Locale["fo"]["script"]             = "Latn"
-Locale["fj"]["support"]            = "unstable"
-Locale["fj"]["name"]               = "Fijian"
-Locale["fj"]["endonym"]            = "Vosa Vakaviti"
-Locale["fj"]["family"]             = "Austronesian"
-Locale["fj"]["iso"]                = "fij"
-Locale["fj"]["glotto"]             = "fiji1243"
-Locale["fj"]["script"]             = "Latn"
 Locale["gn"]["support"]            = "unstable"
 Locale["gn"]["name"]               = "Guarani"
 Locale["gn"]["endonym"]            = "Avañe'ẽ"
@@ -2182,6 +2203,8 @@ ins(1, ansi("bold", "-no-theme")) RS\
 ins(2, "Do not use any other theme than default.") RS\
 ins(1, ansi("bold", "-no-ansi")) RS\
 ins(2, "Do not use ANSI escape codes.") RS\
+ins(1, ansi("bold", "-no-autocorrect")) RS\
+ins(2, "Do not autocorrect. (if defaulted by the translation engine)") RS\
 ins(1, ansi("bold", "-no-bidi")) RS\
 ins(2, "Do not convert bidirectional texts.") RS\
 RS "Audio options:" RS\
@@ -2314,6 +2337,9 @@ case "hi": case "gu": case "km": case "kn":
 case "my": case "ne": case "pa": case "si":
 case "ta": case "te": case "yi":
 t1 = sprintf(" %-16s", t1)
+break
+case "yue":
+t1 = sprintf(" %-13s", t1)
 break
 case "ja": case "ko":
 t1 = sprintf(" %-12s", t1)
@@ -3036,11 +3062,12 @@ HttpProtocol = "http://"
 HttpHost = "translate.googleapis.com"
 HttpPort = 80
 }
-function googleRequestUrl(text, sl, tl, hl) {
+function googleRequestUrl(text, sl, tl, hl,    qc) {
+qc = Option["no-autocorrect"] ? "qc" : "qca";
 return HttpPathPrefix "/translate_a/single?client=gtx"\
 "&ie=UTF-8&oe=UTF-8"\
-"&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at"\
-"&sl=" sl "&tl=" tl "&hl=" hl\
+"&dt=bd&dt=ex&dt=ld&dt=md&dt=rw&dt=rm&dt=ss&dt=t&dt=at"\
+"&dt=" qc "&sl=" sl "&tl=" tl "&hl=" hl\
 "&q=" preprocess(text)
 }
 function googleTTSUrl(text, tl) {
@@ -3114,6 +3141,8 @@ altTranslations[group[1]][0] = ""
 }
 if (match(i, "^0" SUBSEP "5" SUBSEP "([[:digit:]]+)" SUBSEP "2" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
 altTranslations[group[1]][group[2]] = postprocess(literal(ast[i]))
+if (i ~ "^0" SUBSEP "7" SUBSEP "5$")
+w("Showing translation for:  (use -no-auto to disable autocorrect)")
 if (i ~ "^0" SUBSEP "8" SUBSEP "0" SUBSEP "[[:digit:]]+$" ||
 i ~ "^0" SUBSEP "2$")
 append(ils, literal(ast[i]))
@@ -3393,11 +3422,60 @@ l(sprintf("%4s bytes > %s", length($0), length($0) < 1024 ? $0 : "..."))
 close(HttpService)
 Cookie = cookie
 }
-function bingTTSUrl(text, tl,    narrator) {
-narrator = Option["narrator"] ~ /^[AFaf]/ ? "female" : "male"
-return HttpProtocol HttpHost "/translator/api/language/Speak?"\
+function bingTTSUrl(text, tl,
+country, gender, group,
+header, content, isBody, tempfile) {
+gender = "female"
+country = NULLSTR
+split(Option["narrator"], group, ",")
+for (i in group) {
+if (group[i] ~ /^(f(emale)?|w(oman)?)$/)
+gender = "female"
+else if (group[i] ~ /^m(ale|an)?$/)
+gender = "male"
+else
+country = group[i]
+}
+if (country) tl = tl "-" country
+else if (tl == "ar") tl = tl "-EG"
+else if (tl == "da") tl = tl "-DK"
+else if (tl == "de") tl = tl "-DE"
+else if (tl == "en") tl = tl "-US"
+else if (tl == "es") tl = tl "-ES"
+else if (tl == "fi") tl = tl "-FI"
+else if (tl == "fr") tl = tl "-FR"
+else if (tl == "it") tl = tl "-IT"
+else if (tl == "ja") tl = tl "-JP"
+else if (tl == "ko") tl = tl "-KR"
+else if (tl == "nl") tl = tl "-NL"
+else if (tl == "nb") tl = tl "-NO"
+else if (tl == "pl") tl = tl "-PL"
+else if (tl == "pt") tl = tl "-PT"
+else if (tl == "ru") tl = tl "-RU"
+else if (tl == "sv") tl = tl "-SE"
+else if (tl == "yue") ;
+else if (tl == "zh") tl = tl "-CN"
+header = "GET " "/translator/api/language/Speak?"\
 "locale=" tl "&text=" preprocess(text)\
-"&gender=" narrator "&media=audio/mp3"
+"&gender=" gender "&media=audio/mp3" " HTTP/1.1\n"\
+"Host: " HttpHost "\n"\
+"Connection: close\n"
+if (Option["user-agent"])
+header = header "User-Agent: " Option["user-agent"] "\n"
+if (Cookie)
+header = header "Cookie: " Cookie "\n"
+content = NULLSTR; isBody = 0
+print header |& HttpService
+while ((HttpService |& getline) > 0) {
+if (isBody)
+content = content ? content "\n" $0 : $0
+else if (length($0) <= 1)
+isBody = 1
+}
+close(HttpService)
+tempfile = getOutput("mktemp")
+printf("%s", content) > tempfile
+return tempfile
 }
 function bingWebTranslateUrl(uri, sl, tl, hl) {
 return "http://www.microsofttranslator.com/bv.aspx?"\
@@ -3406,7 +3484,7 @@ return "http://www.microsofttranslator.com/bv.aspx?"\
 function bingPost(text, sl, tl, hl,
 content, contentLength, group,
 header, isBody, reqBody, url) {
-reqBody = "[{" parameterize("text") ":" parameterize(text) "}]"
+reqBody = "[{" parameterize("text") ":" parameterize(text, "\"") "}]"
 contentLength = dump(reqBody, group)
 url = HttpPathPrefix "/translator/api/Translate/TranslateArray?"\
 "from=" sl "&to=" tl
@@ -4025,10 +4103,11 @@ Option["show-alternatives"] = 1
 Option["width"] = ENVIRON["COLUMNS"] ? ENVIRON["COLUMNS"] - 2 : 0
 Option["indent"] = 4
 Option["no-ansi"] = 0
+Option["no-autocorrect"] = 0
 Option["no-bidi"] = 0
 Option["theme"] = "default"
 Option["play"] = 0
-Option["narrator"] = "default"
+Option["narrator"] = "female"
 Option["player"] = ENVIRON["PLAYER"]
 Option["view"] = 0
 Option["pager"] = ENVIRON["PAGER"]
@@ -4278,6 +4357,11 @@ continue
 match(ARGV[pos], /^--?no-ansi$/)
 if (RSTART) {
 Option["no-ansi"] = 1
+continue
+}
+match(ARGV[pos], /^--?no-auto(correct)?$/)
+if (RSTART) {
+Option["no-autocorrect"] = 1
 continue
 }
 match(ARGV[pos], /^--?no-bidi/)
