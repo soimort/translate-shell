@@ -1407,6 +1407,15 @@ function initLocale(    i) {
     Locale["yue"]["glotto"]            = "cant1236"
     Locale["yue"]["script"]            = "Hant"
 
+    #* Fijian
+    Locale["fj"]["support"]           = "bing-only"
+    Locale["fj"]["name"]              = "Fijian"
+    Locale["fj"]["endonym"]           = "Vosa Vakaviti"
+    Locale["fj"]["family"]            = "Austronesian"
+    Locale["fj"]["iso"]               = "fij"
+    Locale["fj"]["glotto"]            = "fiji1243"
+    Locale["fj"]["script"]            = "Latn"
+
     #* Hmong Daw
     Locale["mww"]["support"]           = "bing-only"
     Locale["mww"]["name"]              = "Hmong Daw"
@@ -1424,6 +1433,24 @@ function initLocale(    i) {
     Locale["otq"]["iso"]               = "otq"
     Locale["otq"]["glotto"]            = "quer1236"
     Locale["otq"]["script"]            = "Latn"
+
+    #* Tahitian
+    Locale["ty"]["support"]           = "bing-only"
+    Locale["ty"]["name"]              = "Tahitian"
+    Locale["ty"]["endonym"]           = "Reo Tahiti"
+    Locale["ty"]["family"]            = "Austronesian"
+    Locale["ty"]["iso"]               = "tah"
+    Locale["ty"]["glotto"]            = "tahi1242"
+    Locale["ty"]["script"]            = "Latn"
+
+    #* Tongan
+    Locale["to"]["support"]           = "bing-only"
+    Locale["to"]["name"]              = "Tongan"
+    Locale["to"]["endonym"]           = "Lea faka-Tonga"
+    Locale["to"]["family"]            = "Austronesian"
+    Locale["to"]["iso"]               = "ton"
+    Locale["to"]["glotto"]            = "tong1325"
+    Locale["to"]["script"]            = "Latn"
 
     #* Yucatec Maya
     Locale["yua"]["support"]           = "bing-only"
@@ -1521,20 +1548,6 @@ function initLocale(    i) {
     Locale["fo"]["iso"]                = "fao"
     Locale["fo"]["glotto"]             = "faro1244"
     Locale["fo"]["script"]             = "Latn"
-
-    #? Fijian
-    Locale["fj"]["support"]            = "unstable"
-    Locale["fj"]["name"]               = "Fijian"
-    Locale["fj"]["endonym"]            = "Vosa Vakaviti"
-    #Locale["fj"]["translations-of"]
-    #Locale["fj"]["definitions-of"]
-    #Locale["fj"]["synonyms"]
-    #Locale["fj"]["examples"]
-    #Locale["fj"]["see-also"]
-    Locale["fj"]["family"]             = "Austronesian"
-    Locale["fj"]["iso"]                = "fij"
-    Locale["fj"]["glotto"]             = "fiji1243"
-    Locale["fj"]["script"]             = "Latn"
 
     #? Guarani
     Locale["gn"]["support"]            = "unstable"
