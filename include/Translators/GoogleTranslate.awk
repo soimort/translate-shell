@@ -150,8 +150,13 @@ function googleTranslate(text, sl, tl, hl,
             altTranslations[group[1]][group[2]] = postprocess(literal(ast[i]))
 
         # 7 - autocorrection
-        if (i ~ "^0" SUBSEP "7" SUBSEP "5$")
-            w("Showing translation for:  (use -no-auto to disable autocorrect)")
+        if (i ~ "^0" SUBSEP "7" SUBSEP "5$") {
+            if (ast[i] == "true")
+                w("Showing translation for:  (use -no-auto to disable autocorrect)")
+            else
+                w("Did you mean: "                                      \
+                  ansi("bold", unparameterize(ast["0" SUBSEP "7" SUBSEP "1"])))
+        }
 
         # 8 - identified source languages
         if (i ~ "^0" SUBSEP "8" SUBSEP "0" SUBSEP "[[:digit:]]+$" ||
