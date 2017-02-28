@@ -66,7 +66,23 @@ function yandexGetDictionaryResponse(text, sl, tl, hl,    content, header, isBod
     return assert(content, "[ERROR] Null response.")
 }
 
-function yandexTTSUrl(text, tl) {
+function yandexTTSUrl(text, tl,
+                      ####
+                      speaker, emotion, i, group) {
+    speaker = NULLSTR
+    emotion = NULLSTR
+    split(Option["narrator"], group, ",")
+    for (i in group) {
+        if (group[i] ~ /^(g(ood)?|n(eutral)?|e(vil)?)$/)
+            emotion = group[i]
+        else if (group[i] ~ /^(f(emale)?|w(oman)?)$/)
+            speaker = "alyss"
+        else if (group[i] ~ /^m(ale|an)?$/)
+            speaker = "zahar"
+        else
+            speaker = group[i]
+    }
+
     switch (tl) { # List of available TTS language codes
     case "ar": tl = "ar_AE"; break
     case "cs": tl = "cs_CZ"; break
@@ -89,6 +105,8 @@ function yandexTTSUrl(text, tl) {
     }
     return HttpProtocol "tts.voicetech.yandex.net" "/tts?"              \
         "text=" preprocess(text) (tl ? "&lang=" tl : tl)                \
+        (speaker ? "&speaker=" speaker : speaker)                       \
+        (emotion ? "&emotion=" emotion : emotion)                       \
         "&format=mp3" "&quality=hi"
 }
 

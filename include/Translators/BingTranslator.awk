@@ -36,7 +36,7 @@ function bingSetCookie(    cookie, group, header, url) {
 
 function bingTTSUrl(text, tl,
                     ####
-                    country, gender, group,
+                    country, gender, i, group,
                     header, content, isBody, tempfile) {
     gender = "female"
     country = NULLSTR
