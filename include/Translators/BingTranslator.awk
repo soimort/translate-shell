@@ -37,7 +37,7 @@ function bingSetCookie(    cookie, group, header, url) {
 function bingTTSUrl(text, tl,
                     ####
                     country, gender, i, group,
-                    header, content, isBody, tempfile) {
+                    header, content, isBody) {
     gender = "female"
     country = NULLSTR
     split(Option["narrator"], group, ",")
@@ -92,9 +92,11 @@ function bingTTSUrl(text, tl,
     }
     close(HttpService)
 
-    tempfile = getOutput("mktemp")
-    printf("%s", content) > tempfile
-    return tempfile
+    if (!TempFile)
+        TempFile = getOutput("mktemp")
+    printf("%s", content) > TempFile
+    close(TempFile)
+    return TempFile
 }
 
 function bingWebTranslateUrl(uri, sl, tl, hl) {
