@@ -31,6 +31,7 @@ function genTK(text,
     ub = "[43,45,51,94,43,98,43,45,102]"
     vb = "[43,45,97,94,43,54]"
 
+    # FIXME: build a dump cache!
     dLen = dump(text, d) # convert to byte array
     a = tkk
     for (e = 1; e <= dLen; e++)

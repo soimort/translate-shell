@@ -108,7 +108,10 @@ function bingPost(text, sl, tl, hl,
                   content, contentLength, group,
                   header, isBody, reqBody, url) {
     reqBody = "[{" parameterize("text") ":" parameterize(text, "\"") "}]"
-    contentLength = dump(reqBody, group)
+    if (DumpContentengths[reqBody])
+        contentLength = DumpContentengths[reqBody]
+    else
+        contentLength = DumpContentengths[reqBody] = dump(reqBody, group)
 
     url = HttpPathPrefix "/translator/api/Translate/TranslateArray?"    \
         "from=" sl "&to=" tl
