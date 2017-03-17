@@ -236,6 +236,11 @@ function translateMain(    i, line) {
                     repl(line)
                 else
                     translate(line)
+            } else {
+                # Non-interactive brief mode: preserve line breaks
+                if (!Option["interactive"])
+                    if (!Option["verbose"])
+                        p(line)
             }
     } else
         e("[ERROR] File not found: " Option["input"])
