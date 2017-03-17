@@ -170,6 +170,10 @@ function escapeChar(char) {
         return "\v" # Vertical Tab
     case "u0026":
         return "&" # Unicode Character 'AMPERSAND'
+    case "u003c":
+        return "<" # Unicode Character 'LESS-THAN SIGN'
+    case "u003e":
+        return ">" # Unicode Character 'GREATER-THAN SIGN'
     default:
         return char
     }
