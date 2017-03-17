@@ -1,20 +1,20 @@
 #!/usr/bin/gawk -f
 
-@include "metainfo"
+@include "metainfo.awk"
 
-@include "include/Commons"
-@include "include/Utils"
+@include "include/Commons.awk"
+@include "include/Utils.awk"
 
-@include "include/Languages"
-@include "include/Help"
-@include "include/Parser"
-@include "include/Theme"
+@include "include/Languages.awk"
+@include "include/Help.awk"
+@include "include/Parser.awk"
+@include "include/Theme.awk"
 
-@include "include/Translate"
-@include "include/TranslatorInterface"
-@include "include/Translators/*"
+@include "include/Translate.awk"
+@include "include/TranslatorInterface.awk"
+@include "include/Translators/*.awk"
 
-@include "include/Script"
-@include "include/REPL"
+@include "include/Script.awk"
+@include "include/REPL.awk"
 
-@include "include/Main"
+@include "include/Main.awk"

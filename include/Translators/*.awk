@@ -1,4 +1,4 @@
-@include "include/Translators/GoogleTranslate"
-@include "include/Translators/BingTranslator"
-@include "include/Translators/YandexTranslate"
-@include "include/Translators/Apertium"
+@include "include/Translators/GoogleTranslate.awk"
+@include "include/Translators/BingTranslator.awk"
+@include "include/Translators/YandexTranslate.awk"
+@include "include/Translators/Apertium.awk"
