@@ -145,7 +145,7 @@ function readSqueezed(fileName, squeezed,    group, line, ret) {
             match(line, /^[[:space:]]*@include[[:space:]]*"(.*)"$/, group)
             if (RSTART) { # @include
                 if (ret) ret = ret RS
-                ret = ret readSqueezed(group[1] ".awk", squeezed)
+                ret = ret readSqueezed(group[1], squeezed)
             } else if (!squeezed || line = squeeze(line)) { # effective LOC
                 if (ret) ret = ret RS
                 ret = ret line
