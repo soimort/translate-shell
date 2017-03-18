@@ -77,10 +77,13 @@ function initScript(    file, line, script, temp) {
     if (!fileExists(file)) {
         file = ENVIRON["HOME"] "/.translate-shell/init.trans"
         if (!fileExists(file)) {
-            file = ENVIRON["HOME"] "/.config/translate-shell/init.trans"
+            file = ENVIRON["XDG_CONFIG_HOME"] "/translate-shell/init.trans"
             if (!fileExists(file)) {
-                file = "/etc/translate-shell"
-                if (!fileExists(file)) return
+                file = ENVIRON["HOME"] "/.config/translate-shell/init.trans"
+                if (!fileExists(file)) {
+                    file = "/etc/translate-shell"
+                    if (!fileExists(file)) return
+                }
             }
         }
     }
