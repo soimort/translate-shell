@@ -368,7 +368,7 @@ function googleTranslate(text, sl, tl, hl,
                     example = oExamples[i]
 
                     temp = prettify("original-dictionary-examples-example", ins(1, "- "))
-                    split(example, group, /(\u003cb\u003e|\u003c\/b\u003e)/)
+                    split(example, group, /(<b>|<\/b>)/)
                     if (isRTL(il)) # target language is R-to-L
                         temp = temp show(group[1] group[2] group[3], il)
                     else # target language is L-to-R
