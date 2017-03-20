@@ -2,7 +2,7 @@
 BEGIN {
 Name        = "Translate Shell"
 Description = "Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc."
-Version     = "0.9.6"
+Version     = "0.9.6.1"
 ReleaseDate = "2017-03-20"
 Command     = "trans"
 EntryPoint  = "translate.awk"
@@ -3330,7 +3330,7 @@ r = r prettify("original-dictionary-examples", s(showExamples(hl), hl))
 for (i = 0; i < length(oExamples); i++) {
 example = oExamples[i]
 temp = prettify("original-dictionary-examples-example", ins(1, "- "))
-split(example, group, /(\u003cb\u003e|\u003c\/b\u003e)/)
+split(example, group, /(<b>|<\/b>)/)
 if (isRTL(il))
 temp = temp show(group[1] group[2] group[3], il)
 else
