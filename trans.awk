@@ -2,8 +2,8 @@
 BEGIN {
 Name        = "Translate Shell"
 Description = "Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc."
-Version     = "0.9.5"
-ReleaseDate = "2016-11-06"
+Version     = "0.9.6"
+ReleaseDate = "2017-03-20"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 }
@@ -117,6 +117,10 @@ case "v":
 return "\v"
 case "u0026":
 return "&"
+case "u003c":
+return "<"
+case "u003e":
+return ">"
 default:
 return char
 }
@@ -2996,6 +3000,10 @@ if (Option["interactive"])
 repl(line)
 else
 translate(line)
+} else {
+if (!Option["interactive"])
+if (!Option["verbose"])
+p(line)
 }
 } else
 e("[ERROR] File not found: " Option["input"])
@@ -3141,8 +3149,13 @@ altTranslations[group[1]][0] = ""
 }
 if (match(i, "^0" SUBSEP "5" SUBSEP "([[:digit:]]+)" SUBSEP "2" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
 altTranslations[group[1]][group[2]] = postprocess(literal(ast[i]))
-if (i ~ "^0" SUBSEP "7" SUBSEP "5$")
+if (i ~ "^0" SUBSEP "7" SUBSEP "5$") {
+if (ast[i] == "true")
 w("Showing translation for:  (use -no-auto to disable autocorrect)")
+else
+w("Did you mean: "\
+ansi("bold", unparameterize(ast["0" SUBSEP "7" SUBSEP "1"])))
+}
 if (i ~ "^0" SUBSEP "8" SUBSEP "0" SUBSEP "[[:digit:]]+$" ||
 i ~ "^0" SUBSEP "2$")
 append(ils, literal(ast[i]))
@@ -3423,8 +3436,8 @@ close(HttpService)
 Cookie = cookie
 }
 function bingTTSUrl(text, tl,
-country, gender, group,
-header, content, isBody, tempfile) {
+country, gender, i, group,
+header, content, isBody) {
 gender = "female"
 country = NULLSTR
 split(Option["narrator"], group, ",")
@@ -3473,9 +3486,11 @@ else if (length($0) <= 1)
 isBody = 1
 }
 close(HttpService)
-tempfile = getOutput("mktemp")
-printf("%s", content) > tempfile
-return tempfile
+if (!TempFile)
+TempFile = getOutput("mktemp")
+printf("%s", content) > TempFile
+close(TempFile)
+return TempFile
 }
 function bingWebTranslateUrl(uri, sl, tl, hl) {
 return "http://www.microsofttranslator.com/bv.aspx?"\
@@ -3485,7 +3500,10 @@ function bingPost(text, sl, tl, hl,
 content, contentLength, group,
 header, isBody, reqBody, url) {
 reqBody = "[{" parameterize("text") ":" parameterize(text, "\"") "}]"
-contentLength = dump(reqBody, group)
+if (DumpContentengths[reqBody])
+contentLength = DumpContentengths[reqBody]
+else
+contentLength = DumpContentengths[reqBody] = dump(reqBody, group)
 url = HttpPathPrefix "/translator/api/Translate/TranslateArray?"\
 "from=" sl "&to=" tl
 header = "POST " url " HTTP/1.1\n"\
@@ -3658,7 +3676,21 @@ l(sprintf("%4s bytes > %s", length($0), $0))
 close(HttpService)
 return assert(content, "[ERROR] Null response.")
 }
-function yandexTTSUrl(text, tl) {
+function yandexTTSUrl(text, tl,
+speaker, emotion, i, group) {
+speaker = NULLSTR
+emotion = NULLSTR
+split(Option["narrator"], group, ",")
+for (i in group) {
+if (group[i] ~ /^(g(ood)?|n(eutral)?|e(vil)?)$/)
+emotion = group[i]
+else if (group[i] ~ /^(f(emale)?|w(oman)?)$/)
+speaker = "alyss"
+else if (group[i] ~ /^m(ale|an)?$/)
+speaker = "zahar"
+else
+speaker = group[i]
+}
 switch (tl) {
 case "ar": tl = "ar_AE"; break
 case "cs": tl = "cs_CZ"; break
@@ -3681,6 +3713,8 @@ default: tl = NULLSTR
 }
 return HttpProtocol "tts.voicetech.yandex.net" "/tts?"\
 "text=" preprocess(text) (tl ? "&lang=" tl : tl)\
+(speaker ? "&speaker=" speaker : speaker)\
+(emotion ? "&emotion=" emotion : emotion)\
 "&format=mp3" "&quality=hi"
 }
 function yandexWebTranslateUrl(uri, sl, tl, hl) {
@@ -4131,10 +4165,13 @@ file = ".trans"
 if (!fileExists(file)) {
 file = ENVIRON["HOME"] "/.translate-shell/init.trans"
 if (!fileExists(file)) {
+file = ENVIRON["XDG_CONFIG_HOME"] "/translate-shell/init.trans"
+if (!fileExists(file)) {
 file = ENVIRON["HOME"] "/.config/translate-shell/init.trans"
 if (!fileExists(file)) {
 file = "/etc/translate-shell"
 if (!fileExists(file)) return
+}
 }
 }
 }

@@ -5,8 +5,8 @@
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta name="author" content="Mort Yao soi@mort.ninja">
-      <meta name="dcterms.date" content="2016-11-06">
-    <title>TRANS(1) 0.9.5</title>
+      <meta name="dcterms.date" content="2017-03-20">
+    <title>TRANS(1) 0.9.6</title>
   <style type='text/css' media='all'>
   /* style: man */
   body#manpage {margin:0}
@@ -87,7 +87,7 @@
     </div>
 
   <ol class='man-decor man-head man head'>
-    <li class='tl'>TRANS(1) 0.9.5</li>
+    <li class='tl'>TRANS(1) 0.9.6</li>
     <li class='tc'></li>
     <li class='tr'></li>
   </ol>
@@ -95,7 +95,7 @@
   <h1 id="name">NAME</h1>
   <p>trans - Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc.</p>
   <h1 id="synopsis">SYNOPSIS</h1>
-  <p><strong>trans</strong> [<em>OPTIONS</em>] [<em>SOURCE</em>]:[<em>TARGETS</em>] [<em>TEXT</em>]...</p>
+  <p><strong>trans</strong> [<em>OPTIONS</em>] [<em>SOURCE</em>]:[<em>TARGETS</em>] [<em>TEXT</em>]…</p>
   <h1 id="description">DESCRIPTION</h1>
   <p>This tool translates text into any language from the command-line, using a translation engine such as Google Translate, Bing Translator and Yandex.Translate.</p>
   <p>Each argument which is not a valid option is treated as <em>TEXT</em> to be translated.</p>
@@ -119,7 +119,7 @@
   <dd>Print reference table of all supported languages and codes, and exit. Names of languages are displayed in English.
   </dd>
   <dt><strong>-L</strong> <em>CODES</em>, <strong>-list</strong> <em>CODES</em></dt>
-  <dd>Print details of languages and exit. When specifying two or more language codes, concatenate them by plus sign &quot;+&quot;.
+  <dd>Print details of languages and exit. When specifying two or more language codes, concatenate them by plus sign “+”.
   </dd>
   <dt><strong>-S</strong>, <strong>-list-engines</strong></dt>
   <dd>List available translation engines and exit.
@@ -290,7 +290,7 @@
   <p>This option overrides the setting of environment variable $<strong>SOURCE_LANG</strong>.</p>
   </dd>
   <dt><strong>-t</strong> <em>CODES</em>, <strong>-tl</strong> <em>CODE</em>, <strong>-target</strong> <em>CODES</em>, <strong>-to</strong> <em>CODES</em></dt>
-  <dd><p>Specify the target language(s) (the language(s) of translated text). When specifying two or more language codes, concatenate them by plus sign &quot;+&quot;.</p>
+  <dd><p>Specify the target language(s) (the language(s) of translated text). When specifying two or more language codes, concatenate them by plus sign “+”.</p>
   <p>This option is optional. When its setting is omitted, everything will be translated into English.</p>
   <p>This option overrides the setting of environment variables $<strong>LANGUAGE</strong>, $<strong>LC_ALL</strong>, $<strong>LANG</strong> and $<strong>TARGET_LANG</strong>.</p>
   </dd>
@@ -298,11 +298,11 @@
   <dd><p>A simpler, alternative way to specify the source language and target language(s) is to use a shortcut formatted string:</p>
   <ul>
   <li><em>SOURCE-CODE</em>:<em>TARGET-CODE</em></li>
-  <li><em>SOURCE-CODE</em>:<em>TARGET-CODE1</em>+<em>TARGET-CODE2</em>+...</li>
+  <li><em>SOURCE-CODE</em>:<em>TARGET-CODE1</em>+<em>TARGET-CODE2</em>+…</li>
   <li><em>SOURCE-CODE</em>=<em>TARGET-CODE</em></li>
-  <li><em>SOURCE-CODE</em>=<em>TARGET-CODE1</em>+<em>TARGET-CODE2</em>+...</li>
+  <li><em>SOURCE-CODE</em>=<em>TARGET-CODE1</em>+<em>TARGET-CODE2</em>+…</li>
   </ul>
-  <p>Delimiter &quot;:&quot; and &quot;=&quot; can be used interchangeably.</p>
+  <p>Delimiter “:” and “=” can be used interchangeably.</p>
   <p>Either <em>SOURCE</em> or <em>TARGETS</em> may be omitted, but the delimiter character must be kept.</p>
   </dd>
   </dl>
@@ -311,7 +311,7 @@
   <dt><strong>-no-init</strong></dt>
   <dd>Do not load any initialization script.
   </dd>
-  <dt><strong>--</strong></dt>
+  <dt><strong>–</strong></dt>
   <dd><p>End-of-options.</p>
   <p>All arguments after this option are treated as <em>TEXT</em> to be translated.</p>
   </dd>
@@ -373,7 +373,7 @@
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
     <li class='tc'></li>
-    <li class='tr'>2016-11-06</li>
+    <li class='tr'>2017-03-20</li>
   </ol>
 
   </div>

@@ -27,11 +27,11 @@
   <a href="https://www.soimort.org/translate-shell/"><img src="images/logo.jpg"/></a>
   <div id="desc">
     <h1>Translate Shell</h1>
-    <h2>version 0.9.5</h2>
+    <h2>version 0.9.6</h2>
     <a href="https://github.com/soimort/translate-shell">Star <i class="fa fa-github-square fa-2x"></i></a>
     <a href="https://www.soimort.org/translate-shell/trans">Download <i class="fa fa-download fa-2x"></i></a>
     <div id="msg">
-      <span id="checksum" onmouseover="this.innerHTML='d9caec2f6cbc9fdf355c39da9ba1babb6351b6c5'" onmouseout="this.innerHTML='SHA1SUM'">SHA1SUM</span>
+      <span id="checksum" onmouseover="this.innerHTML='c900b5ff057efae76f46191dd18a26076b105d52'" onmouseout="this.innerHTML='SHA1SUM'">SHA1SUM</span>
       <a href="https://www.soimort.org/translate-shell/trans.sig">PGP SIGNATURE</a>
     </div>
   </div>
@@ -102,7 +102,7 @@ In order to be happy, the best way is to be loved by people.</code></pre>
 <ul>
 <li><strong><a href="https://www.gnu.org/software/gawk/">GNU Awk</a></strong> (<strong>gawk</strong>) <strong>4.0 or later</strong>
 <ul>
-<li>This program relies heavily on GNU extensions of the <a href="http://en.wikipedia.org/wiki/AWK">AWK language</a>, which are non-portable for other AWK implementations (e.g. nawk).</li>
+<li>This program relies heavily on GNU extensions of the <a href="http://en.wikipedia.org/wiki/AWK">AWK language</a>, which are non-portable for other AWK implementations (e.g. nawk).</li>
 <li>How to get gawk:</li>
 <li>gawk comes with all GNU/Linux distributions.</li>
 <li>On FreeBSD, gawk is available in the ports.</li>
@@ -119,7 +119,7 @@ In order to be happy, the best way is to be loved by people.</code></pre>
 <li><strong><a href="http://curl.haxx.se/">curl</a></strong> with <strong>OpenSSL</strong> support</li>
 <li><strong><a href="http://fribidi.org/">GNU FriBidi</a></strong>: <em>an implementation of the Unicode Bidirectional Algorithm (bidi)</em>
 <ul>
-<li>required for displaying text in Right-to-Left scripts (e.g. Arabic, Hebrew)</li>
+<li>required for displaying text in Right-to-Left scripts (e.g. Arabic, Hebrew)</li>
 </ul></li>
 <li><strong><a href="http://www.mplayerhq.hu/">mplayer</a></strong>, <strong><a href="http://www.mplayer2.org/">mplayer2</a></strong>, <strong><a href="http://mpv.io/">mpv</a></strong>, <strong><a href="http://mpg123.org/">mpg123</a></strong>, or <strong><a href="http://espeak.sourceforge.net/">eSpeak</a></strong>
 <ul>
@@ -143,7 +143,7 @@ In order to be happy, the best way is to be loved by people.</code></pre>
 <pre><code>$ gawk -f (curl -Ls git.io/translate | psub) -shell</code></pre>
 <h2 id="installation">Installation</h2>
 <h3 id="option-1.-direct-download">Option #1. Direct Download</h3>
-<p>Download <a href="http://git.io/trans">the self-contained executable</a> and place it into your path. It's everything you need.</p>
+<p>Download <a href="http://git.io/trans">the self-contained executable</a> and place it into your path. It’s everything you need.</p>
 <pre><code>$ wget git.io/trans
 $ chmod +x ./trans</code></pre>
 <p>There is a <a href="https://www.soimort.org/translate-shell/trans.sig">GPG signature</a>.</p>
@@ -170,9 +170,9 @@ $ [sudo] make install</code></pre>
 <h4 id="from-any-language-to-one-or-more-specific-languages">From any language to one or more specific languages</h4>
 <p>Translate a word into French:</p>
 <pre><code>$ trans :fr word</code></pre>
-<p>Translate a word into Chinese and Japanese: (use a plus sign &quot;<code>+</code>&quot; as the delimiter)</p>
+<p>Translate a word into Chinese and Japanese: (use a plus sign “<code>+</code>” as the delimiter)</p>
 <pre><code>$ trans :zh+ja word</code></pre>
-<p>Alternatively, equals sign (&quot;<code>=</code>&quot;) can be used in place of the colon (&quot;<code>:</code>&quot;). Note that in some shells (e.g. zsh), equals signs may be interpreted differently, therefore the argument specifying languages needs to be protected:</p>
+<p>Alternatively, equals sign (“<code>=</code>”) can be used in place of the colon (“<code>:</code>”). Note that in some shells (e.g. zsh), equals signs may be interpreted differently, therefore the argument specifying languages needs to be protected:</p>
 <pre><code>$ trans {=zh+ja} word
 $ trans &#39;=zh+ja&#39; word</code></pre>
 <p>You can also use the <code>-target</code> (<code>-t</code>) option to specify the target language(s):</p>
@@ -199,14 +199,14 @@ $ trans :zh &#39;To-morrow, and to-morrow, and to-morrow,&#39;</code></pre>
 &gt; To the last syllable of recorded time;
 &gt; And all our yesterdays have lighted fools
 &gt; The way to dusty death.&quot;</code></pre>
-<p>To avoid punctuation marks (e.g. &quot;<code>!</code>&quot;) or other special characters being interpreted by the shell, use <em>single quotes</em>:</p>
+<p>To avoid punctuation marks (e.g. “<code>!</code>”) or other special characters being interpreted by the shell, use <em>single quotes</em>:</p>
 <pre><code>$ trans :zh &#39;Out, out, brief candle!&#39;</code></pre>
-<p>There are some cases though, you may still want to use <em>double quotes</em>: (e.g. the sentence contains a single quotation mark &quot;<code>'</code>&quot;)</p>
+<p>There are some cases though, you may still want to use <em>double quotes</em>: (e.g. the sentence contains a single quotation mark “<code>'</code>”)</p>
 <pre><code>$ trans :zh &quot;Life&#39;s but a walking shadow, a poor player&quot;</code></pre>
 <h3 id="brief-mode">Brief Mode</h3>
 <p>By default, Translate Shell displays translations in a verbose manner. If you prefer to see only the most relevant translation, there is a brief mode available using the <code>-brief</code> (<code>-b</code>) option:</p>
 <pre><code>$ trans -b :fr &quot;Saluton, Mondo&quot;</code></pre>
-<p>In brief mode, phonetic notation (if any) is not shown by default. To enable this, put an at sign &quot;<code>@</code>&quot; in front of the language code:</p>
+<p>In brief mode, phonetic notation (if any) is not shown by default. To enable this, put an at sign “<code>@</code>” in front of the language code:</p>
 <pre><code>$ trans -b :@ja &quot;Saluton, Mondo&quot;</code></pre>
 <h3 id="dictionary-mode">Dictionary Mode</h3>
 <p>Google Translate can be used as a dictionary. When translating a word and the target language is the same as the source language, the dictionary entry of the word is shown:</p>
@@ -243,7 +243,7 @@ $ trans -b -i input.txt :fr</code></pre>
 <h3 id="translate-a-web-page">Translate a Web Page</h3>
 <p>To translate a web page, an http(s) URI scheme can be used as an argument:</p>
 <pre><code>$ trans :fr http://www.w3.org/</code></pre>
-<p>A browser session will open for viewing the translation (via Google Translate's web interface). To specify your web browser of choice, use the <code>-browser</code> option:</p>
+<p>A browser session will open for viewing the translation (via Google Translate’s web interface). To specify your web browser of choice, use the <code>-browser</code> option:</p>
 <pre><code>$ trans -browser firefox :fr http://www.w3.org/</code></pre>
 <h3 id="language-details">Language Details</h3>
 <p>Use the <code>-list</code> (<code>-L</code>) option to view details of one or more languages:</p>
@@ -384,334 +384,334 @@ See the man page trans(1) for more information.</code></pre>
 <p>For more details on languages and corresponding codes, see <strong><a href="https://github.com/soimort/translate-shell/wiki/Languages">wiki: Languages</a></strong>.</p>
 <table style="width:58%;">
 <colgroup>
-<col width="12%" />
-<col width="6%" />
-<col width="12%" />
-<col width="6%" />
-<col width="12%" />
-<col width="6%" />
+<col style="width: 12%" />
+<col style="width: 6%" />
+<col style="width: 12%" />
+<col style="width: 6%" />
+<col style="width: 12%" />
+<col style="width: 6%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th align="center">Language</th>
-<th align="center">Code</th>
-<th align="center">Language</th>
-<th align="center">Code</th>
-<th align="center">Language</th>
-<th align="center">Code</th>
+<th style="text-align: center;">Language</th>
+<th style="text-align: center;">Code</th>
+<th style="text-align: center;">Language</th>
+<th style="text-align: center;">Code</th>
+<th style="text-align: center;">Language</th>
+<th style="text-align: center;">Code</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Afrikaans_language">Afrikaans</a></strong> <br/> <strong>Afrikaans</strong></td>
-<td align="center"><strong><code>af</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Hindi_language">Hindi</a></strong> <br/> <strong>हिन्दी</strong></td>
-<td align="center"><strong><code>hi</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Punjabi_language">Punjabi</a></strong> <br/> <strong>ਪੰਜਾਬੀ</strong></td>
-<td align="center"><strong><code>pa</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Afrikaans_language">Afrikaans</a></strong> <br/> <strong>Afrikaans</strong></td>
+<td style="text-align: center;"><strong><code>af</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Hindi_language">Hindi</a></strong> <br/> <strong>हिन्दी</strong></td>
+<td style="text-align: center;"><strong><code>hi</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Punjabi_language">Punjabi</a></strong> <br/> <strong>ਪੰਜਾਬੀ</strong></td>
+<td style="text-align: center;"><strong><code>pa</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Albanian_language">Albanian</a></strong> <br/> <strong>Shqip</strong></td>
-<td align="center"><strong><code>sq</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Hmong_language">Hmong</a></strong> <br/> <strong>Hmoob</strong></td>
-<td align="center"><strong><code>hmn</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Querétaro_Otomi">Querétaro Otomi</a></strong> <br/> <strong>Hñąñho</strong></td>
-<td align="center"><strong><code>otq</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Albanian_language">Albanian</a></strong> <br/> <strong>Shqip</strong></td>
+<td style="text-align: center;"><strong><code>sq</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Hmong_language">Hmong</a></strong> <br/> <strong>Hmoob</strong></td>
+<td style="text-align: center;"><strong><code>hmn</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Querétaro_Otomi">Querétaro Otomi</a></strong> <br/> <strong>Hñąñho</strong></td>
+<td style="text-align: center;"><strong><code>otq</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Amharic_language">Amharic</a></strong> <br/> <strong>አማርኛ</strong></td>
-<td align="center"><strong><code>am</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Hmong_Daw">Hmong Daw</a></strong> <br/> <strong>Hmoob Daw</strong></td>
-<td align="center"><strong><code>mww</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Romanian_language">Romanian</a></strong> <br/> <strong>Română</strong></td>
-<td align="center"><strong><code>ro</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Amharic_language">Amharic</a></strong> <br/> <strong>አማርኛ</strong></td>
+<td style="text-align: center;"><strong><code>am</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Hmong_Daw">Hmong Daw</a></strong> <br/> <strong>Hmoob Daw</strong></td>
+<td style="text-align: center;"><strong><code>mww</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Romanian_language">Romanian</a></strong> <br/> <strong>Română</strong></td>
+<td style="text-align: center;"><strong><code>ro</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Arabic_language">Arabic</a></strong> <br/> <strong>العربية</strong></td>
-<td align="center"><strong><code>ar</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Hungarian_language">Hungarian</a></strong> <br/> <strong>Magyar</strong></td>
-<td align="center"><strong><code>hu</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Russian_language">Russian</a></strong> <br/> <strong>Русский</strong></td>
-<td align="center"><strong><code>ru</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Arabic_language">Arabic</a></strong> <br/> <strong>العربية</strong></td>
+<td style="text-align: center;"><strong><code>ar</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Hungarian_language">Hungarian</a></strong> <br/> <strong>Magyar</strong></td>
+<td style="text-align: center;"><strong><code>hu</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Russian_language">Russian</a></strong> <br/> <strong>Русский</strong></td>
+<td style="text-align: center;"><strong><code>ru</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Armenian_language">Armenian</a></strong> <br/> <strong>Հայերեն</strong></td>
-<td align="center"><strong><code>hy</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Icelandic_language">Icelandic</a></strong> <br/> <strong>Íslenska</strong></td>
-<td align="center"><strong><code>is</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Samoan_language">Samoan</a></strong> <br/> <strong>Gagana Sāmoa</strong></td>
-<td align="center"><strong><code>sm</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Armenian_language">Armenian</a></strong> <br/> <strong>Հայերեն</strong></td>
+<td style="text-align: center;"><strong><code>hy</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Icelandic_language">Icelandic</a></strong> <br/> <strong>Íslenska</strong></td>
+<td style="text-align: center;"><strong><code>is</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Samoan_language">Samoan</a></strong> <br/> <strong>Gagana Sāmoa</strong></td>
+<td style="text-align: center;"><strong><code>sm</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Azerbaijani_language">Azerbaijani</a></strong> <br/> <strong>Azərbaycanca</strong></td>
-<td align="center"><strong><code>az</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Igbo_language">Igbo</a></strong> <br/> <strong>Igbo</strong></td>
-<td align="center"><strong><code>ig</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Scots_Gaelic">Scots Gaelic</a></strong> <br/> <strong>Gàidhlig</strong></td>
-<td align="center"><strong><code>gd</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Azerbaijani_language">Azerbaijani</a></strong> <br/> <strong>Azərbaycanca</strong></td>
+<td style="text-align: center;"><strong><code>az</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Igbo_language">Igbo</a></strong> <br/> <strong>Igbo</strong></td>
+<td style="text-align: center;"><strong><code>ig</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Scots_Gaelic">Scots Gaelic</a></strong> <br/> <strong>Gàidhlig</strong></td>
+<td style="text-align: center;"><strong><code>gd</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Basque_language">Basque</a></strong> <br/> <strong>Euskara</strong></td>
-<td align="center"><strong><code>eu</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Indonesian_language">Indonesian</a></strong> <br/> <strong>Bahasa Indonesia</strong></td>
-<td align="center"><strong><code>id</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Serbian_(Cyrillic)">Serbian (Cyrillic)</a></strong> <br/> <strong>српски</strong></td>
-<td align="center"><strong><code>sr-Cyrl</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Basque_language">Basque</a></strong> <br/> <strong>Euskara</strong></td>
+<td style="text-align: center;"><strong><code>eu</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Indonesian_language">Indonesian</a></strong> <br/> <strong>Bahasa Indonesia</strong></td>
+<td style="text-align: center;"><strong><code>id</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Serbian_(Cyrillic)">Serbian (Cyrillic)</a></strong> <br/> <strong>српски</strong></td>
+<td style="text-align: center;"><strong><code>sr-Cyrl</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Belarusian_language">Belarusian</a></strong> <br/> <strong>беларуская</strong></td>
-<td align="center"><strong><code>be</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Irish_language">Irish</a></strong> <br/> <strong>Gaeilge</strong></td>
-<td align="center"><strong><code>ga</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Serbian_(Latin)">Serbian (Latin)</a></strong> <br/> <strong>srpski</strong></td>
-<td align="center"><strong><code>sr-Latn</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Belarusian_language">Belarusian</a></strong> <br/> <strong>беларуская</strong></td>
+<td style="text-align: center;"><strong><code>be</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Irish_language">Irish</a></strong> <br/> <strong>Gaeilge</strong></td>
+<td style="text-align: center;"><strong><code>ga</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Serbian_(Latin)">Serbian (Latin)</a></strong> <br/> <strong>srpski</strong></td>
+<td style="text-align: center;"><strong><code>sr-Latn</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Bengali_language">Bengali</a></strong> <br/> <strong>বাংলা</strong></td>
-<td align="center"><strong><code>bn</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Italian_language">Italian</a></strong> <br/> <strong>Italiano</strong></td>
-<td align="center"><strong><code>it</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Sesotho_language">Sesotho</a></strong> <br/> <strong>Sesotho</strong></td>
-<td align="center"><strong><code>st</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Bengali_language">Bengali</a></strong> <br/> <strong>বাংলা</strong></td>
+<td style="text-align: center;"><strong><code>bn</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Italian_language">Italian</a></strong> <br/> <strong>Italiano</strong></td>
+<td style="text-align: center;"><strong><code>it</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Sesotho_language">Sesotho</a></strong> <br/> <strong>Sesotho</strong></td>
+<td style="text-align: center;"><strong><code>st</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Bosnian_language">Bosnian</a></strong> <br/> <strong>Bosanski</strong></td>
-<td align="center"><strong><code>bs</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Japanese_language">Japanese</a></strong> <br/> <strong>日本語</strong></td>
-<td align="center"><strong><code>ja</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Shona_language">Shona</a></strong> <br/> <strong>chiShona</strong></td>
-<td align="center"><strong><code>sn</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Bosnian_language">Bosnian</a></strong> <br/> <strong>Bosanski</strong></td>
+<td style="text-align: center;"><strong><code>bs</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Japanese_language">Japanese</a></strong> <br/> <strong>日本語</strong></td>
+<td style="text-align: center;"><strong><code>ja</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Shona_language">Shona</a></strong> <br/> <strong>chiShona</strong></td>
+<td style="text-align: center;"><strong><code>sn</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Bulgarian_language">Bulgarian</a></strong> <br/> <strong>български</strong></td>
-<td align="center"><strong><code>bg</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Javanese_language">Javanese</a></strong> <br/> <strong>Basa Jawa</strong></td>
-<td align="center"><strong><code>jv</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Sindhi_language">Sindhi</a></strong> <br/> <strong>سنڌي</strong></td>
-<td align="center"><strong><code>sd</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Bulgarian_language">Bulgarian</a></strong> <br/> <strong>български</strong></td>
+<td style="text-align: center;"><strong><code>bg</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Javanese_language">Javanese</a></strong> <br/> <strong>Basa Jawa</strong></td>
+<td style="text-align: center;"><strong><code>jv</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Sindhi_language">Sindhi</a></strong> <br/> <strong>سنڌي</strong></td>
+<td style="text-align: center;"><strong><code>sd</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Cantonese_language">Cantonese</a></strong> <br/> <strong>粵語</strong></td>
-<td align="center"><strong><code>yue</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Kannada_language">Kannada</a></strong> <br/> <strong>ಕನ್ನಡ</strong></td>
-<td align="center"><strong><code>kn</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Sinhala_language">Sinhala</a></strong> <br/> <strong>සිංහල</strong></td>
-<td align="center"><strong><code>si</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Cantonese_language">Cantonese</a></strong> <br/> <strong>粵語</strong></td>
+<td style="text-align: center;"><strong><code>yue</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Kannada_language">Kannada</a></strong> <br/> <strong>ಕನ್ನಡ</strong></td>
+<td style="text-align: center;"><strong><code>kn</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Sinhala_language">Sinhala</a></strong> <br/> <strong>සිංහල</strong></td>
+<td style="text-align: center;"><strong><code>si</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Catalan_language">Catalan</a></strong> <br/> <strong>Català</strong></td>
-<td align="center"><strong><code>ca</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Kazakh_language">Kazakh</a></strong> <br/> <strong>Қазақ тілі</strong></td>
-<td align="center"><strong><code>kk</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Slovak_language">Slovak</a></strong> <br/> <strong>Slovenčina</strong></td>
-<td align="center"><strong><code>sk</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Catalan_language">Catalan</a></strong> <br/> <strong>Català</strong></td>
+<td style="text-align: center;"><strong><code>ca</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Kazakh_language">Kazakh</a></strong> <br/> <strong>Қазақ тілі</strong></td>
+<td style="text-align: center;"><strong><code>kk</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Slovak_language">Slovak</a></strong> <br/> <strong>Slovenčina</strong></td>
+<td style="text-align: center;"><strong><code>sk</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Cebuano_language">Cebuano</a></strong> <br/> <strong>Cebuano</strong></td>
-<td align="center"><strong><code>ceb</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Khmer_language">Khmer</a></strong> <br/> <strong>ភាសាខ្មែរ</strong></td>
-<td align="center"><strong><code>km</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Slovenian_language">Slovenian</a></strong> <br/> <strong>Slovenščina</strong></td>
-<td align="center"><strong><code>sl</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Cebuano_language">Cebuano</a></strong> <br/> <strong>Cebuano</strong></td>
+<td style="text-align: center;"><strong><code>ceb</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Khmer_language">Khmer</a></strong> <br/> <strong>ភាសាខ្មែរ</strong></td>
+<td style="text-align: center;"><strong><code>km</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Slovenian_language">Slovenian</a></strong> <br/> <strong>Slovenščina</strong></td>
+<td style="text-align: center;"><strong><code>sl</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Chichewa_language">Chichewa</a></strong> <br/> <strong>Nyanja</strong></td>
-<td align="center"><strong><code>ny</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Klingon_language">Klingon</a></strong> <br/> <strong>tlhIngan Hol</strong></td>
-<td align="center"><strong><code>tlh</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Somali_language">Somali</a></strong> <br/> <strong>Soomaali</strong></td>
-<td align="center"><strong><code>so</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Chichewa_language">Chichewa</a></strong> <br/> <strong>Nyanja</strong></td>
+<td style="text-align: center;"><strong><code>ny</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Klingon_language">Klingon</a></strong> <br/> <strong>tlhIngan Hol</strong></td>
+<td style="text-align: center;"><strong><code>tlh</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Somali_language">Somali</a></strong> <br/> <strong>Soomaali</strong></td>
+<td style="text-align: center;"><strong><code>so</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Chinese_Simplified">Chinese Simplified</a></strong> <br/> <strong>简体中文</strong></td>
-<td align="center"><strong><code>zh-CN</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Klingon_(pIqaD)">Klingon (pIqaD)</a></strong> <br/> <strong> </strong></td>
-<td align="center"><strong><code>tlh-Qaak</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Spanish_language">Spanish</a></strong> <br/> <strong>Español</strong></td>
-<td align="center"><strong><code>es</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Chinese_Simplified">Chinese Simplified</a></strong> <br/> <strong>简体中文</strong></td>
+<td style="text-align: center;"><strong><code>zh-CN</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Klingon_(pIqaD)">Klingon (pIqaD)</a></strong> <br/> <strong> </strong></td>
+<td style="text-align: center;"><strong><code>tlh-Qaak</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Spanish_language">Spanish</a></strong> <br/> <strong>Español</strong></td>
+<td style="text-align: center;"><strong><code>es</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Chinese_Traditional">Chinese Traditional</a></strong> <br/> <strong>正體中文</strong></td>
-<td align="center"><strong><code>zh-TW</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Korean_language">Korean</a></strong> <br/> <strong>한국어</strong></td>
-<td align="center"><strong><code>ko</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Sundanese_language">Sundanese</a></strong> <br/> <strong>Basa Sunda</strong></td>
-<td align="center"><strong><code>su</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Chinese_Traditional">Chinese Traditional</a></strong> <br/> <strong>正體中文</strong></td>
+<td style="text-align: center;"><strong><code>zh-TW</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Korean_language">Korean</a></strong> <br/> <strong>한국어</strong></td>
+<td style="text-align: center;"><strong><code>ko</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Sundanese_language">Sundanese</a></strong> <br/> <strong>Basa Sunda</strong></td>
+<td style="text-align: center;"><strong><code>su</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Corsican_language">Corsican</a></strong> <br/> <strong>Corsu</strong></td>
-<td align="center"><strong><code>co</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Kurdish_language">Kurdish</a></strong> <br/> <strong>Kurdî</strong></td>
-<td align="center"><strong><code>ku</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Swahili_language">Swahili</a></strong> <br/> <strong>Kiswahili</strong></td>
-<td align="center"><strong><code>sw</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Corsican_language">Corsican</a></strong> <br/> <strong>Corsu</strong></td>
+<td style="text-align: center;"><strong><code>co</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Kurdish_language">Kurdish</a></strong> <br/> <strong>Kurdî</strong></td>
+<td style="text-align: center;"><strong><code>ku</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Swahili_language">Swahili</a></strong> <br/> <strong>Kiswahili</strong></td>
+<td style="text-align: center;"><strong><code>sw</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Croatian_language">Croatian</a></strong> <br/> <strong>Hrvatski</strong></td>
-<td align="center"><strong><code>hr</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Kyrgyz_language">Kyrgyz</a></strong> <br/> <strong>Кыргызча</strong></td>
-<td align="center"><strong><code>ky</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Swedish_language">Swedish</a></strong> <br/> <strong>Svenska</strong></td>
-<td align="center"><strong><code>sv</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Croatian_language">Croatian</a></strong> <br/> <strong>Hrvatski</strong></td>
+<td style="text-align: center;"><strong><code>hr</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Kyrgyz_language">Kyrgyz</a></strong> <br/> <strong>Кыргызча</strong></td>
+<td style="text-align: center;"><strong><code>ky</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Swedish_language">Swedish</a></strong> <br/> <strong>Svenska</strong></td>
+<td style="text-align: center;"><strong><code>sv</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Czech_language">Czech</a></strong> <br/> <strong>Čeština</strong></td>
-<td align="center"><strong><code>cs</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Lao_language">Lao</a></strong> <br/> <strong>ລາວ</strong></td>
-<td align="center"><strong><code>lo</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Tahitian_language">Tahitian</a></strong> <br/> <strong>Reo Tahiti</strong></td>
-<td align="center"><strong><code>ty</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Czech_language">Czech</a></strong> <br/> <strong>Čeština</strong></td>
+<td style="text-align: center;"><strong><code>cs</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Lao_language">Lao</a></strong> <br/> <strong>ລາວ</strong></td>
+<td style="text-align: center;"><strong><code>lo</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Tahitian_language">Tahitian</a></strong> <br/> <strong>Reo Tahiti</strong></td>
+<td style="text-align: center;"><strong><code>ty</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Danish_language">Danish</a></strong> <br/> <strong>Dansk</strong></td>
-<td align="center"><strong><code>da</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Latin_language">Latin</a></strong> <br/> <strong>Latina</strong></td>
-<td align="center"><strong><code>la</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Tajik_language">Tajik</a></strong> <br/> <strong>Тоҷикӣ</strong></td>
-<td align="center"><strong><code>tg</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Danish_language">Danish</a></strong> <br/> <strong>Dansk</strong></td>
+<td style="text-align: center;"><strong><code>da</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Latin_language">Latin</a></strong> <br/> <strong>Latina</strong></td>
+<td style="text-align: center;"><strong><code>la</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Tajik_language">Tajik</a></strong> <br/> <strong>Тоҷикӣ</strong></td>
+<td style="text-align: center;"><strong><code>tg</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Dutch_language">Dutch</a></strong> <br/> <strong>Nederlands</strong></td>
-<td align="center"><strong><code>nl</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Latvian_language">Latvian</a></strong> <br/> <strong>Latviešu</strong></td>
-<td align="center"><strong><code>lv</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Tamil_language">Tamil</a></strong> <br/> <strong>தமிழ்</strong></td>
-<td align="center"><strong><code>ta</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Dutch_language">Dutch</a></strong> <br/> <strong>Nederlands</strong></td>
+<td style="text-align: center;"><strong><code>nl</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Latvian_language">Latvian</a></strong> <br/> <strong>Latviešu</strong></td>
+<td style="text-align: center;"><strong><code>lv</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Tamil_language">Tamil</a></strong> <br/> <strong>தமிழ்</strong></td>
+<td style="text-align: center;"><strong><code>ta</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/English_language">English</a></strong> <br/> <strong>English</strong></td>
-<td align="center"><strong><code>en</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Lithuanian_language">Lithuanian</a></strong> <br/> <strong>Lietuvių</strong></td>
-<td align="center"><strong><code>lt</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Tatar_language">Tatar</a></strong> <br/> <strong>татарча</strong></td>
-<td align="center"><strong><code>tt</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/English_language">English</a></strong> <br/> <strong>English</strong></td>
+<td style="text-align: center;"><strong><code>en</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Lithuanian_language">Lithuanian</a></strong> <br/> <strong>Lietuvių</strong></td>
+<td style="text-align: center;"><strong><code>lt</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Tatar_language">Tatar</a></strong> <br/> <strong>татарча</strong></td>
+<td style="text-align: center;"><strong><code>tt</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Esperanto_language">Esperanto</a></strong> <br/> <strong>Esperanto</strong></td>
-<td align="center"><strong><code>eo</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Luxembourgish_language">Luxembourgish</a></strong> <br/> <strong>Lëtzebuergesch</strong></td>
-<td align="center"><strong><code>lb</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Telugu_language">Telugu</a></strong> <br/> <strong>తెలుగు</strong></td>
-<td align="center"><strong><code>te</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Esperanto_language">Esperanto</a></strong> <br/> <strong>Esperanto</strong></td>
+<td style="text-align: center;"><strong><code>eo</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Luxembourgish_language">Luxembourgish</a></strong> <br/> <strong>Lëtzebuergesch</strong></td>
+<td style="text-align: center;"><strong><code>lb</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Telugu_language">Telugu</a></strong> <br/> <strong>తెలుగు</strong></td>
+<td style="text-align: center;"><strong><code>te</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Estonian_language">Estonian</a></strong> <br/> <strong>Eesti</strong></td>
-<td align="center"><strong><code>et</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Macedonian_language">Macedonian</a></strong> <br/> <strong>Македонски</strong></td>
-<td align="center"><strong><code>mk</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Thai_language">Thai</a></strong> <br/> <strong>ไทย</strong></td>
-<td align="center"><strong><code>th</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Estonian_language">Estonian</a></strong> <br/> <strong>Eesti</strong></td>
+<td style="text-align: center;"><strong><code>et</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Macedonian_language">Macedonian</a></strong> <br/> <strong>Македонски</strong></td>
+<td style="text-align: center;"><strong><code>mk</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Thai_language">Thai</a></strong> <br/> <strong>ไทย</strong></td>
+<td style="text-align: center;"><strong><code>th</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Fijian_language">Fijian</a></strong> <br/> <strong>Vosa Vakaviti</strong></td>
-<td align="center"><strong><code>fj</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Malagasy_language">Malagasy</a></strong> <br/> <strong>Malagasy</strong></td>
-<td align="center"><strong><code>mg</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Tongan_language">Tongan</a></strong> <br/> <strong>Lea faka-Tonga</strong></td>
-<td align="center"><strong><code>to</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Fijian_language">Fijian</a></strong> <br/> <strong>Vosa Vakaviti</strong></td>
+<td style="text-align: center;"><strong><code>fj</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Malagasy_language">Malagasy</a></strong> <br/> <strong>Malagasy</strong></td>
+<td style="text-align: center;"><strong><code>mg</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Tongan_language">Tongan</a></strong> <br/> <strong>Lea faka-Tonga</strong></td>
+<td style="text-align: center;"><strong><code>to</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Filipino_language">Filipino</a></strong> <br/> <strong>Tagalog</strong></td>
-<td align="center"><strong><code>tl</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Malay_language">Malay</a></strong> <br/> <strong>Bahasa Melayu</strong></td>
-<td align="center"><strong><code>ms</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Turkish_language">Turkish</a></strong> <br/> <strong>Türkçe</strong></td>
-<td align="center"><strong><code>tr</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Filipino_language">Filipino</a></strong> <br/> <strong>Tagalog</strong></td>
+<td style="text-align: center;"><strong><code>tl</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Malay_language">Malay</a></strong> <br/> <strong>Bahasa Melayu</strong></td>
+<td style="text-align: center;"><strong><code>ms</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Turkish_language">Turkish</a></strong> <br/> <strong>Türkçe</strong></td>
+<td style="text-align: center;"><strong><code>tr</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Finnish_language">Finnish</a></strong> <br/> <strong>Suomi</strong></td>
-<td align="center"><strong><code>fi</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Malayalam_language">Malayalam</a></strong> <br/> <strong>മലയാളം</strong></td>
-<td align="center"><strong><code>ml</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Udmurt_language">Udmurt</a></strong> <br/> <strong>удмурт</strong></td>
-<td align="center"><strong><code>udm</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Finnish_language">Finnish</a></strong> <br/> <strong>Suomi</strong></td>
+<td style="text-align: center;"><strong><code>fi</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Malayalam_language">Malayalam</a></strong> <br/> <strong>മലയാളം</strong></td>
+<td style="text-align: center;"><strong><code>ml</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Udmurt_language">Udmurt</a></strong> <br/> <strong>удмурт</strong></td>
+<td style="text-align: center;"><strong><code>udm</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/French_language">French</a></strong> <br/> <strong>Français</strong></td>
-<td align="center"><strong><code>fr</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Maltese_language">Maltese</a></strong> <br/> <strong>Malti</strong></td>
-<td align="center"><strong><code>mt</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Ukrainian_language">Ukrainian</a></strong> <br/> <strong>Українська</strong></td>
-<td align="center"><strong><code>uk</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/French_language">French</a></strong> <br/> <strong>Français</strong></td>
+<td style="text-align: center;"><strong><code>fr</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Maltese_language">Maltese</a></strong> <br/> <strong>Malti</strong></td>
+<td style="text-align: center;"><strong><code>mt</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Ukrainian_language">Ukrainian</a></strong> <br/> <strong>Українська</strong></td>
+<td style="text-align: center;"><strong><code>uk</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Frisian_language">Frisian</a></strong> <br/> <strong>Frysk</strong></td>
-<td align="center"><strong><code>fy</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Maori_language">Maori</a></strong> <br/> <strong>Māori</strong></td>
-<td align="center"><strong><code>mi</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Urdu_language">Urdu</a></strong> <br/> <strong>اُردُو</strong></td>
-<td align="center"><strong><code>ur</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Frisian_language">Frisian</a></strong> <br/> <strong>Frysk</strong></td>
+<td style="text-align: center;"><strong><code>fy</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Maori_language">Maori</a></strong> <br/> <strong>Māori</strong></td>
+<td style="text-align: center;"><strong><code>mi</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Urdu_language">Urdu</a></strong> <br/> <strong>اُردُو</strong></td>
+<td style="text-align: center;"><strong><code>ur</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Galician_language">Galician</a></strong> <br/> <strong>Galego</strong></td>
-<td align="center"><strong><code>gl</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Marathi_language">Marathi</a></strong> <br/> <strong>मराठी</strong></td>
-<td align="center"><strong><code>mr</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Uzbek_language">Uzbek</a></strong> <br/> <strong>Oʻzbek tili</strong></td>
-<td align="center"><strong><code>uz</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Galician_language">Galician</a></strong> <br/> <strong>Galego</strong></td>
+<td style="text-align: center;"><strong><code>gl</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Marathi_language">Marathi</a></strong> <br/> <strong>मराठी</strong></td>
+<td style="text-align: center;"><strong><code>mr</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Uzbek_language">Uzbek</a></strong> <br/> <strong>Oʻzbek tili</strong></td>
+<td style="text-align: center;"><strong><code>uz</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Georgian_language">Georgian</a></strong> <br/> <strong>ქართული</strong></td>
-<td align="center"><strong><code>ka</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Mongolian_language">Mongolian</a></strong> <br/> <strong>Монгол</strong></td>
-<td align="center"><strong><code>mn</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Vietnamese_language">Vietnamese</a></strong> <br/> <strong>Tiếng Việt</strong></td>
-<td align="center"><strong><code>vi</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Georgian_language">Georgian</a></strong> <br/> <strong>ქართული</strong></td>
+<td style="text-align: center;"><strong><code>ka</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Mongolian_language">Mongolian</a></strong> <br/> <strong>Монгол</strong></td>
+<td style="text-align: center;"><strong><code>mn</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Vietnamese_language">Vietnamese</a></strong> <br/> <strong>Tiếng Việt</strong></td>
+<td style="text-align: center;"><strong><code>vi</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/German_language">German</a></strong> <br/> <strong>Deutsch</strong></td>
-<td align="center"><strong><code>de</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Myanmar_language">Myanmar</a></strong> <br/> <strong>မြန်မာစာ</strong></td>
-<td align="center"><strong><code>my</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Welsh_language">Welsh</a></strong> <br/> <strong>Cymraeg</strong></td>
-<td align="center"><strong><code>cy</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/German_language">German</a></strong> <br/> <strong>Deutsch</strong></td>
+<td style="text-align: center;"><strong><code>de</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Myanmar_language">Myanmar</a></strong> <br/> <strong>မြန်မာစာ</strong></td>
+<td style="text-align: center;"><strong><code>my</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Welsh_language">Welsh</a></strong> <br/> <strong>Cymraeg</strong></td>
+<td style="text-align: center;"><strong><code>cy</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Greek_language">Greek</a></strong> <br/> <strong>Ελληνικά</strong></td>
-<td align="center"><strong><code>el</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Nepali_language">Nepali</a></strong> <br/> <strong>नेपाली</strong></td>
-<td align="center"><strong><code>ne</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Xhosa_language">Xhosa</a></strong> <br/> <strong>isiXhosa</strong></td>
-<td align="center"><strong><code>xh</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Greek_language">Greek</a></strong> <br/> <strong>Ελληνικά</strong></td>
+<td style="text-align: center;"><strong><code>el</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Nepali_language">Nepali</a></strong> <br/> <strong>नेपाली</strong></td>
+<td style="text-align: center;"><strong><code>ne</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Xhosa_language">Xhosa</a></strong> <br/> <strong>isiXhosa</strong></td>
+<td style="text-align: center;"><strong><code>xh</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Gujarati_language">Gujarati</a></strong> <br/> <strong>ગુજરાતી</strong></td>
-<td align="center"><strong><code>gu</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Norwegian_language">Norwegian</a></strong> <br/> <strong>Norsk</strong></td>
-<td align="center"><strong><code>no</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Yiddish_language">Yiddish</a></strong> <br/> <strong>ייִדיש</strong></td>
-<td align="center"><strong><code>yi</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Gujarati_language">Gujarati</a></strong> <br/> <strong>ગુજરાતી</strong></td>
+<td style="text-align: center;"><strong><code>gu</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Norwegian_language">Norwegian</a></strong> <br/> <strong>Norsk</strong></td>
+<td style="text-align: center;"><strong><code>no</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Yiddish_language">Yiddish</a></strong> <br/> <strong>ייִדיש</strong></td>
+<td style="text-align: center;"><strong><code>yi</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Haitian_Creole">Haitian Creole</a></strong> <br/> <strong>Kreyòl Ayisyen</strong></td>
-<td align="center"><strong><code>ht</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Pashto_language">Pashto</a></strong> <br/> <strong>پښتو</strong></td>
-<td align="center"><strong><code>ps</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Yoruba_language">Yoruba</a></strong> <br/> <strong>Yorùbá</strong></td>
-<td align="center"><strong><code>yo</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Haitian_Creole">Haitian Creole</a></strong> <br/> <strong>Kreyòl Ayisyen</strong></td>
+<td style="text-align: center;"><strong><code>ht</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Pashto_language">Pashto</a></strong> <br/> <strong>پښتو</strong></td>
+<td style="text-align: center;"><strong><code>ps</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Yoruba_language">Yoruba</a></strong> <br/> <strong>Yorùbá</strong></td>
+<td style="text-align: center;"><strong><code>yo</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Hausa_language">Hausa</a></strong> <br/> <strong>Hausa</strong></td>
-<td align="center"><strong><code>ha</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Persian_language">Persian</a></strong> <br/> <strong>فارسی</strong></td>
-<td align="center"><strong><code>fa</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Yucatec_Maya">Yucatec Maya</a></strong> <br/> <strong>Màaya T'àan</strong></td>
-<td align="center"><strong><code>yua</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Hausa_language">Hausa</a></strong> <br/> <strong>Hausa</strong></td>
+<td style="text-align: center;"><strong><code>ha</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Persian_language">Persian</a></strong> <br/> <strong>فارسی</strong></td>
+<td style="text-align: center;"><strong><code>fa</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Yucatec_Maya">Yucatec Maya</a></strong> <br/> <strong>Màaya T’àan</strong></td>
+<td style="text-align: center;"><strong><code>yua</code></strong></td>
 </tr>
 <tr class="even">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Hawaiian_language">Hawaiian</a></strong> <br/> <strong>ʻŌlelo Hawaiʻi</strong></td>
-<td align="center"><strong><code>haw</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Polish_language">Polish</a></strong> <br/> <strong>Polski</strong></td>
-<td align="center"><strong><code>pl</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Zulu_language">Zulu</a></strong> <br/> <strong>isiZulu</strong></td>
-<td align="center"><strong><code>zu</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Hawaiian_language">Hawaiian</a></strong> <br/> <strong>ʻŌlelo Hawaiʻi</strong></td>
+<td style="text-align: center;"><strong><code>haw</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Polish_language">Polish</a></strong> <br/> <strong>Polski</strong></td>
+<td style="text-align: center;"><strong><code>pl</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Zulu_language">Zulu</a></strong> <br/> <strong>isiZulu</strong></td>
+<td style="text-align: center;"><strong><code>zu</code></strong></td>
 </tr>
 <tr class="odd">
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Hebrew_language">Hebrew</a></strong> <br/> <strong>עִבְרִית</strong></td>
-<td align="center"><strong><code>he</code></strong></td>
-<td align="center"><strong><a href="http://en.wikipedia.org/wiki/Portuguese_language">Portuguese</a></strong> <br/> <strong>Português</strong></td>
-<td align="center"><strong><code>pt</code></strong></td>
-<td align="center"></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Hebrew_language">Hebrew</a></strong> <br/> <strong>עִבְרִית</strong></td>
+<td style="text-align: center;"><strong><code>he</code></strong></td>
+<td style="text-align: center;"><strong><a href="http://en.wikipedia.org/wiki/Portuguese_language">Portuguese</a></strong> <br/> <strong>Português</strong></td>
+<td style="text-align: center;"><strong><code>pt</code></strong></td>
+<td style="text-align: center;"></td>
 </tr>
 </tbody>
 </table>
