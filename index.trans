@@ -1,4 +1,4 @@
 ;;# Main registry
 {:transcript 0
- :translate-shell "0.9.6.1"
+ :translate-shell "0.9.6.2"
  }
