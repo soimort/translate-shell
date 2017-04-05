@@ -125,6 +125,8 @@ function googleTranslate(text, sl, tl, hl,
     saveSortedIn = PROCINFO["sorted_in"]
     PROCINFO["sorted_in"] = "@ind_num_asc"
     for (i in ast) {
+        if (ast[i] == "null") continue
+
         if (i ~ "^0" SUBSEP "0" SUBSEP "[[:digit:]]+" SUBSEP "0$")
             append(translations, postprocess(literal(ast[i])))
         if (i ~ "^0" SUBSEP "0" SUBSEP "[[:digit:]]+" SUBSEP "1$")
