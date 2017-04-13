@@ -109,7 +109,7 @@ function initMisc(    group, temp) {
 
     # Initialize screen width if not set
     if (!Option["width"] && detectProgram("tput", "-V")) {
-        "tput cols" | getline temp
+        "tput cols" SUPERR | getline temp
         Option["width"] = temp ? temp - 2 : 64
     }
 
