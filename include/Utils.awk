@@ -20,9 +20,9 @@ function initGawk(    group) {
 # Fallback to Unix `rev` if not found.
 function initBiDi() {
     FriBidi = detectProgram("fribidi", "--version", 1)
-    BiDiNoPad = FriBidi ? "fribidi --nopad" : "rev"
+    BiDiNoPad = FriBidi ? "fribidi --nopad" : "rev" SUPERR
     BiDi = FriBidi ? "fribidi --width %s" :
-        "rev | sed \"s/'/\\\\\\'/\" | xargs printf '%%s '"
+        "rev" SUPERR "| sed \"s/'/\\\\\\'/\" | xargs printf '%%s '"
 }
 
 # Detect external readline wrapper (rlwrap).
