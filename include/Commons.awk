@@ -69,6 +69,23 @@ function append(array, element) {
     array[anything(array) ? length(array) : 0] = element
 }
 
+# Comparator function used for controlling array scanning order.
+# Like @ind_num_asc, but compare on index fields separated by SUBSEP.
+function compareByIndexFields(i1, v1, i2, v2,
+                              ####
+                              t1, t2, tl, j) {
+    split(i1, t1, SUBSEP)
+    split(i2, t2, SUBSEP)
+    tl = length(t1) < length(t2) ? length(t1) : length(t2)
+    for (j = 1; j <= tl; j++) {
+        if (t1[j] < t2[j])
+            return -1
+        else if (t1[j] > t2[j])
+            return 1
+    }
+    return 0
+}
+
 
 
 ## Strings:
@@ -128,7 +145,7 @@ function join(array, separator, sortedIn, preserveNull,
     if (!separator)
         separator = " "
     if (!sortedIn)
-        sortedIn = "@ind_num_asc"
+        sortedIn = "compareByIndexFields"
 
     temp = NULLSTR
     j = 0
@@ -266,7 +283,7 @@ function toString(value, inline, heredoc, valOnly, numSub, level, sortedIn,
                   i, items, j, k, p, saveSortedIn, temp, v) {
     if (!level) level = 0
     if (!sortedIn)
-        sortedIn = "@ind_num_asc"
+        sortedIn = "compareByIndexFields"
 
     if (isarray(value)) {
         saveSortedIn = PROCINFO["sorted_in"]
@@ -401,7 +418,7 @@ function da(value, name, inline, heredoc, valOnly, numSub, sortedIn,
     if (!name)
         name = "_"
     if (!sortedIn)
-        sortedIn = "@ind_num_asc"
+        sortedIn = "compareByIndexFields"
 
     d(name " = " toString(value, inline, heredoc, valOnly, numSub, 0, sortedIn))
     #if (isarray(value)) {

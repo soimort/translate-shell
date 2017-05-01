@@ -123,7 +123,7 @@ function googleTranslate(text, sl, tl, hl,
     }
 
     saveSortedIn = PROCINFO["sorted_in"]
-    PROCINFO["sorted_in"] = "@ind_num_asc"
+    PROCINFO["sorted_in"] = "compareByIndexFields"
     for (i in ast) {
         if (ast[i] == "null") continue
 
