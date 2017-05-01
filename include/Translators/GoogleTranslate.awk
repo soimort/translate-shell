@@ -197,7 +197,7 @@ function googleTranslate(text, sl, tl, hl,
     }
     PROCINFO["sorted_in"] = saveSortedIn
 
-    translation = join(translations)
+    translation = join(translations, "\0")
 
     returnIl[0] = il = !anything(ils) || belongsTo(sl, ils) ? sl : ils[0]
     if (Option["verbose"] < 0)
