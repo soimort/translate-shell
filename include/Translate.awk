@@ -77,6 +77,7 @@ function preprocess(text) {
     return quote(text)
 }
 
+# [OBSOLETE] Is this function still relevant?
 # Post-process string (remove any redundant whitespace).
 function postprocess(text) {
     text = gensub(/ ([.,;:?!"])/, "\\1", "g", text)

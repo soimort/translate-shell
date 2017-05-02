@@ -128,7 +128,7 @@ function googleTranslate(text, sl, tl, hl,
         if (ast[i] == "null") continue
 
         if (i ~ "^0" SUBSEP "0" SUBSEP "[[:digit:]]+" SUBSEP "0$")
-            append(translations, postprocess(literal(ast[i])))
+            append(translations, literal(ast[i]))
         if (i ~ "^0" SUBSEP "0" SUBSEP "[[:digit:]]+" SUBSEP "1$")
             append(original, literal(ast[i]))
         if (i ~ "^0" SUBSEP "0" SUBSEP "[[:digit:]]+" SUBSEP "2$")
@@ -150,7 +150,7 @@ function googleTranslate(text, sl, tl, hl,
             altTranslations[group[1]][0] = ""
         }
         if (match(i, "^0" SUBSEP "5" SUBSEP "([[:digit:]]+)" SUBSEP "2" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
-            altTranslations[group[1]][group[2]] = postprocess(literal(ast[i]))
+            altTranslations[group[1]][group[2]] = literal(ast[i])
 
         # 7 - autocorrection
         if (i ~ "^0" SUBSEP "7" SUBSEP "5$") {
@@ -185,11 +185,11 @@ function googleTranslate(text, sl, tl, hl,
         if (match(i, "^0" SUBSEP "12" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "1$", group))
             oWords[group[1]][group[2]][1] = literal(ast[i])
         if (match(i, "^0" SUBSEP "12" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "2$", group))
-            oWords[group[1]][group[2]][2] = postprocess(literal(ast[i]))
+            oWords[group[1]][group[2]][2] = literal(ast[i])
 
         # 13 - (original) examples
         if (match(i, "^0" SUBSEP "13" SUBSEP "0" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
-            oExamples[group[1]] = postprocess(literal(ast[i]))
+            oExamples[group[1]] = literal(ast[i])
 
         # 14 - (original) see also
         if (match(i, "^0" SUBSEP "14" SUBSEP "0" SUBSEP "([[:digit:]]+)$", group))
