@@ -141,9 +141,7 @@ function reverse(string,
 function join(array, separator, sortedIn, preserveNull,
               ####
               i, j, saveSortedIn, temp) {
-    # Default parameters
-    if (!separator)
-        separator = " "
+    # Default parameter
     if (!sortedIn)
         sortedIn = "compareByIndexFields"
 

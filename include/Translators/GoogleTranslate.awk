@@ -197,7 +197,7 @@ function googleTranslate(text, sl, tl, hl,
     }
     PROCINFO["sorted_in"] = saveSortedIn
 
-    translation = join(translations, "\0")
+    translation = join(translations)
 
     returnIl[0] = il = !anything(ils) || belongsTo(sl, ils) ? sl : ils[0]
     if (Option["verbose"] < 0)
@@ -208,7 +208,7 @@ function googleTranslate(text, sl, tl, hl,
         # Brief mode
 
         r = isPhonetic && anything(phonetics) ?
-            prettify("brief-translation-phonetics", join(phonetics)) :
+            prettify("brief-translation-phonetics", join(phonetics, " ")) :
             prettify("brief-translation", s(translation, tl))
 
         if (toSpeech) {
@@ -248,9 +248,9 @@ function googleTranslate(text, sl, tl, hl,
             # Display: original text & phonetics
             if (r) r = r RS RS
             r = r m("-- display original text & phonetics")
-            r = r prettify("original", s(join(original), il))
+            r = r prettify("original", s(join(original, " "), il))
             if (wShowOriginalPhonetics)
-                r = r RS prettify("original-phonetics", showPhonetics(join(oPhonetics), il))
+                r = r RS prettify("original-phonetics", showPhonetics(join(oPhonetics, " "), il))
         }
 
         if (wShowTranslation) {
@@ -259,7 +259,7 @@ function googleTranslate(text, sl, tl, hl,
             r = r m("-- display major translation & phonetics")
             r = r prettify("translation", s(translation, tl))
             if (wShowTranslationPhonetics)
-                r = r RS prettify("translation-phonetics", showPhonetics(join(phonetics), tl))
+                r = r RS prettify("translation-phonetics", showPhonetics(join(phonetics, " "), tl))
         }
 
         if (wShowPromptMessage || wShowLanguages)
@@ -270,12 +270,12 @@ function googleTranslate(text, sl, tl, hl,
                 if (r) r = r RS
                 r = r m("-- display prompt message (Definitions of ...)")
                 if (isRTL(hl)) # home language is R-to-L
-                    r = r prettify("prompt-message", s(showDefinitionsOf(hl, join(original))))
+                    r = r prettify("prompt-message", s(showDefinitionsOf(hl, join(original, " "))))
                 else { # home language is L-to-R
                     split(showDefinitionsOf(hl, "\0%s\0"), group, "\0")
                     for (i = 1; i <= length(group); i++) {
                         if (group[i] == "%s")
-                            r = r prettify("prompt-message-original", show(join(original), il))
+                            r = r prettify("prompt-message-original", show(join(original, " "), il))
                         else
                             r = r prettify("prompt-message", group[i])
                     }
@@ -285,12 +285,12 @@ function googleTranslate(text, sl, tl, hl,
                 if (r) r = r RS
                 r = r m("-- display prompt message (Translations of ...)")
                 if (isRTL(hl)) # home language is R-to-L
-                    r = r prettify("prompt-message", s(showTranslationsOf(hl, join(original))))
+                    r = r prettify("prompt-message", s(showTranslationsOf(hl, join(original, " "))))
                 else { # home language is L-to-R
                     split(showTranslationsOf(hl, "\0%s\0"), group, "\0")
                     for (i = 1; i <= length(group); i++) {
                         if (group[i] == "%s")
-                            r = r prettify("prompt-message-original", show(join(original), il))
+                            r = r prettify("prompt-message-original", show(join(original, " "), il))
                         else
                             r = r prettify("prompt-message", group[i])
                     }
