@@ -48,9 +48,9 @@ function genTK(text,
 }
 
 function googleInit() {
-    HttpProtocol = "http://"
+    HttpProtocol = "https://"
     HttpHost = "translate.googleapis.com"
-    HttpPort = 80
+    HttpPort = 443
 }
 
 function googleRequestUrl(text, sl, tl, hl,    qc) {

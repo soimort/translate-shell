@@ -6,7 +6,7 @@
 BEGIN { provides("yandex") }
 
 function genSID(    content, group, temp) {
-    content = curl("http://translate.yandex.com")
+    content = curl("https://translate.yandex.com")
 
     match(content, /SID:[[:space:]]*'([^']+)'/, group)
     if (group[1]) {
@@ -22,9 +22,9 @@ function yandexInit() {
     genSID() # generate a one-time key
     YandexWebTranslate = "z5h64q92x9.net" # host for web translation
 
-    HttpProtocol = "http://"
+    HttpProtocol = "https://"
     HttpHost = "translate.yandex.net"
-    HttpPort = 80
+    HttpPort = 443
 }
 
 function yandexRequestUrl(text, sl, tl, hl,    group) {
