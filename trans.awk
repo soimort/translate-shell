@@ -2,8 +2,8 @@
 BEGIN {
 Name        = "Translate Shell"
 Description = "Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc."
-Version     = "0.9.6.3"
-ReleaseDate = "2017-05-01"
+Version     = "0.9.6.4"
+ReleaseDate = "2017-06-01"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 }
@@ -94,8 +94,6 @@ return temp
 }
 function join(array, separator, sortedIn, preserveNull,
 i, j, saveSortedIn, temp) {
-if (!separator)
-separator = " "
 if (!sortedIn)
 sortedIn = "compareByIndexFields"
 temp = NULLSTR
@@ -3144,7 +3142,7 @@ PROCINFO["sorted_in"] = "compareByIndexFields"
 for (i in ast) {
 if (ast[i] == "null") continue
 if (i ~ "^0" SUBSEP "0" SUBSEP "[[:digit:]]+" SUBSEP "0$")
-append(translations, postprocess(literal(ast[i])))
+append(translations, literal(ast[i]))
 if (i ~ "^0" SUBSEP "0" SUBSEP "[[:digit:]]+" SUBSEP "1$")
 append(original, literal(ast[i]))
 if (i ~ "^0" SUBSEP "0" SUBSEP "[[:digit:]]+" SUBSEP "2$")
@@ -3162,7 +3160,7 @@ segments[group[1]] = literal(ast[i])
 altTranslations[group[1]][0] = ""
 }
 if (match(i, "^0" SUBSEP "5" SUBSEP "([[:digit:]]+)" SUBSEP "2" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
-altTranslations[group[1]][group[2]] = postprocess(literal(ast[i]))
+altTranslations[group[1]][group[2]] = literal(ast[i])
 if (i ~ "^0" SUBSEP "7" SUBSEP "5$") {
 if (ast[i] == "true")
 w("Showing translation for:  (use -no-auto to disable autocorrect)")
@@ -3189,9 +3187,9 @@ oWords[group[1]][group[2]][0] = literal(ast[i])
 if (match(i, "^0" SUBSEP "12" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "1$", group))
 oWords[group[1]][group[2]][1] = literal(ast[i])
 if (match(i, "^0" SUBSEP "12" SUBSEP "([[:digit:]]+)" SUBSEP "1" SUBSEP "([[:digit:]]+)" SUBSEP "2$", group))
-oWords[group[1]][group[2]][2] = postprocess(literal(ast[i]))
+oWords[group[1]][group[2]][2] = literal(ast[i])
 if (match(i, "^0" SUBSEP "13" SUBSEP "0" SUBSEP "([[:digit:]]+)" SUBSEP "0$", group))
-oExamples[group[1]] = postprocess(literal(ast[i]))
+oExamples[group[1]] = literal(ast[i])
 if (match(i, "^0" SUBSEP "14" SUBSEP "0" SUBSEP "([[:digit:]]+)$", group))
 oSeeAlso[group[1]] = literal(ast[i])
 }
@@ -3202,7 +3200,7 @@ if (Option["verbose"] < 0)
 return getList(il)
 if (!isVerbose) {
 r = isPhonetic && anything(phonetics) ?
-prettify("brief-translation-phonetics", join(phonetics)) :
+prettify("brief-translation-phonetics", join(phonetics, " ")) :
 prettify("brief-translation", s(translation, tl))
 if (toSpeech) {
 returnPlaylist[0]["text"] = translation
@@ -3235,16 +3233,16 @@ if (hasWordClasses || !hasAltTranslations) wShowAlternatives = 0
 if (wShowOriginal) {
 if (r) r = r RS RS
 r = r m("-- display original text & phonetics")
-r = r prettify("original", s(join(original), il))
+r = r prettify("original", s(join(original, " "), il))
 if (wShowOriginalPhonetics)
-r = r RS prettify("original-phonetics", showPhonetics(join(oPhonetics), il))
+r = r RS prettify("original-phonetics", showPhonetics(join(oPhonetics, " "), il))
 }
 if (wShowTranslation) {
 if (r) r = r RS RS
 r = r m("-- display major translation & phonetics")
 r = r prettify("translation", s(translation, tl))
 if (wShowTranslationPhonetics)
-r = r RS prettify("translation-phonetics", showPhonetics(join(phonetics), tl))
+r = r RS prettify("translation-phonetics", showPhonetics(join(phonetics, " "), tl))
 }
 if (wShowPromptMessage || wShowLanguages)
 if (r) r = r RS
@@ -3253,12 +3251,12 @@ if (hasWordClasses) {
 if (r) r = r RS
 r = r m("-- display prompt message (Definitions of ...)")
 if (isRTL(hl))
-r = r prettify("prompt-message", s(showDefinitionsOf(hl, join(original))))
+r = r prettify("prompt-message", s(showDefinitionsOf(hl, join(original, " "))))
 else {
 split(showDefinitionsOf(hl, "\0%s\0"), group, "\0")
 for (i = 1; i <= length(group); i++) {
 if (group[i] == "%s")
-r = r prettify("prompt-message-original", show(join(original), il))
+r = r prettify("prompt-message-original", show(join(original, " "), il))
 else
 r = r prettify("prompt-message", group[i])
 }
@@ -3267,12 +3265,12 @@ r = r prettify("prompt-message", group[i])
 if (r) r = r RS
 r = r m("-- display prompt message (Translations of ...)")
 if (isRTL(hl))
-r = r prettify("prompt-message", s(showTranslationsOf(hl, join(original))))
+r = r prettify("prompt-message", s(showTranslationsOf(hl, join(original, " "))))
 else {
 split(showTranslationsOf(hl, "\0%s\0"), group, "\0")
 for (i = 1; i <= length(group); i++) {
 if (group[i] == "%s")
-r = r prettify("prompt-message-original", show(join(original), il))
+r = r prettify("prompt-message-original", show(join(original, " "), il))
 else
 r = r prettify("prompt-message", group[i])
 }
