@@ -80,6 +80,8 @@ These dependencies are optional, but strongly recommended for full functionality
     * required for terminal paging
 * **[rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/#rlwrap)**: *a GNU readline wrapper*
     * required for readline-style editing and history in the interactive shell
+* **[aspell](http://aspell.net/)** or **[hunspell](http://hunspell.github.io/)**
+    * required for spell checking
 
 ### Environment and Fonts
 
