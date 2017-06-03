@@ -1,15 +1,33 @@
 ####################################################################
 # SpellChecker.awk                                                 #
 ####################################################################
-BEGIN { provides("spell") }
+BEGIN {
+    provides("spell")
+    provides("aspell")
+    provides("hunspell")
+}
 
-# Detect external spell checker.
+# Detect external (ispell -a compatible) spell checker.
 function spellInit() {
     Ispell = detectProgram("aspell", "--version") ? "aspell" :
         (detectProgram("hunspell", "--version") ? "hunspell" : "")
 
     if (!Ispell) {
         e("[ERROR] Spell checker (aspell or hunspell) not found.")
+        exit 1
+    }
+}
+
+function aspellInit() {
+    if (!(Ispell = detectProgram("aspell", "--version") ? "aspell" : "")) {
+        e("[ERROR] Spell checker (aspell) not found.")
+        exit 1
+    }
+}
+
+function hunspellInit() {
+    if (!(Ispell = detectProgram("hunspell", "--version") ? "hunspell" : "")) {
+        e("[ERROR] Spell checker (hunspell) not found.")
         exit 1
     }
 }
@@ -48,4 +66,14 @@ function spellTranslate(text, sl, tl, hl,
     }
     r = r substr(text, i)
     return r
+}
+
+function aspellTranslate(text, sl, tl, hl,
+                         isVerbose, toSpeech, returnPlaylist, returnIl) {
+    return spellTranslate(text, sl, tl, hl)
+}
+
+function hunspellTranslate(text, sl, tl, hl,
+                           isVerbose, toSpeech, returnPlaylist, returnIl) {
+    return spellTranslate(text, sl, tl, hl)
 }
