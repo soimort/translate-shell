@@ -31,12 +31,12 @@ check: test
 	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b 'hello world'`" = 'hello world' ]
 
 install: build
-	@mkdir -p $(PREFIX)/bin &&\
-	install $(BUILDDIR)/$(COMMAND) $(PREFIX)/bin/$(COMMAND) &&\
-	mkdir -p $(PREFIX)/share/man/man1 &&\
-	install $(MANDIR)/$(COMMAND).1 $(PREFIX)/share/man/man1/$(COMMAND).1 &&\
+	@mkdir -p $(DESTDIR)$(PREFIX)/bin &&\
+	install $(BUILDDIR)/$(COMMAND) $(DESTDIR)$(PREFIX)/bin/$(COMMAND) &&\
+	mkdir -p $(DESTDIR)$(PREFIX)/share/man/man1 &&\
+	install $(MANDIR)/$(COMMAND).1 $(DESTDIR)$(PREFIX)/share/man/man1/$(COMMAND).1 &&\
 	echo "[OK] $(NAME) installed."
 
 uninstall:
-	@rm $(PREFIX)/bin/$(COMMAND) $(PREFIX)/share/man/man1/$(COMMAND).1 &&\
+	@rm $(DESTDIR)$(PREFIX)/bin/$(COMMAND) $(DESTDIR)$(PREFIX)/share/man/man1/$(COMMAND).1 &&\
 	echo "[OK] $(NAME) uninstalled."
