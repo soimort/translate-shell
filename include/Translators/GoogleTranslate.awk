@@ -242,7 +242,7 @@ function googleTranslate(text, sl, tl, hl,
         if (!hasWordClasses && !hasAltTranslations)
             wShowPromptMessage = wShowLanguages = 0
         if (!hasWordClasses) wShowDictionary = 0
-        if (hasWordClasses || !hasAltTranslations) wShowAlternatives = 0
+        if (!hasAltTranslations) wShowAlternatives = 0
 
         if (wShowOriginal) {
             # Display: original text & phonetics
