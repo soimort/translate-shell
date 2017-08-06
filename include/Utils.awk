@@ -76,26 +76,29 @@ function rlwrapMe(    i, command) {
     if (!Rlwrap) {
         l(">> not found: rlwrap")
         return 1
-    } else if (!(ENVIRON["TRANS_PROGRAM"] || fileExists(EntryPoint))) {
-        l(">> not found: $TRANS_PROGRAM or EntryPoint")
-        return 1
-    } else {
-        command = Rlwrap " " Gawk " " (ENVIRON["TRANS_PROGRAM"] ?
-                                       "\"${TRANS_PROGRAM}\"" :
-                                       "-f " EntryPoint)                \
-            " - " parameterize("-no-rlwrap") # never fork rlwrap again!
-        for (i = 1; i < length(ARGV); i++)
-            if (ARGV[i])
-                command = command " " parameterize(ARGV[i])
+    }
 
-        l(">> forking: " command)
-        if (!system(command)) {
-            l(">> process exited with code 0")
-            exit ExitCode
-        } else {
-            l(">> process exited with non-zero return code")
-            return 1
-        }
+    if (ENVIRON["TRANS_ENTRY"]) {
+        command = Rlwrap " " ENVIRON["TRANS_ENTRY"] " "                 \
+            parameterize("-no-rlwrap") # never fork rlwrap again!
+    } else if (fileExists(EntryPoint)) {
+        command = Rlwrap " " Gawk " -f " EntryPoint                     \
+            " - " parameterize("-no-rlwrap") # never fork rlwrap again!
+    } else {
+        l(">> not found: $TRANS_ENTRY or EntryPoint")
+        return 1
+    }
+    for (i = 1; i < length(ARGV); i++)
+        if (ARGV[i])
+            command = command " " parameterize(ARGV[i])
+
+    l(">> forking: " command)
+    if (!system(command)) {
+        l(">> process exited with code 0")
+        exit ExitCode
+    } else {
+        l(">> process exited with non-zero return code")
+        return 1
     }
 }
 
@@ -106,34 +109,33 @@ function emacsMe(    i, params, el, command) {
     if (!Emacs) {
         l(">> not found: emacs")
         return 1
-    } else if (!(ENVIRON["TRANS_PROGRAM"] || fileExists(EntryPoint))) {
-        l(">> not found: $TRANS_PROGRAM or EntryPoint")
-        return 1
-    } else {
-        params = ""
-        for (i = 1; i < length(ARGV); i++)
-            if (ARGV[i])
-                params = params " " parameterize(ARGV[i], "\"")
-        if (ENVIRON["TRANS_PROGRAM"]) {
-            el = "(progn (setq trans-program (getenv \"TRANS_PROGRAM\")) " \
-                "(setq explicit-shell-file-name \"" Gawk "\") "         \
-                "(setq explicit-" Gawk "-args (cons trans-program '(\"-\" \"-I\" \"-no-rlwrap\"" params "))) " \
-                "(command-execute 'shell) (rename-buffer \"" Name "\"))"
-        } else {
-            el = "(progn (setq explicit-shell-file-name \"" Gawk "\") " \
-                "(setq explicit-" Gawk "-args '(\"-f\" \"" EntryPoint "\" \"--\" \"-I\" \"-no-rlwrap\"" params ")) " \
-                "(command-execute 'shell) (rename-buffer \"" Name "\"))"
-        }
-        command = Emacs " --eval " parameterize(el)
+    }
 
-        l(">> forking: " command)
-        if (!system(command)) {
-            l(">> process exited with code 0")
-            exit ExitCode
-        } else {
-            l(">> process exited with non-zero return code")
-            return 1
-        }
+    params = ""
+    for (i = 1; i < length(ARGV); i++)
+        if (ARGV[i])
+            params = params " " parameterize(ARGV[i], "\"")
+    if (ENVIRON["TRANS_ENTRY"]) {
+        el = "(progn (setq explicit-shell-file-name \"" ENVIRON["TRANS_ENTRY"] "\") " \
+            "(setq explicit-" Command "-args '(\"-I\" \"-no-rlwrap\"" params ")) " \
+            "(command-execute 'shell) (rename-buffer \"" Name "\"))"
+    } else if (fileExists(EntryPoint)) {
+        el = "(progn (setq explicit-shell-file-name \"" Gawk "\") "     \
+            "(setq explicit-" Gawk "-args '(\"-f\" \"" EntryPoint "\" \"--\" \"-I\" \"-no-rlwrap\"" params ")) " \
+            "(command-execute 'shell) (rename-buffer \"" Name "\"))"
+    } else {
+        l(">> not found: $TRANS_ENTRY or EntryPoint")
+        return 1
+    }
+    command = Emacs " --eval " parameterize(el)
+
+    l(">> forking: " command)
+    if (!system(command)) {
+        l(">> process exited with code 0")
+        exit ExitCode
+    } else {
+        l(">> process exited with non-zero return code")
+        return 1
     }
 }
 
