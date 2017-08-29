@@ -265,13 +265,13 @@ function getReference(displayName,
                     }
                     switch (length(cols[j][i])) {
                     case 1: case 2: case 3: case 4:
-                        t2 = sprintf("- %s |", ansi("bold", sprintf("%4s", cols[j][i])))
+                        t2 = sprintf("- %s │", ansi("bold", sprintf("%4s", cols[j][i])))
                         break
                     case 5:
-                        t2 = sprintf("- %s|", ansi("bold", cols[j][i]))
+                        t2 = sprintf("- %s│", ansi("bold", cols[j][i]))
                         break
                     case 6:
-                        t2 = sprintf("-%s|", ansi("bold", cols[j][i]))
+                        t2 = sprintf("-%s│", ansi("bold", cols[j][i]))
                         break
                     case 7:
                         t2 = sprintf("-%s", ansi("bold", cols[j][i]))
@@ -298,13 +298,13 @@ function getReference(displayName,
                     t1 = sprintf(" %-15s", t1)
                     switch (length(cols[j][i])) {
                     case 1: case 2: case 3: case 4:
-                        t2 = sprintf("- %s |", ansi("bold", sprintf("%4s", cols[j][i])))
+                        t2 = sprintf("- %s │", ansi("bold", sprintf("%4s", cols[j][i])))
                         break
                     case 5:
-                        t2 = sprintf("- %s|", ansi("bold", cols[j][i]))
+                        t2 = sprintf("- %s│", ansi("bold", cols[j][i]))
                         break
                     case 6:
-                        t2 = sprintf("-%s|", ansi("bold", cols[j][i]))
+                        t2 = sprintf("-%s│", ansi("bold", cols[j][i]))
                         break
                     case 7:
                         t2 = sprintf("-%s", ansi("bold", cols[j][i]))
