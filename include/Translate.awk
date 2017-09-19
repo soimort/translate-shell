@@ -63,8 +63,10 @@ function initHttpService() {
     _Init()
 
     if (Option["proxy"]) {
-        match(Option["proxy"], /^(http:\/*)?([^\/]*):([^\/:]*)/, HttpProxySpec)
-        HttpService = "/inet/tcp/0/" HttpProxySpec[2] "/" HttpProxySpec[3]
+        match(Option["proxy"], /^(http:\/*)?(([^:]+):([^@]+)@)?([^\/]*):([^\/:]*)/, HttpProxySpec)
+        HttpAuthUser = HttpProxySpec[3]
+        HttpAuthPass = HttpProxySpec[4]
+        HttpService = "/inet/tcp/0/" HttpProxySpec[5] "/" HttpProxySpec[6]
         HttpPathPrefix = HttpProtocol HttpHost
     } else {
         HttpService = "/inet/tcp/0/" HttpHost "/" HttpPort
@@ -96,6 +98,10 @@ function getResponse(text, sl, tl, hl,    content, header, isBody, url) {
         header = header "User-Agent: " Option["user-agent"] "\n"
     if (Cookie)
         header = header "Cookie: " Cookie "\n"
+    if (HttpAuthUser && HttpAuthPass)
+        # TODO: digest auth
+        header = header "Proxy-Authorization: Basic "   \
+            base64(HttpAuthUser ":" HttpAuthPass) "\n"
 
     content = NULLSTR; isBody = 0
     print header |& HttpService
