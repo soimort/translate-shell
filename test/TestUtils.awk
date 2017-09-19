@@ -42,5 +42,10 @@ BEGIN {
         assertEqual(dump("안녕하세요 세계", group), 22)
     }
 
+    T("base64()", 1)
+    {
+        assertEqual(base64("ninja"), "bmluamE=")
+    }
+
     END_TEST()
 }

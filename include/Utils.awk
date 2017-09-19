@@ -167,3 +167,10 @@ function dump(text, group,    command, temp) {
     split(temp, group, " ")
     return length(group) - 1
 }
+
+# Base64 encode a string.
+function base64(text,    command, temp) {
+    command = "base64"
+    ("echo -n " parameterize(text) PIPE command) | getline temp
+    return temp
+}
