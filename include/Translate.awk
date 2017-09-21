@@ -101,7 +101,7 @@ function getResponse(text, sl, tl, hl,    content, header, isBody, url) {
     if (HttpAuthUser && HttpAuthPass)
         # TODO: digest auth
         header = header "Proxy-Authorization: Basic "   \
-            base64(HttpAuthUser ":" HttpAuthPass) "\n"
+            base64(unquote(HttpAuthUser) ":" HttpAuthPass) "\n"
 
     content = NULLSTR; isBody = 0
     print header |& HttpService
