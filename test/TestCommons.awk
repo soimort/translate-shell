@@ -193,6 +193,17 @@ BEGIN {
         assertEqual(quote("\"hello, world!\""), "%22hello%2C%20world%21%22")
     }
 
+    # un-URLs
+    T("unquote()", 6)
+    {
+        assertEqual(unquote(""), "")
+        assertEqual(unquote("foo"), "foo")
+        assertEqual(unquote("foo%20bar"), "foo bar")
+        assertEqual(unquote("%22hello%2C%20world%21%22"), "\"hello, world!\"")
+        assertEqual(unquote("foo%%%%bar"), "foo%%%%bar")
+        assertEqual(unquote("foo%%%%b"), "foo%%%%b")
+    }
+
     # System
     T("fileExists()", 4)
     {

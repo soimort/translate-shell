@@ -495,6 +495,37 @@ function quote(string,    i, r, s) {
     return r
 }
 
+# Return the URL-decoded string.
+function unquote(string,    i, k, r, s, temp) {
+    r = NULLSTR
+    explode(string, s)
+    temp = NULLSTR
+    for (i = 1; i <= length(s); i++)
+        if (temp) {
+            temp = temp s[i]
+            if (length(temp) > 2) {
+                for (k in UrlEncoding)
+                    if (temp == UrlEncoding[k]) {
+                        r = r k
+                        temp = NULLSTR
+                        break
+                    }
+                if (temp) {
+                    r = r temp
+                    temp = NULLSTR
+                }
+            }
+        } else {
+            if (s[i] != "%")
+                r = r s[i]
+            else
+                temp = s[i]
+        }
+    if (temp)
+        r = r temp
+    return r
+}
+
 # Initialize `UriSchemes`.
 function initUriSchemes() {
     UriSchemes[0] = "file://"
