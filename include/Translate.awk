@@ -66,6 +66,7 @@ function initHttpService() {
         match(Option["proxy"], /^(http:\/*)?(([^:]+):([^@]+)@)?([^\/]*):([^\/:]*)/, HttpProxySpec)
         HttpAuthUser = HttpProxySpec[3]
         HttpAuthPass = HttpProxySpec[4]
+        HttpAuthCredentials = base64(unquote(HttpAuthUser) ":" HttpAuthPass)
         HttpService = "/inet/tcp/0/" HttpProxySpec[5] "/" HttpProxySpec[6]
         HttpPathPrefix = HttpProtocol HttpHost
     } else {
@@ -100,8 +101,7 @@ function getResponse(text, sl, tl, hl,    content, header, isBody, url) {
         header = header "Cookie: " Cookie "\n"
     if (HttpAuthUser && HttpAuthPass)
         # TODO: digest auth
-        header = header "Proxy-Authorization: Basic "   \
-            base64(unquote(HttpAuthUser) ":" HttpAuthPass) "\n"
+        header = header "Proxy-Authorization: Basic " HttpAuthCredentials "\n"
 
     content = NULLSTR; isBody = 0
     print header |& HttpService

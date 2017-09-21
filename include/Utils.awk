@@ -169,6 +169,7 @@ function dump(text, group,    command, temp) {
 }
 
 # Base64 encode a string.
+# NOTE: can only be ran once for each text! Build a cache.
 function base64(text,    command, temp) {
     command = "base64"
     ("echo -n " parameterize(text) PIPE command) | getline temp
