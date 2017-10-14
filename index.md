@@ -1,14 +1,14 @@
 ---
 title: Translate Shell
 project-name: Translate Shell
-project-version: 0.9.6.4
+project-version: 0.9.6.5
 project-logo: images/logo.jpg
 background: images/background.png
 github: soimort/translate-shell
 url: https://www.soimort.org/translate-shell/
 download-url: https://www.soimort.org/translate-shell/trans
 download-checksum-type: SHA1SUM
-download-checksum-data: 851774577ff7bedd725802d9f682a7279d2b2289
+download-checksum-data: 557ef63616b42ecddcece1353035566ac530b834
 download-signature: https://www.soimort.org/translate-shell/trans.sig
 
 ---
@@ -20,7 +20,7 @@ download-signature: https://www.soimort.org/translate-shell/trans.sig
 [![Download](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png)](https://www.soimort.org/translate-shell/trans)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/soimort/translate-shell?utm_source=badge$readme$utm_medium=badge$readme$utm_campaign=pr-badge$readme$utm_content=badge)
 
-**[Translate Shell](https://www.soimort.org/translate-shell)** (formerly _Google Translate CLI_) is a command-line translator powered by **[Google Translate](https://translate.google.com/)** (default), **[Bing Translator](https://www.bing.com/translator)**, **[Yandex.Translate](https://translate.yandex.com/)** and **[Apertium](https://www.apertium.org/)**. It gives you easy access to one of these translation engines your terminal:
+**[Translate Shell](https://www.soimort.org/translate-shell)** (formerly _Google Translate CLI_) is a command-line translator powered by **[Google Translate](https://translate.google.com/)** (default), **[Bing Translator](https://www.bing.com/translator)**, **[Yandex.Translate](https://translate.yandex.com/)** and **[Apertium](https://www.apertium.org/)**. It gives you easy access to one of these translation engines in your terminal:
 
 ```
 $ trans 'Saluton, Mondo!'
@@ -66,7 +66,7 @@ In order to be happy, the best way is to be loved by people.
 **Translate Shell** is known to work on many POSIX-compliant systems, including but not limited to:
 
 * GNU/Linux
-* OS X
+* macOS
 * FreeBSD
 * Windows (Cygwin or MSYS2)
 
@@ -77,7 +77,7 @@ In order to be happy, the best way is to be loved by people.
     * How to get gawk:
       * gawk comes with all GNU/Linux distributions.
       * On FreeBSD, gawk is available in the ports.
-      * On OS X, gawk is available in MacPorts and Homebrew.
+      * On macOS, gawk is available in MacPorts and Homebrew.
 * **[GNU Bash](http://www.gnu.org/software/bash/)** or **[Zsh](http://www.zsh.org/)**
     * You may use Translate Shell from any Unix shell of your choice (bash, zsh, ksh, tcsh, fish, etc.); however, the wrapper script requires either **bash** or **zsh** installed.
 
@@ -94,6 +94,8 @@ These dependencies are optional, but strongly recommended for full functionality
     * required for terminal paging
 * **[rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/#rlwrap)**: *a GNU readline wrapper*
     * required for readline-style editing and history in the interactive shell
+* **[aspell](http://aspell.net/)** or **[hunspell](http://hunspell.github.io/)**
+    * required for spell checking
 
 ### Environment and Fonts
 
@@ -409,6 +411,8 @@ Audio options:
         Specify the audio player to use, and listen to the translation.
     -no-play
         Do not listen to the translation.
+    -no-translate
+        Do not translate anything when using -speak.
 
 Terminal paging and browsing options:
     -v, -view

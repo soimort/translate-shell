@@ -2,8 +2,8 @@
 BEGIN {
 Name        = "Translate Shell"
 Description = "Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc."
-Version     = "0.9.6.4"
-ReleaseDate = "2017-06-01"
+Version     = "0.9.6.5"
+ReleaseDate = "2017-10-14"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 }
@@ -357,6 +357,35 @@ for (i = 1; i <= length(s); i++)
 r = r (s[i] in UrlEncoding ? UrlEncoding[s[i]] : s[i])
 return r
 }
+function unquote(string,    i, k, r, s, temp) {
+r = NULLSTR
+explode(string, s)
+temp = NULLSTR
+for (i = 1; i <= length(s); i++)
+if (temp) {
+temp = temp s[i]
+if (length(temp) > 2) {
+for (k in UrlEncoding)
+if (temp == UrlEncoding[k]) {
+r = r k
+temp = NULLSTR
+break
+}
+if (temp) {
+r = r temp
+temp = NULLSTR
+}
+}
+} else {
+if (s[i] != "%")
+r = r s[i]
+else
+temp = s[i]
+}
+if (temp)
+r = r temp
+return r
+}
 function initUriSchemes() {
 UriSchemes[0] = "file://"
 UriSchemes[1] = "http://"
@@ -464,14 +493,17 @@ initRlwrap()
 if (!Rlwrap) {
 l(">> not found: rlwrap")
 return 1
-} else if (!(ENVIRON["TRANS_PROGRAM"] || fileExists(EntryPoint))) {
-l(">> not found: $TRANS_PROGRAM or EntryPoint")
-return 1
-} else {
-command = Rlwrap " " Gawk " " (ENVIRON["TRANS_PROGRAM"] ?
-"\"${TRANS_PROGRAM}\"" :
-"-f " EntryPoint)\
+}
+if (ENVIRON["TRANS_ENTRY"]) {
+command = Rlwrap " " ENVIRON["TRANS_ENTRY"] " "\
+parameterize("-no-rlwrap")
+} else if (fileExists(EntryPoint)) {
+command = Rlwrap " " Gawk " -f " EntryPoint\
 " - " parameterize("-no-rlwrap")
+} else {
+l(">> not found: $TRANS_ENTRY or EntryPoint")
+return 1
+}
 for (i = 1; i < length(ARGV); i++)
 if (ARGV[i])
 command = command " " parameterize(ARGV[i])
@@ -484,29 +516,27 @@ l(">> process exited with non-zero return code")
 return 1
 }
 }
-}
 function emacsMe(    i, params, el, command) {
 initEmacs()
 if (!Emacs) {
 l(">> not found: emacs")
 return 1
-} else if (!(ENVIRON["TRANS_PROGRAM"] || fileExists(EntryPoint))) {
-l(">> not found: $TRANS_PROGRAM or EntryPoint")
-return 1
-} else {
+}
 params = ""
 for (i = 1; i < length(ARGV); i++)
 if (ARGV[i])
 params = params " " parameterize(ARGV[i], "\"")
-if (ENVIRON["TRANS_PROGRAM"]) {
-el = "(progn (setq trans-program (getenv \"TRANS_PROGRAM\")) "\
-"(setq explicit-shell-file-name \"" Gawk "\") "\
-"(setq explicit-" Gawk "-args (cons trans-program '(\"-\" \"-I\" \"-no-rlwrap\"" params "))) "\
+if (ENVIRON["TRANS_ENTRY"]) {
+el = "(progn (setq explicit-shell-file-name \"" ENVIRON["TRANS_ENTRY"] "\") "\
+"(setq explicit-" Command "-args '(\"-I\" \"-no-rlwrap\"" params ")) "\
 "(command-execute 'shell) (rename-buffer \"" Name "\"))"
-} else {
+} else if (fileExists(EntryPoint)) {
 el = "(progn (setq explicit-shell-file-name \"" Gawk "\") "\
 "(setq explicit-" Gawk "-args '(\"-f\" \"" EntryPoint "\" \"--\" \"-I\" \"-no-rlwrap\"" params ")) "\
 "(command-execute 'shell) (rename-buffer \"" Name "\"))"
+} else {
+l(">> not found: $TRANS_ENTRY or EntryPoint")
+return 1
 }
 command = Emacs " --eval " parameterize(el)
 l(">> forking: " command)
@@ -516,7 +546,6 @@ exit ExitCode
 } else {
 l(">> process exited with non-zero return code")
 return 1
-}
 }
 }
 function curl(url,    command, content, line) {
@@ -538,6 +567,11 @@ command = "hexdump" " -v -e'1/1 \"%03u\" \" \"'"
 ("echo " parameterize(text) PIPE command) | getline temp
 split(temp, group, " ")
 return length(group) - 1
+}
+function base64(text,    command, temp) {
+command = "base64"
+("echo -n " parameterize(text) PIPE command) | getline temp
+return temp
 }
 function initLocale(    i) {
 Locale["af"]["name"]               = "Afrikaans"
@@ -2234,6 +2268,8 @@ ins(1, ansi("bold", "-player ") ansi("underline", "PROGRAM")) RS\
 ins(2, "Specify the audio player to use, and listen to the translation.") RS\
 ins(1, ansi("bold", "-no-play")) RS\
 ins(2, "Do not listen to the translation.") RS\
+ins(1, ansi("bold", "-no-translate")) RS\
+ins(2, "Do not translate anything when using -speak.") RS\
 RS "Terminal paging and browsing options:" RS\
 ins(1, ansi("bold", "-v") ", " ansi("bold", "-view")) RS\
 ins(2, "View the translation in a terminal pager.") RS\
@@ -2368,13 +2404,13 @@ t1 = sprintf(" %-15s", t1)
 }
 switch (length(cols[j][i])) {
 case 1: case 2: case 3: case 4:
-t2 = sprintf("- %s |", ansi("bold", sprintf("%4s", cols[j][i])))
+t2 = sprintf("- %s │", ansi("bold", sprintf("%4s", cols[j][i])))
 break
 case 5:
-t2 = sprintf("- %s|", ansi("bold", cols[j][i]))
+t2 = sprintf("- %s│", ansi("bold", cols[j][i]))
 break
 case 6:
-t2 = sprintf("-%s|", ansi("bold", cols[j][i]))
+t2 = sprintf("-%s│", ansi("bold", cols[j][i]))
 break
 case 7:
 t2 = sprintf("-%s", ansi("bold", cols[j][i]))
@@ -2401,13 +2437,13 @@ t1 = substr(t1, 1, 12) "..."
 t1 = sprintf(" %-15s", t1)
 switch (length(cols[j][i])) {
 case 1: case 2: case 3: case 4:
-t2 = sprintf("- %s |", ansi("bold", sprintf("%4s", cols[j][i])))
+t2 = sprintf("- %s │", ansi("bold", sprintf("%4s", cols[j][i])))
 break
 case 5:
-t2 = sprintf("- %s|", ansi("bold", cols[j][i]))
+t2 = sprintf("- %s│", ansi("bold", cols[j][i]))
 break
 case 6:
-t2 = sprintf("-%s|", ansi("bold", cols[j][i]))
+t2 = sprintf("-%s│", ansi("bold", cols[j][i]))
 break
 case 7:
 t2 = sprintf("-%s", ansi("bold", cols[j][i]))
@@ -2882,8 +2918,11 @@ Pager = !system("less -V" SUPOUT SUPERR) ?
 function initHttpService() {
 _Init()
 if (Option["proxy"]) {
-match(Option["proxy"], /^(http:\/*)?([^\/]*):([^\/:]*)/, HttpProxySpec)
-HttpService = "/inet/tcp/0/" HttpProxySpec[2] "/" HttpProxySpec[3]
+match(Option["proxy"], /^(http:\/*)?(([^:]+):([^@]+)@)?([^\/]*):([^\/:]*)/, HttpProxySpec)
+HttpAuthUser = HttpProxySpec[3]
+HttpAuthPass = HttpProxySpec[4]
+HttpAuthCredentials = base64(unquote(HttpAuthUser) ":" HttpAuthPass)
+HttpService = "/inet/tcp/0/" HttpProxySpec[5] "/" HttpProxySpec[6]
 HttpPathPrefix = HttpProtocol HttpHost
 } else {
 HttpService = "/inet/tcp/0/" HttpHost "/" HttpPort
@@ -2907,6 +2946,8 @@ if (Option["user-agent"])
 header = header "User-Agent: " Option["user-agent"] "\n"
 if (Cookie)
 header = header "Cookie: " Cookie "\n"
+if (HttpAuthUser && HttpAuthPass)
+header = header "Proxy-Authorization: Basic " HttpAuthCredentials "\n"
 content = NULLSTR; isBody = 0
 print header |& HttpService
 while ((HttpService |& getline) > 0) {
@@ -2977,7 +3018,10 @@ startsWithAny(text, UriSchemes) == "http://" ||
 startsWithAny(text, UriSchemes) == "https://") {
 webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
 } else {
+if (!Option["no-translate"])
 p(getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist, il))
+else
+il[0] = Option["sl"] == "auto" ? "en" : Option["sl"]
 if (Option["play"] == 1) {
 if (Option["player"])
 for (j in playlist)
@@ -3229,7 +3273,7 @@ hasAltTranslations = exists(altTranslations[0])
 if (!hasWordClasses && !hasAltTranslations)
 wShowPromptMessage = wShowLanguages = 0
 if (!hasWordClasses) wShowDictionary = 0
-if (hasWordClasses || !hasAltTranslations) wShowAlternatives = 0
+if (!hasAltTranslations) wShowAlternatives = 0
 if (wShowOriginal) {
 if (r) r = r RS RS
 r = r m("-- display original text & phonetics")
@@ -3955,6 +3999,69 @@ returnPlaylist[0]["tl"] = tl
 }
 return r
 }
+BEGIN {
+provides("spell")
+provides("aspell")
+provides("hunspell")
+}
+function spellInit() {
+Ispell = detectProgram("aspell", "--version") ? "aspell" :
+(detectProgram("hunspell", "--version") ? "hunspell" : "")
+if (!Ispell) {
+e("[ERROR] Spell checker (aspell or hunspell) not found.")
+exit 1
+}
+}
+function aspellInit() {
+if (!(Ispell = detectProgram("aspell", "--version") ? "aspell" : "")) {
+e("[ERROR] Spell checker (aspell) not found.")
+exit 1
+}
+}
+function hunspellInit() {
+if (!(Ispell = detectProgram("hunspell", "--version") ? "hunspell" : "")) {
+e("[ERROR] Spell checker (hunspell) not found.")
+exit 1
+}
+}
+function spellTranslate(text, sl, tl, hl,
+isVerbose, toSpeech, returnPlaylist, returnIl,
+args, i, j, r, line, group, word, sug) {
+args = " -a" (sl != "auto" ? " -d " sl : "")
+if (system("echo" PIPE Ispell args SUPOUT SUPERR)) {
+e("[ERROR] No dictionary for language: " sl)
+exit 1
+}
+i = 1
+r = ""
+while ((("echo " parameterize(text) PIPE Ispell args SUPERR) |& getline line) > 0) {
+match(line,
+/^& (.*) [[:digit:]]+ [[:digit:]]+: ([^,]+)(, ([^,]+))?(, ([^,]+))?/,
+group)
+if (RSTART) {
+ExitCode = 1
+word = group[1]
+sug = "[" group[2]
+if (group[4]) sug = sug "|" group[4]
+if (group[6]) sug = sug "|" group[6]
+sug = sug "]"
+j = i + index(substr(text, i), word) - 1
+r = r substr(text, i, j - i)
+r = r ansi("bold", ansi("red", word)) ansi("yellow", sug)
+i = j + length(word)
+}
+}
+r = r substr(text, i)
+return r
+}
+function aspellTranslate(text, sl, tl, hl,
+isVerbose, toSpeech, returnPlaylist, returnIl) {
+return spellTranslate(text, sl, tl, hl)
+}
+function hunspellTranslate(text, sl, tl, hl,
+isVerbose, toSpeech, returnPlaylist, returnIl) {
+return spellTranslate(text, sl, tl, hl)
+}
 function loadOptions(script,    i, j, tokens, name, value) {
 tokenize(tokens, script)
 for (i in tokens) {
@@ -4155,6 +4262,7 @@ Option["theme"] = "default"
 Option["play"] = 0
 Option["narrator"] = "female"
 Option["player"] = ENVIRON["PLAYER"]
+Option["no-translate"] = 0
 Option["view"] = 0
 Option["pager"] = ENVIRON["PAGER"]
 Option["browser"] = ENVIRON["BROWSER"]
@@ -4447,6 +4555,11 @@ continue
 match(ARGV[pos], /^--?no-play$/)
 if (RSTART) {
 Option["play"] = 0
+continue
+}
+match(ARGV[pos], /^--?no-tran(s(l(a(te?)?)?)?)?$/)
+if (RSTART) {
+Option["no-translate"] = 1
 continue
 }
 match(ARGV[pos], /^--?v(i(ew?)?)?$/)

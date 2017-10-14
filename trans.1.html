@@ -5,8 +5,8 @@
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta name="author" content="Mort Yao soi@mort.ninja">
-      <meta name="dcterms.date" content="2017-06-01">
-    <title>TRANS(1) 0.9.6.4</title>
+      <meta name="dcterms.date" content="2017-10-14">
+    <title>TRANS(1) 0.9.6.5</title>
   <style type='text/css' media='all'>
   /* style: man */
   body#manpage {margin:0}
@@ -87,7 +87,7 @@
     </div>
 
   <ol class='man-decor man-head man head'>
-    <li class='tl'>TRANS(1) 0.9.6.4</li>
+    <li class='tl'>TRANS(1) 0.9.6.5</li>
     <li class='tc'></li>
     <li class='tr'></li>
   </ol>
@@ -197,6 +197,9 @@
   <dt><strong>-no-ansi</strong></dt>
   <dd>Do not use ANSI escape codes.
   </dd>
+  <dt><strong>-no-autocorrect</strong></dt>
+  <dd>Do not autocorrect. (if defaulted by the translation engine)
+  </dd>
   <dt><strong>-no-bidi</strong></dt>
   <dd>Do not convert bidirectional texts.
   </dd>
@@ -205,7 +208,7 @@
   <dl>
   <dt><strong>-p</strong>, <strong>-play</strong></dt>
   <dd><p>Listen to the translation.</p>
-  <p>You must have at least one of the supported audio players (<strong>mplayer</strong>, <strong>mpv</strong> or <strong>mpg123</strong>) installed to stream from Google Text-to-Speech engine. Otherwise, a local speech synthesizer may be used instead (<strong>say</strong> on Mac OS X, <strong>espeak</strong> on Linux or other platforms).</p>
+  <p>You must have at least one of the supported audio players (<strong>mplayer</strong>, <strong>mpv</strong> or <strong>mpg123</strong>) installed to stream from Google Text-to-Speech engine. Otherwise, a local speech synthesizer may be used instead (<strong>say</strong> on macOS, <strong>espeak</strong> on Linux or other platforms).</p>
   </dd>
   <dt><strong>-speak</strong></dt>
   <dd>Listen to the original text.
@@ -221,6 +224,9 @@
   </dd>
   <dt><strong>-no-play</strong></dt>
   <dd>Do not listen to the translation.
+  </dd>
+  <dt><strong>-no-translate</strong></dt>
+  <dd>Do not translate anything when using -speak.
   </dd>
   </dl>
   <h2 id="terminal-paging-and-browsing-options">Terminal paging and browsing options</h2>
@@ -373,7 +379,7 @@
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
     <li class='tc'></li>
-    <li class='tr'>2017-06-01</li>
+    <li class='tr'>2017-10-14</li>
   </ol>
 
   </div>
