@@ -202,7 +202,7 @@ function build(target, type,    group, inline, line, temp) {
 
         "uname -s" | getline temp
         print (temp == "Darwin" ?
-               "#!/usr/bin/env gawk -f" : # OS X
+               "#!/usr/bin/env gawk -f" : # macOS
                "#!/usr/bin/gawk -f") > TransAwk
 
         print readSqueezed(EntryPoint, TRUE) > TransAwk

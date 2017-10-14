@@ -132,7 +132,7 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 **-p**, **-play**
 :   Listen to the translation.
 
-    You must have at least one of the supported audio players (**mplayer**, **mpv** or **mpg123**) installed to stream from Google Text-to-Speech engine. Otherwise, a local speech synthesizer may be used instead (**say** on Mac OS X, **espeak** on Linux or other platforms).
+    You must have at least one of the supported audio players (**mplayer**, **mpv** or **mpg123**) installed to stream from Google Text-to-Speech engine. Otherwise, a local speech synthesizer may be used instead (**say** on macOS, **espeak** on Linux or other platforms).
 
 **-speak**
 :   Listen to the original text.
