@@ -152,6 +152,9 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 **-no-play**
 :   Do not listen to the translation.
 
+**-no-translate**
+:   Do not translate anything when using -speak.
+
 ## Terminal paging and browsing options
 
 **-v**, **-view**

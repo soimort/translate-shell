@@ -42,6 +42,7 @@ function init() {
     Option["play"] = 0
     Option["narrator"] = "female"
     Option["player"] = ENVIRON["PLAYER"]
+    Option["no-translate"] = 0
 
     # Terminal paging and browsing
     Option["view"] = 0
@@ -454,6 +455,13 @@ BEGIN {
         match(ARGV[pos], /^--?no-play$/)
         if (RSTART) {
             Option["play"] = 0
+            continue
+        }
+
+        # -no-translate
+        match(ARGV[pos], /^--?no-tran(s(l(a(te?)?)?)?)?$/)
+        if (RSTART) {
+            Option["no-translate"] = 1
             continue
         }
 

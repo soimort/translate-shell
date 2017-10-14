@@ -203,7 +203,10 @@ function translate(text, inline,
             # translate URL only from command-line parameters (inline)
             webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
         } else {
-            p(getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist, il))
+            if (!Option["no-translate"])
+                p(getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist, il))
+            else
+                il[0] = Option["sl"] == "auto" ? "en" : Option["sl"]
 
             if (Option["play"] == 1) {
                 if (Option["player"])
