@@ -1,4 +1,20 @@
 #!/bin/sh
-
-cd `dirname $0`
-gawk -f translate.awk -- "$@"
+TRANS_DIR=`dirname $0`
+gawk \
+-i "${TRANS_DIR}/metainfo.awk" \
+-i "${TRANS_DIR}/include/Commons.awk" \
+-i "${TRANS_DIR}/include/Utils.awk" \
+-i "${TRANS_DIR}/include/Languages.awk" \
+-i "${TRANS_DIR}/include/Help.awk" \
+-i "${TRANS_DIR}/include/Parser.awk" \
+-i "${TRANS_DIR}/include/Theme.awk" \
+-i "${TRANS_DIR}/include/Translate.awk" \
+-i "${TRANS_DIR}/include/TranslatorInterface.awk" \
+-i "${TRANS_DIR}/include/Translators/GoogleTranslate.awk" \
+-i "${TRANS_DIR}/include/Translators/BingTranslator.awk" \
+-i "${TRANS_DIR}/include/Translators/YandexTranslate.awk" \
+-i "${TRANS_DIR}/include/Translators/Apertium.awk" \
+-i "${TRANS_DIR}/include/Translators/SpellChecker.awk" \
+-i "${TRANS_DIR}/include/Script.awk" \
+-i "${TRANS_DIR}/include/REPL.awk" \
+-f "${TRANS_DIR}/include/Main.awk" -- "$@"

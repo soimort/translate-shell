@@ -8,6 +8,8 @@
 @include "metainfo.awk"
 
 function init() {
+    EntryScript          = "translate"
+
     BuildPath            = "build/"
     Trans                = BuildPath Command
     TransAwk             = Trans ".awk"
@@ -154,9 +156,31 @@ function readSqueezed(fileName, squeezed,    group, line, ret) {
     return ret
 }
 
-function build(target, type,    group, inline, line, temp) {
+function findIncludes(fileName,    line) {
+    if (fileExists(fileName))
+        while (getline line < fileName) {
+            match(line, /^[[:space:]]*@include[[:space:]]*"(.*)"$/, group)
+            if (RSTART) { # @include
+                if (group[1] ~ /\*$/)
+                    findIncludes(group[1] ".awk")
+                else
+                    append(Includes, group[1])
+            }
+        }
+}
+
+function build(target, type,    i, group, inline, line, temp) {
     # Default target: bash
     if (!target) target = "bash"
+
+    # Rebuild EntryScript
+    findIncludes(EntryPoint)
+    print "#!/bin/sh" > EntryScript
+    print "TRANS_DIR=`dirname $0`" > EntryScript
+    print "gawk \\" > EntryScript
+    for (i = 0; i < length(Includes) - 1; i++)
+        print "-i \"${TRANS_DIR}/" Includes[i] "\" \\" > EntryScript
+    print "-f \"${TRANS_DIR}/" Includes[i] "\" -- \"$@\"" > EntryScript
 
     ("mkdir -p " parameterize(BuildPath)) | getline
 
