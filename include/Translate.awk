@@ -89,7 +89,9 @@ function postprocess(text) {
 }
 
 # Send an HTTP GET request and get response from an online translator.
-function getResponse(text, sl, tl, hl,    content, header, isBody, url) {
+function getResponse(text, sl, tl, hl,
+                     ####
+                     content, header, isBody, url, group, status, location) {
     url = _RequestUrl(text, sl, tl, hl)
 
     header = "GET " url " HTTP/1.1\n"           \
@@ -110,9 +112,18 @@ function getResponse(text, sl, tl, hl,    content, header, isBody, url) {
             content = content ? content "\n" $0 : $0
         else if (length($0) <= 1)
             isBody = 1
+        else { # interesting fields in header
+            match($0, /^HTTP[^ ]* ([^ ]*)/, group)
+            if (RSTART) status = group[1]
+            match($0, /^Location: (.*)/, group)
+            if (RSTART) location = squeeze(group[1]) # squeeze the URL!
+        }
         l(sprintf("%4s bytes > %s", length($0), $0))
     }
     close(HttpService)
+
+    if (status == "301" && location)
+        content = curl(location)
 
     return assert(content, "[ERROR] Null response.")
 }
