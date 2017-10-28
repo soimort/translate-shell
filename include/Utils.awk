@@ -175,3 +175,12 @@ function base64(text,    command, temp) {
     ("echo -n " parameterize(text) PIPE command) | getline temp
     return temp
 }
+
+# Print a Unicode-escaped string. (GNU only)
+# FIXME: find a BSD/macOS equivalent
+# NOTE: can only be ran once for each text! Build a cache.
+function uprintf(text,    command, temp) {
+    command = "printf"
+    (command " " parameterize(text) | getline temp)
+    return temp
+}
