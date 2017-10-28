@@ -148,7 +148,7 @@ function curl(url,    command, content, line) {
         w("[WARNING] curl is not found.")
         return NULLSTR
     } else {
-        command = Curl " --location --silent " url
+        command = Curl " --location --silent " parameterize(url)
         content = NULLSTR
         while ((command |& getline line) > 0)
             content = (content ? content "\n" : NULLSTR) line
