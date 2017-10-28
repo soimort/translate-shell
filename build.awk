@@ -159,19 +159,6 @@ function readSqueezed(fileName, squeezed,    group, line, ret) {
     return ret
 }
 
-function findIncludes(fileName,    line) {
-    if (fileExists(fileName))
-        while (getline line < fileName) {
-            match(line, /^[[:space:]]*@include[[:space:]]*"(.*)"$/, group)
-            if (RSTART) { # @include
-                if (group[1] ~ /\*$/)
-                    findIncludes(group[1] ".awk")
-                else
-                    append(Includes, group[1])
-            }
-        }
-}
-
 function build(target, type,    i, group, inline, line, temp) {
     # Default target: bash
     if (!target) target = "bash"
