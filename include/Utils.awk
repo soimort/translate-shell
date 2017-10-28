@@ -140,20 +140,28 @@ function emacsMe(    i, params, el, command) {
 }
 
 # Fetch the content of a URL. Return a null string if failed.
-function curl(url,    command, content, line) {
+function curl(url, output,    command, content, line) {
     initCurl()
 
     if (!Curl) {
         l(">> not found: curl")
         w("[WARNING] curl is not found.")
         return NULLSTR
-    } else {
-        command = Curl " --location --silent " parameterize(url)
-        content = NULLSTR
-        while ((command |& getline line) > 0)
-            content = (content ? content "\n" : NULLSTR) line
-        return content
     }
+
+    command = Curl " --location --silent"
+    if (Option["user-agent"])
+        command = command " --user-agent " parameterize(Option["user-agent"])
+    command = command " " parameterize(url)
+    if (output) {
+        command = command " --output " parameterize(output)
+        system(command)
+        return NULLSTR
+    }
+    content = NULLSTR
+    while ((command |& getline line) > 0)
+        content = (content ? content "\n" : NULLSTR) line
+    return content
 }
 
 # Dump a Unicode string into a byte array. Return the length of the array.
