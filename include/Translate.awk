@@ -227,26 +227,31 @@ function translate(text, inline,
             webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
         } else {
             if (!Option["no-translate"])
-                p(getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist, il))
+                p(getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"] || Option["download-audio"], playlist, il))
             else
                 il[0] = Option["sl"] == "auto" ? "en" : Option["sl"]
 
             if (Option["play"] == 1) {
-                if (Option["player"]) {
+                if (Option["player"])
                     for (j in playlist)
                         play(playlist[j]["text"], playlist[j]["tl"])
-                    if (Option["download-audio"])
-                        download_audio(playlist[length(playlist) - 1]["text"], playlist[length(playlist) - 1]["tl"])
-                } else if (SpeechSynthesizer)
+                else if (SpeechSynthesizer)
                     for (j in playlist)
                         print playlist[j]["text"] | SpeechSynthesizer
             } else if (Option["play"] == 2) {
-                if (Option["player"]) {
+                if (Option["player"])
                     play(text, il[0])
-                    if (Option["download-audio"])
-                        download_audio(text, il[0])
-                } else if (SpeechSynthesizer)
+                else if (SpeechSynthesizer)
                     print text | SpeechSynthesizer
+            }
+
+            if (Option["download-audio"] == 1) {
+                # Download the translation unless used with -sp or -no-trans
+                if (Option["play"] != 2 && !Option["no-translate"])
+                    download_audio(playlist[length(playlist) - 1]["text"], \
+                                   playlist[length(playlist) - 1]["tl"])
+                else
+                    download_audio(text, il[0])
             }
         }
     }
