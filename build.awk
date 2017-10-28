@@ -146,6 +146,9 @@ function readSqueezed(fileName, squeezed,    group, line, ret) {
         while (getline line < fileName) {
             match(line, /^[[:space:]]*@include[[:space:]]*"(.*)"$/, group)
             if (RSTART) { # @include
+                if (group[1] ~ /\.awk$/)
+                    append(Includes, group[1])
+
                 if (ret) ret = ret RS
                 ret = ret readSqueezed(group[1], squeezed)
             } else if (!squeezed || line = squeeze(line)) { # effective LOC
@@ -172,15 +175,6 @@ function findIncludes(fileName,    line) {
 function build(target, type,    i, group, inline, line, temp) {
     # Default target: bash
     if (!target) target = "bash"
-
-    # Rebuild EntryScript
-    findIncludes(EntryPoint)
-    print "#!/bin/sh" > EntryScript
-    print "TRANS_DIR=`dirname $0`" > EntryScript
-    print "gawk \\" > EntryScript
-    for (i = 0; i < length(Includes) - 1; i++)
-        print "-i \"${TRANS_DIR}/" Includes[i] "\" \\" > EntryScript
-    print "-f \"${TRANS_DIR}/" Includes[i] "\" -- \"$@\"" > EntryScript
 
     ("mkdir -p " parameterize(BuildPath)) | getline
 
@@ -220,6 +214,15 @@ function build(target, type,    i, group, inline, line, temp) {
         print "gawk -f <(echo -E \"$TRANS_PROGRAM\") - \"$@\"" > Trans
 
         ("chmod +x " parameterize(Trans)) | getline
+
+        # Rebuild EntryScript
+        print "#!/bin/sh" > EntryScript
+        print "TRANS_DIR=`dirname $0`" > EntryScript
+        print "gawk \\" > EntryScript
+        for (i = 0; i < length(Includes) - 1; i++)
+            print "-i \"${TRANS_DIR}/" Includes[i] "\" \\" > EntryScript
+        print "-f \"${TRANS_DIR}/" Includes[i] "\" -- \"$@\"" > EntryScript
+        ("chmod +x " parameterize(EntryScript)) | getline
         return 0
 
     } else if (target == "awk" || target == "gawk") {
