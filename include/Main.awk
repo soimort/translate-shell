@@ -44,6 +44,8 @@ function init() {
     Option["narrator"] = "female"
     Option["player"] = ENVIRON["PLAYER"]
     Option["no-translate"] = 0
+    Option["download-audio"] = 0
+    Option["download-audio-as"] = NULLSTR
 
     # Terminal paging and browsing
     Option["view"] = 0
@@ -470,6 +472,23 @@ BEGIN {
         match(ARGV[pos], /^--?no-tran(s(l(a(te?)?)?)?)?$/)
         if (RSTART) {
             Option["no-translate"] = 1
+            continue
+        }
+
+        # -download-audio
+        match(ARGV[pos], /^--?download-a(u(d(io?)?)?)?$/)
+        if (RSTART) {
+            Option["download-audio"] = 1
+            continue
+        }
+
+        # -download-audio-as
+        match(ARGV[pos], /^--?download-audio-as(=(.*)?)?$/, group)
+        if (RSTART) {
+            if (!Option["download-audio"]) Option["download-audio"] = 1
+            Option["download-audio-as"] = group[1] ?
+                (group[2] ? group[2] : Option["download-audio-as"]) :
+                ARGV[++pos]
             continue
         }
 

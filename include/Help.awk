@@ -125,6 +125,10 @@ function getHelp() {
         ins(2, "Do not listen to the translation.") RS                  \
         ins(1, ansi("bold", "-no-translate")) RS                        \
         ins(2, "Do not translate anything when using -speak.") RS       \
+        ins(1, ansi("bold", "-download-audio")) RS                      \
+        ins(2, "Download the audio to the current directory.") RS       \
+        ins(1, ansi("bold", "-download-audio-as ") ansi("underline", "FILENAME")) RS \
+        ins(2, "Download the audio to the specified file.") RS          \
         RS "Terminal paging and browsing options:" RS                   \
         ins(1, ansi("bold", "-v") ", " ansi("bold", "-view")) RS        \
         ins(2, "View the translation in a terminal pager.") RS          \

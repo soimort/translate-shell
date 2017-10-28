@@ -144,6 +144,18 @@ function play(text, tl,    url) {
     system(Option["player"] " " parameterize(url) SUPOUT SUPERR)
 }
 
+# Download audio from a Text-to-Speech engine.
+function download_audio(text, tl,    url, output) {
+    url = _TTSUrl(text, tl)
+
+    if (Option["download-audio-as"])
+        curl(url, Option["download-audio-as"])
+    else {
+        output = text " [" Option["engine"] "] (" Option["narrator"] ").ts"
+        curl(url, output)
+    }
+}
+
 # Get the translation of a string.
 function getTranslation(text, sl, tl, hl,
                         isVerbose, toSpeech, returnPlaylist, returnIl) {
@@ -220,16 +232,20 @@ function translate(text, inline,
                 il[0] = Option["sl"] == "auto" ? "en" : Option["sl"]
 
             if (Option["play"] == 1) {
-                if (Option["player"])
+                if (Option["player"]) {
                     for (j in playlist)
                         play(playlist[j]["text"], playlist[j]["tl"])
-                else if (SpeechSynthesizer)
+                    if (Option["download-audio"])
+                        download_audio(playlist[length(playlist) - 1]["text"], playlist[length(playlist) - 1]["tl"])
+                } else if (SpeechSynthesizer)
                     for (j in playlist)
                         print playlist[j]["text"] | SpeechSynthesizer
             } else if (Option["play"] == 2) {
-                if (Option["player"])
+                if (Option["player"]) {
                     play(text, il[0])
-                else if (SpeechSynthesizer)
+                    if (Option["download-audio"])
+                        download_audio(text, il[0])
+                } else if (SpeechSynthesizer)
                     print text | SpeechSynthesizer
             }
         }

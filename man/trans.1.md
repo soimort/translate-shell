@@ -158,6 +158,12 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 **-no-translate**
 :   Do not translate anything when using -speak.
 
+**-download-audio**
+:   Download the audio to the current directory.
+
+**-download-audio-as** *FILENAME*
+:   Download the audio to the specified file.
+
 ## Terminal paging and browsing options
 
 **-v**, **-view**
