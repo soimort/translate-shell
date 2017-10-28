@@ -149,11 +149,14 @@ function download_audio(text, tl,    url, output) {
     url = _TTSUrl(text, tl)
 
     if (Option["download-audio-as"])
-        curl(url, Option["download-audio-as"])
-    else {
+        output = Option["download-audio-as"]
+    else
         output = text " [" Option["engine"] "] (" Option["narrator"] ").ts"
+
+    if (url ~ /^\//)
+        system("mv -- " parameterize(url) " " parameterize(output))
+    else
         curl(url, output)
-    }
 }
 
 # Get the translation of a string.
