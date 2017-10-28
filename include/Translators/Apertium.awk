@@ -51,6 +51,8 @@ function apertiumTranslate(text, sl, tl, hl,
     _sl = "auto" == _sl ? "en" : _sl
 
     content = getResponse(text, _sl, _tl, _hl)
+    if (Option["dump"])
+        return content
     tokenize(tokens, content)
     parseJson(ast, tokens)
 

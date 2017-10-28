@@ -37,6 +37,7 @@ function init() {
     Option["no-autocorrect"] = 0
     Option["no-bidi"] = 0
     Option["theme"] = "default"
+    Option["dump"] = 0
 
     # Audio
     Option["play"] = 0
@@ -412,6 +413,13 @@ BEGIN {
         match(ARGV[pos], /^--?no-bidi/)
         if (RSTART) {
             Option["no-bidi"] = 1
+            continue
+        }
+
+        # -dump
+        match(ARGV[pos], /^--?dump/)
+        if (RSTART) {
+            Option["dump"] = 1
             continue
         }
 

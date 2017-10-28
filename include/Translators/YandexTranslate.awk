@@ -141,6 +141,8 @@ function yandexTranslate(text, sl, tl, hl,
     _hl = getCode(hl); if (!_hl) _hl = hl
 
     content = getResponse(text, _sl, _tl, _hl)
+    if (Option["dump"])
+        return content
     tokenize(tokens, content)
     parseJson(ast, tokens)
 

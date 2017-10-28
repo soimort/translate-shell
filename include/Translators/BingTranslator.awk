@@ -183,6 +183,8 @@ function bingTranslate(text, sl, tl, hl,
     bingSetCookie() # must!
 
     content = bingPost(text, _sl, _tl, _hl)
+    if (Option["dump"])
+        return content
     tokenize(tokens, content)
     parseJson(ast, tokens)
 

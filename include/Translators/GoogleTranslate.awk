@@ -110,6 +110,8 @@ function googleTranslate(text, sl, tl, hl,
     _tl = getCode(tl); if (!_tl) _tl = tl
     _hl = getCode(hl); if (!_hl) _hl = hl
     content = getResponse(text, _sl, _tl, _hl)
+    if (Option["dump"])
+        return content
     tokenize(tokens, content)
     parseJsonArray(ast, tokens)
 
