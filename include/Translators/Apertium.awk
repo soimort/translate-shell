@@ -63,7 +63,8 @@ function apertiumTranslate(text, sl, tl, hl,
         return
     }
 
-    translation = unparameterize(ast[0 SUBSEP "responseData" SUBSEP])
+    # FIXME: build a cache for recurring invocation of uprintf()
+    translation = uprintf(unparameterize(ast[0 SUBSEP "responseData" SUBSEP "translatedText"]))
 
     returnIl[0] = il = _sl
     if (Option["verbose"] < 0)
