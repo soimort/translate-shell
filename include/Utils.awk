@@ -181,6 +181,6 @@ function base64(text,    command, temp) {
 # NOTE: can only be ran once for each text! Build a cache.
 function uprintf(text,    command, temp) {
     command = "printf"
-    (command " " parameterize(text) | getline temp)
+    (command " -- " parameterize(text) | getline temp)
     return temp
 }
