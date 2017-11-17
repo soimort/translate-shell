@@ -5,4 +5,5 @@ BEGIN {
     ReleaseDate = "2017-10-14"
     Command     = "trans"
     EntryPoint  = "translate.awk"
+    EntryScript = "translate"
 }

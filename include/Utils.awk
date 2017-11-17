@@ -81,8 +81,9 @@ function rlwrapMe(    i, command) {
     if (ENVIRON["TRANS_ENTRY"]) {
         command = Rlwrap " " ENVIRON["TRANS_ENTRY"] " "                 \
             parameterize("-no-rlwrap") # never fork rlwrap again!
-    } else if (fileExists(EntryPoint)) {
-        command = Rlwrap " " Gawk " -f " EntryPoint                     \
+    } else if (fileExists(ENVIRON["TRANS_DIR"] "/" EntryScript)) {
+        command = Rlwrap " sh "                                         \
+            parameterize(ENVIRON["TRANS_DIR"] "/" EntryScript)          \
             " - " parameterize("-no-rlwrap") # never fork rlwrap again!
     } else {
         l(">> not found: $TRANS_ENTRY or EntryPoint")
@@ -119,9 +120,9 @@ function emacsMe(    i, params, el, command) {
         el = "(progn (setq explicit-shell-file-name \"" ENVIRON["TRANS_ENTRY"] "\") " \
             "(setq explicit-" Command "-args '(\"-I\" \"-no-rlwrap\"" params ")) " \
             "(command-execute 'shell) (rename-buffer \"" Name "\"))"
-    } else if (fileExists(EntryPoint)) {
-        el = "(progn (setq explicit-shell-file-name \"" Gawk "\") "     \
-            "(setq explicit-" Gawk "-args '(\"-f\" \"" EntryPoint "\" \"--\" \"-I\" \"-no-rlwrap\"" params ")) " \
+    } else if (fileExists(ENVIRON["TRANS_DIR"] "/" EntryScript)) {
+        el = "(progn (setq explicit-shell-file-name \"" "sh" "\") "     \
+            "(setq explicit-" "sh" "-args '(\"" ENVIRON["TRANS_DIR"] "/" EntryScript "\" \"-I\" \"-no-rlwrap\"" params ")) " \
             "(command-execute 'shell) (rename-buffer \"" Name "\"))"
     } else {
         l(">> not found: $TRANS_ENTRY or EntryPoint")

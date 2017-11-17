@@ -8,8 +8,6 @@
 @include "metainfo.awk"
 
 function init() {
-    EntryScript          = "translate"
-
     BuildPath            = "build/"
     Trans                = BuildPath Command
     TransAwk             = Trans ".awk"

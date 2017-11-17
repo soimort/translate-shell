@@ -1,5 +1,5 @@
 #!/bin/sh
-TRANS_DIR=`dirname $0`
+export TRANS_DIR=`dirname $0`
 gawk \
 -i "${TRANS_DIR}/metainfo.awk" \
 -i "${TRANS_DIR}/include/Commons.awk" \
