@@ -109,6 +109,8 @@ function getHelp() {
         ins(2, "Do not autocorrect. (if defaulted by the translation engine)") RS \
         ins(1, ansi("bold", "-no-bidi")) RS                             \
         ins(2, "Do not convert bidirectional texts.") RS                \
+        ins(1, ansi("bold", "-no-warn")) RS                             \
+        ins(2, "Do not write warning messages to stderr.") RS           \
         ins(1, ansi("bold", "-dump")) RS                                \
         ins(2, "Print raw API response instead.") RS                    \
         RS "Audio options:" RS                                          \

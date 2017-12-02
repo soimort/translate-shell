@@ -127,6 +127,9 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 **-no-bidi**
 :   Do not convert bidirectional texts.
 
+**-no-warn**
+:   Do not write warning messages to stderr.
+
 **-dump**
 :   Print raw API response instead.
 

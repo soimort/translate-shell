@@ -36,6 +36,7 @@ function init() {
     Option["no-ansi"] = 0
     Option["no-autocorrect"] = 0
     Option["no-bidi"] = 0
+    Option["no-warn"] = 0
     Option["theme"] = "default"
     Option["dump"] = 0
 
@@ -124,6 +125,10 @@ function initMisc(    group, temp) {
     # Disable conversion of bidirectional texts if required
     if (Option["no-bidi"])
         BiDi = BiDiNoPad = NULLSTR
+
+    # Disable everything stderr
+    if (Option["no-warn"])
+        STDERR = "/dev/null"
 
     # Initialize audio player or speech synthesizer
     if (Option["play"]) {
@@ -415,6 +420,13 @@ BEGIN {
         match(ARGV[pos], /^--?no-bidi/)
         if (RSTART) {
             Option["no-bidi"] = 1
+            continue
+        }
+
+        # -no-warn
+        match(ARGV[pos], /^--?no-warn/)
+        if (RSTART) {
+            Option["no-warn"] = 1
             continue
         }
 
