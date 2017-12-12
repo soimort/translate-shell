@@ -15,6 +15,7 @@ gawk \
 -i "${TRANS_DIR}/include/Translators/YandexTranslate.awk" \
 -i "${TRANS_DIR}/include/Translators/Apertium.awk" \
 -i "${TRANS_DIR}/include/Translators/SpellChecker.awk" \
+-i "${TRANS_DIR}/include/Translators/DeepLTranslator.awk" \
 -i "${TRANS_DIR}/include/Script.awk" \
 -i "${TRANS_DIR}/include/REPL.awk" \
 -f "${TRANS_DIR}/include/Main.awk" -- "$@"
