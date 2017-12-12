@@ -39,6 +39,15 @@ BEGIN {
                     "https://httpbin.org/get")
     }
 
+    T("curlPost()", 1)
+    {
+        delete tokens; delete ast
+        tokenize(tokens, curlPost("https://httpbin.org/post", "fizz=buzz"))
+        parseJson(ast, tokens)
+        assertEqual(unparameterize(ast[0 SUBSEP "url"]),
+                    "https://httpbin.org/post")
+    }
+
     T("dump()", 3)
     {
         delete group
