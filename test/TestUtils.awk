@@ -30,6 +30,15 @@ BEGIN {
         assertTrue(newerVersion("2", "1.9.9999"))
     }
 
+    T("curl()", 1)
+    {
+        delete tokens; delete ast
+        tokenize(tokens, curl("https://httpbin.org/get"))
+        parseJson(ast, tokens)
+        assertEqual(unparameterize(ast[0 SUBSEP "url"]),
+                    "https://httpbin.org/get")
+    }
+
     T("dump()", 3)
     {
         delete group
