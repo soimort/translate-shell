@@ -165,6 +165,32 @@ function curl(url, output,    command, content, line) {
     return content
 }
 
+# Fetch the content of a URL. Return a null string if failed.
+function curlPost(url, data, output,    command, content, line) {
+    initCurl()
+
+    if (!Curl) {
+        l(">> not found: curl")
+        w("[WARNING] curl is not found.")
+        return NULLSTR
+    }
+
+    command = Curl " --location --silent"
+    if (Option["user-agent"])
+        command = command " --user-agent " parameterize(Option["user-agent"])
+    command = command " --request POST --data " data
+    command = command " " parameterize(url)
+    if (output) {
+        command = command " --output " parameterize(output)
+        system(command)
+        return NULLSTR
+    }
+    content = NULLSTR
+    while ((command |& getline line) > 0)
+        content = (content ? content "\n" : NULLSTR) line
+    return content
+}
+
 # Dump a Unicode string into a byte array. Return the length of the array.
 # NOTE: can only be ran once for each text! Build a cache.
 function dump(text, group,    command, temp) {
