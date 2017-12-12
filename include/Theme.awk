@@ -118,7 +118,8 @@ function setDefaultTheme() {
 
 # Set theme using corresponding option.
 function setTheme(    file, line, script) {
-    if (Option["theme"] && Option["theme"] != "default") {
+    if (Option["theme"] && Option["theme"] != "default"                 \
+        && Option["theme"] != "none" && Option["theme"] != "random") {
         file = Option["theme"]
         if (!fileExists(file)) {
             file = ENVIRON["HOME"] "/.translate-shell/" Option["theme"]
