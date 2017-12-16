@@ -313,6 +313,9 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 *$HOME/.translate-shell/init.trans*
 :   Initialization script. (user-specific)
 
+*$XDG_CONFIG_HOME/translate-shell/init.trans*
+:   Initialization script. (user-specific)
+
 *./.trans*
 :   Initialization script. (current directory)
 
