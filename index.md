@@ -105,11 +105,11 @@ It is a must to have corresponding fonts for the language(s) / script(s) you wis
 
 Start an interactive shell and translate anything you input into your native language: (in **bash** or **zsh**)
 
-    $ gawk -f <(curl -Ls git.io/translate) -shell
+    $ gawk -f <(curl -Ls git.io/translate) -- -shell
 
 (in **fish**)
 
-    $ gawk -f (curl -Ls git.io/translate | psub) -shell
+    $ gawk -f (curl -Ls git.io/translate | psub) -- -shell
 
 ## Installation
 

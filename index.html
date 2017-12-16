@@ -144,9 +144,9 @@ In order to be happy, the best way is to be loved by people.</code></pre>
 <p>It is a must to have corresponding fonts for the language(s) / script(s) you wish to display in your terminal. See <strong><a href="https://github.com/soimort/translate-shell/wiki/Writing-Systems-and-Fonts#unicode-fonts">wiki: Writing Systems and Fonts</a></strong> for more details on scripts and recommended Unicode fonts.</p>
 <h2 id="try-it-out">Try It Out!</h2>
 <p>Start an interactive shell and translate anything you input into your native language: (in <strong>bash</strong> or <strong>zsh</strong>)</p>
-<pre><code>$ gawk -f &lt;(curl -Ls git.io/translate) -shell</code></pre>
+<pre><code>$ gawk -f &lt;(curl -Ls git.io/translate) -- -shell</code></pre>
 <p>(in <strong>fish</strong>)</p>
-<pre><code>$ gawk -f (curl -Ls git.io/translate | psub) -shell</code></pre>
+<pre><code>$ gawk -f (curl -Ls git.io/translate | psub) -- -shell</code></pre>
 <h2 id="installation">Installation</h2>
 <h3 id="option-1.-direct-download">Option #1. Direct Download</h3>
 <p>Download <a href="http://git.io/trans">the self-contained executable</a> and place it into your path. It’s everything you need.</p>
