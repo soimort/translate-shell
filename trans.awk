@@ -2,10 +2,11 @@
 BEGIN {
 Name        = "Translate Shell"
 Description = "Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc."
-Version     = "0.9.6.5"
-ReleaseDate = "2017-10-14"
+Version     = "0.9.6.6"
+ReleaseDate = "2017-12-17"
 Command     = "trans"
 EntryPoint  = "translate.awk"
+EntryScript = "translate"
 }
 function initConst() {
 NULLSTR = ""
@@ -497,8 +498,9 @@ return 1
 if (ENVIRON["TRANS_ENTRY"]) {
 command = Rlwrap " " ENVIRON["TRANS_ENTRY"] " "\
 parameterize("-no-rlwrap")
-} else if (fileExists(EntryPoint)) {
-command = Rlwrap " " Gawk " -f " EntryPoint\
+} else if (fileExists(ENVIRON["TRANS_DIR"] "/" EntryScript)) {
+command = Rlwrap " sh "\
+parameterize(ENVIRON["TRANS_DIR"] "/" EntryScript)\
 " - " parameterize("-no-rlwrap")
 } else {
 l(">> not found: $TRANS_ENTRY or EntryPoint")
@@ -530,9 +532,9 @@ if (ENVIRON["TRANS_ENTRY"]) {
 el = "(progn (setq explicit-shell-file-name \"" ENVIRON["TRANS_ENTRY"] "\") "\
 "(setq explicit-" Command "-args '(\"-I\" \"-no-rlwrap\"" params ")) "\
 "(command-execute 'shell) (rename-buffer \"" Name "\"))"
-} else if (fileExists(EntryPoint)) {
-el = "(progn (setq explicit-shell-file-name \"" Gawk "\") "\
-"(setq explicit-" Gawk "-args '(\"-f\" \"" EntryPoint "\" \"--\" \"-I\" \"-no-rlwrap\"" params ")) "\
+} else if (fileExists(ENVIRON["TRANS_DIR"] "/" EntryScript)) {
+el = "(progn (setq explicit-shell-file-name \"" "sh" "\") "\
+"(setq explicit-" "sh" "-args '(\"" ENVIRON["TRANS_DIR"] "/" EntryScript "\" \"-I\" \"-no-rlwrap\"" params ")) "\
 "(command-execute 'shell) (rename-buffer \"" Name "\"))"
 } else {
 l(">> not found: $TRANS_ENTRY or EntryPoint")
@@ -548,19 +550,48 @@ l(">> process exited with non-zero return code")
 return 1
 }
 }
-function curl(url,    command, content, line) {
+function curl(url, output,    command, content, line) {
 initCurl()
 if (!Curl) {
 l(">> not found: curl")
 w("[WARNING] curl is not found.")
 return NULLSTR
-} else {
-command = Curl " --location --silent " url
+}
+command = Curl " --location --silent"
+if (Option["user-agent"])
+command = command " --user-agent " parameterize(Option["user-agent"])
+command = command " " parameterize(url)
+if (output) {
+command = command " --output " parameterize(output)
+system(command)
+return NULLSTR
+}
 content = NULLSTR
 while ((command |& getline line) > 0)
 content = (content ? content "\n" : NULLSTR) line
 return content
 }
+function curlPost(url, data, output,    command, content, line) {
+initCurl()
+if (!Curl) {
+l(">> not found: curl")
+w("[WARNING] curl is not found.")
+return NULLSTR
+}
+command = Curl " --location --silent"
+if (Option["user-agent"])
+command = command " --user-agent " parameterize(Option["user-agent"])
+command = command " --request POST --data " parameterize(data)
+command = command " " parameterize(url)
+if (output) {
+command = command " --output " parameterize(output)
+system(command)
+return NULLSTR
+}
+content = NULLSTR
+while ((command |& getline line) > 0)
+content = (content ? content "\n" : NULLSTR) line
+return content
 }
 function dump(text, group,    command, temp) {
 command = "hexdump" " -v -e'1/1 \"%03u\" \" \"'"
@@ -571,6 +602,11 @@ return length(group) - 1
 function base64(text,    command, temp) {
 command = "base64"
 ("echo -n " parameterize(text) PIPE command) | getline temp
+return temp
+}
+function uprintf(text,    command, temp) {
+command = "echo -en " parameterize(text)
+("bash -c " parameterize(command, "\"")) | getline temp
 return temp
 }
 function initLocale(    i) {
@@ -2256,6 +2292,10 @@ ins(1, ansi("bold", "-no-autocorrect")) RS\
 ins(2, "Do not autocorrect. (if defaulted by the translation engine)") RS\
 ins(1, ansi("bold", "-no-bidi")) RS\
 ins(2, "Do not convert bidirectional texts.") RS\
+ins(1, ansi("bold", "-no-warn")) RS\
+ins(2, "Do not write warning messages to stderr.") RS\
+ins(1, ansi("bold", "-dump")) RS\
+ins(2, "Print raw API response instead.") RS\
 RS "Audio options:" RS\
 ins(1, ansi("bold", "-p, -play")) RS\
 ins(2, "Listen to the translation.") RS\
@@ -2270,6 +2310,10 @@ ins(1, ansi("bold", "-no-play")) RS\
 ins(2, "Do not listen to the translation.") RS\
 ins(1, ansi("bold", "-no-translate")) RS\
 ins(2, "Do not translate anything when using -speak.") RS\
+ins(1, ansi("bold", "-download-audio")) RS\
+ins(2, "Download the audio to the current directory.") RS\
+ins(1, ansi("bold", "-download-audio-as ") ansi("underline", "FILENAME")) RS\
+ins(2, "Download the audio to the specified file.") RS\
 RS "Terminal paging and browsing options:" RS\
 ins(1, ansi("bold", "-v") ", " ansi("bold", "-view")) RS\
 ins(2, "View the translation in a terminal pager.") RS\
@@ -2846,7 +2890,8 @@ Option["fmt-prompt"] = "%s> "
 Option["sgr-prompt"] = "bold"
 }
 function setTheme(    file, line, script) {
-if (Option["theme"] && Option["theme"] != "default") {
+if (Option["theme"] && Option["theme"] != "default"\
+&& Option["theme"] != "none" && Option["theme"] != "random") {
 file = Option["theme"]
 if (!fileExists(file)) {
 file = ENVIRON["HOME"] "/.translate-shell/" Option["theme"]
@@ -2937,7 +2982,8 @@ text = gensub(/ ([.,;:?!"])/, "\\1", "g", text)
 text = gensub(/(["]) /, "\\1", "g", text)
 return text
 }
-function getResponse(text, sl, tl, hl,    content, header, isBody, url) {
+function getResponse(text, sl, tl, hl,
+content, header, isBody, url, group, status, location) {
 url = _RequestUrl(text, sl, tl, hl)
 header = "GET " url " HTTP/1.1\n"\
 "Host: " HttpHost "\n"\
@@ -2955,9 +3001,17 @@ if (isBody)
 content = content ? content "\n" $0 : $0
 else if (length($0) <= 1)
 isBody = 1
+else {
+match($0, /^HTTP[^ ]* ([^ ]*)/, group)
+if (RSTART) status = group[1]
+match($0, /^Location: (.*)/, group)
+if (RSTART) location = squeeze(group[1])
+}
 l(sprintf("%4s bytes > %s", length($0), $0))
 }
 close(HttpService)
+if (status == "301" && location)
+content = curl(location)
 return assert(content, "[ERROR] Null response.")
 }
 function p(string) {
@@ -2969,6 +3023,17 @@ print string > Option["output"]
 function play(text, tl,    url) {
 url = _TTSUrl(text, tl)
 system(Option["player"] " " parameterize(url) SUPOUT SUPERR)
+}
+function download_audio(text, tl,    url, output) {
+url = _TTSUrl(text, tl)
+if (Option["download-audio-as"])
+output = Option["download-audio-as"]
+else
+output = text " [" Option["engine"] "] (" Option["narrator"] ").ts"
+if (url ~ /^\//)
+system("mv -- " parameterize(url) " " parameterize(output))
+else
+curl(url, output)
 }
 function getTranslation(text, sl, tl, hl,
 isVerbose, toSpeech, returnPlaylist, returnIl) {
@@ -3019,7 +3084,7 @@ startsWithAny(text, UriSchemes) == "https://") {
 webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
 } else {
 if (!Option["no-translate"])
-p(getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"], playlist, il))
+p(getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"] || Option["download-audio"], playlist, il))
 else
 il[0] = Option["sl"] == "auto" ? "en" : Option["sl"]
 if (Option["play"] == 1) {
@@ -3034,6 +3099,13 @@ if (Option["player"])
 play(text, il[0])
 else if (SpeechSynthesizer)
 print text | SpeechSynthesizer
+}
+if (Option["download-audio"] == 1) {
+if (Option["play"] != 2 && !Option["no-translate"])
+download_audio(playlist[length(playlist) - 1]["text"],\
+playlist[length(playlist) - 1]["tl"])
+else
+download_audio(text, il[0])
 }
 }
 }
@@ -3171,6 +3243,8 @@ _sl = getCode(sl); if (!_sl) _sl = sl
 _tl = getCode(tl); if (!_tl) _tl = tl
 _hl = getCode(hl); if (!_hl) _hl = hl
 content = getResponse(text, _sl, _tl, _hl)
+if (Option["dump"])
+return content
 tokenize(tokens, content)
 parseJsonArray(ast, tokens)
 l(content, "content", 1, 1)
@@ -3613,6 +3687,8 @@ if (_tl == "zh-CN") _tl = "zh-CHS"
 if (_tl == "zh-TW") _tl = "zh-CHT"
 bingSetCookie()
 content = bingPost(text, _sl, _tl, _hl)
+if (Option["dump"])
+return content
 tokenize(tokens, content)
 parseJson(ast, tokens)
 l(content, "content", 1, 1)
@@ -3798,6 +3874,8 @@ _sl = getCode(sl); if (!_sl) _sl = sl
 _tl = getCode(tl); if (!_tl) _tl = tl
 _hl = getCode(hl); if (!_hl) _hl = hl
 content = getResponse(text, _sl, _tl, _hl)
+if (Option["dump"])
+return content
 tokenize(tokens, content)
 parseJson(ast, tokens)
 l(content, "content", 1, 1)
@@ -3944,6 +4022,8 @@ _tl = getCode(tl); if (!_tl) _tl = tl
 _hl = getCode(hl); if (!_hl) _hl = hl
 _sl = "auto" == _sl ? "en" : _sl
 content = getResponse(text, _sl, _tl, _hl)
+if (Option["dump"])
+return content
 tokenize(tokens, content)
 parseJson(ast, tokens)
 l(content, "content", 1, 1)
@@ -3954,7 +4034,7 @@ e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
 ExitCode = 1
 return
 }
-translation = unparameterize(ast[0 SUBSEP "responseData" SUBSEP])
+translation = uprintf(unquote(unparameterize(ast[0 SUBSEP "responseData" SUBSEP "translatedText"])))
 returnIl[0] = il = _sl
 if (Option["verbose"] < 0)
 return getList(il)
@@ -4061,6 +4141,128 @@ return spellTranslate(text, sl, tl, hl)
 function hunspellTranslate(text, sl, tl, hl,
 isVerbose, toSpeech, returnPlaylist, returnIl) {
 return spellTranslate(text, sl, tl, hl)
+}
+BEGIN { provides("deepl") }
+function deeplInit() {
+HttpProtocol = "http://"
+HttpHost = "www.deepl.com"
+HttpPort = 80
+}
+function deeplRequestUrl(text, sl, tl, hl) {
+}
+function deeplTTSUrl(text, tl,    narrator) {
+}
+function deeplWebTranslateUrl(uri, sl, tl, hl) {
+}
+function deeplPost(text, sl, tl, hl,
+content, data, url) {
+data = "{\"jsonrpc\":\"2.0\",\"method\":\"LMT_handle_jobs\","
+data = data "\"params\":{\"jobs\":[{\"kind\":\"default\","
+data = data "\"raw_en_sentence\":" parameterize(text, "\"") "}],"
+data = data "\"lang\":{\"user_preferred_langs\":[\"" hl "\"],"
+data = data "\"source_lang_user_selected\":\"" sl "\","
+data = data "\"target_lang\":\"" tl "\"},"
+data = data "\"priority\":1},\"id\":1}"
+l(data)
+url = "https://www.deepl.com/jsonrpc"
+content = curlPost(url, data)
+return assert(content, "[ERROR] Null response.")
+}
+function deeplTranslate(text, sl, tl, hl,
+isVerbose, toSpeech, returnPlaylist, returnIl,
+r,
+content, tokens, ast,
+_sl, _tl, _hl, il,
+translation, translations,
+wShowOriginal, wShowTranslation,
+wShowLanguages, wShowAlternatives,
+group, temp) {
+if (!getCode(tl)) {
+w("[WARNING] Unknown target language code: " tl)
+} else if (isRTL(tl)) {
+if (!FriBidi)
+w("[WARNING] " getName(tl) " is a right-to-left language, but FriBidi is not found.")
+}
+_sl = getCode(sl); if (!_sl) _sl = sl
+_tl = getCode(tl); if (!_tl) _tl = tl
+_hl = getCode(hl); if (!_hl) _hl = hl
+if (_sl != "auto") _sl = toupper(_sl)
+if (_tl != "auto") _tl = toupper(_tl)
+if (_hl != "auto") _hl = toupper(_hl)
+content = deeplPost(text, _sl, _tl, _hl)
+if (Option["dump"])
+return content
+tokenize(tokens, content)
+parseJson(ast, tokens)
+l(content, "content", 1, 1)
+l(tokens, "tokens", 1, 0, 1)
+l(ast, "ast")
+if (!isarray(ast) || !anything(ast)) {
+e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
+ExitCode = 1
+return
+}
+saveSortedIn = PROCINFO["sorted_in"]
+PROCINFO["sorted_in"] = "compareByIndexFields"
+for (i in ast) {
+if (i ~ "^0" SUBSEP "result" SUBSEP "translations" SUBSEP 0 SUBSEP "beams" SUBSEP "[[:digit:]]+" SUBSEP "postprocessed_sentence$") {
+append(translations, uprintf(unquote(unparameterize(ast[i]))))
+}
+}
+PROCINFO["sorted_in"] = saveSortedIn
+translation = translations[0]
+returnIl[0] = il = tolower(unparameterize(ast[0 SUBSEP "result" SUBSEP "source_lang"]))
+if (Option["verbose"] < 0)
+return getList(il)
+if (!isVerbose) {
+r = translation
+} else {
+wShowOriginal = Option["show-original"]
+wShowTranslation = Option["show-translation"]
+wShowLanguages = Option["show-languages"]
+wShowAlternatives = Option["show-alternatives"]
+if (length(translations) <= 1) wShowAlternatives = 0
+if (wShowOriginal) {
+if (r) r = r RS RS
+r = r m("-- display original text")
+r = r prettify("original", s(text, il))
+}
+if (wShowTranslation) {
+if (r) r = r RS RS
+r = r m("-- display major translation")
+r = r prettify("translation", s(translation, tl))
+}
+if (wShowLanguages) {
+if (r) r = r RS RS
+r = r m("-- display source language -> target language")
+temp = Option["fmt-languages"]
+if (!temp) temp = "[ %s -> %t ]"
+split(temp, group, /(%s|%S|%t|%T)/)
+r = r prettify("languages", group[1])
+if (temp ~ /%s/)
+r = r prettify("languages-sl", getDisplay(il))
+if (temp ~ /%S/)
+r = r prettify("languages-sl", getName(il))
+r = r prettify("languages", group[2])
+if (temp ~ /%t/)
+r = r prettify("languages-tl", getDisplay(tl))
+if (temp ~ /%T/)
+r = r prettify("languages-tl", getName(tl))
+r = r prettify("languages", group[3])
+}
+if (wShowAlternatives) {
+if (r) r = r RS
+r = r m("-- display alternative translations")
+r = r RS ins(1, prettify("alternatives-translations-item", translations[1]))
+for (i = 2; i < length(translations); i++)
+r = r RS ins(1, prettify("alternatives-translations-item", translations[i]))
+}
+}
+if (toSpeech) {
+returnPlaylist[0]["text"] = translation
+returnPlaylist[0]["tl"] = tl
+}
+return r
 }
 function loadOptions(script,    i, j, tokens, name, value) {
 tokenize(tokens, script)
@@ -4258,11 +4460,15 @@ Option["indent"] = 4
 Option["no-ansi"] = 0
 Option["no-autocorrect"] = 0
 Option["no-bidi"] = 0
+Option["no-warn"] = 0
 Option["theme"] = "default"
+Option["dump"] = 0
 Option["play"] = 0
 Option["narrator"] = "female"
 Option["player"] = ENVIRON["PLAYER"]
 Option["no-translate"] = 0
+Option["download-audio"] = 0
+Option["download-audio-as"] = NULLSTR
 Option["view"] = 0
 Option["pager"] = ENVIRON["PAGER"]
 Option["browser"] = ENVIRON["BROWSER"]
@@ -4316,6 +4522,8 @@ if (Option["no-ansi"])
 delete AnsiCode
 if (Option["no-bidi"])
 BiDi = BiDiNoPad = NULLSTR
+if (Option["no-warn"])
+STDERR = "/dev/null"
 if (Option["play"]) {
 if (!Option["player"]) {
 initAudioPlayer()
@@ -4526,6 +4734,16 @@ if (RSTART) {
 Option["no-bidi"] = 1
 continue
 }
+match(ARGV[pos], /^--?no-warn/)
+if (RSTART) {
+Option["no-warn"] = 1
+continue
+}
+match(ARGV[pos], /^--?dump/)
+if (RSTART) {
+Option["dump"] = 1
+continue
+}
 match(ARGV[pos], /^--?p(l(ay?)?)?$/)
 if (RSTART) {
 Option["play"] = 1
@@ -4560,6 +4778,19 @@ continue
 match(ARGV[pos], /^--?no-tran(s(l(a(te?)?)?)?)?$/)
 if (RSTART) {
 Option["no-translate"] = 1
+continue
+}
+match(ARGV[pos], /^--?download-a(u(d(io?)?)?)?$/)
+if (RSTART) {
+Option["download-audio"] = 1
+continue
+}
+match(ARGV[pos], /^--?download-audio-as(=(.*)?)?$/, group)
+if (RSTART) {
+if (!Option["download-audio"]) Option["download-audio"] = 1
+Option["download-audio-as"] = group[1] ?
+(group[2] ? group[2] : Option["download-audio-as"]) :
+ARGV[++pos]
 continue
 }
 match(ARGV[pos], /^--?v(i(ew?)?)?$/)

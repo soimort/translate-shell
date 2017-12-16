@@ -27,11 +27,11 @@
   <a href="https://www.soimort.org/translate-shell/"><img src="images/logo.jpg"/></a>
   <div id="desc">
     <h1>Translate Shell</h1>
-    <h2>version 0.9.6.5</h2>
+    <h2>version 0.9.6.6</h2>
     <a href="https://github.com/soimort/translate-shell">Star <i class="fa fa-github-square fa-2x"></i></a>
     <a href="https://www.soimort.org/translate-shell/trans">Download <i class="fa fa-download fa-2x"></i></a>
     <div id="msg">
-      <span id="checksum" onmouseover="this.innerHTML='557ef63616b42ecddcece1353035566ac530b834'" onmouseout="this.innerHTML='SHA1SUM'">SHA1SUM</span>
+      <span id="checksum" onmouseover="this.innerHTML='2b18c6e242602f6248c4fb1c457daca1b1a46a70'" onmouseout="this.innerHTML='SHA1SUM'">SHA1SUM</span>
       <a href="https://www.soimort.org/translate-shell/trans.sig">PGP SIGNATURE</a>
     </div>
   </div>
@@ -62,7 +62,7 @@
 
 <h1 id="translate-shell">Translate Shell</h1>
 <p><a href="https://www.soimort.org/translate-shell"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/icon.png" alt="Icon" /></a> <a href="https://travis-ci.org/soimort/translate-shell"><img src="https://travis-ci.org/soimort/translate-shell.png" alt="Build Status" /></a> <a href="https://github.com/soimort/translate-shell/releases"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-release.png" alt="Version" /></a> <a href="https://www.soimort.org/translate-shell/trans"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png" alt="Download" /></a> <a href="https://gitter.im/soimort/translate-shell?utm_source=badge$readme$utm_medium=badge$readme$utm_campaign=pr-badge$readme$utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter" /></a></p>
-<p><strong><a href="https://www.soimort.org/translate-shell">Translate Shell</a></strong> (formerly <em>Google Translate CLI</em>) is a command-line translator powered by <strong><a href="https://translate.google.com/">Google Translate</a></strong> (default), <strong><a href="https://www.bing.com/translator">Bing Translator</a></strong>, <strong><a href="https://translate.yandex.com/">Yandex.Translate</a></strong> and <strong><a href="https://www.apertium.org/">Apertium</a></strong>. It gives you easy access to one of these translation engines in your terminal:</p>
+<p><strong><a href="https://www.soimort.org/translate-shell">Translate Shell</a></strong> (formerly <em>Google Translate CLI</em>) is a command-line translator powered by <strong><a href="https://translate.google.com/">Google Translate</a></strong> (default), <strong><a href="https://www.bing.com/translator">Bing Translator</a></strong>, <strong><a href="https://translate.yandex.com/">Yandex.Translate</a></strong>, <strong><a href="https://www.deepl.com/translator">DeepL Translator</a></strong> and <strong><a href="https://www.apertium.org/">Apertium</a></strong>. It gives you easy access to one of these translation engines in your terminal:</p>
 <pre><code>$ trans &#39;Saluton, Mondo!&#39;
 Saluton, Mondo!
 
@@ -329,6 +329,10 @@ Display options:
         Do not autocorrect. (if defaulted by the translation engine)
     -no-bidi
         Do not convert bidirectional texts.
+    -no-warn
+        Do not write warning messages to stderr.
+    -dump
+        Print raw API response instead.
 
 Audio options:
     -p, -play
@@ -343,6 +347,10 @@ Audio options:
         Do not listen to the translation.
     -no-translate
         Do not translate anything when using -speak.
+    -download-audio
+        Download the audio to the current directory.
+    -download-audio-as FILENAME
+        Download the audio to the specified file.
 
 Terminal paging and browsing options:
     -v, -view

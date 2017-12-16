@@ -1,14 +1,14 @@
 ---
 title: Translate Shell
 project-name: Translate Shell
-project-version: 0.9.6.5
+project-version: 0.9.6.6
 project-logo: images/logo.jpg
 background: images/background.png
 github: soimort/translate-shell
 url: https://www.soimort.org/translate-shell/
 download-url: https://www.soimort.org/translate-shell/trans
 download-checksum-type: SHA1SUM
-download-checksum-data: 557ef63616b42ecddcece1353035566ac530b834
+download-checksum-data: 2b18c6e242602f6248c4fb1c457daca1b1a46a70
 download-signature: https://www.soimort.org/translate-shell/trans.sig
 
 ---
@@ -20,7 +20,7 @@ download-signature: https://www.soimort.org/translate-shell/trans.sig
 [![Download](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png)](https://www.soimort.org/translate-shell/trans)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/soimort/translate-shell?utm_source=badge$readme$utm_medium=badge$readme$utm_campaign=pr-badge$readme$utm_content=badge)
 
-**[Translate Shell](https://www.soimort.org/translate-shell)** (formerly _Google Translate CLI_) is a command-line translator powered by **[Google Translate](https://translate.google.com/)** (default), **[Bing Translator](https://www.bing.com/translator)**, **[Yandex.Translate](https://translate.yandex.com/)** and **[Apertium](https://www.apertium.org/)**. It gives you easy access to one of these translation engines in your terminal:
+**[Translate Shell](https://www.soimort.org/translate-shell)** (formerly _Google Translate CLI_) is a command-line translator powered by **[Google Translate](https://translate.google.com/)** (default), **[Bing Translator](https://www.bing.com/translator)**, **[Yandex.Translate](https://translate.yandex.com/)**, **[DeepL Translator](https://www.deepl.com/translator)** and **[Apertium](https://www.apertium.org/)**. It gives you easy access to one of these translation engines in your terminal:
 
 ```
 $ trans 'Saluton, Mondo!'
@@ -399,6 +399,10 @@ Display options:
         Do not autocorrect. (if defaulted by the translation engine)
     -no-bidi
         Do not convert bidirectional texts.
+    -no-warn
+        Do not write warning messages to stderr.
+    -dump
+        Print raw API response instead.
 
 Audio options:
     -p, -play
@@ -413,6 +417,10 @@ Audio options:
         Do not listen to the translation.
     -no-translate
         Do not translate anything when using -speak.
+    -download-audio
+        Download the audio to the current directory.
+    -download-audio-as FILENAME
+        Download the audio to the specified file.
 
 Terminal paging and browsing options:
     -v, -view
