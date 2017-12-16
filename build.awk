@@ -202,7 +202,7 @@ function build(target, type,    i, group, inline, line, temp) {
 
         # Rebuild EntryScript
         print "#!/bin/sh" > EntryScript
-        print "TRANS_DIR=`dirname $0`" > EntryScript
+        print "export TRANS_DIR=`dirname $0`" > EntryScript
         print "gawk \\" > EntryScript
         for (i = 0; i < length(Includes) - 1; i++)
             print "-i \"${TRANS_DIR}/" Includes[i] "\" \\" > EntryScript
