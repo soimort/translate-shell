@@ -4,7 +4,7 @@
 
 # NAME
 
-trans - Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc.
+trans - Command-line translator using Google Translate, Bing Translator, Yandex.Translate, DeepL Translator, etc.
 
 # SYNOPSIS
 
