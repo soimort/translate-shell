@@ -45,8 +45,8 @@ function man(    text) {
     writeTo(text, ManMarkdown)
 
     if (fileExists(ManHtmlTemplate))
-        system("pandoc -s -t html --toc --toc-depth 1 --template " ManHtmlTemplate " " ManMarkdown " -o " ManHtml)
-    return system("pandoc -s -t man " ManMarkdown " -o " Man)
+        system("pandoc -s -f markdown-smart -t html --toc --toc-depth 1 --template " ManHtmlTemplate " " ManMarkdown " -o " ManHtml)
+    return system("pandoc -s -f markdown-smart -t man " ManMarkdown " -o " Man)
 }
 
 function readme(    code, col, cols, content, group, i, j, num, language, r, rows, text) {
