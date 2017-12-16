@@ -65,10 +65,10 @@ BEGIN {
         assertEqual(base64("ninja"), "bmluamE=")
     }
 
-    #T("uprintf", 1)
-    #{
-    #    assertEqual(uprintf("Ma\\u00f1ana"), "Mañana")
-    #}
+    T("uprintf", 1)
+    {
+        assertEqual(uprintf("Ma\\u00f1ana"), "Mañana")
+    }
 
     END_TEST()
 }
