@@ -207,8 +207,8 @@ function showMan(    temp) {
             return
         }
     }
-    if (fileExists("man/" Command ".1"))
-        system("man man/" Command ".1" SUPERR)
+    if (fileExists(ENVIRON["TRANS_DIR"] "/man/" Command ".1"))
+        system("man " parameterize(ENVIRON["TRANS_DIR"] "/man/" Command ".1") SUPERR)
     else if (system("man " Command SUPERR))
         print getHelp()
 }
