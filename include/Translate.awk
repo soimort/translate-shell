@@ -94,22 +94,22 @@ function getResponse(text, sl, tl, hl,
                      content, header, isBody, url, group, status, location) {
     url = _RequestUrl(text, sl, tl, hl)
 
-    header = "GET " url " HTTP/1.1\n"           \
-        "Host: " HttpHost "\n"                  \
-        "Connection: close\n"
+    header = "GET " url " HTTP/1.1\r\n"           \
+        "Host: " HttpHost "\r\n"                  \
+        "Connection: close\r\n"
     if (Option["user-agent"])
-        header = header "User-Agent: " Option["user-agent"] "\n"
+        header = header "User-Agent: " Option["user-agent"] "\r\n"
     if (Cookie)
-        header = header "Cookie: " Cookie "\n"
+        header = header "Cookie: " Cookie "\r\n"
     if (HttpAuthUser && HttpAuthPass)
         # TODO: digest auth
-        header = header "Proxy-Authorization: Basic " HttpAuthCredentials "\n"
+        header = header "Proxy-Authorization: Basic " HttpAuthCredentials "\r\n"
 
     content = NULLSTR; isBody = 0
     print header |& HttpService
     while ((HttpService |& getline) > 0) {
         if (isBody)
-            content = content ? content "\n" $0 : $0
+            content = content ? content "\r\n" $0 : $0
         else if (length($0) <= 1)
             isBody = 1
         else { # interesting fields in header

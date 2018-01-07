@@ -15,11 +15,11 @@ function bingInit() {
 function bingSetCookie(    cookie, group, header, url) {
     url = HttpPathPrefix "/translator"
 
-    header = "GET " url " HTTP/1.1\n"                                   \
-        "Host: " HttpHost "\n"                                          \
-        "Connection: close\n"
+    header = "GET " url " HTTP/1.1\r\n"                                   \
+        "Host: " HttpHost "\r\n"                                          \
+        "Connection: close\r\n"
     if (Option["user-agent"])
-        header = header "User-Agent: " Option["user-agent"] "\n"
+        header = header "User-Agent: " Option["user-agent"] "\r\n"
 
     cookie = NULLSTR
     print header |& HttpService
@@ -73,19 +73,19 @@ function bingTTSUrl(text, tl,
 
     header = "GET " "/translator/api/language/Speak?"                   \
         "locale=" tl "&text=" preprocess(text)                          \
-        "&gender=" gender "&media=audio/mp3" " HTTP/1.1\n"              \
-        "Host: " HttpHost "\n"                                          \
-        "Connection: close\n"
+        "&gender=" gender "&media=audio/mp3" " HTTP/1.1\r\n"              \
+        "Host: " HttpHost "\r\n"                                          \
+        "Connection: close\r\n"
     if (Option["user-agent"])
-        header = header "User-Agent: " Option["user-agent"] "\n"
+        header = header "User-Agent: " Option["user-agent"] "\r\n"
     if (Cookie)
-        header = header "Cookie: " Cookie "\n" # must!
+        header = header "Cookie: " Cookie "\r\n" # must!
 
     content = NULLSTR; isBody = 0
     print header |& HttpService
     while ((HttpService |& getline) > 0) {
         if (isBody)
-            content = content ? content "\n" $0 : $0
+            content = content ? content "\r\n" $0 : $0
         else if (length($0) <= 1)
             isBody = 1
         #l(sprintf("%4s bytes > %s", length($0), $0))
@@ -118,21 +118,21 @@ function bingPost(text, sl, tl, hl,
     url = HttpPathPrefix "/translator/api/Translate/TranslateArray?"    \
         "from=" sl "&to=" tl
 
-    header = "POST " url " HTTP/1.1\n"                  \
-        "Host: " HttpHost "\n"                          \
-        "Connection: close\n"                           \
-        "Content-Length: " contentLength "\n"           \
-        "Content-Type: application/json\n"     # must!
+    header = "POST " url " HTTP/1.1\r\n"                  \
+        "Host: " HttpHost "\r\n"                          \
+        "Connection: close\r\n"                           \
+        "Content-Length: " contentLength "\r\n"           \
+        "Content-Type: application/json\r\n"     # must!
     if (Option["user-agent"])
-        header = header "User-Agent: " Option["user-agent"] "\n"
+        header = header "User-Agent: " Option["user-agent"] "\r\n"
     if (Cookie)
-        header = header "Cookie: " Cookie "\n" # must!
+        header = header "Cookie: " Cookie "\r\n" # must!
 
     content = NULLSTR; isBody = 0
-    print (header "\n" reqBody) |& HttpService
+    print (header "\r\n" reqBody) |& HttpService
     while ((HttpService |& getline) > 0) {
         if (isBody)
-            content = content ? content "\n" $0 : $0
+            content = content ? content "\r\n" $0 : $0
         else if (length($0) <= 1)
             isBody = 1
         l(sprintf("%4s bytes > %s", length($0), $0))

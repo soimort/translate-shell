@@ -46,17 +46,17 @@ function yandexGetDictionaryResponse(text, sl, tl, hl,    content, header, isBod
         "sid=" SID                                                      \
         "&text=" preprocess(text) "&lang=" (sl == "auto" ? tl : sl "-" tl)
 
-    header = "GET " url " HTTP/1.1\n"           \
-        "Host: " "dictionary.yandex.net" "\n"   \
-        "Connection: close\n"
+    header = "GET " url " HTTP/1.1\r\n"           \
+        "Host: " "dictionary.yandex.net" "\r\n"   \
+        "Connection: close\r\n"
     if (Option["user-agent"])
-        header = header "User-Agent: " Option["user-agent"] "\n"
+        header = header "User-Agent: " Option["user-agent"] "\r\n"
 
     content = NULLSTR; isBody = 0
     print header |& HttpService
     while ((HttpService |& getline) > 0) {
         if (isBody)
-            content = content ? content "\n" $0 : $0
+            content = content ? content "\r\n" $0 : $0
         else if (length($0) <= 1)
             isBody = 1
         l(sprintf("%4s bytes > %s", length($0), $0))
