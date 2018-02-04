@@ -301,7 +301,7 @@ BEGIN {
         # -identify
         match(ARGV[pos], /^--?id(e(n(t(i(fy?)?)?)?)?)?$/)
         if (RSTART) {
-            Option["verbose"] = -1
+            Option["verbose"] = Option["verbose"] - 2
             continue
         }
 

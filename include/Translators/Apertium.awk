@@ -69,7 +69,9 @@ function apertiumTranslate(text, sl, tl, hl,
     translation = uprintf(unquote(unparameterize(ast[0 SUBSEP "responseData" SUBSEP "translatedText"])))
 
     returnIl[0] = il = _sl
-    if (Option["verbose"] < 0)
+    if (Option["verbose"] < -1)
+        return il
+    else if (Option["verbose"] < 0)
         return getList(il)
 
     # Generate output

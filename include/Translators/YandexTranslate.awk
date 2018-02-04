@@ -164,7 +164,9 @@ function yandexTranslate(text, sl, tl, hl,
 
     split(unparameterize(ast[0 SUBSEP "lang"]), group, "-")
     returnIl[0] = il = group[1]
-    if (Option["verbose"] < 0)
+    if (Option["verbose"] < -1)
+        return il
+    else if (Option["verbose"] < 0)
         return getList(il)
 
     # Generate output

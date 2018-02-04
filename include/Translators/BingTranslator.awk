@@ -205,7 +205,9 @@ function bingTranslate(text, sl, tl, hl,
     translation = unparameterize(ast[0 SUBSEP "items" SUBSEP 0 SUBSEP "text"])
 
     returnIl[0] = il = unparameterize(ast[0 SUBSEP "from"])
-    if (Option["verbose"] < 0)
+    if (Option["verbose"] < -1)
+        return il
+    else if (Option["verbose"] < 0)
         return getList(il)
 
     # Generate output

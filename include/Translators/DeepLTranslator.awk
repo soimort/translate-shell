@@ -95,7 +95,9 @@ function deeplTranslate(text, sl, tl, hl,
 
     translation = translations[0]
     returnIl[0] = il = tolower(unparameterize(ast[0 SUBSEP "result" SUBSEP "source_lang"]))
-    if (Option["verbose"] < 0)
+    if (Option["verbose"] < -1)
+        return il
+    else if (Option["verbose"] < 0)
         return getList(il)
 
     # Generate output

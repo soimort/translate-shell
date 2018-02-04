@@ -202,7 +202,9 @@ function googleTranslate(text, sl, tl, hl,
     translation = join(translations)
 
     returnIl[0] = il = !anything(ils) || belongsTo(sl, ils) ? sl : ils[0]
-    if (Option["verbose"] < 0)
+    if (Option["verbose"] < -1)
+        return il
+    else if (Option["verbose"] < 0)
         return getList(il)
 
     # Generate output
