@@ -74,7 +74,7 @@ These dependencies are optional, but strongly recommended for full functionality
 * **[curl](http://curl.haxx.se/)** with **OpenSSL** support
 * **[GNU FriBidi](http://fribidi.org/)**: _an implementation of the Unicode Bidirectional Algorithm (bidi)_
     * required for displaying text in Right-to-Left scripts (e.g. Arabic, Hebrew)
-* **[mplayer](http://www.mplayerhq.hu/)**, **[mplayer2](http://www.mplayer2.org/)**, **[mpv](http://mpv.io/)**, **[mpg123](http://mpg123.org/)**, or **[eSpeak](http://espeak.sourceforge.net/)**
+* **[mplayer](http://www.mplayerhq.hu/)**, **[mpv](http://mpv.io/)**, **[mpg123](http://mpg123.org/)**, or **[eSpeak](http://espeak.sourceforge.net/)**
     * required for the Text-to-Speech functionality
 * **[less](http://www.greenwoodsoftware.com/less/)**, **[more](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/more.html)** or **[most](http://www.jedsoft.org/most/)**
     * required for terminal paging
