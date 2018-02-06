@@ -29,10 +29,10 @@ function engineMethod(methodName,    engine, translator) {
 
 # Detect external audio player (mplayer, mpv, mpg123).
 function initAudioPlayer() {
-    AudioPlayer = !system("mplayer" SUPOUT SUPERR) ?
-        "mplayer" :
-        (!system("mpv" SUPOUT SUPERR) ?
-         "mpv" :
+    AudioPlayer = !system("mpv" SUPOUT SUPERR) ?
+        "mpv --loop-file=no" :
+        (!system("mplayer" SUPOUT SUPERR) ?
+         "mplayer" :
          (!system("mpg123 --version" SUPOUT SUPERR) ?
           "mpg123" :
           ""))
