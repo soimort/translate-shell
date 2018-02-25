@@ -28,6 +28,9 @@ test: build
 check: test
 	$(BUILDDIR)/$(COMMAND) -V
 	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b 忍者`" = 'Ninja' ] &&\
+	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b -e bing 忍者`" = 'Ninja' ] &&\
+	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b -e yandex 忍者`" = 'Ninja' ] &&\
+	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b -e deepl -s es casa`" = 'home' ] &&\
 	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b 'hello world'`" = 'hello world' ]
 
 install: build
