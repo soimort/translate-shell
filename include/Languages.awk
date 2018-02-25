@@ -1494,7 +1494,7 @@ function initLocale(    i) {
     Locale["as"]["script"]             = "Beng"
 
     #? Bashkir
-    Locale["ba"]["support"]            = "unstable"
+    Locale["ba"]["support"]            = "yandex-only"
     Locale["ba"]["name"]               = "Bashkir"
     Locale["ba"]["endonym"]            = "башҡорт теле"
     #Locale["ba"]["translations-of"]
