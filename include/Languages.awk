@@ -1647,6 +1647,20 @@ function initLocale(    i) {
     Locale["or"]["glotto"]             = "macr1269"
     Locale["or"]["script"]             = "Orya"
 
+    #? Papiamento
+    Locale["pap"]["support"]           = "yandex-only"
+    Locale["pap"]["name"]              = "Papiamento"
+    Locale["pap"]["endonym"]           = "Papiamentu"
+    #Locale["pap"]["translations-of"]
+    #Locale["pap"]["definitions-of"]
+    #Locale["pap"]["synonyms"]
+    #Locale["pap"]["examples"]
+    #Locale["pap"]["see-also"]
+    Locale["pap"]["family"]            = "Indo-European"
+    Locale["pap"]["iso"]               = "pap"
+    Locale["pap"]["glotto"]            = "papi1253"
+    Locale["pap"]["script"]            = "Latn"
+
     #? Romansh
     Locale["rm"]["support"]            = "unstable"
     Locale["rm"]["name"]               = "Romansh"
