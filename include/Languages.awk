@@ -1563,6 +1563,20 @@ function initLocale(    i) {
     Locale["gn"]["glotto"]             = "para1311"
     Locale["gn"]["script"]             = "Latn"
 
+    #? Hill Mari
+    Locale["mrj"]["support"]           = "yandex-only"
+    Locale["mrj"]["name"]              = "Hill Mari"
+    Locale["mrj"]["endonym"]           = "Кырык мары"
+    #Locale["mrj"]["translations-of"]
+    #Locale["mrj"]["definitions-of"]
+    #Locale["mrj"]["synonyms"]
+    #Locale["mrj"]["examples"]
+    #Locale["mrj"]["see-also"]
+    Locale["mrj"]["family"]            = "Uralic"
+    Locale["mrj"]["iso"]               = "mrj"
+    Locale["mrj"]["glotto"]            = "west2392"
+    Locale["mrj"]["script"]            = "Cyrl"
+
     #? Interlingue
     Locale["ie"]["support"]            = "unstable"
     Locale["ie"]["name"]               = "Interlingue"
