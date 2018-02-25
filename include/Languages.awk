@@ -1535,6 +1535,20 @@ function initLocale(    i) {
     Locale["dz"]["glotto"]             = "nucl1307"
     Locale["dz"]["script"]             = "Tibt"
 
+    #? Eastern Mari
+    Locale["mhr"]["support"]           = "yandex-only"
+    Locale["mhr"]["name"]              = "Eastern Mari"
+    Locale["mhr"]["endonym"]           = "Олык марий"
+    #Locale["mhr"]["translations-of"]
+    #Locale["mhr"]["definitions-of"]
+    #Locale["mhr"]["synonyms"]
+    #Locale["mhr"]["examples"]
+    #Locale["mhr"]["see-also"]
+    Locale["mhr"]["family"]            = "Uralic"
+    Locale["mhr"]["iso"]               = "mhr"
+    Locale["mhr"]["glotto"]            = "east2328"
+    Locale["mhr"]["script"]            = "Cyrl"
+
     #? Faroese
     Locale["fo"]["support"]            = "unstable"
     Locale["fo"]["name"]               = "Faroese"
