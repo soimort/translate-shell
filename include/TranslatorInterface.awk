@@ -14,10 +14,16 @@ function _RequestUrl(text, sl, tl, hl,    vm) {
     return @vm(text, sl, tl, hl)
 }
 
-# Abstract method foobarPostRequestUrl(text, sl, tl, hl: string): string
-function _PostRequestUrl(text, sl, tl, hl,    vm) {
+# Abstract method foobarPostRequestUrl(text, sl, tl, hl, type: string): string
+function _PostRequestUrl(text, sl, tl, hl, type,    vm) {
     vm = engineMethod("PostRequestUrl")
-    return @vm(text, sl, tl, hl)
+    return @vm(text, sl, tl, hl, type)
+}
+
+# Abstract method foobarPostRequestBody(text, sl, tl, hl, type: string): string
+function _PostRequestBody(text, sl, tl, hl, type,    vm) {
+    vm = engineMethod("PostRequestBody")
+    return @vm(text, sl, tl, hl, type)
 }
 
 # Abstract method foobarTTSUrl(text, tl: string): string
