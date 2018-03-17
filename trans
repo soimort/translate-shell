@@ -5,8 +5,8 @@ read -r -d '' TRANS_PROGRAM << 'EOF'
 BEGIN {
 Name        = "Translate Shell"
 Description = "Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc."
-Version     = "0.9.6.6"
-ReleaseDate = "2017-12-17"
+Version     = "0.9.6.7"
+ReleaseDate = "2018-03-17"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 EntryScript = "translate"
@@ -561,6 +561,8 @@ w("[WARNING] curl is not found.")
 return NULLSTR
 }
 command = Curl " --location --silent"
+if (Option["proxy"])
+command = command " --proxy " parameterize(Option["proxy"])
 if (Option["user-agent"])
 command = command " --user-agent " parameterize(Option["user-agent"])
 command = command " " parameterize(url)
@@ -582,6 +584,8 @@ w("[WARNING] curl is not found.")
 return NULLSTR
 }
 command = Curl " --location --silent"
+if (Option["proxy"])
+command = command " --proxy " parameterize(Option["proxy"])
 if (Option["user-agent"])
 command = command " --user-agent " parameterize(Option["user-agent"])
 command = command " --request POST --data " parameterize(data)
@@ -1827,7 +1831,7 @@ Locale["as"]["family"]             = "Indo-European"
 Locale["as"]["iso"]                = "asm"
 Locale["as"]["glotto"]             = "assa1263"
 Locale["as"]["script"]             = "Beng"
-Locale["ba"]["support"]            = "unstable"
+Locale["ba"]["support"]            = "yandex-only"
 Locale["ba"]["name"]               = "Bashkir"
 Locale["ba"]["endonym"]            = "башҡорт теле"
 Locale["ba"]["family"]             = "Turkic"
@@ -1848,6 +1852,13 @@ Locale["dz"]["family"]             = "Sino-Tibetan"
 Locale["dz"]["iso"]                = "dzo"
 Locale["dz"]["glotto"]             = "nucl1307"
 Locale["dz"]["script"]             = "Tibt"
+Locale["mhr"]["support"]           = "yandex-only"
+Locale["mhr"]["name"]              = "Eastern Mari"
+Locale["mhr"]["endonym"]           = "Олык марий"
+Locale["mhr"]["family"]            = "Uralic"
+Locale["mhr"]["iso"]               = "mhr"
+Locale["mhr"]["glotto"]            = "east2328"
+Locale["mhr"]["script"]            = "Cyrl"
 Locale["fo"]["support"]            = "unstable"
 Locale["fo"]["name"]               = "Faroese"
 Locale["fo"]["endonym"]            = "Føroyskt"
@@ -1862,6 +1873,13 @@ Locale["gn"]["family"]             = "Tupian"
 Locale["gn"]["iso"]                = "grn"
 Locale["gn"]["glotto"]             = "para1311"
 Locale["gn"]["script"]             = "Latn"
+Locale["mrj"]["support"]           = "yandex-only"
+Locale["mrj"]["name"]              = "Hill Mari"
+Locale["mrj"]["endonym"]           = "Кырык мары"
+Locale["mrj"]["family"]            = "Uralic"
+Locale["mrj"]["iso"]               = "mrj"
+Locale["mrj"]["glotto"]            = "west2392"
+Locale["mrj"]["script"]            = "Cyrl"
 Locale["ie"]["support"]            = "unstable"
 Locale["ie"]["name"]               = "Interlingue"
 Locale["ie"]["endonym"]            = "Interlingue"
@@ -1897,6 +1915,13 @@ Locale["or"]["family"]             = "Indo-European"
 Locale["or"]["iso"]                = "ori"
 Locale["or"]["glotto"]             = "macr1269"
 Locale["or"]["script"]             = "Orya"
+Locale["pap"]["support"]           = "yandex-only"
+Locale["pap"]["name"]              = "Papiamento"
+Locale["pap"]["endonym"]           = "Papiamentu"
+Locale["pap"]["family"]            = "Indo-European"
+Locale["pap"]["iso"]               = "pap"
+Locale["pap"]["glotto"]            = "papi1253"
+Locale["pap"]["script"]            = "Latn"
 Locale["rm"]["support"]            = "unstable"
 Locale["rm"]["name"]               = "Romansh"
 Locale["rm"]["endonym"]            = "Rumantsch"
@@ -2391,8 +2416,8 @@ system(temp)
 return
 }
 }
-if (fileExists("man/" Command ".1"))
-system("man man/" Command ".1" SUPERR)
+if (fileExists(ENVIRON["TRANS_DIR"] "/man/" Command ".1"))
+system("man " parameterize(ENVIRON["TRANS_DIR"] "/man/" Command ".1") SUPERR)
 else if (system("man " Command SUPERR))
 print getHelp()
 }
@@ -2939,10 +2964,10 @@ Option["engine"] = engine
 return Option["engine"] methodName
 }
 function initAudioPlayer() {
-AudioPlayer = !system("mplayer" SUPOUT SUPERR) ?
+AudioPlayer = !system("mpv" SUPOUT SUPERR) ?
+"mpv --loop-file=no" :
+(!system("mplayer" SUPOUT SUPERR) ?
 "mplayer" :
-(!system("mpv" SUPOUT SUPERR) ?
-"mpv" :
 (!system("mpg123 --version" SUPOUT SUPERR) ?
 "mpg123" :
 ""))
@@ -2988,20 +3013,20 @@ return text
 function getResponse(text, sl, tl, hl,
 content, header, isBody, url, group, status, location) {
 url = _RequestUrl(text, sl, tl, hl)
-header = "GET " url " HTTP/1.1\n"\
-"Host: " HttpHost "\n"\
-"Connection: close\n"
+header = "GET " url " HTTP/1.1\r\n"\
+"Host: " HttpHost "\r\n"\
+"Connection: close\r\n"
 if (Option["user-agent"])
-header = header "User-Agent: " Option["user-agent"] "\n"
+header = header "User-Agent: " Option["user-agent"] "\r\n"
 if (Cookie)
-header = header "Cookie: " Cookie "\n"
+header = header "Cookie: " Cookie "\r\n"
 if (HttpAuthUser && HttpAuthPass)
-header = header "Proxy-Authorization: Basic " HttpAuthCredentials "\n"
+header = header "Proxy-Authorization: Basic " HttpAuthCredentials "\r\n"
 content = NULLSTR; isBody = 0
 print header |& HttpService
 while ((HttpService |& getline) > 0) {
 if (isBody)
-content = content ? content "\n" $0 : $0
+content = content ? content "\r\n" $0 : $0
 else if (length($0) <= 1)
 isBody = 1
 else {
@@ -3013,9 +3038,56 @@ if (RSTART) location = squeeze(group[1])
 l(sprintf("%4s bytes > %s", length($0), $0))
 }
 close(HttpService)
-if (status == "301" && location)
+if ((status == "301" || status == "302") && location)
 content = curl(location)
 return assert(content, "[ERROR] Null response.")
+}
+function postResponse(text, sl, tl, hl, type,
+content, contentLength, contentType, group,
+header, isBody, reqBody, url, status, location) {
+url = _PostRequestUrl(text, sl, tl, hl, type)
+contentType = _PostRequestContentType(text, sl, tl, hl, type)
+reqBody = _PostRequestBody(text, sl, tl, hl, type)
+if (DumpContentengths[reqBody])
+contentLength = DumpContentengths[reqBody]
+else
+contentLength = DumpContentengths[reqBody] = dump(reqBody, group)
+header = "POST " url " HTTP/1.1\r\n"\
+"Host: " HttpHost "\r\n"\
+"Connection: close\r\n"\
+"Content-Length: " contentLength "\r\n"\
+"Content-Type: " contentType "\r\n"
+if (Option["user-agent"])
+header = header "User-Agent: " Option["user-agent"] "\r\n"
+if (Cookie)
+header = header "Cookie: " Cookie "\r\n"
+if (HttpAuthUser && HttpAuthPass)
+header = header "Proxy-Authorization: Basic " HttpAuthCredentials "\r\n"
+content = NULLSTR; isBody = 0
+print (header "\r\n" reqBody) |& HttpService
+while ((HttpService |& getline) > 0) {
+if (isBody)
+content = content ? content "\r\n" $0 : $0
+else if (length($0) <= 1)
+isBody = 1
+else {
+match($0, /^HTTP[^ ]* ([^ ]*)/, group)
+if (RSTART) status = group[1]
+match($0, /^Location: (.*)/, group)
+if (RSTART) location = squeeze(group[1])
+}
+l(sprintf("%4s bytes > %s", length($0), $0))
+}
+close(HttpService)
+if (status == "404") {
+e("[ERROR] 404 Not Found")
+exit 1
+}
+if ((status == "301" || status == "302") && location) {
+url = "https" substr(url, 5)
+content = curlPost(url, reqBody)
+}
+return content
 }
 function p(string) {
 if (Option["view"])
@@ -3145,6 +3217,18 @@ return @vm()
 function _RequestUrl(text, sl, tl, hl,    vm) {
 vm = engineMethod("RequestUrl")
 return @vm(text, sl, tl, hl)
+}
+function _PostRequestUrl(text, sl, tl, hl, type,    vm) {
+vm = engineMethod("PostRequestUrl")
+return @vm(text, sl, tl, hl, type)
+}
+function _PostRequestContentType(text, sl, tl, hl, type,    vm) {
+vm = engineMethod("PostRequestContentType")
+return @vm(text, sl, tl, hl, type)
+}
+function _PostRequestBody(text, sl, tl, hl, type,    vm) {
+vm = engineMethod("PostRequestBody")
+return @vm(text, sl, tl, hl, type)
 }
 function _TTSUrl(text, tl,    vm) {
 vm = engineMethod("TTSUrl")
@@ -3317,7 +3401,9 @@ oSeeAlso[group[1]] = literal(ast[i])
 PROCINFO["sorted_in"] = saveSortedIn
 translation = join(translations)
 returnIl[0] = il = !anything(ils) || belongsTo(sl, ils) ? sl : ils[0]
-if (Option["verbose"] < 0)
+if (Option["verbose"] < -1)
+return il
+else if (Option["verbose"] < 0)
 return getList(il)
 if (!isVerbose) {
 r = isPhonetic && anything(phonetics) ?
@@ -3464,6 +3550,8 @@ for (i = 0; i < length(oExamples); i++) {
 example = oExamples[i]
 temp = prettify("original-dictionary-examples-example", ins(1, "- "))
 split(example, group, /(<b>|<\/b>)/)
+if (group[3] ~ / [[:punct:].]/)
+group[3] = substr(group[3], 2)
 if (isRTL(il))
 temp = temp show(group[1] group[2] group[3], il)
 else
@@ -3549,24 +3637,44 @@ HttpProtocol = "http://"
 HttpHost = "www.bing.com"
 HttpPort = 80
 }
-function bingSetCookie(    cookie, group, header, url) {
+function bingSetIG(    content, cookie, group, header, isBody,
+url, status, location) {
 url = HttpPathPrefix "/translator"
-header = "GET " url " HTTP/1.1\n"\
-"Host: " HttpHost "\n"\
-"Connection: close\n"
+header = "GET " url " HTTP/1.1\r\n"\
+"Host: " HttpHost "\r\n"\
+"Connection: close\r\n"
 if (Option["user-agent"])
-header = header "User-Agent: " Option["user-agent"] "\n"
+header = header "User-Agent: " Option["user-agent"] "\r\n"
 cookie = NULLSTR
 print header |& HttpService
-while ((HttpService |& getline) > 0 && length($0) > 1) {
+while ((HttpService |& getline) > 0) {
 match($0, /Set-Cookie: ([^;]*);/, group)
 if (group[1]) {
 cookie = cookie (cookie ?  "; " : NULLSTR) group[1]
 }
+if (isBody)
+content = content ? content "\r\n" $0 : $0
+else if (length($0) <= 1)
+isBody = 1
+else {
+match($0, /^HTTP[^ ]* ([^ ]*)/, group)
+if (RSTART) status = group[1]
+match($0, /^Location: (.*)/, group)
+if (RSTART) location = squeeze(group[1])
+}
 l(sprintf("%4s bytes > %s", length($0), length($0) < 1024 ? $0 : "..."))
 }
 close(HttpService)
+if ((status == "301" || status == "302") && location)
+content = curl(location)
 Cookie = cookie
+match(content, /IG:"([^"]+)"/, group)
+if (group[1]) {
+IG = group[1]
+} else {
+e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
+exit 1
+}
 }
 function bingTTSUrl(text, tl,
 country, gender, i, group,
@@ -3603,18 +3711,18 @@ else if (tl == "yue") ;
 else if (tl == "zh") tl = tl "-CN"
 header = "GET " "/translator/api/language/Speak?"\
 "locale=" tl "&text=" preprocess(text)\
-"&gender=" gender "&media=audio/mp3" " HTTP/1.1\n"\
-"Host: " HttpHost "\n"\
-"Connection: close\n"
+"&gender=" gender "&media=audio/mp3" " HTTP/1.1\r\n"\
+"Host: " HttpHost "\r\n"\
+"Connection: close\r\n"
 if (Option["user-agent"])
-header = header "User-Agent: " Option["user-agent"] "\n"
+header = header "User-Agent: " Option["user-agent"] "\r\n"
 if (Cookie)
-header = header "Cookie: " Cookie "\n"
+header = header "Cookie: " Cookie "\r\n"
 content = NULLSTR; isBody = 0
 print header |& HttpService
 while ((HttpService |& getline) > 0) {
 if (isBody)
-content = content ? content "\n" $0 : $0
+content = content ? content "\r\n" $0 : $0
 else if (length($0) <= 1)
 isBody = 1
 }
@@ -3629,49 +3737,43 @@ function bingWebTranslateUrl(uri, sl, tl, hl) {
 return "http://www.microsofttranslator.com/bv.aspx?"\
 "from=" sl "&to=" tl "&a=" uri
 }
-function bingPost(text, sl, tl, hl,
-content, contentLength, group,
-header, isBody, reqBody, url) {
-reqBody = "[{" parameterize("text") ":" parameterize(text, "\"") "}]"
-if (DumpContentengths[reqBody])
-contentLength = DumpContentengths[reqBody]
-else
-contentLength = DumpContentengths[reqBody] = dump(reqBody, group)
-url = HttpPathPrefix "/translator/api/Translate/TranslateArray?"\
-"from=" sl "&to=" tl
-header = "POST " url " HTTP/1.1\n"\
-"Host: " HttpHost "\n"\
-"Connection: close\n"\
-"Content-Length: " contentLength "\n"\
-"Content-Type: application/json\n"
-if (Option["user-agent"])
-header = header "User-Agent: " Option["user-agent"] "\n"
-if (Cookie)
-header = header "Cookie: " Cookie "\n"
-content = NULLSTR; isBody = 0
-print (header "\n" reqBody) |& HttpService
-while ((HttpService |& getline) > 0) {
-if (isBody)
-content = content ? content "\n" $0 : $0
-else if (length($0) <= 1)
-isBody = 1
-l(sprintf("%4s bytes > %s", length($0), $0))
-}
-close(HttpService)
-return assert(content, "[ERROR] Null response.")
-}
 function bingRequestUrl(text, sl, tl, hl) {
 return HttpPathPrefix "/translator/api/Dictionary/Lookup?"\
 "from=" sl "&to=" tl "&text=" preprocess(text)
+}
+function bingPostRequestUrl(text, sl, tl, hl, type) {
+if (type == "translate")
+return HttpPathPrefix "/ttranslate?&IG=" IG "&IID=translator.5032.2"
+else if (type == "translationlookup")
+return HttpPathPrefix "/ttranslationlookup?&IG=" IG "&IID=translator.5032.2"
+else if (type == "transliterate")
+return HttpPathPrefix "/ttransliterate?&IG=" IG "&IID=translator.5032.1"
+else # type == "detect"
+return HttpPathPrefix "/tdetect?&IG=" IG "&IID=translator.5032.2"
+}
+function bingPostRequestContentType(text, sl, tl, hl, type) {
+return "application/x-www-form-urlencoded"
+}
+function bingPostRequestBody(text, sl, tl, hl, type) {
+if (type == "translate")
+return "&text=" quote(text) "&from=" sl "&to=" tl
+else if (type == "translationlookup")
+return "&text=" quote(text) "&from=" sl "&to=" tl
+else if (type == "transliterate")
+return "&text=" quote(text) "&language=" sl "&toScript=" "latn"
+else # type == "detect"
+return "&text=" quote(text)
 }
 function bingTranslate(text, sl, tl, hl,
 isVerbose, toSpeech, returnPlaylist, returnIl,
 r,
 content, tokens, ast,
-_sl, _tl, _hl, il,
+_sl, _tl, _hl, il, isPhonetic,
 translation,
 wShowOriginal, wShowTranslation, wShowLanguages,
 group, temp) {
+isPhonetic = match(tl, /^@/)
+tl = substr(tl, 1 + isPhonetic)
 if (!getCode(tl)) {
 w("[WARNING] Unknown target language code: " tl)
 } else if (isRTL(tl)) {
@@ -3681,15 +3783,26 @@ w("[WARNING] " getName(tl) " is a right-to-left language, but FriBidi is not fou
 _sl = getCode(sl); if (!_sl) _sl = sl
 _tl = getCode(tl); if (!_tl) _tl = tl
 _hl = getCode(hl); if (!_hl) _hl = hl
-if (_sl == "auto")  _sl = "-"
+bingSetIG()
+il = postResponse(text, _sl, _tl, _hl, "detect")
+if (!il) {
+e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
+ExitCode = 1
+return
+}
+returnIl[0] = il
+if (Option["verbose"] < -1)
+return il
+if (Option["verbose"] < 0)
+return getList(il)
+if (_sl == "auto")  _sl = il
 if (_sl == "bs")    _sl = "bs-Latn"
 if (_sl == "zh-CN") _sl = "zh-CHS"
 if (_sl == "zh-TW") _sl = "zh-CHT"
 if (_tl == "bs")    _tl = "bs-Latn"
 if (_tl == "zh-CN") _tl = "zh-CHS"
 if (_tl == "zh-TW") _tl = "zh-CHT"
-bingSetCookie()
-content = bingPost(text, _sl, _tl, _hl)
+content = postResponse(text, _sl, _tl, _hl, "translate")
 if (Option["dump"])
 return content
 tokenize(tokens, content)
@@ -3701,32 +3814,50 @@ if (!isarray(ast) || !anything(ast)) {
 e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
 ExitCode = 1
 return
-} else if (ast[0 SUBSEP "Message"]) {
-e("[ERROR] " unparameterize(ast[0 SUBSEP "Message"]))
-e("[ERROR] " unparameterize(ast[0 SUBSEP "Details" SUBSEP 0]))
+} else if (ast[0 SUBSEP "statusCode"] != "200") {
+e("[ERROR] statusCode: " ast[0 SUBSEP "statusCode"])
 ExitCode = 1
 return
 }
-translation = unparameterize(ast[0 SUBSEP "items" SUBSEP 0 SUBSEP "text"])
-returnIl[0] = il = unparameterize(ast[0 SUBSEP "from"])
-if (Option["verbose"] < 0)
-return getList(il)
+translation = unparameterize(ast[0 SUBSEP "translationResponse"])
+wShowTranslationPhonetics = Option["show-translation-phonetics"]
+if (wShowTranslationPhonetics) {
+split(_tl, group, "-")
+content = postResponse(translation, group[1], group[1], _hl, "transliterate")
+phonetics = unparameterize(content)
+if (phonetics == translation) phonetics = ""
+}
 if (!isVerbose) {
-r = translation
+r = isPhonetic && phonetics ?
+prettify("brief-translation-phonetics", join(phonetics, " ")) :
+prettify("brief-translation", s(translation, tl))
 } else {
 wShowOriginal = Option["show-original"]
 wShowTranslation = Option["show-translation"]
 wShowLanguages = Option["show-languages"]
 wShowDictionary = Option["show-dictionary"]
+wShowOriginalPhonetics = Option["show-original-phonetics"]
+if (wShowOriginalPhonetics) {
+split(il, group, "-")
+content = postResponse(text, group[1], group[1], _hl, "transliterate")
+oPhonetics = unparameterize(content)
+if (oPhonetics == text) oPhonetics = ""
+}
+if (!oPhonetics) wShowOriginalPhonetics = 0
+if (!phonetics) wShowTranslationPhonetics = 0
 if (wShowOriginal) {
 if (r) r = r RS RS
 r = r m("-- display original text")
 r = r prettify("original", s(text, il))
+if (wShowOriginalPhonetics)
+r = r RS prettify("original-phonetics", showPhonetics(join(oPhonetics, " "), il))
 }
 if (wShowTranslation) {
 if (r) r = r RS RS
 r = r m("-- display major translation")
 r = r prettify("translation", s(translation, tl))
+if (wShowTranslationPhonetics)
+r = r RS prettify("translation-phonetics", showPhonetics(join(phonetics, " "), tl))
 }
 if (wShowLanguages) {
 if (r) r = r RS RS
@@ -3788,27 +3919,15 @@ return HttpPathPrefix "/api/v1/tr.json/translate?"\
 "id=" SID "-0-0&srv=tr-text"\
 "&text=" preprocess(text) "&lang=" (sl == "auto" ? tl : sl "-" tl)
 }
+function yandexPostRequestBody(text, sl, tl, hl, type) {
+return "text=" quote(text) "&lang=" sl
+}
 function yandexGetDictionaryResponse(text, sl, tl, hl,    content, header, isBody, url) {
 split(sl, group, "-"); sl = group[1]
 split(tl, group, "-"); tl = group[1]
-url = HttpPathPrefix "/dicservice.json/lookup?"\
-"sid=" SID\
-"&text=" preprocess(text) "&lang=" (sl == "auto" ? tl : sl "-" tl)
-header = "GET " url " HTTP/1.1\n"\
-"Host: " "dictionary.yandex.net" "\n"\
-"Connection: close\n"
-if (Option["user-agent"])
-header = header "User-Agent: " Option["user-agent"] "\n"
-content = NULLSTR; isBody = 0
-print header |& HttpService
-while ((HttpService |& getline) > 0) {
-if (isBody)
-content = content ? content "\n" $0 : $0
-else if (length($0) <= 1)
-isBody = 1
-l(sprintf("%4s bytes > %s", length($0), $0))
-}
-close(HttpService)
+url = "http://dictionary.yandex.net/dicservice.json/lookupMultiple?"\
+"&text=" preprocess(text) "&dict=" sl "-" tl
+content = curl(url)
 return assert(content, "[ERROR] Null response.")
 }
 function yandexTTSUrl(text, tl,
@@ -3861,12 +3980,14 @@ function yandexTranslate(text, sl, tl, hl,
 isVerbose, toSpeech, returnPlaylist, returnIl,
 r,
 content, tokens, ast,
-_sl, _tl, _hl, il,
+_sl, _tl, _hl, il, isPhonetic,
 translation,
 wShowOriginal, wShowTranslation, wShowLanguages,
 wShowDictionary, dicContent, dicTokens, dicAst,
 i, syn, mean,
 group, temp) {
+isPhonetic = match(tl, /^@/)
+tl = substr(tl, 1 + isPhonetic)
 if (!getCode(tl)) {
 w("[WARNING] Unknown target language code: " tl)
 } else if (isRTL(tl)) {
@@ -3895,26 +4016,50 @@ ExitCode = 1
 return
 }
 translation = unparameterize(ast[0 SUBSEP "text" SUBSEP 0])
+wShowTranslationPhonetics = Option["show-translation-phonetics"]
+if (wShowTranslationPhonetics) {
+split(_tl, group, "-")
+data = yandexPostRequestBody(translation, group[1], group[1], _hl, "translit")
+content = curlPost("https://translate.yandex.net/translit/translit", data)
+phonetics = (content ~ /not supported$/) ? "" : unparameterize(content)
+}
 split(unparameterize(ast[0 SUBSEP "lang"]), group, "-")
 returnIl[0] = il = group[1]
-if (Option["verbose"] < 0)
+if (Option["verbose"] < -1)
+return il
+else if (Option["verbose"] < 0)
 return getList(il)
 if (!isVerbose) {
-r = translation
+r = isPhonetic && phonetics ?
+prettify("brief-translation-phonetics", join(phonetics, " ")) :
+prettify("brief-translation", s(translation, tl))
 } else {
 wShowOriginal = Option["show-original"]
 wShowTranslation = Option["show-translation"]
 wShowLanguages = Option["show-languages"]
 wShowDictionary = Option["show-dictionary"]
+wShowOriginalPhonetics = Option["show-original-phonetics"]
+if (wShowTranslationPhonetics) {
+split(il, group, "-")
+data = yandexPostRequestBody(text, group[1], group[1], _hl, "translit")
+content = curlPost("https://translate.yandex.net/translit/translit", data)
+oPhonetics = (content ~ /not supported$/) ? "" : unparameterize(content)
+}
+if (!oPhonetics) wShowOriginalPhonetics = 0
+if (!phonetics) wShowTranslationPhonetics = 0
 if (wShowOriginal) {
 if (r) r = r RS RS
-r = r m("-- display original text")
+r = r m("-- display original text & phonetics")
 r = r prettify("original", s(text, il))
+if (wShowOriginalPhonetics)
+r = r RS prettify("original-phonetics", showPhonetics(join(oPhonetics, " "), il))
 }
 if (wShowTranslation) {
 if (r) r = r RS RS
 r = r m("-- display major translation")
 r = r prettify("translation", s(translation, tl))
+if (wShowTranslationPhonetics)
+r = r RS prettify("translation-phonetics", showPhonetics(join(phonetics, " "), tl))
 }
 if (wShowLanguages) {
 if (r) r = r RS RS
@@ -3934,8 +4079,8 @@ if (temp ~ /%T/)
 r = r prettify("languages-tl", getName(tl))
 r = r prettify("languages", group[3])
 }
-if (wShowDictionary) {
-dicContent = yandexGetDictionaryResponse(text, _sl, _tl, _hl)
+if (wShowDictionary && false) {
+dicContent = yandexGetDictionaryResponse(text, il, _tl, _hl)
 tokenize(dicTokens, dicContent)
 parseJson(dicAst, dicTokens)
 if (anything(dicAst)) {
@@ -4039,7 +4184,9 @@ return
 }
 translation = uprintf(unquote(unparameterize(ast[0 SUBSEP "responseData" SUBSEP "translatedText"])))
 returnIl[0] = il = _sl
-if (Option["verbose"] < 0)
+if (Option["verbose"] < -1)
+return il
+else if (Option["verbose"] < 0)
 return getList(il)
 if (!isVerbose) {
 r = translation
@@ -4215,7 +4362,9 @@ append(translations, uprintf(unquote(unparameterize(ast[i]))))
 PROCINFO["sorted_in"] = saveSortedIn
 translation = translations[0]
 returnIl[0] = il = tolower(unparameterize(ast[0 SUBSEP "result" SUBSEP "source_lang"]))
-if (Option["verbose"] < 0)
+if (Option["verbose"] < -1)
+return il
+else if (Option["verbose"] < 0)
 return getList(il)
 if (!isVerbose) {
 r = translation
@@ -4648,7 +4797,7 @@ continue
 }
 match(ARGV[pos], /^--?id(e(n(t(i(fy?)?)?)?)?)?$/)
 if (RSTART) {
-Option["verbose"] = -1
+Option["verbose"] = Option["verbose"] - 2
 continue
 }
 match(ARGV[pos], /^--?show-original(=(.*)?)?$/, group)
@@ -4976,9 +5125,9 @@ exit ExitCode
 }
 EOF
 read -r -d '' TRANS_MANPAGE << 'EOF'
-.\" Automatically generated by Pandoc 2.0
+.\" Automatically generated by Pandoc 2.1.1
 .\"
-.TH "TRANS" "1" "2017\-12\-17" "0.9.6.6" ""
+.TH "TRANS" "1" "2018\-03\-17" "0.9.6.7" ""
 .hy
 .SH NAME
 .PP
