@@ -2,7 +2,7 @@
 # YandexTranslate.awk                                              #
 ####################################################################
 #
-# Last Updated: 16 May 2016
+# Last Updated: 17 Mar 2018
 BEGIN { provides("yandex") }
 
 function genSID(    content, group, temp) {
@@ -202,13 +202,24 @@ function yandexTranslate(text, sl, tl, hl,
         wShowLanguages = Option["show-languages"]
         wShowDictionary = Option["show-dictionary"]
 
+        # Transliteration (original)
+        wShowOriginalPhonetics = Option["show-original-phonetics"]
+        if (wShowTranslationPhonetics) {
+            data = yandexPostRequestBody(text, il, il, _hl, "translit")
+            content = curlPost("https://translate.yandex.net/translit/translit", data)
+            oPhonetics = (content ~ /not supported$/) ? "" : unparameterize(content)
+        }
+
+        if (!oPhonetics) wShowOriginalPhonetics = 0
         if (!phonetics) wShowTranslationPhonetics = 0
 
         if (wShowOriginal) {
             # Display: original text
             if (r) r = r RS RS
-            r = r m("-- display original text")
+            r = r m("-- display original text & phonetics")
             r = r prettify("original", s(text, il))
+            if (wShowOriginalPhonetics)
+                r = r RS prettify("original-phonetics", showPhonetics(join(oPhonetics, " "), il))
         }
 
         if (wShowTranslation) {
