@@ -12,7 +12,8 @@ function bingInit() {
 }
 
 # Retrieve the Cookie and set IG.
-function bingSetCookie(    content, cookie, group, header, isBody, url) {
+function bingSetIG(    content, cookie, group, header, isBody,
+                       url, status, location) {
     url = HttpPathPrefix "/translator"
 
     header = "GET " url " HTTP/1.1\r\n"                                 \
@@ -32,9 +33,19 @@ function bingSetCookie(    content, cookie, group, header, isBody, url) {
             content = content ? content "\r\n" $0 : $0
         else if (length($0) <= 1)
             isBody = 1
+        else { # interesting fields in header
+            match($0, /^HTTP[^ ]* ([^ ]*)/, group)
+            if (RSTART) status = group[1]
+            match($0, /^Location: (.*)/, group)
+            if (RSTART) location = squeeze(group[1]) # squeeze the URL!
+        }
         l(sprintf("%4s bytes > %s", length($0), length($0) < 1024 ? $0 : "..."))
     }
     close(HttpService)
+
+    if ((status == "301" || status == "302") && location)
+        content = curl(location)
+    # FIXME: cookie
 
     Cookie = cookie
     match(content, /IG:"([^"]+)"/, group)
@@ -173,7 +184,7 @@ function bingTranslate(text, sl, tl, hl,
     _tl = getCode(tl); if (!_tl) _tl = tl
     _hl = getCode(hl); if (!_hl) _hl = hl
 
-    bingSetCookie() # set IG
+    bingSetIG() # set IG
 
     # Language identification
     il = postResponse(text, _sl, _tl, _hl, "detect")
