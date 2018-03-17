@@ -205,7 +205,8 @@ function yandexTranslate(text, sl, tl, hl,
         # Transliteration (original)
         wShowOriginalPhonetics = Option["show-original-phonetics"]
         if (wShowTranslationPhonetics) {
-            data = yandexPostRequestBody(text, il, il, _hl, "translit")
+            split(il, group, "-")
+            data = yandexPostRequestBody(text, group[1], group[1], _hl, "translit")
             content = curlPost("https://translate.yandex.net/translit/translit", data)
             oPhonetics = (content ~ /not supported$/) ? "" : unparameterize(content)
         }
@@ -214,7 +215,7 @@ function yandexTranslate(text, sl, tl, hl,
         if (!phonetics) wShowTranslationPhonetics = 0
 
         if (wShowOriginal) {
-            # Display: original text
+            # Display: original text & phonetics
             if (r) r = r RS RS
             r = r m("-- display original text & phonetics")
             r = r prettify("original", s(text, il))
