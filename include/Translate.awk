@@ -175,8 +175,10 @@ function postResponse(text, sl, tl, hl, type,
         e("[ERROR] 404 Not Found")
         exit 1
     }
-    if ((status == "301" || status == "302") && location)
-        content = curlPost(location, reqBody)
+    if ((status == "301" || status == "302") && location) {
+        url = "https" substr(url, 5) # switch to HTTPS; don't use location!
+        content = curlPost(url, reqBody)
+    }
 
     return content
 }
