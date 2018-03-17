@@ -1,6 +1,6 @@
-% TRANS(1) 0.9.6.6
+% TRANS(1) 0.9.6.7
 % Mort Yao <soi@mort.ninja>
-% 2017-12-17
+% 2018-03-17
 
 # NAME
 
