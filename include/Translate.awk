@@ -128,6 +128,46 @@ function getResponse(text, sl, tl, hl,
     return assert(content, "[ERROR] Null response.")
 }
 
+# Send an HTTP POST request and return response from an online translator.
+function postResponse(text, sl, tl, hl, type,
+                      ####
+                      content, contentLength, contentType, group,
+                      header, isBody, reqBody, url) {
+    url = _PostRequestUrl(text, sl, tl, hl, type)
+    contentType = _PostRequestContentType(text, sl, tl, hl, type)
+    reqBody = _PostRequestBody(text, sl, tl, hl, type)
+    if (DumpContentengths[reqBody])
+        contentLength = DumpContentengths[reqBody]
+    else
+        contentLength = DumpContentengths[reqBody] = dump(reqBody, group)
+
+    header = "POST " url " HTTP/1.1\r\n"                  \
+        "Host: " HttpHost "\r\n"                          \
+        "Connection: close\r\n"                           \
+        "Content-Length: " contentLength "\r\n"           \
+        "Content-Type: " contentType "\r\n"     # must!
+    if (Option["user-agent"])
+        header = header "User-Agent: " Option["user-agent"] "\r\n"
+    if (Cookie)
+        header = header "Cookie: " Cookie "\r\n"
+    if (HttpAuthUser && HttpAuthPass)
+        # TODO: digest auth
+        header = header "Proxy-Authorization: Basic " HttpAuthCredentials "\r\n"
+
+    content = NULLSTR; isBody = 0
+    print (header "\r\n" reqBody) |& HttpService
+    while ((HttpService |& getline) > 0) {
+        if (isBody)
+            content = content ? content "\r\n" $0 : $0
+        else if (length($0) <= 1)
+            isBody = 1
+        l(sprintf("%4s bytes > %s", length($0), $0))
+    }
+    close(HttpService)
+
+    return assert(content, "[ERROR] Null response.")
+}
+
 # Print a string (to output file or terminal pager).
 function p(string) {
     if (Option["view"])
