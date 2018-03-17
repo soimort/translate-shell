@@ -158,6 +158,9 @@ function bingTranslate(text, sl, tl, hl,
                        translation,
                        wShowOriginal, wShowTranslation, wShowLanguages,
                        group, temp) {
+    isPhonetic = match(tl, /^@/)
+    tl = substr(tl, 1 + isPhonetic)
+
     if (!getCode(tl)) {
         # Check if target language is supported
         w("[WARNING] Unknown target language code: " tl)
@@ -217,10 +220,21 @@ function bingTranslate(text, sl, tl, hl,
 
     translation = unparameterize(ast[0 SUBSEP "translationResponse"])
 
+    # Transliteration
+    wShowTranslationPhonetics = Option["show-translation-phonetics"]
+    if (wShowTranslationPhonetics) {
+        split(_tl, group, "-")
+        content = postResponse(translation, group[1], group[1], _hl, "transliterate")
+        phonetics = unparameterize(content)
+    }
+
     # Generate output
     if (!isVerbose) {
         # Brief mode
-        r = translation
+
+        r = isPhonetic && phonetics ?
+            prettify("brief-translation-phonetics", join(phonetics, " ")) :
+            prettify("brief-translation", s(translation, tl))
 
     } else {
         # Verbose mode
@@ -230,6 +244,8 @@ function bingTranslate(text, sl, tl, hl,
         wShowLanguages = Option["show-languages"]
         wShowDictionary = Option["show-dictionary"]
 
+        if (!phonetics) wShowTranslationPhonetics = 0
+
         if (wShowOriginal) {
             # Display: original text
             if (r) r = r RS RS
@@ -238,10 +254,12 @@ function bingTranslate(text, sl, tl, hl,
         }
 
         if (wShowTranslation) {
-            # Display: major translation
+            # Display: major translation & phonetics
             if (r) r = r RS RS
             r = r m("-- display major translation")
             r = r prettify("translation", s(translation, tl))
+            if (wShowTranslationPhonetics)
+                r = r RS prettify("translation-phonetics", showPhonetics(join(phonetics, " "), tl))
         }
 
         if (wShowLanguages) {
