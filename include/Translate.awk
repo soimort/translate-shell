@@ -122,7 +122,7 @@ function getResponse(text, sl, tl, hl,
     }
     close(HttpService)
 
-    if (status == "301" && location)
+    if ((status == "301" || status == "302") && location)
         content = curl(location)
 
     return assert(content, "[ERROR] Null response.")
@@ -132,7 +132,7 @@ function getResponse(text, sl, tl, hl,
 function postResponse(text, sl, tl, hl, type,
                       ####
                       content, contentLength, contentType, group,
-                      header, isBody, reqBody, url) {
+                      header, isBody, reqBody, url, status, location) {
     url = _PostRequestUrl(text, sl, tl, hl, type)
     contentType = _PostRequestContentType(text, sl, tl, hl, type)
     reqBody = _PostRequestBody(text, sl, tl, hl, type)
@@ -161,11 +161,20 @@ function postResponse(text, sl, tl, hl, type,
             content = content ? content "\r\n" $0 : $0
         else if (length($0) <= 1)
             isBody = 1
+        else { # interesting fields in header
+            match($0, /^HTTP[^ ]* ([^ ]*)/, group)
+            if (RSTART) status = group[1]
+            match($0, /^Location: (.*)/, group)
+            if (RSTART) location = squeeze(group[1]) # squeeze the URL!
+        }
         l(sprintf("%4s bytes > %s", length($0), $0))
     }
     close(HttpService)
 
-    return assert(content, "[ERROR] Null response.")
+    if ((status == "301" || status == "302") && location)
+        content = curlPost(location, reqBody)
+
+    return content
 }
 
 # Print a string (to output file or terminal pager).
