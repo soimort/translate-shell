@@ -237,6 +237,7 @@ function bingTranslate(text, sl, tl, hl,
         split(_tl, group, "-")
         content = postResponse(translation, group[1], group[1], _hl, "transliterate")
         phonetics = unparameterize(content)
+        if (phonetics == translation) phonetics = ""
     }
 
     # Generate output
@@ -255,13 +256,25 @@ function bingTranslate(text, sl, tl, hl,
         wShowLanguages = Option["show-languages"]
         wShowDictionary = Option["show-dictionary"]
 
+        # Transliteration (original)
+        wShowOriginalPhonetics = Option["show-original-phonetics"]
+        if (wShowOriginalPhonetics) {
+            split(il, group, "-")
+            content = postResponse(text, group[1], group[1], _hl, "transliterate")
+            oPhonetics = unparameterize(content)
+            if (oPhonetics == text) oPhonetics = ""
+        }
+
+        if (!oPhonetics) wShowOriginalPhonetics = 0
         if (!phonetics) wShowTranslationPhonetics = 0
 
         if (wShowOriginal) {
-            # Display: original text
+            # Display: original text & phonetics
             if (r) r = r RS RS
             r = r m("-- display original text")
             r = r prettify("original", s(text, il))
+            if (wShowOriginalPhonetics)
+                r = r RS prettify("original-phonetics", showPhonetics(join(oPhonetics, " "), il))
         }
 
         if (wShowTranslation) {
