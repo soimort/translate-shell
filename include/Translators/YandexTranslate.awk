@@ -216,7 +216,7 @@ function yandexTranslate(text, sl, tl, hl,
             r = r prettify("languages", group[3])
         }
 
-        if (wShowDictionary) {
+        if (wShowDictionary && false) { # FIXME!
             # Dictionary API
             dicContent = yandexGetDictionaryResponse(text, _sl, _tl, _hl)
             tokenize(dicTokens, dicContent)
