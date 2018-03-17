@@ -2,7 +2,7 @@
 # BingTranslator.awk                                               #
 ####################################################################
 #
-# Last Updated: 18 May 2016
+# Last Updated: 17 Mar 2018
 BEGIN { provides("bing") }
 
 function bingInit() {
@@ -11,27 +11,39 @@ function bingInit() {
     HttpPort = 80
 }
 
-# Retrieve the Cookie needed.
-function bingSetCookie(    cookie, group, header, url) {
+# Retrieve the Cookie and set IG.
+function bingSetCookie(    content, cookie, group, header, isBody, url) {
     url = HttpPathPrefix "/translator"
 
-    header = "GET " url " HTTP/1.1\r\n"                                   \
-        "Host: " HttpHost "\r\n"                                          \
+    header = "GET " url " HTTP/1.1\r\n"                                 \
+        "Host: " HttpHost "\r\n"                                        \
         "Connection: close\r\n"
     if (Option["user-agent"])
         header = header "User-Agent: " Option["user-agent"] "\r\n"
 
     cookie = NULLSTR
     print header |& HttpService
-    while ((HttpService |& getline) > 0 && length($0) > 1) {
+    while ((HttpService |& getline) > 0) {
         match($0, /Set-Cookie: ([^;]*);/, group)
         if (group[1]) {
             cookie = cookie (cookie ?  "; " : NULLSTR) group[1]
         }
+        if (isBody)
+            content = content ? content "\r\n" $0 : $0
+        else if (length($0) <= 1)
+            isBody = 1
         l(sprintf("%4s bytes > %s", length($0), length($0) < 1024 ? $0 : "..."))
     }
     close(HttpService)
+
     Cookie = cookie
+    match(content, /IG:"([^"]+)"/, group)
+    if (group[1]) {
+        IG = group[1]
+    } else {
+        e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
+        exit 1
+    }
 }
 
 function bingTTSUrl(text, tl,
@@ -104,48 +116,36 @@ function bingWebTranslateUrl(uri, sl, tl, hl) {
         "from=" sl "&to=" tl "&a=" uri
 }
 
-# Send an HTTP POST request and get response from Bing Translator.
-function bingPost(text, sl, tl, hl,
-                  ####
-                  content, contentLength, group,
-                  header, isBody, reqBody, url) {
-    reqBody = "[{" parameterize("text") ":" parameterize(text, "\"") "}]"
-    if (DumpContentengths[reqBody])
-        contentLength = DumpContentengths[reqBody]
-    else
-        contentLength = DumpContentengths[reqBody] = dump(reqBody, group)
-
-    url = HttpPathPrefix "/translator/api/Translate/TranslateArray?"    \
-        "from=" sl "&to=" tl
-
-    header = "POST " url " HTTP/1.1\r\n"                  \
-        "Host: " HttpHost "\r\n"                          \
-        "Connection: close\r\n"                           \
-        "Content-Length: " contentLength "\r\n"           \
-        "Content-Type: application/json\r\n"     # must!
-    if (Option["user-agent"])
-        header = header "User-Agent: " Option["user-agent"] "\r\n"
-    if (Cookie)
-        header = header "Cookie: " Cookie "\r\n" # must!
-
-    content = NULLSTR; isBody = 0
-    print (header "\r\n" reqBody) |& HttpService
-    while ((HttpService |& getline) > 0) {
-        if (isBody)
-            content = content ? content "\r\n" $0 : $0
-        else if (length($0) <= 1)
-            isBody = 1
-        l(sprintf("%4s bytes > %s", length($0), $0))
-    }
-    close(HttpService)
-
-    return assert(content, "[ERROR] Null response.")
-}
-
 # Dictionary API (via HTTP GET).
 function bingRequestUrl(text, sl, tl, hl) {
     return HttpPathPrefix "/translator/api/Dictionary/Lookup?"  \
         "from=" sl "&to=" tl "&text=" preprocess(text)
+}
+
+function bingPostRequestUrl(text, sl, tl, hl, type) {
+    if (type == "translate")
+        return HttpPathPrefix "/ttranslate?&IG=" IG "&IID=translator.5032.2"
+    else if (type == "translationlookup")
+        return HttpPathPrefix "/ttranslationlookup?&IG=" IG "&IID=translator.5032.2"
+    else if (type == "transliterate")
+        return HttpPathPrefix "/ttransliterate?&IG=" IG "&IID=translator.5032.1"
+    else # type == "detect"
+        return HttpPathPrefix "/tdetect?&IG=" IG "&IID=translator.5032.2"
+}
+
+function bingPostRequestContentType(text, sl, tl, hl, type) {
+    return "application/x-www-form-urlencoded"
+}
+
+function bingPostRequestBody(text, sl, tl, hl, type) {
+    if (type == "translate")
+        return "&text=" quote(text) "&from=" sl "&to=" tl
+    else if (type == "translationlookup")
+        return "&text=" quote(text) "&from=" sl "&to=" tl
+    else if (type == "transliterate")
+        return "&text=" quote(text) "&language=" sl "&toScript=" "latn"
+    else # type == "detect"
+        return "&text=" quote(text)
 }
 
 # Get the translation of a string.
@@ -170,9 +170,24 @@ function bingTranslate(text, sl, tl, hl,
     _tl = getCode(tl); if (!_tl) _tl = tl
     _hl = getCode(hl); if (!_hl) _hl = hl
 
+    bingSetCookie() # set IG
+
+    # Language identification
+    il = postResponse(text, _sl, _tl, _hl, "detect")
+    if (!il) {
+        e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
+        ExitCode = 1
+        return
+    }
+    returnIl[0] = il
+    if (Option["verbose"] < -1)
+        return il
+    if (Option["verbose"] < 0)
+        return getList(il)
+
     # Hot-patches for Bing's own translator language codes
     # See: <https://msdn.microsoft.com/en-us/library/hh456380.aspx>
-    if (_sl == "auto")  _sl = "-"
+    if (_sl == "auto")  _sl = il
     if (_sl == "bs")    _sl = "bs-Latn" # 'bs' is not recognized as valid code
     if (_sl == "zh-CN") _sl = "zh-CHS"
     if (_sl == "zh-TW") _sl = "zh-CHT"
@@ -180,9 +195,8 @@ function bingTranslate(text, sl, tl, hl,
     if (_tl == "zh-CN") _tl = "zh-CHS"
     if (_tl == "zh-TW") _tl = "zh-CHT"
 
-    bingSetCookie() # must!
-
-    content = bingPost(text, _sl, _tl, _hl)
+    # Translation
+    content = postResponse(text, _sl, _tl, _hl, "translate")
     if (Option["dump"])
         return content
     tokenize(tokens, content)
@@ -195,20 +209,13 @@ function bingTranslate(text, sl, tl, hl,
         e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
         ExitCode = 1
         return
-    } else if (ast[0 SUBSEP "Message"]) {
-        e("[ERROR] " unparameterize(ast[0 SUBSEP "Message"]))
-        e("[ERROR] " unparameterize(ast[0 SUBSEP "Details" SUBSEP 0]))
+    } else if (ast[0 SUBSEP "statusCode"] != "200") {
+        e("[ERROR] statusCode: " ast[0 SUBSEP "statusCode"])
         ExitCode = 1
         return
     }
 
-    translation = unparameterize(ast[0 SUBSEP "items" SUBSEP 0 SUBSEP "text"])
-
-    returnIl[0] = il = unparameterize(ast[0 SUBSEP "from"])
-    if (Option["verbose"] < -1)
-        return il
-    else if (Option["verbose"] < 0)
-        return getList(il)
+    translation = unparameterize(ast[0 SUBSEP "translationResponse"])
 
     # Generate output
     if (!isVerbose) {
