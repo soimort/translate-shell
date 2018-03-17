@@ -171,6 +171,10 @@ function postResponse(text, sl, tl, hl, type,
     }
     close(HttpService)
 
+    if (status == "404") {
+        e("[ERROR] 404 Not Found")
+        exit 1
+    }
     if ((status == "301" || status == "302") && location)
         content = curlPost(location, reqBody)
 
