@@ -151,6 +151,8 @@ function curl(url, output,    command, content, line) {
     }
 
     command = Curl " --location --silent"
+    if (Option["proxy"])
+        command = command " --proxy " parameterize(Option["proxy"])
     if (Option["user-agent"])
         command = command " --user-agent " parameterize(Option["user-agent"])
     command = command " " parameterize(url)
@@ -176,6 +178,8 @@ function curlPost(url, data, output,    command, content, line) {
     }
 
     command = Curl " --location --silent"
+    if (Option["proxy"])
+        command = command " --proxy " parameterize(Option["proxy"])
     if (Option["user-agent"])
         command = command " --user-agent " parameterize(Option["user-agent"])
     command = command " --request POST --data " parameterize(data)
