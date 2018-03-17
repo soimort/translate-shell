@@ -47,26 +47,9 @@ function yandexGetDictionaryResponse(text, sl, tl, hl,    content, header, isBod
     split(sl, group, "-"); sl = group[1]
     split(tl, group, "-"); tl = group[1]
 
-    url = HttpPathPrefix "/dicservice.json/lookup?"                     \
-        "sid=" SID                                                      \
-        "&text=" preprocess(text) "&lang=" (sl == "auto" ? tl : sl "-" tl)
-
-    header = "GET " url " HTTP/1.1\r\n"           \
-        "Host: " "dictionary.yandex.net" "\r\n"   \
-        "Connection: close\r\n"
-    if (Option["user-agent"])
-        header = header "User-Agent: " Option["user-agent"] "\r\n"
-
-    content = NULLSTR; isBody = 0
-    print header |& HttpService
-    while ((HttpService |& getline) > 0) {
-        if (isBody)
-            content = content ? content "\r\n" $0 : $0
-        else if (length($0) <= 1)
-            isBody = 1
-        l(sprintf("%4s bytes > %s", length($0), $0))
-    }
-    close(HttpService)
+    url = "http://dictionary.yandex.net/dicservice.json/lookupMultiple?" \
+        "&text=" preprocess(text) "&dict=" sl "-" tl
+    content = curl(url)
 
     return assert(content, "[ERROR] Null response.")
 }
@@ -254,7 +237,7 @@ function yandexTranslate(text, sl, tl, hl,
 
         if (wShowDictionary && false) { # FIXME!
             # Dictionary API
-            dicContent = yandexGetDictionaryResponse(text, _sl, _tl, _hl)
+            dicContent = yandexGetDictionaryResponse(text, il, _tl, _hl)
             tokenize(dicTokens, dicContent)
             parseJson(dicAst, dicTokens)
 
