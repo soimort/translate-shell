@@ -165,7 +165,7 @@ function bingTranslate(text, sl, tl, hl,
                        ####
                        r,
                        content, tokens, ast,
-                       _sl, _tl, _hl, il,
+                       _sl, _tl, _hl, il, isPhonetic,
                        translation,
                        wShowOriginal, wShowTranslation, wShowLanguages,
                        group, temp) {

@@ -37,6 +37,11 @@ function yandexRequestUrl(text, sl, tl, hl,    group) {
         "&text=" preprocess(text) "&lang=" (sl == "auto" ? tl : sl "-" tl)
 }
 
+function yandexPostRequestBody(text, sl, tl, hl, type) {
+    # type == "translit"
+    return "text=" quote(text) "&lang=" sl
+}
+
 function yandexGetDictionaryResponse(text, sl, tl, hl,    content, header, isBody, url) {
     # Quick hack: Yandex doesn't support digraphia code (yet)
     split(sl, group, "-"); sl = group[1]
@@ -122,12 +127,15 @@ function yandexTranslate(text, sl, tl, hl,
                          ####
                          r,
                          content, tokens, ast,
-                         _sl, _tl, _hl, il,
+                         _sl, _tl, _hl, il, isPhonetic,
                          translation,
                          wShowOriginal, wShowTranslation, wShowLanguages,
                          wShowDictionary, dicContent, dicTokens, dicAst,
                          i, syn, mean,
                          group, temp) {
+    isPhonetic = match(tl, /^@/)
+    tl = substr(tl, 1 + isPhonetic)
+
     if (!getCode(tl)) {
         # Check if target language is supported
         w("[WARNING] Unknown target language code: " tl)
@@ -162,6 +170,15 @@ function yandexTranslate(text, sl, tl, hl,
 
     translation = unparameterize(ast[0 SUBSEP "text" SUBSEP 0])
 
+    # Transliteration
+    wShowTranslationPhonetics = Option["show-translation-phonetics"]
+    if (wShowTranslationPhonetics) {
+        split(_tl, group, "-")
+        data = yandexPostRequestBody(translation, group[1], group[1], _hl, "translit")
+        content = curlPost("https://translate.yandex.net/translit/translit", data)
+        phonetics = (content ~ /not supported$/) ? "" : unparameterize(content)
+    }
+
     split(unparameterize(ast[0 SUBSEP "lang"]), group, "-")
     returnIl[0] = il = group[1]
     if (Option["verbose"] < -1)
@@ -172,7 +189,10 @@ function yandexTranslate(text, sl, tl, hl,
     # Generate output
     if (!isVerbose) {
         # Brief mode
-        r = translation
+
+        r = isPhonetic && phonetics ?
+            prettify("brief-translation-phonetics", join(phonetics, " ")) :
+            prettify("brief-translation", s(translation, tl))
 
     } else {
         # Verbose mode
@@ -182,6 +202,8 @@ function yandexTranslate(text, sl, tl, hl,
         wShowLanguages = Option["show-languages"]
         wShowDictionary = Option["show-dictionary"]
 
+        if (!phonetics) wShowTranslationPhonetics = 0
+
         if (wShowOriginal) {
             # Display: original text
             if (r) r = r RS RS
@@ -190,10 +212,12 @@ function yandexTranslate(text, sl, tl, hl,
         }
 
         if (wShowTranslation) {
-            # Display: major translation
+            # Display: major translation & phonetics
             if (r) r = r RS RS
             r = r m("-- display major translation")
             r = r prettify("translation", s(translation, tl))
+            if (wShowTranslationPhonetics)
+                r = r RS prettify("translation-phonetics", showPhonetics(join(phonetics, " "), tl))
         }
 
         if (wShowLanguages) {
