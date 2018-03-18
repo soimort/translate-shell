@@ -109,7 +109,7 @@ function getResponse(text, sl, tl, hl,
     print header |& HttpService
     while ((HttpService |& getline) > 0) {
         if (isBody)
-            content = content ? content "\r\n" $0 : $0
+            content = content ? content "\n" $0 : $0
         else if (length($0) <= 1)
             isBody = 1
         else { # interesting fields in header
@@ -158,7 +158,7 @@ function postResponse(text, sl, tl, hl, type,
     print (header "\r\n" reqBody) |& HttpService
     while ((HttpService |& getline) > 0) {
         if (isBody)
-            content = content ? content "\r\n" $0 : $0
+            content = content ? content "\n" $0 : $0
         else if (length($0) <= 1)
             isBody = 1
         else { # interesting fields in header

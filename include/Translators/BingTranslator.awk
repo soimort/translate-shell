@@ -30,7 +30,7 @@ function bingSetIG(    content, cookie, group, header, isBody,
             cookie = cookie (cookie ?  "; " : NULLSTR) group[1]
         }
         if (isBody)
-            content = content ? content "\r\n" $0 : $0
+            content = content ? content "\n" $0 : $0
         else if (length($0) <= 1)
             isBody = 1
         else { # interesting fields in header
@@ -108,7 +108,7 @@ function bingTTSUrl(text, tl,
     print header |& HttpService
     while ((HttpService |& getline) > 0) {
         if (isBody)
-            content = content ? content "\r\n" $0 : $0
+            content = content ? content "\n" $0 : $0
         else if (length($0) <= 1)
             isBody = 1
         #l(sprintf("%4s bytes > %s", length($0), $0))
