@@ -94,15 +94,15 @@ function bingTTSUrl(text, tl,
     else if (tl == "yue") ;
     else if (tl == "zh") tl = tl "-CN"
 
-    header = "GET " "/translator/api/language/Speak?"                   \
-        "locale=" tl "&text=" preprocess(text)                          \
-        "&gender=" gender "&media=audio/mp3" " HTTP/1.1\r\n"              \
-        "Host: " HttpHost "\r\n"                                          \
+    header = "GET " "/tspeak?&IG=" IG                                   \
+        "&language=" tl "&text=" preprocess(text)                       \
+        "&options=" gender "&format=audio%2Fmp3" " HTTP/1.1\r\n"        \
+        "Host: " HttpHost "\r\n"                                        \
         "Connection: close\r\n"
     if (Option["user-agent"])
         header = header "User-Agent: " Option["user-agent"] "\r\n"
     if (Cookie)
-        header = header "Cookie: " Cookie "\r\n" # must!
+        header = header "Cookie: " Cookie "\r\n"
 
     content = NULLSTR; isBody = 0
     print header |& HttpService
