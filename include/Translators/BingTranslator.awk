@@ -2,7 +2,7 @@
 # BingTranslator.awk                                               #
 ####################################################################
 #
-# Last Updated: 17 Mar 2018
+# Last Updated: 18 Mar 2018
 BEGIN { provides("bing") }
 
 function bingInit() {
@@ -135,13 +135,13 @@ function bingRequestUrl(text, sl, tl, hl) {
 
 function bingPostRequestUrl(text, sl, tl, hl, type) {
     if (type == "translate")
-        return HttpPathPrefix "/ttranslate?&IG=" IG "&IID=translator.5032.2"
+        return HttpPathPrefix "/ttranslate?&IG=" IG
     else if (type == "translationlookup")
-        return HttpPathPrefix "/ttranslationlookup?&IG=" IG "&IID=translator.5032.2"
+        return HttpPathPrefix "/ttranslationlookup?&IG=" IG
     else if (type == "transliterate")
-        return HttpPathPrefix "/ttransliterate?&IG=" IG "&IID=translator.5032.1"
+        return HttpPathPrefix "/ttransliterate?&IG=" IG
     else # type == "detect"
-        return HttpPathPrefix "/tdetect?&IG=" IG "&IID=translator.5032.2"
+        return HttpPathPrefix "/tdetect?&IG=" IG
 }
 
 function bingPostRequestContentType(text, sl, tl, hl, type) {
