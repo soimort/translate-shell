@@ -49,7 +49,7 @@ function yandexGetDictionaryResponse(text, sl, tl, hl,    content, header, isBod
 
     url = "http://dictionary.yandex.net/dicservice.json/lookupMultiple?" \
         "&text=" preprocess(text) "&dict=" sl "-" tl
-    content = curl(url)
+    content = curl(url) # but why?!
 
     return assert(content, "[ERROR] Null response.")
 }
