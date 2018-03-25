@@ -30,22 +30,24 @@ BEGIN {
         assertTrue(newerVersion("2", "1.9.9999"))
     }
 
-    T("curl()", 1)
-    {
-        delete tokens; delete ast
-        tokenize(tokens, curl("https://httpbin.org/get"))
-        parseJson(ast, tokens)
-        assertEqual(unparameterize(ast[0 SUBSEP "url"]),
-                    "https://httpbin.org/get")
-    }
+    if (yn(ENVIRON["NETWORK_ACCESS"])) { # if network access enabled
+        T("curl()", 1)
+        {
+            delete tokens; delete ast
+            tokenize(tokens, curl("https://httpbin.org/get"))
+            parseJson(ast, tokens)
+            assertEqual(unparameterize(ast[0 SUBSEP "url"]),
+                        "https://httpbin.org/get")
+        }
 
-    T("curlPost()", 1)
-    {
-        delete tokens; delete ast
-        tokenize(tokens, curlPost("https://httpbin.org/post", "fizz=buzz"))
-        parseJson(ast, tokens)
-        assertEqual(unparameterize(ast[0 SUBSEP "url"]),
-                    "https://httpbin.org/post")
+        T("curlPost()", 1)
+        {
+            delete tokens; delete ast
+            tokenize(tokens, curlPost("https://httpbin.org/post", "fizz=buzz"))
+            parseJson(ast, tokens)
+            assertEqual(unparameterize(ast[0 SUBSEP "url"]),
+                        "https://httpbin.org/post")
+        }
     }
 
     T("dump()", 3)
