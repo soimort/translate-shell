@@ -259,7 +259,7 @@ function bingTranslate(text, sl, tl, hl,
         # Transliteration (original)
         wShowOriginalPhonetics = Option["show-original-phonetics"]
         if (wShowOriginalPhonetics) {
-            split(il, group, "-")
+            split(_sl, group, "-")
             content = postResponse(text, group[1], group[1], _hl, "transliterate")
             oPhonetics = unparameterize(content)
             if (oPhonetics == text) oPhonetics = ""
@@ -272,9 +272,9 @@ function bingTranslate(text, sl, tl, hl,
             # Display: original text & phonetics
             if (r) r = r RS RS
             r = r m("-- display original text")
-            r = r prettify("original", s(text, il))
+            r = r prettify("original", s(text, _sl))
             if (wShowOriginalPhonetics)
-                r = r RS prettify("original-phonetics", showPhonetics(join(oPhonetics, " "), il))
+                r = r RS prettify("original-phonetics", showPhonetics(join(oPhonetics, " "), _sl))
         }
 
         if (wShowTranslation) {
@@ -295,9 +295,9 @@ function bingTranslate(text, sl, tl, hl,
             split(temp, group, /(%s|%S|%t|%T)/)
             r = r prettify("languages", group[1])
             if (temp ~ /%s/)
-                r = r prettify("languages-sl", getDisplay(il))
+                r = r prettify("languages-sl", getDisplay(_sl))
             if (temp ~ /%S/)
-                r = r prettify("languages-sl", getName(il))
+                r = r prettify("languages-sl", getName(_sl))
             r = r prettify("languages", group[2])
             if (temp ~ /%t/)
                 r = r prettify("languages-tl", getDisplay(tl))
@@ -309,7 +309,7 @@ function bingTranslate(text, sl, tl, hl,
         if (wShowDictionary && false) { # FIXME!
             # Dictionary API
             # Note: source language must be identified
-            dicContent = getResponse(text, il, _tl, _hl)
+            dicContent = getResponse(text, _sl, _tl, _hl)
             tokenize(dicTokens, dicContent)
             parseJson(dicAst, dicTokens) # FIXME: inefficient parser
 
