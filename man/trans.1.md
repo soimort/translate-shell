@@ -319,6 +319,10 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 *./.trans*
 :   Initialization script. (current directory)
 
+# FURTHER DOCUMENTATION
+
+<https://github.com/soimort/translate-shell/wiki>
+
 # REPORTING BUGS
 
 <https://github.com/soimort/translate-shell/issues>
