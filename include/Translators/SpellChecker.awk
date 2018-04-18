@@ -77,3 +77,31 @@ function hunspellTranslate(text, sl, tl, hl,
                            isVerbose, toSpeech, returnPlaylist, returnIl) {
     return spellTranslate(text, sl, tl, hl)
 }
+
+function spellTTSUrl(text, tl,    narrator) {
+    e("[ERROR] Spell checker does not support TTS.")
+    ExitCode = 1
+    return
+}
+
+function aspellTTSUrl(text, tl,    narrator) {
+    return spellTTSUrl(text, tl)
+}
+
+function hunspellTTSUrl(text, tl,    narrator) {
+    return spellTTSUrl(text, tl)
+}
+
+function spellWebTranslateUrl(uri, sl, tl, hl) {
+    e("[ERROR] Spell checker does not support web translation.")
+    ExitCode = 1
+    return
+}
+
+function aspellWebTranslateUrl(uri, sl, tl, hl) {
+    return spellWebTranslateUrl(uri, sl, tl, hl)
+}
+
+function hunspellWebTranslateUrl(uri, sl, tl, hl) {
+    return spellWebTranslateUrl(uri, sl, tl, hl)
+}
