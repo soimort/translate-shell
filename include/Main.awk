@@ -160,7 +160,8 @@ function initMisc(    group, temp) {
 
     # Initialize browser
     if (!Option["browser"]) {
-        Option["browser"] = "xdg-open"
+        Platform = detectProgram("uname", "-s", 1)
+        Option["browser"] = Platform == "Darwin" ? "open" : "xdg-open"
     }
 }
 
