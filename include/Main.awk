@@ -160,9 +160,7 @@ function initMisc(    group, temp) {
 
     # Initialize browser
     if (!Option["browser"]) {
-        "xdg-mime query default text/html" SUPERR | getline Option["browser"]
-        match(Option["browser"], "(.*).desktop$", group)
-        Option["browser"] = group[1]
+        Option["browser"] = "xdg-open"
     }
 }
 
