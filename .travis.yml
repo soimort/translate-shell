@@ -12,5 +12,6 @@ before_install: |
   if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gawk; fi
   if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install rlwrap; fi
   if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install emacs; fi
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install bash; fi
 
 script: make check
