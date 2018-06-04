@@ -1,11 +1,16 @@
 os:
   - linux
+  - osx
 
 before_install: |
-  sudo add-apt-repository ppa:schot/gawk -y
-  sudo apt-get update -q
-  sudo apt-get install gawk
-  sudo apt-get install rlwrap
-  sudo apt-get install emacs
+  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository ppa:schot/gawk -y; fi
+  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -q; fi
+  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install gawk; fi
+  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install rlwrap; fi
+  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install emacs; fi
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gawk; fi
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install rlwrap; fi
+  if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install emacs; fi
 
 script: make check
