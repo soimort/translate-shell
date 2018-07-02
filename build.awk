@@ -137,7 +137,7 @@ function doc() {
 
 function readSqueezed(fileName, squeezed,    group, line, ret) {
     if (fileName ~ /\*$/) # glob simulation
-        return readSqueezed(fileName ".awk", squeezed)
+        return readSqueezed(substr(fileName, 1, length(fileName) - 1) "__init__.awk", squeezed)
 
     ret = NULLSTR
     if (fileExists(fileName))
