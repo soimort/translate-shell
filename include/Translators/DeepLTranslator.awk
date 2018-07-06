@@ -7,7 +7,7 @@ BEGIN { provides("deepl") }
 
 function deeplInit() {
     HttpProtocol = "http://"
-    HttpHost = "www.deepl.com"
+    HttpHost = "www2.deepl.com"
     HttpPort = 80
 }
 
@@ -35,7 +35,7 @@ function deeplPost(text, sl, tl, hl,
     data = data "\"target_lang\":\"" tl "\"},"
     data = data "\"priority\":1},\"id\":1}"
     l(data)
-    url = "https://www.deepl.com/jsonrpc"
+    url = "https://www2.deepl.com/jsonrpc"
     content = curlPost(url, data)
     return assert(content, "[ERROR] Null response.")
 }
