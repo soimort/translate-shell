@@ -27,10 +27,10 @@ test: build
 
 check: test
 	$(BUILDDIR)/$(COMMAND) -V
-	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b 忍者`" = 'Ninja' ] &&\
-	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b -e bing 忍者`" = 'Ninja' ] &&\
-	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b -e yandex Ninja`" = 'Ninja' ] &&\
-	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b -e deepl Ninja`" = 'Ninja' ]
+	time [ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b 忍者`" = 'Ninja' ] &&\
+	time [ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b -e bing 忍者`" = 'Ninja' ] &&\
+	time [ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b -e yandex Ninja`" = 'Ninja' ] &&\
+	time [ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b -e deepl Ninja`" = 'Ninja' ]
 
 install: build
 	@mkdir -p $(DESTDIR)$(PREFIX)/bin &&\
