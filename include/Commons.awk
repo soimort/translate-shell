@@ -557,6 +557,7 @@ function getOutput(command,    content, line) {
     content = NULLSTR
     while ((command |& getline line) > 0)
         content = (content ? content "\n" : NULLSTR) line
+    close(command)
     return content
 }
 
