@@ -93,7 +93,7 @@ function compareByIndexFields(i1, v1, i2, v2,
 # Return non-zero if the string represents a numeral;
 # Otherwise, return 0.
 function isnum(string) {
-    return string == string + 0
+    return typeof(string) == "number"
 }
 
 # Return one of the substrings if the string starts with it;
