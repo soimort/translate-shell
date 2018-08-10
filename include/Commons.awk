@@ -574,12 +574,15 @@ function dirExists(file) {
 # Detect whether a program exists in path.
 # Return the name (or output) if the program call writes anything to stdout;
 # Otherwise, return a null string.
-function detectProgram(prog, arg, returnOutput,    temp) {
-    if (returnOutput) {
-        prog " " arg SUPERR | getline temp
+function detectProgram(prog, arg, returnOutput,    command, temp) {
+    command = prog " " arg SUPERR
+    command | getline temp
+    close(command)
+    if (returnOutput)
         return temp
-    } else
-        return (prog " " arg SUPERR | getline) ? prog : NULLSTR
+    if (temp)
+        return prog
+    return NULLSTR
 }
 
 # Return the HEAD revision if the current directory is a git repo;

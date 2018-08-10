@@ -2035,14 +2035,16 @@ function showPhonetics(phonetics, code) {
 # Convert a logical string to visual; don't right justify RTL lines.
 # Parameters:
 #     code: ignore to apply bidirectional algorithm on every string
-function show(text, code,    temp) {
+function show(text, code,    command, temp) {
     if (!code || isRTL(code)) {
         if (Cache[text][0])
             return Cache[text][0]
         else {
-            if ((FriBidi || (code && isRTL(code))) && BiDiNoPad)
-                ("echo " parameterize(text) PIPE BiDiNoPad) | getline temp
-            else # non-RTL language, or FriBidi not installed
+            if ((FriBidi || (code && isRTL(code))) && BiDiNoPad) {
+                command = "echo " parameterize(text) PIPE BiDiNoPad
+                command | getline temp
+                close(command)
+            } else # non-RTL language, or FriBidi not installed
                 temp = text
             return Cache[text][0] = temp
         }
@@ -2054,15 +2056,17 @@ function show(text, code,    temp) {
 # Parameters:
 #     code: ignore to apply bidirectional algorithm on every string
 #     width: ignore to use default width for padding
-function s(text, code, width,    temp) {
+function s(text, code, width,    command, temp) {
     if (!code || isRTL(code)) {
         if (!width) width = Option["width"]
         if (Cache[text][width])
             return Cache[text][width]
         else {
-            if ((FriBidi || (code && isRTL(code))) && BiDi)
-                ("echo " parameterize(text) PIPE sprintf(BiDi, width)) | getline temp
-            else # non-RTL language, or FriBidi not installed
+            if ((FriBidi || (code && isRTL(code))) && BiDi) {
+                command = "echo " parameterize(text) PIPE sprintf(BiDi, width)
+                command | getline temp
+                close(command)
+            } else # non-RTL language, or FriBidi not installed
                 temp = text
             return Cache[text][width] = temp
         }

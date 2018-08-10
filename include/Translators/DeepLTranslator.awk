@@ -113,7 +113,6 @@ function deeplTranslate(text, sl, tl, hl,
     for (i in ast) {
         if (i ~ "^0" SUBSEP "result" SUBSEP "translations" SUBSEP "[[:digit:]]+" SUBSEP "beams" \
             SUBSEP "[[:digit:]]+" SUBSEP "postprocessed_sentence$") {
-            # FIXME: build a cache for recurring invocation of uprintf()
             temp = uprintf(unquote(unparameterize(ast[i])))
             append(translations, temp)
         }

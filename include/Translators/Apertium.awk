@@ -65,7 +65,6 @@ function apertiumTranslate(text, sl, tl, hl,
         return
     }
 
-    # FIXME: build a cache for recurring invocation of uprintf()
     translation = uprintf(unquote(unparameterize(ast[0 SUBSEP "responseData" SUBSEP "translatedText"])))
 
     returnIl[0] = il = _sl

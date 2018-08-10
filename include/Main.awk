@@ -108,13 +108,15 @@ function initScript(    file, line, script, temp) {
 }
 
 # Miscellany initialization.
-function initMisc(    group, temp) {
+function initMisc(    command, group, temp) {
     # (Translate.awk)
     initHttpService()
 
     # Initialize screen width if not set
     if (!Option["width"] && detectProgram("tput", "-V")) {
-        "tput cols" SUPERR | getline temp
+        command = "tput cols" SUPERR
+        command | getline temp
+        close(commnad)
         Option["width"] = temp ? temp - 2 : 64
     }
 

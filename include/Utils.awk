@@ -193,34 +193,37 @@ function curlPost(url, data, output,    command, content, line) {
     content = NULLSTR
     while ((command |& getline line) > 0)
         content = (content ? content "\n" : NULLSTR) line
-    close(command)    
+    close(command)
     return content
 }
 
 # Dump a Unicode string into a byte array. Return the length of the array.
-# NOTE: can only be ran once for each text! Build a cache.
 function dump(text, group,    command, temp) {
     # hexdump tricks:
     # (1) use -v (--no-squeezing)
     # (2) use "%u" (unsigned integers)
     command = "hexdump" " -v -e'1/1 \"%03u\" \" \"'"
-    ("echo " parameterize(text) PIPE command) | getline temp
+    command = "echo " parameterize(text) PIPE command
+    command | getline temp
     split(temp, group, " ")
+    close(command)
     return length(group) - 1
 }
 
 # Base64 encode a string.
-# NOTE: can only be ran once for each text! Build a cache.
 function base64(text,    command, temp) {
     command = "echo -n " parameterize(text) PIPE "base64"
-    ("bash -c " parameterize(command, "\"")) | getline temp
+    command = "bash -c " parameterize(command, "\"")
+    command | getline temp
+    close(command)
     return temp
 }
 
 # Print a Unicode-escaped string. (requires GNU Bash)
-# NOTE: can only be ran once for each text! Build a cache.
 function uprintf(text,    command, temp) {
     command = "echo -en " parameterize(text)
-    ("bash -c " parameterize(command, "\"")) | getline temp
+    command = "bash -c " parameterize(command, "\"")
+    command | getline temp
+    close(command)
     return temp
 }
