@@ -23,13 +23,29 @@ function deeplWebTranslateUrl(uri, sl, tl, hl) {
     # Not implemented
 }
 
-# Send an HTTP POST request and get response from DeepL Translator (via curl).
-function deeplPost(text, sl, tl, hl,
+# Send an HTTP POST request and get response from DeepL Translator (via curl) for splitting into sentences.
+function deeplPostSplit(text, sl, tl, hl,
                    ####
                    content, data, url) {
+    data = "{\"jsonrpc\":\"2.0\",\"method\":\"LMT_split_into_sentences\","
+    data = data "\"params\":{\"texts\":[" parameterize(text, "\"") "]}}"
+    l(data)
+    url = "https://www2.deepl.com/jsonrpc"
+    content = curlPost(url, data)
+    return assert(content, "[ERROR] Null response.")
+}
+
+# Send an HTTP POST request and get response from DeepL Translator (via curl).
+function deeplPost(sentences, sl, tl, hl,
+                   ####
+                   content, data, i, url) {
     data = "{\"jsonrpc\":\"2.0\",\"method\":\"LMT_handle_jobs\","
-    data = data "\"params\":{\"jobs\":[{\"kind\":\"default\","
-    data = data "\"raw_en_sentence\":" parameterize(text, "\"") "}],"
+    data = data "\"params\":{\"jobs\":["
+    for (i in sentences) {
+        if (i > 0) data = data ","
+        data = data "{\"kind\":\"default\",\"raw_en_sentence\":" parameterize(sentences[i], "\"") "}"
+    }
+    data = data "],"
     data = data "\"lang\":{\"user_preferred_langs\":[\"" hl "\"],"
     data = data "\"source_lang_user_selected\":\"" sl "\","
     data = data "\"target_lang\":\"" tl "\"},"
@@ -44,10 +60,10 @@ function deeplPost(text, sl, tl, hl,
 function deeplTranslate(text, sl, tl, hl,
                         isVerbose, toSpeech, returnPlaylist, returnIl,
                         ####
-                        r,
+                        r, i, j,
                         content, tokens, ast,
                         _sl, _tl, _hl, il,
-                        translation, translations,
+                        sentences, translation, translations,
                         wShowOriginal, wShowTranslation,
                         wShowLanguages, wShowAlternatives,
                         group, temp) {
@@ -68,7 +84,15 @@ function deeplTranslate(text, sl, tl, hl,
     if (_tl != "auto") _tl = toupper(_tl)
     if (_hl != "auto") _hl = toupper(_hl)
 
-    content = deeplPost(text, _sl, _tl, _hl)
+    content = deeplPostSplit(text, _sl, _tl, _hl)
+    tokenize(tokens, content)
+    parseJson(ast, tokens)
+    for (i in ast) {
+        if (i ~ "^0" SUBSEP "result" SUBSEP "splitted_texts" SUBSEP "[[:digit:]]+" SUBSEP "[[:digit:]]+") {
+            append(sentences, uprintf(unquote(unparameterize(ast[i]))))
+        }
+    }
+    content = deeplPost(sentences, _sl, _tl, _hl)
     if (Option["dump"])
         return content
     tokenize(tokens, content)
@@ -85,15 +109,22 @@ function deeplTranslate(text, sl, tl, hl,
 
     saveSortedIn = PROCINFO["sorted_in"]
     PROCINFO["sorted_in"] = "compareByIndexFields"
+    j = 0
     for (i in ast) {
-        if (i ~ "^0" SUBSEP "result" SUBSEP "translations" SUBSEP 0 SUBSEP "beams" SUBSEP "[[:digit:]]+" SUBSEP "postprocessed_sentence$") {
+        if (i ~ "^0" SUBSEP "result" SUBSEP "translations" SUBSEP "[[:digit:]]+" SUBSEP "beams" \
+            SUBSEP "[[:digit:]]+" SUBSEP "postprocessed_sentence$") {
             # FIXME: build a cache for recurring invocation of uprintf()
-            append(translations, uprintf(unquote(unparameterize(ast[i]))))
+            temp = uprintf(unquote(unparameterize(ast[i])))
+            append(translations, temp)
+        }
+        if (i ~ "^0" SUBSEP "result" SUBSEP "translations" SUBSEP j SUBSEP "beams" \
+            SUBSEP "[[:digit:]]+" SUBSEP "postprocessed_sentence$") {
+            translation = j > 0 ? translation " " temp : temp
+            j++
         }
     }
     PROCINFO["sorted_in"] = saveSortedIn
 
-    translation = translations[0]
     returnIl[0] = il = tolower(unparameterize(ast[0 SUBSEP "result" SUBSEP "source_lang"]))
     if (Option["verbose"] < -1)
         return il
