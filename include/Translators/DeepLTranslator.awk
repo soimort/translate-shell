@@ -60,7 +60,7 @@ function deeplPost(sentences, sl, tl, hl,
 function deeplTranslate(text, sl, tl, hl,
                         isVerbose, toSpeech, returnPlaylist, returnIl,
                         ####
-                        r, i, j,
+                        r, i, j, k, lines,
                         content, tokens, ast,
                         _sl, _tl, _hl, il,
                         sentences, translation, translations,
@@ -84,45 +84,52 @@ function deeplTranslate(text, sl, tl, hl,
     if (_tl != "auto") _tl = toupper(_tl)
     if (_hl != "auto") _hl = toupper(_hl)
 
-    content = deeplPostSplit(text, _sl, _tl, _hl)
-    tokenize(tokens, content)
-    parseJson(ast, tokens)
-    for (i in ast) {
-        if (i ~ "^0" SUBSEP "result" SUBSEP "splitted_texts" SUBSEP "[[:digit:]]+" SUBSEP "[[:digit:]]+") {
-            append(sentences, uprintf(unquote(unparameterize(ast[i]))))
-        }
-    }
-    content = deeplPost(sentences, _sl, _tl, _hl)
-    if (Option["dump"])
-        return content
-    tokenize(tokens, content)
-    parseJson(ast, tokens)
+    split(text, lines, "\n")
+    for (k in lines) {
+        if (k > 1) translation = translation "\n"
 
-    l(content, "content", 1, 1)
-    l(tokens, "tokens", 1, 0, 1)
-    l(ast, "ast")
-    if (!isarray(ast) || !anything(ast)) {
-        e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
-        ExitCode = 1
-        return
-    }
+        delete tokens; delete ast; delete sentences
 
-    saveSortedIn = PROCINFO["sorted_in"]
-    PROCINFO["sorted_in"] = "compareByIndexFields"
-    j = 0
-    for (i in ast) {
-        if (i ~ "^0" SUBSEP "result" SUBSEP "translations" SUBSEP "[[:digit:]]+" SUBSEP "beams" \
-            SUBSEP "[[:digit:]]+" SUBSEP "postprocessed_sentence$") {
-            temp = uprintf(unquote(unparameterize(ast[i])))
-            append(translations, temp)
+        content = deeplPostSplit(lines[k], _sl, _tl, _hl)
+        tokenize(tokens, content)
+        parseJson(ast, tokens)
+        for (i in ast) {
+            if (i ~ "^0" SUBSEP "result" SUBSEP "splitted_texts" SUBSEP "[[:digit:]]+" SUBSEP "[[:digit:]]+") {
+                append(sentences, uprintf(unquote(unparameterize(ast[i]))))
+            }
         }
-        if (i ~ "^0" SUBSEP "result" SUBSEP "translations" SUBSEP j SUBSEP "beams" \
-            SUBSEP "[[:digit:]]+" SUBSEP "postprocessed_sentence$") {
-            translation = j > 0 ? translation " " temp : temp
-            j++
+        content = deeplPost(sentences, _sl, _tl, _hl)
+        if (Option["dump"])
+            return content
+        tokenize(tokens, content)
+        parseJson(ast, tokens)
+
+        l(content, "content", 1, 1)
+        l(tokens, "tokens", 1, 0, 1)
+        l(ast, "ast")
+        if (!isarray(ast) || !anything(ast)) {
+            e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
+            ExitCode = 1
+            return
         }
+
+        saveSortedIn = PROCINFO["sorted_in"]
+        PROCINFO["sorted_in"] = "compareByIndexFields"
+        j = 0
+        for (i in ast) {
+            if (i ~ "^0" SUBSEP "result" SUBSEP "translations" SUBSEP "[[:digit:]]+" SUBSEP "beams" \
+                SUBSEP "[[:digit:]]+" SUBSEP "postprocessed_sentence$") {
+                temp = uprintf(unquote(unparameterize(ast[i])))
+                append(translations, temp)
+            }
+            if (i ~ "^0" SUBSEP "result" SUBSEP "translations" SUBSEP j SUBSEP "beams" \
+                SUBSEP "[[:digit:]]+" SUBSEP "postprocessed_sentence$") {
+                translation = j > 0 ? translation " " temp : translation temp
+                j++
+            }
+        }
+        PROCINFO["sorted_in"] = saveSortedIn
     }
-    PROCINFO["sorted_in"] = saveSortedIn
 
     returnIl[0] = il = tolower(unparameterize(ast[0 SUBSEP "result" SUBSEP "source_lang"]))
     if (Option["verbose"] < -1)
