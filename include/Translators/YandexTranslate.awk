@@ -155,7 +155,7 @@ function yandexTranslate(text, sl, tl, hl,
 
     # Transliteration
     wShowTranslationPhonetics = Option["show-translation-phonetics"]
-    if (wShowTranslationPhonetics) {
+    if (wShowTranslationPhonetics && _tl != "emj") {
         split(_tl, group, "-")
         data = yandexPostRequestBody(translation, group[1], group[1], _hl, "translit")
         content = curlPost("https://translate.yandex.net/translit/translit", data)
@@ -187,7 +187,7 @@ function yandexTranslate(text, sl, tl, hl,
 
         # Transliteration (original)
         wShowOriginalPhonetics = Option["show-original-phonetics"]
-        if (wShowTranslationPhonetics) {
+        if (wShowTranslationPhonetics && il != "emj") {
             split(il, group, "-")
             data = yandexPostRequestBody(text, group[1], group[1], _hl, "translit")
             content = curlPost("https://translate.yandex.net/translit/translit", data)

@@ -1816,6 +1816,11 @@ function initLocale(    i) {
     Locale["chr"]["glotto"]            = "cher1273"
     Locale["chr"]["script"]            = "Cher"
 
+    #? Emoji
+    Locale["emj"]["support"]           = "yandex-only"
+    Locale["emj"]["name"]              = "Emoji"
+    Locale["emj"]["endonym"]           = "Emoji"
+
     for (i in Locale) {
         # Initialize strings for displaying endonyms of locales
         Locale[i]["display"] = show(Locale[i]["endonym"], i)
