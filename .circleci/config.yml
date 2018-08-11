@@ -12,8 +12,8 @@ jobs:
           name: Install Dependencies
           command: |
             apt-get update
-            apt-get -y install util-linux locales make
-            apt-get -y install gawk rlwrap emacs curl
+            apt-get -y install locales make
+            apt-get -y install util-linux bsdmainutils gawk curl rlwrap emacs
       - run:
           name: Sanity Check
           command: |
