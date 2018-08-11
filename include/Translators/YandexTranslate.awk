@@ -2,7 +2,7 @@
 # YandexTranslate.awk                                              #
 ####################################################################
 #
-# Last Updated: 17 Mar 2018
+# Last Updated: 11 Aug 2018
 BEGIN { provides("yandex") }
 
 function genSID(    content, group, temp) {

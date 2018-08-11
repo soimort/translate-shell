@@ -2,7 +2,7 @@
 # DeepLTranslator.awk                                              #
 ####################################################################
 #
-# Last Updated: 12 Dec 2017
+# Last Updated: 11 Aug 2018
 BEGIN { provides("deepl") }
 
 function deeplInit() {
