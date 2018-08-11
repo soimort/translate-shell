@@ -6,5 +6,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install Dependencies
+          command: |
+            apt-get install build-essential
+      - run:
           name: Sanity Check
           command: make check
