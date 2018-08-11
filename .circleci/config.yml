@@ -12,4 +12,6 @@ jobs:
             apt-get -y install make gawk rlwrap emacs
       - run:
           name: Sanity Check
-          command: make check
+          command: |
+            LANG=en_US.UTF-8
+            make check
