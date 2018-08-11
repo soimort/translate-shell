@@ -9,7 +9,7 @@ jobs:
           name: Install Dependencies
           command: |
             apt-get update
-            apt-get install build-essential
+            apt-get -y install make gawk rlwrap emacs
       - run:
           name: Sanity Check
           command: make check
