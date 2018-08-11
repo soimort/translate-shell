@@ -8,6 +8,7 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
+            apt-get update
             apt-get install build-essential
       - run:
           name: Sanity Check
