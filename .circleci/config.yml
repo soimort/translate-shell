@@ -17,4 +17,4 @@ jobs:
       - run:
           name: Sanity Check
           command: |
-            make check
+            make test
