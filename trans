@@ -5,8 +5,8 @@ read -r -d '' TRANS_PROGRAM << 'EOF'
 BEGIN {
 Name        = "Translate Shell"
 Description = "Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc."
-Version     = "0.9.6.7"
-ReleaseDate = "2018-03-17"
+Version     = "0.9.6.8"
+ReleaseDate = "2018-08-11"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 EntryScript = "translate"
@@ -410,6 +410,7 @@ function getOutput(command,    content, line) {
 content = NULLSTR
 while ((command |& getline line) > 0)
 content = (content ? content "\n" : NULLSTR) line
+close(command)
 return content
 }
 function fileExists(file) {
@@ -418,12 +419,15 @@ return !system("test -f " parameterize(file))
 function dirExists(file) {
 return !system("test -d " parameterize(file))
 }
-function detectProgram(prog, arg, returnOutput,    temp) {
-if (returnOutput) {
-prog " " arg SUPERR | getline temp
+function detectProgram(prog, arg, returnOutput,    command, temp) {
+command = prog " " arg SUPERR
+command | getline temp
+close(command)
+if (returnOutput)
 return temp
-} else
-return (prog " " arg SUPERR | getline) ? prog : NULLSTR
+if (temp)
+return prog
+return NULLSTR
 }
 function getGitHead(    line, group) {
 if (fileExists(".git/HEAD")) {
@@ -574,6 +578,7 @@ return NULLSTR
 content = NULLSTR
 while ((command |& getline line) > 0)
 content = (content ? content "\n" : NULLSTR) line
+close(command)
 return content
 }
 function curlPost(url, data, output,    command, content, line) {
@@ -598,22 +603,29 @@ return NULLSTR
 content = NULLSTR
 while ((command |& getline line) > 0)
 content = (content ? content "\n" : NULLSTR) line
+close(command)
 return content
 }
 function dump(text, group,    command, temp) {
 command = "hexdump" " -v -e'1/1 \"%03u\" \" \"'"
-("echo " parameterize(text) PIPE command) | getline temp
+command = "echo " parameterize(text) PIPE command
+command | getline temp
 split(temp, group, " ")
+close(command)
 return length(group) - 1
 }
 function base64(text,    command, temp) {
-command = "base64"
-("echo -n " parameterize(text) PIPE command) | getline temp
+command = "echo -n " parameterize(text) PIPE "base64"
+command = "bash -c " parameterize(command, "\"")
+command | getline temp
+close(command)
 return temp
 }
 function uprintf(text,    command, temp) {
 command = "echo -en " parameterize(text)
-("bash -c " parameterize(command, "\"")) | getline temp
+command = "bash -c " parameterize(command, "\"")
+command | getline temp
+close(command)
 return temp
 }
 function initLocale(    i) {
@@ -1992,6 +2004,9 @@ Locale["chr"]["family"]            = "Iroquoian"
 Locale["chr"]["iso"]               = "chr"
 Locale["chr"]["glotto"]            = "cher1273"
 Locale["chr"]["script"]            = "Cher"
+Locale["emj"]["support"]           = "yandex-only"
+Locale["emj"]["name"]              = "Emoji"
+Locale["emj"]["endonym"]           = "Emoji"
 for (i in Locale) {
 Locale[i]["display"] = show(Locale[i]["endonym"], i)
 LocaleAlias[Locale[i]["iso"]] = i
@@ -2152,29 +2167,33 @@ return "/" phonetics "/"
 else
 return "(" phonetics ")"
 }
-function show(text, code,    temp) {
+function show(text, code,    command, temp) {
 if (!code || isRTL(code)) {
 if (Cache[text][0])
 return Cache[text][0]
 else {
-if ((FriBidi || (code && isRTL(code))) && BiDiNoPad)
-("echo " parameterize(text) PIPE BiDiNoPad) | getline temp
-else
+if ((FriBidi || (code && isRTL(code))) && BiDiNoPad) {
+command = "echo " parameterize(text) PIPE BiDiNoPad
+command | getline temp
+close(command)
+} else
 temp = text
 return Cache[text][0] = temp
 }
 } else
 return text
 }
-function s(text, code, width,    temp) {
+function s(text, code, width,    command, temp) {
 if (!code || isRTL(code)) {
 if (!width) width = Option["width"]
 if (Cache[text][width])
 return Cache[text][width]
 else {
-if ((FriBidi || (code && isRTL(code))) && BiDi)
-("echo " parameterize(text) PIPE sprintf(BiDi, width)) | getline temp
-else
+if ((FriBidi || (code && isRTL(code))) && BiDi) {
+command = "echo " parameterize(text) PIPE sprintf(BiDi, width)
+command | getline temp
+close(command)
+} else
 temp = text
 return Cache[text][width] = temp
 }
@@ -2217,10 +2236,10 @@ if (!utf)
 w("[WARNING] Your locale codeset (" UserLocale ") is not UTF-8.")
 UserLang = parseLang(UserLocale)
 }
-function getVersion(    build, gitHead, platform) {
+function getVersion(    build, gitHead) {
 initAudioPlayer()
 initPager()
-platform = detectProgram("uname", "-s", 1)
+Platform = Platform ? Platform : detectProgram("uname", "-s", 1)
 if (ENVIRON["TRANS_BUILD"])
 build = "-" ENVIRON["TRANS_BUILD"]
 else {
@@ -2228,7 +2247,7 @@ gitHead = getGitHead()
 build = gitHead ? "-git:" gitHead : ""
 }
 return ansi("bold", sprintf("%-22s%s%s\n\n", Name, Version, build))\
-sprintf("%-22s%s\n", "platform", platform)\
+sprintf("%-22s%s\n", "platform", Platform)\
 sprintf("%-22s%s\n", "gawk (GNU Awk)", PROCINFO["version"])\
 sprintf("%s\n", FriBidi ? FriBidi :
 "fribidi (GNU FriBidi) [NOT INSTALLED]")\
@@ -2965,7 +2984,7 @@ return Option["engine"] methodName
 }
 function initAudioPlayer() {
 AudioPlayer = !system("mpv" SUPOUT SUPERR) ?
-"mpv --loop-file=no" :
+"mpv --no-config" :
 (!system("mplayer" SUPOUT SUPERR) ?
 "mplayer" :
 (!system("mpg123 --version" SUPOUT SUPERR) ?
@@ -3026,7 +3045,7 @@ content = NULLSTR; isBody = 0
 print header |& HttpService
 while ((HttpService |& getline) > 0) {
 if (isBody)
-content = content ? content "\r\n" $0 : $0
+content = content ? content "\n" $0 : $0
 else if (length($0) <= 1)
 isBody = 1
 else {
@@ -3067,7 +3086,7 @@ content = NULLSTR; isBody = 0
 print (header "\r\n" reqBody) |& HttpService
 while ((HttpService |& getline) > 0) {
 if (isBody)
-content = content ? content "\r\n" $0 : $0
+content = content ? content "\n" $0 : $0
 else if (length($0) <= 1)
 isBody = 1
 else {
@@ -3125,9 +3144,10 @@ translateMain()
 Option["input"] = temp1
 Option["verbose"] = temp2
 }
-function webTranslation(uri, sl, tl, hl) {
-system(Option["browser"] " "\
-parameterize(_WebTranslateUrl(uri, sl, tl, hl)) "&")
+function webTranslation(uri, sl, tl, hl,    temp) {
+temp = _WebTranslateUrl(uri, sl, tl, hl)
+if (temp)
+system(Option["browser"] " " parameterize(temp) SUPOUT SUPERR)
 }
 function translate(text, inline,
 i, j, playlist, il, saveSortedIn) {
@@ -3653,7 +3673,7 @@ if (group[1]) {
 cookie = cookie (cookie ?  "; " : NULLSTR) group[1]
 }
 if (isBody)
-content = content ? content "\r\n" $0 : $0
+content = content ? content "\n" $0 : $0
 else if (length($0) <= 1)
 isBody = 1
 else {
@@ -3709,9 +3729,9 @@ else if (tl == "ru") tl = tl "-RU"
 else if (tl == "sv") tl = tl "-SE"
 else if (tl == "yue") ;
 else if (tl == "zh") tl = tl "-CN"
-header = "GET " "/translator/api/language/Speak?"\
-"locale=" tl "&text=" preprocess(text)\
-"&gender=" gender "&media=audio/mp3" " HTTP/1.1\r\n"\
+header = "GET " "/tspeak?&IG=" IG\
+"&language=" tl "&text=" preprocess(text)\
+"&options=" gender "&format=audio%2Fmp3" " HTTP/1.1\r\n"\
 "Host: " HttpHost "\r\n"\
 "Connection: close\r\n"
 if (Option["user-agent"])
@@ -3722,7 +3742,7 @@ content = NULLSTR; isBody = 0
 print header |& HttpService
 while ((HttpService |& getline) > 0) {
 if (isBody)
-content = content ? content "\r\n" $0 : $0
+content = content ? content "\n" $0 : $0
 else if (length($0) <= 1)
 isBody = 1
 }
@@ -3743,13 +3763,13 @@ return HttpPathPrefix "/translator/api/Dictionary/Lookup?"\
 }
 function bingPostRequestUrl(text, sl, tl, hl, type) {
 if (type == "translate")
-return HttpPathPrefix "/ttranslate?&IG=" IG "&IID=translator.5032.2"
+return HttpPathPrefix "/ttranslate?&IG=" IG
 else if (type == "translationlookup")
-return HttpPathPrefix "/ttranslationlookup?&IG=" IG "&IID=translator.5032.2"
+return HttpPathPrefix "/ttranslationlookup?&IG=" IG
 else if (type == "transliterate")
-return HttpPathPrefix "/ttransliterate?&IG=" IG "&IID=translator.5032.1"
+return HttpPathPrefix "/ttransliterate?&IG=" IG
 else # type == "detect"
-return HttpPathPrefix "/tdetect?&IG=" IG "&IID=translator.5032.2"
+return HttpPathPrefix "/tdetect?&IG=" IG
 }
 function bingPostRequestContentType(text, sl, tl, hl, type) {
 return "application/x-www-form-urlencoded"
@@ -3838,7 +3858,7 @@ wShowLanguages = Option["show-languages"]
 wShowDictionary = Option["show-dictionary"]
 wShowOriginalPhonetics = Option["show-original-phonetics"]
 if (wShowOriginalPhonetics) {
-split(il, group, "-")
+split(_sl, group, "-")
 content = postResponse(text, group[1], group[1], _hl, "transliterate")
 oPhonetics = unparameterize(content)
 if (oPhonetics == text) oPhonetics = ""
@@ -3848,9 +3868,9 @@ if (!phonetics) wShowTranslationPhonetics = 0
 if (wShowOriginal) {
 if (r) r = r RS RS
 r = r m("-- display original text")
-r = r prettify("original", s(text, il))
+r = r prettify("original", s(text, _sl))
 if (wShowOriginalPhonetics)
-r = r RS prettify("original-phonetics", showPhonetics(join(oPhonetics, " "), il))
+r = r RS prettify("original-phonetics", showPhonetics(join(oPhonetics, " "), _sl))
 }
 if (wShowTranslation) {
 if (r) r = r RS RS
@@ -3867,9 +3887,9 @@ if (!temp) temp = "[ %s -> %t ]"
 split(temp, group, /(%s|%S|%t|%T)/)
 r = r prettify("languages", group[1])
 if (temp ~ /%s/)
-r = r prettify("languages-sl", getDisplay(il))
+r = r prettify("languages-sl", getDisplay(_sl))
 if (temp ~ /%S/)
-r = r prettify("languages-sl", getName(il))
+r = r prettify("languages-sl", getName(_sl))
 r = r prettify("languages", group[2])
 if (temp ~ /%t/)
 r = r prettify("languages-tl", getDisplay(tl))
@@ -3878,7 +3898,7 @@ r = r prettify("languages-tl", getName(tl))
 r = r prettify("languages", group[3])
 }
 if (wShowDictionary && false) {
-dicContent = getResponse(text, il, _tl, _hl)
+dicContent = getResponse(text, _sl, _tl, _hl)
 tokenize(dicTokens, dicContent)
 parseJson(dicAst, dicTokens)
 if (anything(dicAst)) {
@@ -4017,7 +4037,7 @@ return
 }
 translation = unparameterize(ast[0 SUBSEP "text" SUBSEP 0])
 wShowTranslationPhonetics = Option["show-translation-phonetics"]
-if (wShowTranslationPhonetics) {
+if (wShowTranslationPhonetics && _tl != "emj") {
 split(_tl, group, "-")
 data = yandexPostRequestBody(translation, group[1], group[1], _hl, "translit")
 content = curlPost("https://translate.yandex.net/translit/translit", data)
@@ -4039,7 +4059,7 @@ wShowTranslation = Option["show-translation"]
 wShowLanguages = Option["show-languages"]
 wShowDictionary = Option["show-dictionary"]
 wShowOriginalPhonetics = Option["show-original-phonetics"]
-if (wShowTranslationPhonetics) {
+if (wShowTranslationPhonetics && il != "emj") {
 split(il, group, "-")
 data = yandexPostRequestBody(text, group[1], group[1], _hl, "translit")
 content = curlPost("https://translate.yandex.net/translit/translit", data)
@@ -4292,10 +4312,32 @@ function hunspellTranslate(text, sl, tl, hl,
 isVerbose, toSpeech, returnPlaylist, returnIl) {
 return spellTranslate(text, sl, tl, hl)
 }
+function spellTTSUrl(text, tl,    narrator) {
+e("[ERROR] Spell checker does not support TTS.")
+ExitCode = 1
+return
+}
+function aspellTTSUrl(text, tl,    narrator) {
+return spellTTSUrl(text, tl)
+}
+function hunspellTTSUrl(text, tl,    narrator) {
+return spellTTSUrl(text, tl)
+}
+function spellWebTranslateUrl(uri, sl, tl, hl) {
+e("[ERROR] Spell checker does not support web translation.")
+ExitCode = 1
+return
+}
+function aspellWebTranslateUrl(uri, sl, tl, hl) {
+return spellWebTranslateUrl(uri, sl, tl, hl)
+}
+function hunspellWebTranslateUrl(uri, sl, tl, hl) {
+return spellWebTranslateUrl(uri, sl, tl, hl)
+}
 BEGIN { provides("deepl") }
 function deeplInit() {
 HttpProtocol = "http://"
-HttpHost = "www.deepl.com"
+HttpHost = "www2.deepl.com"
 HttpPort = 80
 }
 function deeplRequestUrl(text, sl, tl, hl) {
@@ -4304,26 +4346,39 @@ function deeplTTSUrl(text, tl,    narrator) {
 }
 function deeplWebTranslateUrl(uri, sl, tl, hl) {
 }
-function deeplPost(text, sl, tl, hl,
+function deeplPostSplit(text, sl, tl, hl,
 content, data, url) {
+data = "{\"jsonrpc\":\"2.0\",\"method\":\"LMT_split_into_sentences\","
+data = data "\"params\":{\"texts\":[" parameterize(text, "\"") "]}}"
+l(data)
+url = "https://www2.deepl.com/jsonrpc"
+content = curlPost(url, data)
+return assert(content, "[ERROR] Null response.")
+}
+function deeplPost(sentences, sl, tl, hl,
+content, data, i, url) {
 data = "{\"jsonrpc\":\"2.0\",\"method\":\"LMT_handle_jobs\","
-data = data "\"params\":{\"jobs\":[{\"kind\":\"default\","
-data = data "\"raw_en_sentence\":" parameterize(text, "\"") "}],"
+data = data "\"params\":{\"jobs\":["
+for (i in sentences) {
+if (i > 0) data = data ","
+data = data "{\"kind\":\"default\",\"raw_en_sentence\":" parameterize(sentences[i], "\"") "}"
+}
+data = data "],"
 data = data "\"lang\":{\"user_preferred_langs\":[\"" hl "\"],"
 data = data "\"source_lang_user_selected\":\"" sl "\","
 data = data "\"target_lang\":\"" tl "\"},"
 data = data "\"priority\":1},\"id\":1}"
 l(data)
-url = "https://www.deepl.com/jsonrpc"
+url = "https://www2.deepl.com/jsonrpc"
 content = curlPost(url, data)
 return assert(content, "[ERROR] Null response.")
 }
 function deeplTranslate(text, sl, tl, hl,
 isVerbose, toSpeech, returnPlaylist, returnIl,
-r,
+r, i, j, k, lines,
 content, tokens, ast,
 _sl, _tl, _hl, il,
-translation, translations,
+sentences, translation, translations,
 wShowOriginal, wShowTranslation,
 wShowLanguages, wShowAlternatives,
 group, temp) {
@@ -4339,7 +4394,19 @@ _hl = getCode(hl); if (!_hl) _hl = hl
 if (_sl != "auto") _sl = toupper(_sl)
 if (_tl != "auto") _tl = toupper(_tl)
 if (_hl != "auto") _hl = toupper(_hl)
-content = deeplPost(text, _sl, _tl, _hl)
+split(text, lines, "\n")
+for (k in lines) {
+if (k > 1) translation = translation "\n"
+delete tokens; delete ast; delete sentences
+content = deeplPostSplit(lines[k], _sl, _tl, _hl)
+tokenize(tokens, content)
+parseJson(ast, tokens)
+for (i in ast) {
+if (i ~ "^0" SUBSEP "result" SUBSEP "splitted_texts" SUBSEP "[[:digit:]]+" SUBSEP "[[:digit:]]+") {
+append(sentences, uprintf(unquote(unparameterize(ast[i]))))
+}
+}
+content = deeplPost(sentences, _sl, _tl, _hl)
 if (Option["dump"])
 return content
 tokenize(tokens, content)
@@ -4354,13 +4421,21 @@ return
 }
 saveSortedIn = PROCINFO["sorted_in"]
 PROCINFO["sorted_in"] = "compareByIndexFields"
+j = 0
 for (i in ast) {
-if (i ~ "^0" SUBSEP "result" SUBSEP "translations" SUBSEP 0 SUBSEP "beams" SUBSEP "[[:digit:]]+" SUBSEP "postprocessed_sentence$") {
-append(translations, uprintf(unquote(unparameterize(ast[i]))))
+if (i ~ "^0" SUBSEP "result" SUBSEP "translations" SUBSEP "[[:digit:]]+" SUBSEP "beams"\
+SUBSEP "[[:digit:]]+" SUBSEP "postprocessed_sentence$") {
+temp = uprintf(unquote(unparameterize(ast[i])))
+append(translations, temp)
+}
+if (i ~ "^0" SUBSEP "result" SUBSEP "translations" SUBSEP j SUBSEP "beams"\
+SUBSEP "[[:digit:]]+" SUBSEP "postprocessed_sentence$") {
+translation = j > 0 ? translation " " temp : translation temp
+j++
 }
 }
 PROCINFO["sorted_in"] = saveSortedIn
-translation = translations[0]
+}
 returnIl[0] = il = tolower(unparameterize(ast[0 SUBSEP "result" SUBSEP "source_lang"]))
 if (Option["verbose"] < -1)
 return il
@@ -4664,10 +4739,12 @@ delete Option["tl"]
 Option["tl"][1] = temp
 }
 }
-function initMisc(    group, temp) {
+function initMisc(    command, group, temp) {
 initHttpService()
 if (!Option["width"] && detectProgram("tput", "-V")) {
-"tput cols" SUPERR | getline temp
+command = "tput cols" SUPERR
+command | getline temp
+close(commnad)
 Option["width"] = temp ? temp - 2 : 64
 }
 if (Option["no-ansi"])
@@ -4699,9 +4776,8 @@ Option["view"] = 0
 }
 }
 if (!Option["browser"]) {
-"xdg-mime query default text/html" SUPERR | getline Option["browser"]
-match(Option["browser"], "(.*).desktop$", group)
-Option["browser"] = group[1]
+Platform = detectProgram("uname", "-s", 1)
+Option["browser"] = Platform == "Darwin" ? "open" : "xdg-open"
 }
 }
 BEGIN {
@@ -5125,9 +5201,9 @@ exit ExitCode
 }
 EOF
 read -r -d '' TRANS_MANPAGE << 'EOF'
-.\" Automatically generated by Pandoc 2.1.1
+.\" Automatically generated by Pandoc 2.2.3.2
 .\"
-.TH "TRANS" "1" "2018\-03\-17" "0.9.6.7" ""
+.TH "TRANS" "1" "2018\-08\-11" "0.9.6.8" ""
 .hy
 .SH NAME
 .PP
@@ -5643,6 +5719,9 @@ Initialization script.
 (current directory)
 .RS
 .RE
+.SH FURTHER DOCUMENTATION
+.PP
+<https://github.com/soimort/translate-shell/wiki>
 .SH REPORTING BUGS
 .PP
 <https://github.com/soimort/translate-shell/issues>
