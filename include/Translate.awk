@@ -185,9 +185,10 @@ function postResponse(text, sl, tl, hl, type,
 
 # Print a string (to output file or terminal pager).
 function p(string) {
-    if (Option["view"])
+    if (Option["view"]) {
         print string | Option["pager"]
-    else
+        close(Option["pager"])
+    } else
         print string > Option["output"]
 }
 
