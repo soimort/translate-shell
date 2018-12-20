@@ -116,7 +116,7 @@ function initMisc(    command, group, temp) {
     if (!Option["width"] && detectProgram("tput", "-V")) {
         command = "tput cols" SUPERR
         command | getline temp
-        close(commnad)
+        close(command)
         Option["width"] = temp ? temp - 2 : 64
     }
 
