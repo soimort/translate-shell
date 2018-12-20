@@ -117,7 +117,7 @@ function initMisc(    command, group, temp) {
         command = "tput cols" SUPERR
         command | getline temp
         close(command)
-        Option["width"] = temp ? temp - 2 : 64
+        Option["width"] = temp > 5 ? temp - 2 : 64  # minimum screen width: 4
     }
 
     # Disable ANSI escape codes if required
