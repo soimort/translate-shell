@@ -2,7 +2,7 @@
 # BingTranslator.awk                                               #
 ####################################################################
 #
-# Last Updated: 18 Mar 2018
+# Last Updated: 23 Dec 2018
 BEGIN { provides("bing") }
 
 function bingInit() {
@@ -94,7 +94,7 @@ function bingTTSUrl(text, tl,
     else if (tl == "yue") ;
     else if (tl == "zh") tl = tl "-CN"
 
-    header = "GET " "/tspeak?&IG=" IG                                   \
+    header = "GET " "/tspeak?"                                          \
         "&language=" tl "&text=" preprocess(text)                       \
         "&options=" gender "&format=audio%2Fmp3" " HTTP/1.1\r\n"        \
         "Host: " HttpHost "\r\n"                                        \
@@ -135,13 +135,13 @@ function bingRequestUrl(text, sl, tl, hl) {
 
 function bingPostRequestUrl(text, sl, tl, hl, type) {
     if (type == "translate")
-        return HttpPathPrefix "/ttranslate?&IG=" IG
+        return HttpPathPrefix "/ttranslate"
     else if (type == "translationlookup")
-        return HttpPathPrefix "/ttranslationlookup?&IG=" IG
+        return HttpPathPrefix "/ttranslationlookup"
     else if (type == "transliterate")
-        return HttpPathPrefix "/ttransliterate?&IG=" IG
+        return HttpPathPrefix "/ttransliterate"
     else # type == "detect"
-        return HttpPathPrefix "/tdetect?&IG=" IG
+        return HttpPathPrefix "/tdetect"
 }
 
 function bingPostRequestContentType(text, sl, tl, hl, type) {
@@ -184,7 +184,7 @@ function bingTranslate(text, sl, tl, hl,
     _tl = getCode(tl); if (!_tl) _tl = tl
     _hl = getCode(hl); if (!_hl) _hl = hl
 
-    bingSetIG() # set IG
+    #bingSetIG() # set IG (no longer needed)
 
     # Language identification
     il = postResponse(text, _sl, _tl, _hl, "detect")
