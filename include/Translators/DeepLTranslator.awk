@@ -27,7 +27,7 @@ function deeplWebTranslateUrl(uri, sl, tl, hl) {
 function deeplPostSplit(text, sl, tl, hl,
                    ####
                    content, data, url) {
-    data = "{\"jsonrpc\":\"2.0\",\"method\":\"LMT_split_into_sentences\","
+    data = "{\"jsonrpc\":\"2.0\",\"method\": \"LMT_split_into_sentences\","
     data = data "\"params\":{\"texts\":[" parameterize(text, "\"") "]}}"
     l(data)
     url = "https://www2.deepl.com/jsonrpc"
@@ -39,7 +39,8 @@ function deeplPostSplit(text, sl, tl, hl,
 function deeplPost(sentences, sl, tl, hl,
                    ####
                    content, data, i, url) {
-    data = "{\"jsonrpc\":\"2.0\",\"method\":\"LMT_handle_jobs\","
+    timestamp = getOutput("date +%s%3N")
+    data = "{\"jsonrpc\":\"2.0\",\"method\": \"LMT_handle_jobs\","
     data = data "\"params\":{\"jobs\":["
     for (i in sentences) {
         if (i > 0) data = data ","
@@ -49,7 +50,7 @@ function deeplPost(sentences, sl, tl, hl,
     data = data "\"lang\":{\"user_preferred_langs\":[\"" hl "\"],"
     data = data "\"source_lang_user_selected\":\"" sl "\","
     data = data "\"target_lang\":\"" tl "\"},"
-    data = data "\"priority\":1},\"id\":1}"
+    data = data "\"priority\":1,\"timestamp\":" timestamp "}}"
     l(data)
     url = "https://www2.deepl.com/jsonrpc"
     content = curlPost(url, data)
