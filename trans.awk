@@ -2,8 +2,8 @@
 BEGIN {
 Name        = "Translate Shell"
 Description = "Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc."
-Version     = "0.9.6.8"
-ReleaseDate = "2018-08-11"
+Version     = "0.9.6.9"
+ReleaseDate = "2018-12-23"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 EntryScript = "translate"
@@ -3106,9 +3106,10 @@ content = curlPost(url, reqBody)
 return content
 }
 function p(string) {
-if (Option["view"])
+if (Option["view"]) {
 print string | Option["pager"]
-else
+close(Option["pager"])
+} else
 print string > Option["output"]
 }
 function play(text, tl,    url) {
@@ -3726,7 +3727,7 @@ else if (tl == "ru") tl = tl "-RU"
 else if (tl == "sv") tl = tl "-SE"
 else if (tl == "yue") ;
 else if (tl == "zh") tl = tl "-CN"
-header = "GET " "/tspeak?&IG=" IG\
+header = "GET " "/tspeak?"\
 "&language=" tl "&text=" preprocess(text)\
 "&options=" gender "&format=audio%2Fmp3" " HTTP/1.1\r\n"\
 "Host: " HttpHost "\r\n"\
@@ -3760,13 +3761,13 @@ return HttpPathPrefix "/translator/api/Dictionary/Lookup?"\
 }
 function bingPostRequestUrl(text, sl, tl, hl, type) {
 if (type == "translate")
-return HttpPathPrefix "/ttranslate?&IG=" IG
+return HttpPathPrefix "/ttranslate"
 else if (type == "translationlookup")
-return HttpPathPrefix "/ttranslationlookup?&IG=" IG
+return HttpPathPrefix "/ttranslationlookup"
 else if (type == "transliterate")
-return HttpPathPrefix "/ttransliterate?&IG=" IG
+return HttpPathPrefix "/ttransliterate"
 else # type == "detect"
-return HttpPathPrefix "/tdetect?&IG=" IG
+return HttpPathPrefix "/tdetect"
 }
 function bingPostRequestContentType(text, sl, tl, hl, type) {
 return "application/x-www-form-urlencoded"
@@ -3800,7 +3801,6 @@ w("[WARNING] " getName(tl) " is a right-to-left language, but FriBidi is not fou
 _sl = getCode(sl); if (!_sl) _sl = sl
 _tl = getCode(tl); if (!_tl) _tl = tl
 _hl = getCode(hl); if (!_hl) _hl = hl
-bingSetIG()
 il = postResponse(text, _sl, _tl, _hl, "detect")
 if (!il) {
 e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
@@ -4331,163 +4331,6 @@ return spellWebTranslateUrl(uri, sl, tl, hl)
 function hunspellWebTranslateUrl(uri, sl, tl, hl) {
 return spellWebTranslateUrl(uri, sl, tl, hl)
 }
-BEGIN { provides("deepl") }
-function deeplInit() {
-HttpProtocol = "http://"
-HttpHost = "www2.deepl.com"
-HttpPort = 80
-}
-function deeplRequestUrl(text, sl, tl, hl) {
-}
-function deeplTTSUrl(text, tl,    narrator) {
-}
-function deeplWebTranslateUrl(uri, sl, tl, hl) {
-}
-function deeplPostSplit(text, sl, tl, hl,
-content, data, url) {
-data = "{\"jsonrpc\":\"2.0\",\"method\":\"LMT_split_into_sentences\","
-data = data "\"params\":{\"texts\":[" parameterize(text, "\"") "]}}"
-l(data)
-url = "https://www2.deepl.com/jsonrpc"
-content = curlPost(url, data)
-return assert(content, "[ERROR] Null response.")
-}
-function deeplPost(sentences, sl, tl, hl,
-content, data, i, url) {
-data = "{\"jsonrpc\":\"2.0\",\"method\":\"LMT_handle_jobs\","
-data = data "\"params\":{\"jobs\":["
-for (i in sentences) {
-if (i > 0) data = data ","
-data = data "{\"kind\":\"default\",\"raw_en_sentence\":" parameterize(sentences[i], "\"") "}"
-}
-data = data "],"
-data = data "\"lang\":{\"user_preferred_langs\":[\"" hl "\"],"
-data = data "\"source_lang_user_selected\":\"" sl "\","
-data = data "\"target_lang\":\"" tl "\"},"
-data = data "\"priority\":1},\"id\":1}"
-l(data)
-url = "https://www2.deepl.com/jsonrpc"
-content = curlPost(url, data)
-return assert(content, "[ERROR] Null response.")
-}
-function deeplTranslate(text, sl, tl, hl,
-isVerbose, toSpeech, returnPlaylist, returnIl,
-r, i, j, k, lines,
-content, tokens, ast,
-_sl, _tl, _hl, il,
-sentences, translation, translations,
-wShowOriginal, wShowTranslation,
-wShowLanguages, wShowAlternatives,
-group, temp) {
-if (!getCode(tl)) {
-w("[WARNING] Unknown target language code: " tl)
-} else if (isRTL(tl)) {
-if (!FriBidi)
-w("[WARNING] " getName(tl) " is a right-to-left language, but FriBidi is not found.")
-}
-_sl = getCode(sl); if (!_sl) _sl = sl
-_tl = getCode(tl); if (!_tl) _tl = tl
-_hl = getCode(hl); if (!_hl) _hl = hl
-if (_sl != "auto") _sl = toupper(_sl)
-if (_tl != "auto") _tl = toupper(_tl)
-if (_hl != "auto") _hl = toupper(_hl)
-split(text, lines, "\n")
-for (k in lines) {
-if (k > 1) translation = translation "\n"
-delete tokens; delete ast; delete sentences
-content = deeplPostSplit(lines[k], _sl, _tl, _hl)
-tokenize(tokens, content)
-parseJson(ast, tokens)
-for (i in ast) {
-if (i ~ "^0" SUBSEP "result" SUBSEP "splitted_texts" SUBSEP "[[:digit:]]+" SUBSEP "[[:digit:]]+") {
-append(sentences, uprintf(unquote(unparameterize(ast[i]))))
-}
-}
-content = deeplPost(sentences, _sl, _tl, _hl)
-if (Option["dump"])
-return content
-tokenize(tokens, content)
-parseJson(ast, tokens)
-l(content, "content", 1, 1)
-l(tokens, "tokens", 1, 0, 1)
-l(ast, "ast")
-if (!isarray(ast) || !anything(ast)) {
-e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
-ExitCode = 1
-return
-}
-saveSortedIn = PROCINFO["sorted_in"]
-PROCINFO["sorted_in"] = "compareByIndexFields"
-j = 0
-for (i in ast) {
-if (i ~ "^0" SUBSEP "result" SUBSEP "translations" SUBSEP "[[:digit:]]+" SUBSEP "beams"\
-SUBSEP "[[:digit:]]+" SUBSEP "postprocessed_sentence$") {
-temp = uprintf(unquote(unparameterize(ast[i])))
-append(translations, temp)
-}
-if (i ~ "^0" SUBSEP "result" SUBSEP "translations" SUBSEP j SUBSEP "beams"\
-SUBSEP "[[:digit:]]+" SUBSEP "postprocessed_sentence$") {
-translation = j > 0 ? translation " " temp : translation temp
-j++
-}
-}
-PROCINFO["sorted_in"] = saveSortedIn
-}
-returnIl[0] = il = tolower(unparameterize(ast[0 SUBSEP "result" SUBSEP "source_lang"]))
-if (Option["verbose"] < -1)
-return il
-else if (Option["verbose"] < 0)
-return getList(il)
-if (!isVerbose) {
-r = translation
-} else {
-wShowOriginal = Option["show-original"]
-wShowTranslation = Option["show-translation"]
-wShowLanguages = Option["show-languages"]
-wShowAlternatives = Option["show-alternatives"]
-if (length(translations) <= 1) wShowAlternatives = 0
-if (wShowOriginal) {
-if (r) r = r RS RS
-r = r m("-- display original text")
-r = r prettify("original", s(text, il))
-}
-if (wShowTranslation) {
-if (r) r = r RS RS
-r = r m("-- display major translation")
-r = r prettify("translation", s(translation, tl))
-}
-if (wShowLanguages) {
-if (r) r = r RS RS
-r = r m("-- display source language -> target language")
-temp = Option["fmt-languages"]
-if (!temp) temp = "[ %s -> %t ]"
-split(temp, group, /(%s|%S|%t|%T)/)
-r = r prettify("languages", group[1])
-if (temp ~ /%s/)
-r = r prettify("languages-sl", getDisplay(il))
-if (temp ~ /%S/)
-r = r prettify("languages-sl", getName(il))
-r = r prettify("languages", group[2])
-if (temp ~ /%t/)
-r = r prettify("languages-tl", getDisplay(tl))
-if (temp ~ /%T/)
-r = r prettify("languages-tl", getName(tl))
-r = r prettify("languages", group[3])
-}
-if (wShowAlternatives) {
-if (r) r = r RS
-r = r m("-- display alternative translations")
-r = r RS ins(1, prettify("alternatives-translations-item", translations[1]))
-for (i = 2; i < length(translations); i++)
-r = r RS ins(1, prettify("alternatives-translations-item", translations[i]))
-}
-}
-if (toSpeech) {
-returnPlaylist[0]["text"] = translation
-returnPlaylist[0]["tl"] = tl
-}
-return r
-}
 function loadOptions(script,    i, j, tokens, name, value) {
 tokenize(tokens, script)
 for (i in tokens) {
@@ -4741,8 +4584,8 @@ initHttpService()
 if (!Option["width"] && detectProgram("tput", "-V")) {
 command = "tput cols" SUPERR
 command | getline temp
-close(commnad)
-Option["width"] = temp ? temp - 2 : 64
+close(command)
+Option["width"] = temp > 5 ? temp - 2 : 64
 }
 if (Option["no-ansi"])
 delete AnsiCode
