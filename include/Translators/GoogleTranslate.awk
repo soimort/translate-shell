@@ -57,7 +57,7 @@ function googleRequestUrl(text, sl, tl, hl,    qc) {
     qc = Option["no-autocorrect"] ? "qc" : "qca";
     return HttpPathPrefix "/translate_a/single?client=gtx"              \
         "&ie=UTF-8&oe=UTF-8"                                            \
-        "&dt=bd&dt=ex&dt=ld&dt=md&dt=rw&dt=rm&dt=ss&dt=t&dt=at"         \
+        "&dt=bd&dt=ex&dt=ld&dt=md&dt=rw&dt=rm&dt=ss&dt=t&dt=at&dt=gt"   \
         "&dt=" qc "&sl=" sl "&tl=" tl "&hl=" hl                         \
         "&q=" preprocess(text)
 }
@@ -196,6 +196,10 @@ function googleTranslate(text, sl, tl, hl,
         # 14 - (original) see also
         if (match(i, "^0" SUBSEP "14" SUBSEP "0" SUBSEP "([[:digit:]]+)$", group))
             oSeeAlso[group[1]] = literal(ast[i])
+
+        # 18 - gender-specific translations
+        if (match(i, "^0" SUBSEP "18" SUBSEP "0" SUBSEP "([[:digit:]]+)" SUBSEP "1$", group))
+            genderedTrans[group[1]] = literal(ast[i])
     }
     PROCINFO["sorted_in"] = saveSortedIn
 
@@ -261,7 +265,14 @@ function googleTranslate(text, sl, tl, hl,
             # Display: major translation & phonetics
             if (r) r = r RS RS
             r = r m("-- display major translation & phonetics")
-            r = r prettify("translation", s(translation, tl))
+            if (!exists(genderedTrans))
+                r = r prettify("translation", s(translation, tl))
+            else {
+                r = r prettify("prompt-message", s("(♂) ", hl))
+                r = r prettify("translation", s(genderedTrans[0], tl)) RS
+                r = r prettify("prompt-message", s("(♀) ", hl))
+                r = r prettify("translation", s(genderedTrans[1], tl))
+            }
             if (wShowTranslationPhonetics)
                 r = r RS prettify("translation-phonetics", showPhonetics(join(phonetics, " "), tl))
         }
