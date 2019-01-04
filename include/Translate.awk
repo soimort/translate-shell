@@ -193,11 +193,16 @@ function p(string) {
 }
 
 # Play using a Text-to-Speech engine.
-function play(text, tl,    url) {
+function play(text, tl,    url, status) {
     url = _TTSUrl(text, tl)
 
     # Don't use getline from pipe here - the same pipe will be run only once for each AWK script!
-    system(Option["player"] " " parameterize(url) SUPOUT SUPERR)
+    status = system(Option["player"] " " parameterize(url) SUPOUT SUPERR)
+
+    if (status)
+        w("Voice output isn't available for " getName(tl))
+
+    return status
 }
 
 # Download audio from a Text-to-Speech engine.
