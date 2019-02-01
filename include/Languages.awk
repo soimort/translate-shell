@@ -2115,10 +2115,6 @@ function parseLang(lang,    code, group) {
 
 # Initialize `UserLang`.
 function initUserLang(    lang, utf) {
-    if (lang = ENVIRON["LANGUAGE"]) {
-        if (!UserLocale) UserLocale = lang
-        utf = utf || tolower(lang) ~ /utf-?8$/
-    }
     if (lang = ENVIRON["LC_ALL"]) {
         if (!UserLocale) UserLocale = lang
         utf = utf || tolower(lang) ~ /utf-?8$/
