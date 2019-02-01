@@ -1,10 +1,10 @@
 NAME     = "translate-shell"
 COMMAND  = trans
-BUILDDIR = build
+BUILDDIR ?= build
 MANDIR   = man
 
-TARGET   = bash
-PREFIX   = /usr/local
+TARGET   ?= bash
+PREFIX   ?= /usr/local
 
 .PHONY: default clean build release grip test check install uninstall
 
