@@ -233,21 +233,21 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 
     This option is optional. When its setting is omitted, English will be used.
 
-    This option overrides the setting of environment variables $**LANGUAGE**, $**LC_ALL**, $**LANG** and $**HOME_LANG**.
+    This option overrides the setting of environment variables $**LC_ALL**, $**LANG**, and $**HOME_LANG**.
 
-**-s** *CODE*, **-sl** *CODE*, **-source** *CODE*, **-from** *CODE*
-:   Specify the source language (the language of original text).
+**-s** *CODES*, **-sl** *CODES*, **-source** *CODES*, **-from** *CODES*
+:   Specify the source language(s) (the language(s) of original text). When specifying two or more language codes, concatenate them by plus sign "+".
 
     This option is optional. When its setting is omitted, the language of original text will be identified automatically (with a possibility of misidentification).
 
     This option overrides the setting of environment variable $**SOURCE_LANG**.
 
-**-t** *CODES*, **-tl** *CODE*, **-target** *CODES*, **-to** *CODES*
+**-t** *CODES*, **-tl** *CODES*, **-target** *CODES*, **-to** *CODES*
 :   Specify the target language(s) (the language(s) of translated text). When specifying two or more language codes, concatenate them by plus sign "+".
 
     This option is optional. When its setting is omitted, everything will be translated into English.
 
-    This option overrides the setting of environment variables $**LANGUAGE**, $**LC_ALL**, $**LANG** and $**TARGET_LANG**.
+    This option overrides the setting of environment variables $**LC_ALL**, $**LANG**, and $**TARGET_LANG**.
 
 [*SOURCE*]:[*TARGETS*]
 :   A simpler, alternative way to specify the source language and target language(s) is to use a shortcut formatted string:
