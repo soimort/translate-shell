@@ -26,7 +26,7 @@ function getVersion(    build, gitHead) {
         sprintf("%-22s%s\n", "terminal type", ENVIRON["TERM"])          \
         sprintf("%-22s%s (%s)\n", "user locale", UserLocale, getName(UserLang)) \
         sprintf("%-22s%s\n", "home language", Option["hl"])             \
-        sprintf("%-22s%s\n", "source language", Option["sl"])           \
+        sprintf("%-22s%s\n", "source language", join(Option["sls"], "+")) \
         sprintf("%-22s%s\n", "target language", join(Option["tl"], "+")) \
         sprintf("%-22s%s\n", "translation engine", Option["engine"])    \
         sprintf("%-22s%s\n", "proxy", Option["proxy"] ? Option["proxy"] :
@@ -42,7 +42,7 @@ function getVersion(    build, gitHead) {
 function getHelp() {
     return "Usage:  " ansi("bold", Command)                             \
         " [" ansi("underline", "OPTIONS") "]"                           \
-        " [" ansi("underline", "SOURCE") "]"                            \
+        " [" ansi("underline", "SOURCES") "]"                           \
         ":[" ansi("underline", "TARGETS") "]"                           \
         " [" ansi("underline", "TEXT") "]..." RS                        \
         RS "Information options:" RS                                    \
@@ -166,13 +166,13 @@ function getHelp() {
             ", " ansi("bold", "-hl ") ansi("underline", "CODE")         \
             ", " ansi("bold", "-lang ") ansi("underline", "CODE")) RS   \
         ins(2, "Specify your home language.") RS                        \
-        ins(1, ansi("bold", "-s ") ansi("underline", "CODE")            \
-            ", " ansi("bold", "-sl ") ansi("underline", "CODE")         \
-            ", " ansi("bold", "-source ") ansi("underline", "CODE")     \
-            ", " ansi("bold", "-from ") ansi("underline", "CODE")) RS   \
-        ins(2, "Specify the source language.") RS                       \
+        ins(1, ansi("bold", "-s ") ansi("underline", "CODES")           \
+            ", " ansi("bold", "-sl ") ansi("underline", "CODES")        \
+            ", " ansi("bold", "-source ") ansi("underline", "CODES")    \
+            ", " ansi("bold", "-from ") ansi("underline", "CODES")) RS  \
+        ins(2, "Specify the source language(s), joined by '+'.") RS     \
         ins(1, ansi("bold", "-t ") ansi("underline", "CODES")           \
-            ", " ansi("bold", "-tl ") ansi("underline", "CODE")         \
+            ", " ansi("bold", "-tl ") ansi("underline", "CODES")        \
             ", " ansi("bold", "-target ") ansi("underline", "CODES")    \
             ", " ansi("bold", "-to ") ansi("underline", "CODES")) RS    \
         ins(2, "Specify the target language(s), joined by '+'.") RS     \
