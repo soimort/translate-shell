@@ -323,6 +323,24 @@ function translate(text, inline,
     PROCINFO["sorted_in"] = saveSortedIn
 }
 
+# Translate the source text (from all source languages).
+function translates(text, inline,
+                    ####
+                    i) {
+    saveSortedIn = PROCINFO["sorted_in"]
+    PROCINFO["sorted_in"] = "@ind_num_asc"
+    for (i in Option["sls"]) {
+        # Non-interactive verbose mode: separator between sources
+        if (!Option["interactive"])
+            if (Option["verbose"] && i > 1)
+                p(prettify("target-seperator", replicate(Option["chr-target-seperator"], Option["width"])))
+
+        Option["sl"] = Option["sls"][i]
+        translate(text, inline)
+    }
+    PROCINFO["sorted_in"] = saveSortedIn
+}
+
 # Read from input and translate each line.
 function translateMain(    i, line) {
     if (Option["interactive"])
@@ -342,7 +360,7 @@ function translateMain(    i, line) {
                 if (Option["interactive"])
                     repl(line)
                 else
-                    translate(line)
+                    translates(line)
             } else {
                 # Non-interactive brief mode: preserve line breaks
                 if (!Option["interactive"])

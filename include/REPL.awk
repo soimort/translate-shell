@@ -65,12 +65,18 @@ function prompt(    i, p, temp) {
     if (p ~ /%L/)
         gsub(/%L/, getName(Option["hl"]), p)
 
-    # %s : source language
+    # %s : source languages, separated by "+"
     # 's' is the format-control character for string
 
-    # %S : source language (English name)
-    if (p ~ /%S/)
-        gsub(/%S/, getName(Option["sl"]), p)
+    # %S : source languages (English names), seperated by "+"
+    if (p ~ /%S/) {
+        temp = getName(Option["sls"][1])
+        for (i = 2; i <= length(Option["sls"]); i++)
+            temp = temp "+" getName(Option["sls"][i])
+        gsub(/%S/, temp, p)
+    }
+
+    # TODO: source languages separated by "," and "/"
 
     # %t : target languages, separated by "+"
     if (p ~ /%t/) {
@@ -120,8 +126,11 @@ function prompt(    i, p, temp) {
         gsub(/%\?/, temp, p)
     }
 
-    # %s : source language
-    printf(prettify("prompt", p), getDisplay(Option["sl"])) > STDERR
+    # %s : source languages, separated by "+"
+    temp = getDisplay(Option["sls"][1])
+    for (i = 2; i <= length(Option["sls"]); i++)
+        temp = temp "+" getDisplay(Option["sls"][i])
+    printf(prettify("prompt", p), temp) > STDERR
 }
 
 # REPL.
@@ -143,16 +152,19 @@ function repl(line,    command, group, name, i, value, words) {
         Option["engine"] = value
         initHttpService()
     } else {
-        match(command, /^[{(\[]?([[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)[})\]]?$/, group)
+        match(command, /^[{(\[]?((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)[})\]]?$/, group)
         if (RSTART) {
-            if (group[1]) Option["sl"] = group[1]
-            if (group[4]) split(group[4], Option["tl"], "+")
+            if (group[1]) {
+                split(group[1], Option["sls"], "+")
+                Option["sl"] = Option["sls"][1]
+            }
+            if (group[7]) split(group[7], Option["tl"], "+")
             line = words[2]
             for (i = 3; i <= length(words); i++)
                 line = line " " words[i]
         }
         if (line) {
-            translate(line)
+            translates(line)
 
             # Interactive verbose mode: newline after each translation
             if (Option["verbose"]) printf RS

@@ -72,6 +72,7 @@ function init() {
     # Language preference
     Option["hl"] = ENVIRON["HOME_LANG"] ? ENVIRON["HOME_LANG"] : UserLang
     Option["sl"] = ENVIRON["SOURCE_LANG"] ? ENVIRON["SOURCE_LANG"] : "auto"
+    Option["sls"][1] = Option["sl"]
     Option["tl"][1] = ENVIRON["TARGET_LANG"] ? ENVIRON["TARGET_LANG"] : UserLang
 }
 
@@ -632,12 +633,14 @@ BEGIN {
             continue
         }
 
-        # -s CODE, -sl CODE, -source CODE, -f CODE, -from CODE
+        # -s CODES, -sl CODES, -source CODES, -f CODES, -from CODES
         match(ARGV[pos], /^--?(s(o(u(r(ce?)?)?)?|l)?|f|from)(=(.*)?)?$/, group)
         if (RSTART) {
-            Option["sl"] = group[6] ?
-                (group[7] ? group[7] : Option["sl"]) :
-                ARGV[++pos]
+            if (group[6]) {
+                if (group[7]) split(group[7], Option["sls"], "+")
+            } else
+                split(ARGV[++pos], Option["sls"], "+")
+            Option["sl"] = Option["sls"][1]
             continue
         }
 
@@ -653,10 +656,13 @@ BEGIN {
 
         # Shortcut format
         # 'CODE:CODE+...' or 'CODE=CODE+...'
-        match(ARGV[pos], /^[{(\[]?([[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)[})\]]?$/, group)
+        match(ARGV[pos], /^[{(\[]?((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)[})\]]?$/, group)
         if (RSTART) {
-            if (group[1]) Option["sl"] = group[1]
-            if (group[4]) split(group[4], Option["tl"], "+")
+            if (group[1]) {
+                split(group[1], Option["sls"], "+")
+                Option["sl"] = Option["sls"][1]
+            }
+            if (group[7]) split(group[7], Option["tl"], "+")
             continue
         }
 
@@ -748,7 +754,7 @@ BEGIN {
             if (Option["verbose"] && i > pos)
                 p(prettify("source-seperator", replicate(Option["chr-source-seperator"], Option["width"])))
 
-            translate(noargv[i], 1) # inline mode
+            translates(noargv[i], 1) # inline mode
         }
 
         # If input not specified, we're done
