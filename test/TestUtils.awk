@@ -70,7 +70,6 @@ BEGIN {
     T("uprintf", 1)
     {
         assertEqual(uprintf("Ma\\u00f1ana"), "Mañana")
-        assertEqual(uprintf("Ma\\u00f1ana"), "Mañana")
     }
 
     END_TEST()
