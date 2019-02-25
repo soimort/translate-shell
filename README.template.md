@@ -53,8 +53,8 @@ In order to be happy, the best way is to be loved by people.
 
 * GNU/Linux
 * macOS
-* FreeBSD
-* Windows (Cygwin or MSYS2)
+* *BSD
+* Windows (through WSL, Cygwin, or MSYS2)
 
 ### Dependencies
 
@@ -163,6 +163,11 @@ Alternatively, equals sign ("`=`") can be used in place of the colon ("`:`"). No
 You can also use the `-target` (`-t`) option to specify the target language(s):
 
     $ trans -t zh+ja word
+
+With the `-t` option, the name of the language may also be used instead of the language code:
+
+    $ trans -t japanese word
+    $ trans -t 日本語 word
 
 #### From a specific language
 

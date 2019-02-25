@@ -53,8 +53,8 @@ In order to be happy, the best way is to be loved by people.
 
 * GNU/Linux
 * macOS
-* FreeBSD
-* Windows (Cygwin or MSYS2)
+* *BSD
+* Windows (through WSL, Cygwin, or MSYS2)
 
 ### Dependencies
 
@@ -163,6 +163,11 @@ Alternatively, equals sign ("`=`") can be used in place of the colon ("`:`"). No
 You can also use the `-target` (`-t`) option to specify the target language(s):
 
     $ trans -t zh+ja word
+
+With the `-t` option, the name of the language may also be used instead of the language code:
+
+    $ trans -t japanese word
+    $ trans -t 日本語 word
 
 #### From a specific language
 
@@ -320,7 +325,7 @@ You may also change these settings during an interactive session. See **[wiki: R
 For more details on command-line options, see the man page **[trans(1)](https://www.soimort.org/translate-shell/trans.1.html)** or use `trans -M` in a terminal.
 
 ```
-Usage:  trans [OPTIONS] [SOURCE]:[TARGETS] [TEXT]...
+Usage:  trans [OPTIONS] [SOURCES]:[TARGETS] [TEXT]...
 
 Information options:
     -V, -version
@@ -441,9 +446,9 @@ I/O options:
 Language preference options:
     -l CODE, -hl CODE, -lang CODE
         Specify your home language.
-    -s CODE, -sl CODE, -source CODE, -from CODE
-        Specify the source language.
-    -t CODES, -tl CODE, -target CODES, -to CODES
+    -s CODES, -sl CODES, -source CODES, -from CODES
+        Specify the source language(s), joined by '+'.
+    -t CODES, -tl CODES, -target CODES, -to CODES
         Specify the target language(s), joined by '+'.
 
 Other options:
