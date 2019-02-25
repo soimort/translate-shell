@@ -240,7 +240,7 @@ function escape(string) {
 
 # Reverse of escape(string).
 function unescape(string) {
-    gsub(/\\\"/, "\"", string)
+    gsub(/\\"/, "\"", string)
     gsub(/\\\\/, "\\", string) # substitute backslashes last
 
     return string
