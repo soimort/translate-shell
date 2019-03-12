@@ -17,6 +17,7 @@ function initGawk(    group) {
 }
 
 # Detect whether the terminal emulator implements its own BiDi support.
+# NOTE: not working inside an SSH session!
 function initBiDiTerm() {
     if (ENVIRON["MLTERM"])
         BiDiTerm = "mlterm"

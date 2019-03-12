@@ -5,10 +5,12 @@
 # Initialization.
 function init() {
     initGawk()
+    initBiDiTerm()
     initBiDi()
 
     # (Languages.awk)
     initLocale()
+    initLocaleAlias()
     initUserLang()
 
     RS = "\n"
@@ -125,9 +127,12 @@ function initMisc(    command, group, temp) {
     if (Option["no-ansi"])
         delete AnsiCode
 
-    # Disable conversion of bidirectional texts if required
-    if (Option["no-bidi"])
+    # Disable conversion of bidirectional texts if required or supported by emulator
+    if (Option["no-bidi"] || BiDiTerm)
         BiDi = BiDiNoPad = NULLSTR
+
+    # (Languages.awk)
+    initLocaleDisplay()
 
     # Disable everything stderr
     if (Option["no-warn"])
