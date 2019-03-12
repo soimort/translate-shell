@@ -2,7 +2,7 @@
 # Languages.awk                                                    #
 ####################################################################
 
-# Initialize all locales supported on Google Translate.
+# Initialize all locales supported.
 # Mostly ISO 639-1 codes, with a few ISO 639-3 codes.
 # "family" : Language family (from Glottolog)
 # "iso"    : ISO 639-3 code
@@ -12,7 +12,7 @@
 #      <https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes>
 #      <https://en.wikipedia.org/wiki/ISO_15924#List_of_codes>
 #      <http://glottolog.org/>
-function initLocale(    i) {
+function initLocale() {
 
     #1 Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
@@ -1820,11 +1820,11 @@ function initLocale(    i) {
     Locale["emj"]["support"]           = "yandex-only"
     Locale["emj"]["name"]              = "Emoji"
     Locale["emj"]["endonym"]           = "Emoji"
+}
 
+# Initialize aliases of all locales supported.
+function initLocaleAlias(    i) {
     for (i in Locale) {
-        # Initialize strings for displaying endonyms of locales
-        Locale[i]["display"] = show(Locale[i]["endonym"], i)
-
         # ISO 639-3 codes as aliases
         LocaleAlias[Locale[i]["iso"]] = i
 
@@ -1854,6 +1854,13 @@ function initLocale(    i) {
     LocaleAlias["tlh-Latn"] = "tlh"
     LocaleAlias["tlh-Piqd"] = "tlh-Qaak"
     # TODO: more aliases
+}
+
+# Initialize strings for displaying endonyms of all locales supported.
+function initLocaleDisplay(    i) {
+    for (i in Locale) {
+        Locale[i]["display"] = show(Locale[i]["endonym"], i)
+    }
 }
 
 # Get locale key by language code or alias.
