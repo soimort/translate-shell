@@ -128,8 +128,14 @@ function initMisc(    command, group, temp) {
         delete AnsiCode
 
     # Disable conversion of bidirectional texts if required or supported by emulator
-    if (Option["no-bidi"] || BiDiTerm)
+    if (Option["no-bidi"] || BiDiTerm == "mlterm")
+        # mlterm implements its own padding
         BiDi = BiDiNoPad = NULLSTR
+    else if (BiDiTerm == "konsole") {
+        # konsole implements no padding; we should handle this
+        BiDiNoPad = NULLSTR
+        BiDi = "sed \"s/'/\\\\\\'/\" | xargs -0 printf '%%%ss'"
+    }
 
     # (Languages.awk)
     initLocaleDisplay()
