@@ -6,6 +6,8 @@ BEGIN {
     T("getCode()", 5)
     {
         initLocale()
+        initLocaleAlias()
+        initLocaleDisplay()
 
         assertEqual(getCode("chinese"), "zh-CN")
         assertEqual(getCode("简体中文"), "zh-CN")
