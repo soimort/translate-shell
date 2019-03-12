@@ -16,6 +16,9 @@ function getVersion(    build, gitHead) {
 
     return ansi("bold", sprintf("%-22s%s%s\n\n", Name, Version, build)) \
         sprintf("%-22s%s\n", "platform", Platform)                      \
+        sprintf("%-22s%s\n", "terminal type", ENVIRON["TERM"])          \
+        sprintf("%-22s%s\n", "bi-di emulator", BiDiTerm ? BiDiTerm :
+                "[NONE]")                                               \
         sprintf("%-22s%s\n", "gawk (GNU Awk)", PROCINFO["version"])     \
         sprintf("%s\n", FriBidi ? FriBidi :
                 "fribidi (GNU FriBidi) [NOT INSTALLED]")                \
@@ -23,7 +26,6 @@ function getVersion(    build, gitHead) {
                 "[NOT INSTALLED]")                                      \
         sprintf("%-22s%s\n", "terminal pager", Pager ? Pager :
                 "[NOT INSTALLED]")                                      \
-        sprintf("%-22s%s\n", "terminal type", ENVIRON["TERM"])          \
         sprintf("%-22s%s (%s)\n", "user locale", UserLocale, getName(UserLang)) \
         sprintf("%-22s%s\n", "home language", Option["hl"])             \
         sprintf("%-22s%s\n", "source language", join(Option["sls"], "+")) \

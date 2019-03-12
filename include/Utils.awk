@@ -16,6 +16,14 @@ function initGawk(    group) {
     }
 }
 
+# Detect whether the terminal emulator implements its own BiDi support.
+function initBiDiTerm() {
+    if (ENVIRON["MLTERM"])
+        BiDiTerm = "mlterm"
+    else if (ENVIRON["KONSOLE_VERSION"])
+        BiDiTerm = "konsole"
+}
+
 # Detect external bidirectional algorithm utility (fribidi);
 # Fallback to Unix `rev` if not found.
 function initBiDi() {
