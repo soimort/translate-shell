@@ -31,7 +31,7 @@ function initBiDi() {
     FriBidi = detectProgram("fribidi", "--version", 1)
     BiDiNoPad = FriBidi ? "fribidi --nopad" : "rev" SUPERR
     BiDi = FriBidi ? "fribidi --width %s" :
-        "rev" SUPERR "| sed \"s/'/\\\\\\'/\" | xargs printf '%%s '"
+        "rev" SUPERR "| sed \"s/'/\\\\\\'/\" | xargs -0 printf '%%%ss'"
 }
 
 # Detect external readline wrapper (rlwrap).
