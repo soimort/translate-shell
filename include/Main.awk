@@ -38,6 +38,7 @@ function init() {
     Option["no-ansi"] = 0
     Option["no-autocorrect"] = 0
     Option["no-bidi"] = 0
+    Option["force-bidi"] = 0
     Option["no-warn"] = 0
     Option["theme"] = "default"
     Option["dump"] = 0
@@ -131,7 +132,7 @@ function initMisc(    command, group, temp) {
     if (Option["no-bidi"] || BiDiTerm == "mlterm")
         # mlterm implements its own padding
         BiDi = BiDiNoPad = NULLSTR
-    else if (BiDiTerm == "konsole") {
+    else if (!Option["force-bidi"] && BiDiTerm == "konsole") {
         # konsole implements no padding; we should handle this
         BiDiNoPad = NULLSTR
         BiDi = "sed \"s/'/\\\\\\'/\" | xargs -0 printf '%%%ss'"
@@ -433,6 +434,13 @@ BEGIN {
         match(ARGV[pos], /^--?no-bidi/)
         if (RSTART) {
             Option["no-bidi"] = 1
+            continue
+        }
+
+        # -bidi
+        match(ARGV[pos], /^--?bidi/)
+        if (RSTART) {
+            Option["force-bidi"] = 1
             continue
         }
 
