@@ -76,6 +76,9 @@ function initHttpService(    inet) {
         HttpService = "/" inet "/tcp/0/" HttpHost "/" HttpPort
         HttpPathPrefix = ""
     }
+
+    # How long to wait in milliseconds for IPv6 before trying IPv4
+    PROCINFO[HttpService, "READ_TIMEOUT"] = 300
 }
 
 # Pre-process string (URL-encode before send).
@@ -109,21 +112,32 @@ function getResponse(text, sl, tl, hl,
         header = header "Proxy-Authorization: Basic " HttpAuthCredentials "\r\n"
 
     content = NULLSTR; isBody = 0
-    print header |& HttpService
-    while ((HttpService |& getline) > 0) {
-        if (isBody)
-            content = content ? content "\n" $0 : $0
-        else if (length($0) <= 1)
-            isBody = 1
-        else { # interesting fields in header
-            match($0, /^HTTP[^ ]* ([^ ]*)/, group)
-            if (RSTART) status = group[1]
-            match($0, /^Location: (.*)/, group)
-            if (RSTART) location = squeeze(group[1]) # squeeze the URL!
+    while (1) {
+        print header |& HttpService
+        while ((HttpService |& getline) > 0) {
+            if (isBody)
+                content = content ? content "\n" $0 : $0
+            else if (length($0) <= 1)
+                isBody = 1
+            else { # interesting fields in header
+                match($0, /^HTTP[^ ]* ([^ ]*)/, group)
+                if (RSTART) status = group[1]
+                match($0, /^Location: (.*)/, group)
+                if (RSTART) location = squeeze(group[1]) # squeeze the URL!
+            }
+            l(sprintf("%4s bytes > %s", length($0), $0))
         }
-        l(sprintf("%4s bytes > %s", length($0), $0))
+        close(HttpService)
+
+        if (ERRNO == "Connection timed out") {
+            w("[WARNING] " ERRNO ". Retrying IPv4 connection.")
+            Option["ip-version"] = 4
+            initHttpService()
+            PROCINFO[HttpService, "READ_TIMEOUT"] = 0
+            ERRNO = ""
+        } else
+            break
     }
-    close(HttpService)
 
     if ((status == "301" || status == "302") && location)
         content = curl(location)
@@ -158,21 +172,32 @@ function postResponse(text, sl, tl, hl, type,
         header = header "Proxy-Authorization: Basic " HttpAuthCredentials "\r\n"
 
     content = NULLSTR; isBody = 0
-    print (header "\r\n" reqBody) |& HttpService
-    while ((HttpService |& getline) > 0) {
-        if (isBody)
-            content = content ? content "\n" $0 : $0
-        else if (length($0) <= 1)
-            isBody = 1
-        else { # interesting fields in header
-            match($0, /^HTTP[^ ]* ([^ ]*)/, group)
-            if (RSTART) status = group[1]
-            match($0, /^Location: (.*)/, group)
-            if (RSTART) location = squeeze(group[1]) # squeeze the URL!
+    while (1) {
+        print (header "\r\n" reqBody) |& HttpService
+        while ((HttpService |& getline) > 0) {
+            if (isBody)
+                content = content ? content "\n" $0 : $0
+            else if (length($0) <= 1)
+                isBody = 1
+            else { # interesting fields in header
+                match($0, /^HTTP[^ ]* ([^ ]*)/, group)
+                if (RSTART) status = group[1]
+                match($0, /^Location: (.*)/, group)
+                if (RSTART) location = squeeze(group[1]) # squeeze the URL!
+            }
+            l(sprintf("%4s bytes > %s", length($0), $0))
         }
-        l(sprintf("%4s bytes > %s", length($0), $0))
+        close(HttpService)
+
+        if (ERRNO == "Connection timed out") {
+            w("[WARNING] " ERRNO ". Retrying IPv4 connection.")
+            Option["ip-version"] = 4
+            initHttpService()
+            PROCINFO[HttpService, "READ_TIMEOUT"] = 0
+            ERRNO = ""
+        } else
+            break
     }
-    close(HttpService)
 
     if (status == "404") {
         e("[ERROR] 404 Not Found")
