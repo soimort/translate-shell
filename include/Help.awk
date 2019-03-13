@@ -18,7 +18,7 @@ function getVersion(    build, gitHead) {
         sprintf("%-22s%s\n", "platform", Platform)                      \
         sprintf("%-22s%s\n", "terminal type", ENVIRON["TERM"])          \
         sprintf("%-22s%s\n", "bi-di emulator", BiDiTerm ? BiDiTerm :
-                "[NONE]")                                               \
+                "[N/A]")                                                \
         sprintf("%-22s%s\n", "gawk (GNU Awk)", PROCINFO["version"])     \
         sprintf("%s\n", FriBidi ? FriBidi :
                 "fribidi (GNU FriBidi) [NOT INSTALLED]")                \
@@ -35,6 +35,8 @@ function getVersion(    build, gitHead) {
                 "[NONE]")                                               \
         sprintf("%-22s%s\n", "user-agent", Option["user-agent"] ? Option["user-agent"] :
                 "[NONE]")                                               \
+        sprintf("%-22s%s\n", "ip version", Option["ip-version"] ? Option["ip-version"] :
+                "[DEFAULT]")                                            \
         sprintf("%-22s%s\n", "theme", Option["theme"])                  \
         sprintf("%-22s%s\n", "init file", InitScript ? InitScript : "[NONE]") \
         sprintf("\n%-22s%s", "Report bugs to:", "https://github.com/soimort/translate-shell/issues")
@@ -151,6 +153,12 @@ function getHelp() {
         ins(1, ansi("bold", "-u ") ansi("underline", "STRING")          \
             ", " ansi("bold", "-user-agent ") ansi("underline", "STRING")) RS \
         ins(2, "Specify the User-Agent to identify as.") RS             \
+        ins(1, ansi("bold", "-4 ") ", " ansi("bold", "-ipv4 ")          \
+            ", " ansi("bold", "-inet4-only ")) RS                       \
+        ins(2, "Connect only to IPv4 addresses.") RS                    \
+        ins(1, ansi("bold", "-6 ") ", " ansi("bold", "-ipv6 ")          \
+            ", " ansi("bold", "-inet6-only ")) RS                       \
+        ins(2, "Connect only to IPv6 addresses.") RS                    \
         RS "Interactive shell options:" RS                              \
         ins(1, ansi("bold", "-I") ", " ansi("bold", "-interactive") ", " ansi("bold", "-shell")) RS \
         ins(2, "Start an interactive shell.") RS                        \

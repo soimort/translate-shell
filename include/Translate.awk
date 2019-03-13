@@ -59,18 +59,21 @@ function initPager() {
 }
 
 # Initialize `HttpService`.
-function initHttpService() {
+function initHttpService(    inet) {
     _Init()
 
+    inet = "inet"
+    if (Option["ip-version"])
+        inet = inet Option["ip-version"]
     if (Option["proxy"]) {
         match(Option["proxy"], /^(http:\/*)?(([^:]+):([^@]+)@)?([^\/]*):([^\/:]*)/, HttpProxySpec)
         HttpAuthUser = HttpProxySpec[3]
         HttpAuthPass = HttpProxySpec[4]
         HttpAuthCredentials = base64(unquote(HttpAuthUser) ":" HttpAuthPass)
-        HttpService = "/inet/tcp/0/" HttpProxySpec[5] "/" HttpProxySpec[6]
+        HttpService = "/" inet "/tcp/0/" HttpProxySpec[5] "/" HttpProxySpec[6]
         HttpPathPrefix = HttpProtocol HttpHost
     } else {
-        HttpService = "/inet/tcp/0/" HttpHost "/" HttpPort
+        HttpService = "/" inet "/tcp/0/" HttpHost "/" HttpPort
         HttpPathPrefix = ""
     }
 }

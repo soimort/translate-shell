@@ -27,7 +27,6 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 
 **-H**, **-help**
 :   Print help message and exit.
-
 **-M**, **-man**
 :   Show man page and exit.
 
@@ -199,6 +198,12 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 :   Specify the User-Agent to identify as.
 
     This option overrides the setting of environment variables $**USER_AGENT**.
+
+**-4**, **-ipv4**, **-inet4-only**
+:   Connect only to IPv4 addresses.
+
+**-6**, **-ipv6**, **-inet6-only**
+:   Connect only to IPv6 addresses.
 
 ## Interactive shell options
 

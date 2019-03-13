@@ -62,6 +62,7 @@ function init() {
         "Mozilla/5.0 (X11; Linux x86_64) "                   \
         "AppleWebKit/602.1 (KHTML, like Gecko) Version/8.0 " \
         "Safari/602.1 Epiphany/3.18.2"
+    Option["ip-version"] = 0
 
     # Interactive shell
     Option["no-rlwrap"] = 0
@@ -577,6 +578,20 @@ BEGIN {
             Option["user-agent"] = group[2] ?
                 (group[3] ? group[3] : Option["user-agent"]) :
                 ARGV[++pos]
+            continue
+        }
+
+        # -4, -ipv4, -inet4-only
+        match(ARGV[pos], /^--?(4|ipv4|inet4-only)$/)
+        if (RSTART) {
+            Option["ip-version"] = 4
+            continue
+        }
+
+        # -6, -ipv6, -inet6-only
+        match(ARGV[pos], /^--?(6|ipv6|inet6-only)$/)
+        if (RSTART) {
+            Option["ip-version"] = 6
             continue
         }
 
