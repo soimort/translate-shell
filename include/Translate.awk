@@ -78,7 +78,7 @@ function initHttpService(    inet) {
     }
 
     # How long to wait in milliseconds for IPv6 before trying IPv4
-    PROCINFO[HttpService, "READ_TIMEOUT"] = 300
+    PROCINFO[HttpService, "READ_TIMEOUT"] = 1000
 }
 
 # Pre-process string (URL-encode before send).
