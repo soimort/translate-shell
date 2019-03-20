@@ -325,7 +325,7 @@ function bingTranslate(text, sl, tl, hl,
 
     if (toSpeech) {
         returnPlaylist[0]["text"] = translation
-        returnPlaylist[0]["tl"] = tl
+        returnPlaylist[0]["tl"] = _tl
     }
 
     return r

@@ -221,7 +221,7 @@ function googleTranslate(text, sl, tl, hl,
 
         if (toSpeech) {
             returnPlaylist[0]["text"] = translation
-            returnPlaylist[0]["tl"] = tl
+            returnPlaylist[0]["tl"] = _tl
         }
 
     } else {
@@ -459,17 +459,17 @@ function googleTranslate(text, sl, tl, hl,
         if (toSpeech) {
             if (index(showTranslationsOf(hl, "%s"), "%s") > 2) {
                 returnPlaylist[0]["text"] = showTranslationsOf(hl)
-                returnPlaylist[0]["tl"] = hl
+                returnPlaylist[0]["tl"] = _hl
                 returnPlaylist[1]["text"] = join(original)
                 returnPlaylist[1]["tl"] = il
             } else {
                 returnPlaylist[0]["text"] = join(original)
                 returnPlaylist[0]["tl"] = il
                 returnPlaylist[1]["text"] = showTranslationsOf(hl)
-                returnPlaylist[1]["tl"] = hl
+                returnPlaylist[1]["tl"] = _hl
             }
             returnPlaylist[2]["text"] = translation
-            returnPlaylist[2]["tl"] = tl
+            returnPlaylist[2]["tl"] = _tl
         }
     }
 
