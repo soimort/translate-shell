@@ -26,6 +26,8 @@ function getVersion(    build, gitHead) {
                 "[NOT INSTALLED]")                                      \
         sprintf("%-22s%s\n", "terminal pager", Pager ? Pager :
                 "[NOT INSTALLED]")                                      \
+        sprintf("%-22s%s\n", "web browser", Option["browser"] != NONE ?
+                Option["browser"] :"[NONE]")                            \
         sprintf("%-22s%s (%s)\n", "user locale", UserLocale, getName(UserLang)) \
         sprintf("%-22s%s\n", "home language", Option["hl"])             \
         sprintf("%-22s%s\n", "source language", join(Option["sls"], "+")) \
