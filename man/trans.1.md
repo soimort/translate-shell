@@ -179,13 +179,16 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 
     This option overrides the setting of environment variable $**PAGER**.
 
-**-no-view**
+**-no-view**, **-no-pager**
 :   Do not view the translation in a terminal pager.
 
 **-browser** *PROGRAM*
 :   Specify the web browser to use.
 
     This option overrides the setting of environment variable $**BROWSER**.
+
+**-no-browser**
+:   Do not open the web browser.
 
 ## Networking options
 

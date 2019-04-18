@@ -275,7 +275,8 @@ function webTranslation(uri, sl, tl, hl,    temp) {
     temp = _WebTranslateUrl(uri, sl, tl, hl)
     if (temp) {
         p(temp)
-        system(Option["browser"] " " parameterize(temp) SUPOUT SUPERR)
+        if (Option["browser"] != NONE)
+            system(Option["browser"] " " parameterize(temp) SUPOUT SUPERR)
     }
 }
 

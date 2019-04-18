@@ -561,6 +561,13 @@ BEGIN {
             continue
         }
 
+        # -no-browser
+        match(ARGV[pos], /^--?no-browser$/)
+        if (RSTART) {
+            Option["browser"] = NONE
+            continue
+        }
+
         ## Networking options
 
         # -x HOST:PORT, -proxy HOST:PORT

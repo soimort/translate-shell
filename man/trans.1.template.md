@@ -187,6 +187,9 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 
     This option overrides the setting of environment variable $**BROWSER**.
 
+**-no-browser**
+:   Do not open the web browser.
+
 ## Networking options
 
 **-x** *HOST:PORT*, **-proxy** *HOST:PORT*

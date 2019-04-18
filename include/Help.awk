@@ -148,6 +148,8 @@ function getHelp() {
         ins(2, "Do not view the translation in a terminal pager.") RS   \
         ins(1, ansi("bold", "-browser ") ansi("underline", "PROGRAM")) RS \
         ins(2, "Specify the web browser to use.") RS                    \
+        ins(1, ansi("bold", "-no-browser")) RS                          \
+        ins(2, "Do not open the web browser.") RS                       \
         RS "Networking options:" RS                                     \
         ins(1, ansi("bold", "-x ") ansi("underline", "HOST:PORT")       \
             ", " ansi("bold", "-proxy ") ansi("underline", "HOST:PORT")) RS \
