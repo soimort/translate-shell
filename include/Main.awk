@@ -545,8 +545,8 @@ BEGIN {
             continue
         }
 
-        # -no-view
-        match(ARGV[pos], /^--?no-view$/)
+        # -no-view, -no-pager
+        match(ARGV[pos], /^--?no-(view|pager)$/)
         if (RSTART) {
             Option["view"] = 0
             continue

@@ -142,7 +142,7 @@ function getHelp() {
         ins(2, "View the translation in a terminal pager.") RS          \
         ins(1, ansi("bold", "-pager ") ansi("underline", "PROGRAM")) RS \
         ins(2, "Specify the terminal pager to use, and view the translation.") RS \
-        ins(1, ansi("bold", "-no-view")) RS                             \
+        ins(1, ansi("bold", "-no-view") ", " ansi("bold", "-no-pager")) RS \
         ins(2, "Do not view the translation in a terminal pager.") RS   \
         ins(1, ansi("bold", "-browser ") ansi("underline", "PROGRAM")) RS \
         ins(2, "Specify the web browser to use.") RS                    \
@@ -153,11 +153,11 @@ function getHelp() {
         ins(1, ansi("bold", "-u ") ansi("underline", "STRING")          \
             ", " ansi("bold", "-user-agent ") ansi("underline", "STRING")) RS \
         ins(2, "Specify the User-Agent to identify as.") RS             \
-        ins(1, ansi("bold", "-4 ") ", " ansi("bold", "-ipv4 ")          \
-            ", " ansi("bold", "-inet4-only ")) RS                       \
+        ins(1, ansi("bold", "-4") ", " ansi("bold", "-ipv4")            \
+            ", " ansi("bold", "-inet4-only")) RS                        \
         ins(2, "Connect only to IPv4 addresses.") RS                    \
-        ins(1, ansi("bold", "-6 ") ", " ansi("bold", "-ipv6 ")          \
-            ", " ansi("bold", "-inet6-only ")) RS                       \
+        ins(1, ansi("bold", "-6") ", " ansi("bold", "-ipv6")            \
+            ", " ansi("bold", "-inet6-only")) RS                        \
         ins(2, "Connect only to IPv6 addresses.") RS                    \
         RS "Interactive shell options:" RS                              \
         ins(1, ansi("bold", "-I") ", " ansi("bold", "-interactive") ", " ansi("bold", "-shell")) RS \
