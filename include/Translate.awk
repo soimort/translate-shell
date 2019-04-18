@@ -273,8 +273,10 @@ function fileTranslation(uri,    group, temp1, temp2) {
 # Start a browser session and translate a web page.
 function webTranslation(uri, sl, tl, hl,    temp) {
     temp = _WebTranslateUrl(uri, sl, tl, hl)
-    if (temp)
+    if (temp) {
+        p(temp)
         system(Option["browser"] " " parameterize(temp) SUPOUT SUPERR)
+    }
 }
 
 # Translate the source text (into all target languages).
