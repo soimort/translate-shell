@@ -5,6 +5,7 @@
 # Initialize constants.
 function initConst() {
     NULLSTR = ""
+    NONE = "\0"
     TRUE = 1
 
     STDIN  = "/dev/stdin"
