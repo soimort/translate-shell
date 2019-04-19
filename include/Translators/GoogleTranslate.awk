@@ -90,7 +90,7 @@ function googleTranslate(text, sl, tl, hl,
                          wShowPromptMessage, wShowLanguages,
                          wShowOriginalDictionary, wShowDictionary,
                          wShowAlternatives,
-                         hasWordClasses, hasAltTranslations,
+                         genderedTrans, hasWordClasses, hasAltTranslations,
                          i, j, k, group, temp, saveSortedIn) {
     isPhonetic = match(tl, /^@/)
     tl = substr(tl, 1 + isPhonetic)
