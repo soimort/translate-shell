@@ -272,6 +272,11 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 
     Either *SOURCE* or *TARGETS* may be omitted, but the delimiter character must be kept.
 
+## Text preprocessing options
+
+**-j**, **-join-sentence**
+:   Treat all arguments as one single sentence.
+
 ## Other options
 
 **-no-init**

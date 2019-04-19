@@ -192,6 +192,9 @@ function getHelp() {
             ", " ansi("bold", "-target ") ansi("underline", "CODES")    \
             ", " ansi("bold", "-to ") ansi("underline", "CODES")) RS    \
         ins(2, "Specify the target language(s), joined by '+'.") RS     \
+        RS "Text preprocessing options:" RS                             \
+        ins(1, ansi("bold", "-j") ", " ansi("bold", "-join-sentence")) RS \
+        ins(2, "Treat all arguments as one single sentence.") RS        \
         RS "Other options:" RS                                          \
         ins(1, ansi("bold", "-no-init")) RS                             \
         ins(2, "Do not load any initialization script.") RS             \

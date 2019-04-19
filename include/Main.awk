@@ -78,6 +78,9 @@ function init() {
     Option["sl"] = ENVIRON["SOURCE_LANG"] ? ENVIRON["SOURCE_LANG"] : "auto"
     Option["sls"][1] = Option["sl"]
     Option["tl"][1] = ENVIRON["TARGET_LANG"] ? ENVIRON["TARGET_LANG"] : UserLang
+
+    # Text preprocessing
+    Option["join-sentence"] = 0
 }
 
 # Initialization script.
@@ -707,6 +710,15 @@ BEGIN {
             continue
         }
 
+        ## Text preprocessing options
+
+        # -j, -join-sentence
+        match(ARGV[pos], /^--?j(o(i(n(-(s(e(n(t(e(n(ce?)?)?)?)?)?)?)?)?)?)?)?$/)
+        if (RSTART) {
+            Option["join-sentence"] = 1
+            continue
+        }
+
         ## Other options
 
         # -D, -debug
@@ -787,6 +799,12 @@ BEGIN {
     if (pos < ARGC)
         for (i = pos; i < ARGC; i++)
             noargv[noargc++] = ARGV[i]
+
+    # Text preprocessing: join all arguments if required
+    if (noargc > 1 && Option["join-sentence"]) {
+        noargv[0] = join(noargv, " ")
+        noargc = 1
+    }
 
     if (noargc) {
         # Translate all non-option arguments
