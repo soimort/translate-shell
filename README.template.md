@@ -216,6 +216,10 @@ There are some cases though, you may still want to use *double quotes*: (e.g. th
 
     $ trans :zh "Life's but a walking shadow, a poor player"
 
+Alternatively, use the `-join-sentence` (`-j`) option to treat all arguments as one sentence so that quotes can be omitted:
+
+    $ trans -j :zh Life\'s but a walking shadow, a poor player
+
 ### Brief Mode
 
 By default, Translate Shell displays translations in a verbose manner. If you prefer to see only the most relevant translation, there is a brief mode available using the `-brief` (`-b`) option:

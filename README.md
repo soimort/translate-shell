@@ -216,6 +216,10 @@ There are some cases though, you may still want to use *double quotes*: (e.g. th
 
     $ trans :zh "Life's but a walking shadow, a poor player"
 
+Alternatively, use the `-join-sentence` (`-j`) option to treat all arguments as one sentence so that quotes can be omitted:
+
+    $ trans -j :zh Life\'s but a walking shadow, a poor player
+
 ### Brief Mode
 
 By default, Translate Shell displays translations in a verbose manner. If you prefer to see only the most relevant translation, there is a brief mode available using the `-brief` (`-b`) option:
@@ -390,6 +394,8 @@ Display options:
         Do not autocorrect. (if defaulted by the translation engine)
     -no-bidi
         Do not convert bidirectional texts.
+    -bidi
+        Always convert bidirectional texts.
     -no-warn
         Do not write warning messages to stderr.
     -dump
@@ -418,16 +424,22 @@ Terminal paging and browsing options:
         View the translation in a terminal pager.
     -pager PROGRAM
         Specify the terminal pager to use, and view the translation.
-    -no-view
+    -no-view, -no-pager
         Do not view the translation in a terminal pager.
     -browser PROGRAM
         Specify the web browser to use.
+    -no-browser
+        Do not open the web browser.
 
 Networking options:
     -x HOST:PORT, -proxy HOST:PORT
         Use HTTP proxy on given port.
     -u STRING, -user-agent STRING
         Specify the User-Agent to identify as.
+    -4, -ipv4, -inet4-only
+        Connect only to IPv4 addresses.
+    -6, -ipv6, -inet6-only
+        Connect only to IPv6 addresses.
 
 Interactive shell options:
     -I, -interactive, -shell
@@ -450,6 +462,10 @@ Language preference options:
         Specify the source language(s), joined by '+'.
     -t CODES, -tl CODES, -target CODES, -to CODES
         Specify the target language(s), joined by '+'.
+
+Text preprocessing options:
+    -j, -join-sentence
+        Treat all arguments as one single sentence.
 
 Other options:
     -no-init
