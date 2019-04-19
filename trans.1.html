@@ -5,8 +5,8 @@
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta name="author" content="Mort Yao soi@mort.ninja">
-      <meta name="dcterms.date" content="2018-12-23">
-    <title>TRANS(1) 0.9.6.9</title>
+      <meta name="dcterms.date" content="2019-04-20">
+    <title>TRANS(1) 0.9.6.10</title>
   <style type='text/css' media='all'>
   /* style: man */
   body#manpage {margin:0}
@@ -89,7 +89,7 @@
     </div>
 
   <ol class='man-decor man-head man head'>
-    <li class='tl'>TRANS(1) 0.9.6.9</li>
+    <li class='tl'>TRANS(1) 0.9.6.10</li>
     <li class='tc'></li>
     <li class='tr'></li>
   </ol>
@@ -109,9 +109,8 @@
   <dd>Print version and exit.
   </dd>
   <dt><strong>-H</strong>, <strong>-help</strong></dt>
-  <dd>Print help message and exit.
+  <dd>Print help message and exit. <strong>-M</strong>, <strong>-man</strong>
   </dd>
-  <dt><strong>-M</strong>, <strong>-man</strong></dt>
   <dd>Show man page and exit.
   </dd>
   <dt><strong>-T</strong>, <strong>-reference</strong></dt>
@@ -121,7 +120,7 @@
   <dd>Print reference table of all supported languages and codes, and exit. Names of languages are displayed in English.
   </dd>
   <dt><strong>-L</strong> <em>CODES</em>, <strong>-list</strong> <em>CODES</em></dt>
-  <dd>Print details of languages and exit. When specifying two or more language codes, concatenate them by plus sign &quot;+&quot;.
+  <dd>Print details of languages and exit. When specifying two or more language codes, concatenate them by plus sign "+".
   </dd>
   <dt><strong>-S</strong>, <strong>-list-engines</strong></dt>
   <dd>List available translation engines and exit.
@@ -205,6 +204,9 @@
   <dt><strong>-no-bidi</strong></dt>
   <dd>Do not convert bidirectional texts.
   </dd>
+  <dt><strong>-bidi</strong></dt>
+  <dd>Always convert bidirectional texts.
+  </dd>
   <dt><strong>-no-warn</strong></dt>
   <dd>Do not write warning messages to stderr.
   </dd>
@@ -252,12 +254,15 @@
   <dd><p>Specify the terminal pager to use, and view the translation.</p>
   <p>This option overrides the setting of environment variable $<strong>PAGER</strong>.</p>
   </dd>
-  <dt><strong>-no-view</strong></dt>
+  <dt><strong>-no-view</strong>, <strong>-no-pager</strong></dt>
   <dd>Do not view the translation in a terminal pager.
   </dd>
   <dt><strong>-browser</strong> <em>PROGRAM</em></dt>
   <dd><p>Specify the web browser to use.</p>
   <p>This option overrides the setting of environment variable $<strong>BROWSER</strong>.</p>
+  </dd>
+  <dt><strong>-no-browser</strong></dt>
+  <dd>Do not open the web browser.
   </dd>
   </dl>
   <h2 id="networking-options">Networking options</h2>
@@ -269,6 +274,12 @@
   <dt><strong>-u</strong> <em>STRING</em>, <strong>-user-agent</strong> <em>STRING</em></dt>
   <dd><p>Specify the User-Agent to identify as.</p>
   <p>This option overrides the setting of environment variables $<strong>USER_AGENT</strong>.</p>
+  </dd>
+  <dt><strong>-4</strong>, <strong>-ipv4</strong>, <strong>-inet4-only</strong></dt>
+  <dd>Connect only to IPv4 addresses.
+  </dd>
+  <dt><strong>-6</strong>, <strong>-ipv6</strong>, <strong>-inet6-only</strong></dt>
+  <dd>Connect only to IPv6 addresses.
   </dd>
   </dl>
   <h2 id="interactive-shell-options">Interactive shell options</h2>
@@ -302,17 +313,17 @@
   <dd><p>Specify your home language (the language you would like to see for displaying prompt messages in the translation).</p>
   <p>This option affects only the display in verbose mode (anything other than source language and target language will be displayed in your home language). This option has no effect in brief mode.</p>
   <p>This option is optional. When its setting is omitted, English will be used.</p>
-  <p>This option overrides the setting of environment variables $<strong>LANGUAGE</strong>, $<strong>LC_ALL</strong>, $<strong>LANG</strong> and $<strong>HOME_LANG</strong>.</p>
+  <p>This option overrides the setting of environment variables $<strong>LC_ALL</strong>, $<strong>LANG</strong>, and $<strong>HOME_LANG</strong>.</p>
   </dd>
-  <dt><strong>-s</strong> <em>CODE</em>, <strong>-sl</strong> <em>CODE</em>, <strong>-source</strong> <em>CODE</em>, <strong>-from</strong> <em>CODE</em></dt>
-  <dd><p>Specify the source language (the language of original text).</p>
+  <dt><strong>-s</strong> <em>CODES</em>, <strong>-sl</strong> <em>CODES</em>, <strong>-source</strong> <em>CODES</em>, <strong>-from</strong> <em>CODES</em></dt>
+  <dd><p>Specify the source language(s) (the language(s) of original text). When specifying two or more language codes, concatenate them by plus sign "+".</p>
   <p>This option is optional. When its setting is omitted, the language of original text will be identified automatically (with a possibility of misidentification).</p>
   <p>This option overrides the setting of environment variable $<strong>SOURCE_LANG</strong>.</p>
   </dd>
-  <dt><strong>-t</strong> <em>CODES</em>, <strong>-tl</strong> <em>CODE</em>, <strong>-target</strong> <em>CODES</em>, <strong>-to</strong> <em>CODES</em></dt>
-  <dd><p>Specify the target language(s) (the language(s) of translated text). When specifying two or more language codes, concatenate them by plus sign &quot;+&quot;.</p>
+  <dt><strong>-t</strong> <em>CODES</em>, <strong>-tl</strong> <em>CODES</em>, <strong>-target</strong> <em>CODES</em>, <strong>-to</strong> <em>CODES</em></dt>
+  <dd><p>Specify the target language(s) (the language(s) of translated text). When specifying two or more language codes, concatenate them by plus sign "+".</p>
   <p>This option is optional. When its setting is omitted, everything will be translated into English.</p>
-  <p>This option overrides the setting of environment variables $<strong>LANGUAGE</strong>, $<strong>LC_ALL</strong>, $<strong>LANG</strong> and $<strong>TARGET_LANG</strong>.</p>
+  <p>This option overrides the setting of environment variables $<strong>LC_ALL</strong>, $<strong>LANG</strong>, and $<strong>TARGET_LANG</strong>.</p>
   </dd>
   <dt>[<em>SOURCE</em>]:[<em>TARGETS</em>]</dt>
   <dd><p>A simpler, alternative way to specify the source language and target language(s) is to use a shortcut formatted string:</p>
@@ -322,8 +333,14 @@
   <li><em>SOURCE-CODE</em>=<em>TARGET-CODE</em></li>
   <li><em>SOURCE-CODE</em>=<em>TARGET-CODE1</em>+<em>TARGET-CODE2</em>+...</li>
   </ul>
-  <p>Delimiter &quot;:&quot; and &quot;=&quot; can be used interchangeably.</p>
+  <p>Delimiter ":" and "=" can be used interchangeably.</p>
   <p>Either <em>SOURCE</em> or <em>TARGETS</em> may be omitted, but the delimiter character must be kept.</p>
+  </dd>
+  </dl>
+  <h2 id="text-preprocessing-options">Text preprocessing options</h2>
+  <dl>
+  <dt><strong>-j</strong>, <strong>-join-sentence</strong></dt>
+  <dd>Treat all arguments as one single sentence.
   </dd>
   </dl>
   <h2 id="other-options">Other options</h2>
@@ -398,7 +415,7 @@
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
     <li class='tc'></li>
-    <li class='tr'>2018-12-23</li>
+    <li class='tr'>2019-04-20</li>
   </ol>
 
   </div>

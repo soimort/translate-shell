@@ -1,14 +1,14 @@
 ---
 title: Translate Shell
 project-name: Translate Shell
-project-version: 0.9.6.9
+project-version: 0.9.6.10
 project-logo: images/logo.jpg
 background: images/background.png
 github: soimort/translate-shell
 url: https://www.soimort.org/translate-shell/
 download-url: https://www.soimort.org/translate-shell/trans
 download-checksum-type: SHA1SUM
-download-checksum-data: 64042f0611e0592b2261cd4389d5bb8694307f17
+download-checksum-data: 7c77f3e372912bce188541e966dfda87b4ea5f8a
 download-signature: https://www.soimort.org/translate-shell/trans.sig
 
 ---
@@ -67,8 +67,8 @@ In order to be happy, the best way is to be loved by people.
 
 * GNU/Linux
 * macOS
-* FreeBSD
-* Windows (Cygwin or MSYS2)
+* *BSD
+* Windows (through WSL, Cygwin, or MSYS2)
 
 ### Dependencies
 
@@ -178,6 +178,11 @@ You can also use the `-target` (`-t`) option to specify the target language(s):
 
     $ trans -t zh+ja word
 
+With the `-t` option, the name of the language may also be used instead of the language code:
+
+    $ trans -t japanese word
+    $ trans -t 日本語 word
+
 #### From a specific language
 
 Google Translate may wrongly identify the source text as some other language than you expected:
@@ -224,6 +229,10 @@ To avoid punctuation marks (e.g. "`!`") or other special characters being interp
 There are some cases though, you may still want to use *double quotes*: (e.g. the sentence contains a single quotation mark "`'`")
 
     $ trans :zh "Life's but a walking shadow, a poor player"
+
+Alternatively, use the `-join-sentence` (`-j`) option to treat all arguments as one sentence so that quotes can be omitted:
+
+    $ trans -j :zh Life\'s but a walking shadow, a poor player
 
 ### Brief Mode
 
@@ -334,7 +343,7 @@ You may also change these settings during an interactive session. See **[wiki: R
 For more details on command-line options, see the man page **[trans(1)](https://www.soimort.org/translate-shell/trans.1.html)** or use `trans -M` in a terminal.
 
 ```
-Usage:  trans [OPTIONS] [SOURCE]:[TARGETS] [TEXT]...
+Usage:  trans [OPTIONS] [SOURCES]:[TARGETS] [TEXT]...
 
 Information options:
     -V, -version
@@ -399,6 +408,8 @@ Display options:
         Do not autocorrect. (if defaulted by the translation engine)
     -no-bidi
         Do not convert bidirectional texts.
+    -bidi
+        Always convert bidirectional texts.
     -no-warn
         Do not write warning messages to stderr.
     -dump
@@ -427,16 +438,22 @@ Terminal paging and browsing options:
         View the translation in a terminal pager.
     -pager PROGRAM
         Specify the terminal pager to use, and view the translation.
-    -no-view
+    -no-view, -no-pager
         Do not view the translation in a terminal pager.
     -browser PROGRAM
         Specify the web browser to use.
+    -no-browser
+        Do not open the web browser.
 
 Networking options:
     -x HOST:PORT, -proxy HOST:PORT
         Use HTTP proxy on given port.
     -u STRING, -user-agent STRING
         Specify the User-Agent to identify as.
+    -4, -ipv4, -inet4-only
+        Connect only to IPv4 addresses.
+    -6, -ipv6, -inet6-only
+        Connect only to IPv6 addresses.
 
 Interactive shell options:
     -I, -interactive, -shell
@@ -455,10 +472,14 @@ I/O options:
 Language preference options:
     -l CODE, -hl CODE, -lang CODE
         Specify your home language.
-    -s CODE, -sl CODE, -source CODE, -from CODE
-        Specify the source language.
-    -t CODES, -tl CODE, -target CODES, -to CODES
+    -s CODES, -sl CODES, -source CODES, -from CODES
+        Specify the source language(s), joined by '+'.
+    -t CODES, -tl CODES, -target CODES, -to CODES
         Specify the target language(s), joined by '+'.
+
+Text preprocessing options:
+    -j, -join-sentence
+        Treat all arguments as one single sentence.
 
 Other options:
     -no-init

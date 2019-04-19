@@ -5,14 +5,15 @@ read -r -d '' TRANS_PROGRAM << 'EOF'
 BEGIN {
 Name        = "Translate Shell"
 Description = "Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc."
-Version     = "0.9.6.9"
-ReleaseDate = "2018-12-23"
+Version     = "0.9.6.10"
+ReleaseDate = "2019-04-20"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 EntryScript = "translate"
 }
 function initConst() {
 NULLSTR = ""
+NONE = "\0"
 TRUE = 1
 STDIN  = "/dev/stdin"
 STDOUT = "/dev/stdout"
@@ -178,7 +179,7 @@ gsub(/"/, "\\\"", string)
 return string
 }
 function unescape(string) {
-gsub(/\\\"/, "\"", string)
+gsub(/\\"/, "\"", string)
 gsub(/\\\\/, "\\", string)
 return string
 }
@@ -458,11 +459,17 @@ e("[ERROR] Oops! Your gawk (version " GawkVersion ") "\
 exit 1
 }
 }
+function initBiDiTerm() {
+if (ENVIRON["MLTERM"])
+BiDiTerm = "mlterm"
+else if (ENVIRON["KONSOLE_VERSION"])
+BiDiTerm = "konsole"
+}
 function initBiDi() {
 FriBidi = detectProgram("fribidi", "--version", 1)
 BiDiNoPad = FriBidi ? "fribidi --nopad" : "rev" SUPERR
 BiDi = FriBidi ? "fribidi --width %s" :
-"rev" SUPERR "| sed \"s/'/\\\\\\'/\" | xargs printf '%%s '"
+"rev" SUPERR "| sed \"s/'/\\\\\\'/\" | xargs -0 printf '%%%ss'"
 }
 function initRlwrap() {
 Rlwrap = detectProgram("rlwrap", "--version")
@@ -628,7 +635,7 @@ command | getline temp
 close(command)
 return temp
 }
-function initLocale(    i) {
+function initLocale() {
 Locale["af"]["name"]               = "Afrikaans"
 Locale["af"]["endonym"]            = "Afrikaans"
 Locale["af"]["translations-of"]    = "Vertalings van %s"
@@ -2007,8 +2014,9 @@ Locale["chr"]["script"]            = "Cher"
 Locale["emj"]["support"]           = "yandex-only"
 Locale["emj"]["name"]              = "Emoji"
 Locale["emj"]["endonym"]           = "Emoji"
+}
+function initLocaleAlias(    i) {
 for (i in Locale) {
-Locale[i]["display"] = show(Locale[i]["endonym"], i)
 LocaleAlias[Locale[i]["iso"]] = i
 LocaleAlias[tolower(Locale[i]["name"])] = i
 LocaleAlias[tolower(Locale[i]["endonym"])] = i
@@ -2031,6 +2039,11 @@ LocaleAlias["zho"]     = "zh-CN"
 LocaleAlias["chinese"] = "zh-CN"
 LocaleAlias["tlh-Latn"] = "tlh"
 LocaleAlias["tlh-Piqd"] = "tlh-Qaak"
+}
+function initLocaleDisplay(    i) {
+for (i in Locale) {
+Locale[i]["display"] = show(Locale[i]["endonym"], i)
+}
 }
 function getCode(code,    group) {
 if (code == "auto" || code in Locale)
@@ -2216,10 +2229,6 @@ if (!code) code = "en"
 return code
 }
 function initUserLang(    lang, utf) {
-if (lang = ENVIRON["LANGUAGE"]) {
-if (!UserLocale) UserLocale = lang
-utf = utf || tolower(lang) ~ /utf-?8$/
-}
 if (lang = ENVIRON["LC_ALL"]) {
 if (!UserLocale) UserLocale = lang
 utf = utf || tolower(lang) ~ /utf-?8$/
@@ -2248,6 +2257,9 @@ build = gitHead ? "-git:" gitHead : ""
 }
 return ansi("bold", sprintf("%-22s%s%s\n\n", Name, Version, build))\
 sprintf("%-22s%s\n", "platform", Platform)\
+sprintf("%-22s%s\n", "terminal type", ENVIRON["TERM"])\
+sprintf("%-22s%s\n", "bi-di emulator", BiDiTerm ? BiDiTerm :
+"[N/A]")\
 sprintf("%-22s%s\n", "gawk (GNU Awk)", PROCINFO["version"])\
 sprintf("%s\n", FriBidi ? FriBidi :
 "fribidi (GNU FriBidi) [NOT INSTALLED]")\
@@ -2255,16 +2267,19 @@ sprintf("%-22s%s\n", "audio player", AudioPlayer ? AudioPlayer :
 "[NOT INSTALLED]")\
 sprintf("%-22s%s\n", "terminal pager", Pager ? Pager :
 "[NOT INSTALLED]")\
-sprintf("%-22s%s\n", "terminal type", ENVIRON["TERM"])\
+sprintf("%-22s%s\n", "web browser", Option["browser"] != NONE ?
+Option["browser"] :"[NONE]")\
 sprintf("%-22s%s (%s)\n", "user locale", UserLocale, getName(UserLang))\
 sprintf("%-22s%s\n", "home language", Option["hl"])\
-sprintf("%-22s%s\n", "source language", Option["sl"])\
+sprintf("%-22s%s\n", "source language", join(Option["sls"], "+"))\
 sprintf("%-22s%s\n", "target language", join(Option["tl"], "+"))\
 sprintf("%-22s%s\n", "translation engine", Option["engine"])\
 sprintf("%-22s%s\n", "proxy", Option["proxy"] ? Option["proxy"] :
 "[NONE]")\
 sprintf("%-22s%s\n", "user-agent", Option["user-agent"] ? Option["user-agent"] :
 "[NONE]")\
+sprintf("%-22s%s\n", "ip version", Option["ip-version"] ? Option["ip-version"] :
+"[DEFAULT]")\
 sprintf("%-22s%s\n", "theme", Option["theme"])\
 sprintf("%-22s%s\n", "init file", InitScript ? InitScript : "[NONE]")\
 sprintf("\n%-22s%s", "Report bugs to:", "https://github.com/soimort/translate-shell/issues")
@@ -2272,7 +2287,7 @@ sprintf("\n%-22s%s", "Report bugs to:", "https://github.com/soimort/translate-sh
 function getHelp() {
 return "Usage:  " ansi("bold", Command)\
 " [" ansi("underline", "OPTIONS") "]"\
-" [" ansi("underline", "SOURCE") "]"\
+" [" ansi("underline", "SOURCES") "]"\
 ":[" ansi("underline", "TARGETS") "]"\
 " [" ansi("underline", "TEXT") "]..." RS\
 RS "Information options:" RS\
@@ -2339,6 +2354,8 @@ ins(1, ansi("bold", "-no-autocorrect")) RS\
 ins(2, "Do not autocorrect. (if defaulted by the translation engine)") RS\
 ins(1, ansi("bold", "-no-bidi")) RS\
 ins(2, "Do not convert bidirectional texts.") RS\
+ins(1, ansi("bold", "-bidi")) RS\
+ins(2, "Always convert bidirectional texts.") RS\
 ins(1, ansi("bold", "-no-warn")) RS\
 ins(2, "Do not write warning messages to stderr.") RS\
 ins(1, ansi("bold", "-dump")) RS\
@@ -2366,10 +2383,12 @@ ins(1, ansi("bold", "-v") ", " ansi("bold", "-view")) RS\
 ins(2, "View the translation in a terminal pager.") RS\
 ins(1, ansi("bold", "-pager ") ansi("underline", "PROGRAM")) RS\
 ins(2, "Specify the terminal pager to use, and view the translation.") RS\
-ins(1, ansi("bold", "-no-view")) RS\
+ins(1, ansi("bold", "-no-view") ", " ansi("bold", "-no-pager")) RS\
 ins(2, "Do not view the translation in a terminal pager.") RS\
 ins(1, ansi("bold", "-browser ") ansi("underline", "PROGRAM")) RS\
 ins(2, "Specify the web browser to use.") RS\
+ins(1, ansi("bold", "-no-browser")) RS\
+ins(2, "Do not open the web browser.") RS\
 RS "Networking options:" RS\
 ins(1, ansi("bold", "-x ") ansi("underline", "HOST:PORT")\
 ", " ansi("bold", "-proxy ") ansi("underline", "HOST:PORT")) RS\
@@ -2377,6 +2396,12 @@ ins(2, "Use HTTP proxy on given port.") RS\
 ins(1, ansi("bold", "-u ") ansi("underline", "STRING")\
 ", " ansi("bold", "-user-agent ") ansi("underline", "STRING")) RS\
 ins(2, "Specify the User-Agent to identify as.") RS\
+ins(1, ansi("bold", "-4") ", " ansi("bold", "-ipv4")\
+", " ansi("bold", "-inet4-only")) RS\
+ins(2, "Connect only to IPv4 addresses.") RS\
+ins(1, ansi("bold", "-6") ", " ansi("bold", "-ipv6")\
+", " ansi("bold", "-inet6-only")) RS\
+ins(2, "Connect only to IPv6 addresses.") RS\
 RS "Interactive shell options:" RS\
 ins(1, ansi("bold", "-I") ", " ansi("bold", "-interactive") ", " ansi("bold", "-shell")) RS\
 ins(2, "Start an interactive shell.") RS\
@@ -2396,16 +2421,19 @@ ins(1, ansi("bold", "-l ") ansi("underline", "CODE")\
 ", " ansi("bold", "-hl ") ansi("underline", "CODE")\
 ", " ansi("bold", "-lang ") ansi("underline", "CODE")) RS\
 ins(2, "Specify your home language.") RS\
-ins(1, ansi("bold", "-s ") ansi("underline", "CODE")\
-", " ansi("bold", "-sl ") ansi("underline", "CODE")\
-", " ansi("bold", "-source ") ansi("underline", "CODE")\
-", " ansi("bold", "-from ") ansi("underline", "CODE")) RS\
-ins(2, "Specify the source language.") RS\
+ins(1, ansi("bold", "-s ") ansi("underline", "CODES")\
+", " ansi("bold", "-sl ") ansi("underline", "CODES")\
+", " ansi("bold", "-source ") ansi("underline", "CODES")\
+", " ansi("bold", "-from ") ansi("underline", "CODES")) RS\
+ins(2, "Specify the source language(s), joined by '+'.") RS\
 ins(1, ansi("bold", "-t ") ansi("underline", "CODES")\
-", " ansi("bold", "-tl ") ansi("underline", "CODE")\
+", " ansi("bold", "-tl ") ansi("underline", "CODES")\
 ", " ansi("bold", "-target ") ansi("underline", "CODES")\
 ", " ansi("bold", "-to ") ansi("underline", "CODES")) RS\
 ins(2, "Specify the target language(s), joined by '+'.") RS\
+RS "Text preprocessing options:" RS\
+ins(1, ansi("bold", "-j") ", " ansi("bold", "-join-sentence")) RS\
+ins(2, "Treat all arguments as one single sentence.") RS\
 RS "Other options:" RS\
 ins(1, ansi("bold", "-no-init")) RS\
 ins(2, "Do not load any initialization script.") RS\
@@ -3007,19 +3035,23 @@ Pager = !system("less -V" SUPOUT SUPERR) ?
 "most" :
 ""))
 }
-function initHttpService() {
+function initHttpService(    inet) {
 _Init()
+inet = "inet"
+if (Option["ip-version"])
+inet = inet Option["ip-version"]
 if (Option["proxy"]) {
 match(Option["proxy"], /^(http:\/*)?(([^:]+):([^@]+)@)?([^\/]*):([^\/:]*)/, HttpProxySpec)
 HttpAuthUser = HttpProxySpec[3]
 HttpAuthPass = HttpProxySpec[4]
 HttpAuthCredentials = base64(unquote(HttpAuthUser) ":" HttpAuthPass)
-HttpService = "/inet/tcp/0/" HttpProxySpec[5] "/" HttpProxySpec[6]
+HttpService = "/" inet "/tcp/0/" HttpProxySpec[5] "/" HttpProxySpec[6]
 HttpPathPrefix = HttpProtocol HttpHost
 } else {
-HttpService = "/inet/tcp/0/" HttpHost "/" HttpPort
+HttpService = "/" inet "/tcp/0/" HttpHost "/" HttpPort
 HttpPathPrefix = ""
 }
+PROCINFO[HttpService, "READ_TIMEOUT"] = 1000
 }
 function preprocess(text) {
 return quote(text)
@@ -3042,6 +3074,7 @@ header = header "Cookie: " Cookie "\r\n"
 if (HttpAuthUser && HttpAuthPass)
 header = header "Proxy-Authorization: Basic " HttpAuthCredentials "\r\n"
 content = NULLSTR; isBody = 0
+while (1) {
 print header |& HttpService
 while ((HttpService |& getline) > 0) {
 if (isBody)
@@ -3057,6 +3090,15 @@ if (RSTART) location = squeeze(group[1])
 l(sprintf("%4s bytes > %s", length($0), $0))
 }
 close(HttpService)
+if (ERRNO == "Connection timed out") {
+w("[WARNING] " ERRNO ". Retrying IPv4 connection.")
+Option["ip-version"] = 4
+initHttpService()
+PROCINFO[HttpService, "READ_TIMEOUT"] = 0
+ERRNO = ""
+} else
+break
+}
 if ((status == "301" || status == "302") && location)
 content = curl(location)
 return assert(content, "[ERROR] Null response.")
@@ -3083,6 +3125,7 @@ header = header "Cookie: " Cookie "\r\n"
 if (HttpAuthUser && HttpAuthPass)
 header = header "Proxy-Authorization: Basic " HttpAuthCredentials "\r\n"
 content = NULLSTR; isBody = 0
+while (1) {
 print (header "\r\n" reqBody) |& HttpService
 while ((HttpService |& getline) > 0) {
 if (isBody)
@@ -3098,6 +3141,15 @@ if (RSTART) location = squeeze(group[1])
 l(sprintf("%4s bytes > %s", length($0), $0))
 }
 close(HttpService)
+if (ERRNO == "Connection timed out") {
+w("[WARNING] " ERRNO ". Retrying IPv4 connection.")
+Option["ip-version"] = 4
+initHttpService()
+PROCINFO[HttpService, "READ_TIMEOUT"] = 0
+ERRNO = ""
+} else
+break
+}
 if (status == "404") {
 e("[ERROR] 404 Not Found")
 exit 1
@@ -3115,9 +3167,12 @@ close(Option["pager"])
 } else
 print string > Option["output"]
 }
-function play(text, tl,    url) {
+function play(text, tl,    url, status) {
 url = _TTSUrl(text, tl)
-system(Option["player"] " " parameterize(url) SUPOUT SUPERR)
+status = system(Option["player"] " " parameterize(url) SUPOUT SUPERR)
+if (status)
+w("Voice output isn't available for " getName(tl))
+return status
 }
 function download_audio(text, tl,    url, output) {
 url = _TTSUrl(text, tl)
@@ -3147,8 +3202,11 @@ Option["verbose"] = temp2
 }
 function webTranslation(uri, sl, tl, hl,    temp) {
 temp = _WebTranslateUrl(uri, sl, tl, hl)
-if (temp)
+if (temp) {
+p(temp)
+if (Option["browser"] != NONE)
 system(Option["browser"] " " parameterize(temp) SUPOUT SUPERR)
+}
 }
 function translate(text, inline,
 i, j, playlist, il, saveSortedIn) {
@@ -3207,6 +3265,19 @@ download_audio(text, il[0])
 }
 PROCINFO["sorted_in"] = saveSortedIn
 }
+function translates(text, inline,
+i) {
+saveSortedIn = PROCINFO["sorted_in"]
+PROCINFO["sorted_in"] = "@ind_num_asc"
+for (i in Option["sls"]) {
+if (!Option["interactive"])
+if (Option["verbose"] && i > 1)
+p(prettify("target-seperator", replicate(Option["chr-target-seperator"], Option["width"])))
+Option["sl"] = Option["sls"][i]
+translate(text, inline)
+}
+PROCINFO["sorted_in"] = saveSortedIn
+}
 function translateMain(    i, line) {
 if (Option["interactive"])
 prompt()
@@ -3222,7 +3293,7 @@ Option["width"])))
 if (Option["interactive"])
 repl(line)
 else
-translate(line)
+translates(line)
 } else {
 if (!Option["interactive"])
 if (!Option["verbose"])
@@ -3309,7 +3380,7 @@ function googleRequestUrl(text, sl, tl, hl,    qc) {
 qc = Option["no-autocorrect"] ? "qc" : "qca";
 return HttpPathPrefix "/translate_a/single?client=gtx"\
 "&ie=UTF-8&oe=UTF-8"\
-"&dt=bd&dt=ex&dt=ld&dt=md&dt=rw&dt=rm&dt=ss&dt=t&dt=at"\
+"&dt=bd&dt=ex&dt=ld&dt=md&dt=rw&dt=rm&dt=ss&dt=t&dt=at&dt=gt"\
 "&dt=" qc "&sl=" sl "&tl=" tl "&hl=" hl\
 "&q=" preprocess(text)
 }
@@ -3337,7 +3408,7 @@ wShowTranslation, wShowTranslationPhonetics,
 wShowPromptMessage, wShowLanguages,
 wShowOriginalDictionary, wShowDictionary,
 wShowAlternatives,
-hasWordClasses, hasAltTranslations,
+genderedTrans, hasWordClasses, hasAltTranslations,
 i, j, k, group, temp, saveSortedIn) {
 isPhonetic = match(tl, /^@/)
 tl = substr(tl, 1 + isPhonetic)
@@ -3418,6 +3489,8 @@ if (match(i, "^0" SUBSEP "13" SUBSEP "0" SUBSEP "([[:digit:]]+)" SUBSEP "0$", gr
 oExamples[group[1]] = literal(ast[i])
 if (match(i, "^0" SUBSEP "14" SUBSEP "0" SUBSEP "([[:digit:]]+)$", group))
 oSeeAlso[group[1]] = literal(ast[i])
+if (match(i, "^0" SUBSEP "18" SUBSEP "0" SUBSEP "([[:digit:]]+)" SUBSEP "1$", group))
+genderedTrans[group[1]] = literal(ast[i])
 }
 PROCINFO["sorted_in"] = saveSortedIn
 translation = join(translations)
@@ -3432,7 +3505,7 @@ prettify("brief-translation-phonetics", join(phonetics, " ")) :
 prettify("brief-translation", s(translation, tl))
 if (toSpeech) {
 returnPlaylist[0]["text"] = translation
-returnPlaylist[0]["tl"] = tl
+returnPlaylist[0]["tl"] = _tl
 }
 } else {
 wShowOriginal = Option["show-original"]
@@ -3468,7 +3541,14 @@ r = r RS prettify("original-phonetics", showPhonetics(join(oPhonetics, " "), il)
 if (wShowTranslation) {
 if (r) r = r RS RS
 r = r m("-- display major translation & phonetics")
+if (!exists(genderedTrans))
 r = r prettify("translation", s(translation, tl))
+else {
+r = r prettify("prompt-message", s("(♂) ", hl))
+r = r prettify("translation", s(genderedTrans[0], tl)) RS
+r = r prettify("prompt-message", s("(♀) ", hl))
+r = r prettify("translation", s(genderedTrans[1], tl))
+}
 if (wShowTranslationPhonetics)
 r = r RS prettify("translation-phonetics", showPhonetics(join(phonetics, " "), tl))
 }
@@ -3637,17 +3717,17 @@ r = r RS ins(1, temp)
 if (toSpeech) {
 if (index(showTranslationsOf(hl, "%s"), "%s") > 2) {
 returnPlaylist[0]["text"] = showTranslationsOf(hl)
-returnPlaylist[0]["tl"] = hl
+returnPlaylist[0]["tl"] = _hl
 returnPlaylist[1]["text"] = join(original)
 returnPlaylist[1]["tl"] = il
 } else {
 returnPlaylist[0]["text"] = join(original)
 returnPlaylist[0]["tl"] = il
 returnPlaylist[1]["text"] = showTranslationsOf(hl)
-returnPlaylist[1]["tl"] = hl
+returnPlaylist[1]["tl"] = _hl
 }
 returnPlaylist[2]["text"] = translation
-returnPlaylist[2]["tl"] = tl
+returnPlaylist[2]["tl"] = _tl
 }
 }
 return r
@@ -3909,7 +3989,7 @@ r = r m("-- display dictionary entries")
 }
 if (toSpeech) {
 returnPlaylist[0]["text"] = translation
-returnPlaylist[0]["tl"] = tl
+returnPlaylist[0]["tl"] = _tl
 }
 return r
 }
@@ -4152,7 +4232,7 @@ PROCINFO["sorted_in"] = saveSortedIn
 }
 if (toSpeech) {
 returnPlaylist[0]["text"] = translation
-returnPlaylist[0]["tl"] = tl
+returnPlaylist[0]["tl"] = _tl
 }
 return r
 }
@@ -4245,7 +4325,7 @@ r = r prettify("languages", group[3])
 }
 if (toSpeech) {
 returnPlaylist[0]["text"] = translation
-returnPlaylist[0]["tl"] = tl
+returnPlaylist[0]["tl"] = _tl
 }
 return r
 }
@@ -4434,8 +4514,12 @@ if (p ~ /%l/)
 gsub(/%l/, getDisplay(Option["hl"]), p)
 if (p ~ /%L/)
 gsub(/%L/, getName(Option["hl"]), p)
-if (p ~ /%S/)
-gsub(/%S/, getName(Option["sl"]), p)
+if (p ~ /%S/) {
+temp = getName(Option["sls"][1])
+for (i = 2; i <= length(Option["sls"]); i++)
+temp = temp "+" getName(Option["sls"][i])
+gsub(/%S/, temp, p)
+}
 if (p ~ /%t/) {
 temp = getDisplay(Option["tl"][1])
 for (i = 2; i <= length(Option["tl"]); i++)
@@ -4472,7 +4556,10 @@ for (i = 2; i <= length(Option["tl"]); i++)
 temp = temp "/" getName(Option["tl"][i])
 gsub(/%\?/, temp, p)
 }
-printf(prettify("prompt", p), getDisplay(Option["sl"])) > STDERR
+temp = getDisplay(Option["sls"][1])
+for (i = 2; i <= length(Option["sls"]); i++)
+temp = temp "+" getDisplay(Option["sls"][i])
+printf(prettify("prompt", p), temp) > STDERR
 }
 function repl(line,    command, group, name, i, value, words) {
 split(line, words, " ")
@@ -4491,16 +4578,19 @@ value = words[2]
 Option["engine"] = value
 initHttpService()
 } else {
-match(command, /^[{(\[]?([[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)[})\]]?$/, group)
+match(command, /^[{(\[]?((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)[})\]]?$/, group)
 if (RSTART) {
-if (group[1]) Option["sl"] = group[1]
-if (group[4]) split(group[4], Option["tl"], "+")
+if (group[1]) {
+split(group[1], Option["sls"], "+")
+Option["sl"] = Option["sls"][1]
+}
+if (group[7]) split(group[7], Option["tl"], "+")
 line = words[2]
 for (i = 3; i <= length(words); i++)
 line = line " " words[i]
 }
 if (line) {
-translate(line)
+translates(line)
 if (Option["verbose"]) printf RS
 }
 }
@@ -4508,8 +4598,10 @@ prompt()
 }
 function init() {
 initGawk()
+initBiDiTerm()
 initBiDi()
 initLocale()
+initLocaleAlias()
 initUserLang()
 RS = "\n"
 ExitCode = 0
@@ -4530,6 +4622,7 @@ Option["indent"] = 4
 Option["no-ansi"] = 0
 Option["no-autocorrect"] = 0
 Option["no-bidi"] = 0
+Option["force-bidi"] = 0
 Option["no-warn"] = 0
 Option["theme"] = "default"
 Option["dump"] = 0
@@ -4547,6 +4640,7 @@ Option["user-agent"] = ENVIRON["USER_AGENT"] ? ENVIRON["USER_AGENT"] :
 "Mozilla/5.0 (X11; Linux x86_64) "\
 "AppleWebKit/602.1 (KHTML, like Gecko) Version/8.0 "\
 "Safari/602.1 Epiphany/3.18.2"
+Option["ip-version"] = 0
 Option["no-rlwrap"] = 0
 Option["interactive"] = 0
 Option["emacs"] = 0
@@ -4554,7 +4648,9 @@ Option["input"] = NULLSTR
 Option["output"] = STDOUT
 Option["hl"] = ENVIRON["HOME_LANG"] ? ENVIRON["HOME_LANG"] : UserLang
 Option["sl"] = ENVIRON["SOURCE_LANG"] ? ENVIRON["SOURCE_LANG"] : "auto"
+Option["sls"][1] = Option["sl"]
 Option["tl"][1] = ENVIRON["TARGET_LANG"] ? ENVIRON["TARGET_LANG"] : UserLang
+Option["join-sentence"] = 0
 }
 function initScript(    file, line, script, temp) {
 file = ".trans"
@@ -4592,8 +4688,13 @@ Option["width"] = temp > 5 ? temp - 2 : 64
 }
 if (Option["no-ansi"])
 delete AnsiCode
-if (Option["no-bidi"])
+if (Option["no-bidi"] || BiDiTerm == "mlterm")
 BiDi = BiDiNoPad = NULLSTR
+else if (!Option["force-bidi"] && BiDiTerm == "konsole") {
+BiDiNoPad = NULLSTR
+BiDi = "sed \"s/'/\\\\\\'/\" | xargs -0 printf '%%%ss'"
+}
+initLocaleDisplay()
 if (Option["no-warn"])
 STDERR = "/dev/null"
 if (Option["play"]) {
@@ -4805,6 +4906,11 @@ if (RSTART) {
 Option["no-bidi"] = 1
 continue
 }
+match(ARGV[pos], /^--?bidi/)
+if (RSTART) {
+Option["force-bidi"] = 1
+continue
+}
 match(ARGV[pos], /^--?no-warn/)
 if (RSTART) {
 Option["no-warn"] = 1
@@ -4877,7 +4983,7 @@ Option["pager"] = group[1] ?
 ARGV[++pos]
 continue
 }
-match(ARGV[pos], /^--?no-view$/)
+match(ARGV[pos], /^--?no-(view|pager)$/)
 if (RSTART) {
 Option["view"] = 0
 continue
@@ -4887,6 +4993,11 @@ if (RSTART) {
 Option["browser"] = group[1] ?
 (group[2] ? group[2] : Option["browser"]) :
 ARGV[++pos]
+continue
+}
+match(ARGV[pos], /^--?no-browser$/)
+if (RSTART) {
+Option["browser"] = NONE
 continue
 }
 match(ARGV[pos], /^--?(x|proxy)(=(.*)?)?$/, group)
@@ -4901,6 +5012,16 @@ if (RSTART) {
 Option["user-agent"] = group[2] ?
 (group[3] ? group[3] : Option["user-agent"]) :
 ARGV[++pos]
+continue
+}
+match(ARGV[pos], /^--?(4|ipv4|inet4-only)$/)
+if (RSTART) {
+Option["ip-version"] = 4
+continue
+}
+match(ARGV[pos], /^--?(6|ipv6|inet6-only)$/)
+if (RSTART) {
+Option["ip-version"] = 6
 continue
 }
 match(ARGV[pos], /^--?(I|int(e(r(a(c(t(i(ve?)?)?)?)?)?)?)?|shell)$/)
@@ -4953,9 +5074,11 @@ continue
 }
 match(ARGV[pos], /^--?(s(o(u(r(ce?)?)?)?|l)?|f|from)(=(.*)?)?$/, group)
 if (RSTART) {
-Option["sl"] = group[6] ?
-(group[7] ? group[7] : Option["sl"]) :
-ARGV[++pos]
+if (group[6]) {
+if (group[7]) split(group[7], Option["sls"], "+")
+} else
+split(ARGV[++pos], Option["sls"], "+")
+Option["sl"] = Option["sls"][1]
 continue
 }
 match(ARGV[pos], /^--?t(a(r(g(et?)?)?)?|l|o)?(=(.*)?)?$/, group)
@@ -4966,10 +5089,18 @@ if (group[6]) split(group[6], Option["tl"], "+")
 split(ARGV[++pos], Option["tl"], "+")
 continue
 }
-match(ARGV[pos], /^[{(\[]?([[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)[})\]]?$/, group)
+match(ARGV[pos], /^[{(\[]?((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)[})\]]?$/, group)
 if (RSTART) {
-if (group[1]) Option["sl"] = group[1]
-if (group[4]) split(group[4], Option["tl"], "+")
+if (group[1]) {
+split(group[1], Option["sls"], "+")
+Option["sl"] = Option["sls"][1]
+}
+if (group[7]) split(group[7], Option["tl"], "+")
+continue
+}
+match(ARGV[pos], /^--?j(o(i(n(-(s(e(n(t(e(n(ce?)?)?)?)?)?)?)?)?)?)?)?$/)
+if (RSTART) {
+Option["join-sentence"] = 1
 continue
 }
 match(ARGV[pos], /^--?(D|debug)$/)
@@ -5029,11 +5160,15 @@ welcome()
 if (pos < ARGC)
 for (i = pos; i < ARGC; i++)
 noargv[noargc++] = ARGV[i]
+if (noargc > 1 && Option["join-sentence"]) {
+noargv[0] = join(noargv, " ")
+noargc = 1
+}
 if (noargc) {
 for (i = 0; i < noargc; i++) {
 if (Option["verbose"] && i > pos)
 p(prettify("source-seperator", replicate(Option["chr-source-seperator"], Option["width"])))
-translate(noargv[i], 1)
+translates(noargv[i], 1)
 }
 } else {
 if (!Option["input"]) Option["input"] = STDIN
@@ -5044,9 +5179,9 @@ exit ExitCode
 }
 EOF
 read -r -d '' TRANS_MANPAGE << 'EOF'
-.\" Automatically generated by Pandoc 2.4
+.\" Automatically generated by Pandoc 2.5
 .\"
-.TH "TRANS" "1" "2018\-12\-23" "0.9.6.9" ""
+.TH "TRANS" "1" "2019\-04\-20" "0.9.6.10" ""
 .hy
 .SH NAME
 .PP
@@ -5076,8 +5211,7 @@ Print version and exit.
 .TP
 .B \f[B]\-H\f[R], \f[B]\-help\f[R]
 Print help message and exit.
-.TP
-.B \f[B]\-M\f[R], \f[B]\-man\f[R]
+\f[B]\-M\f[R], \f[B]\-man\f[R]
 Show man page and exit.
 .TP
 .B \f[B]\-T\f[R], \f[B]\-reference\f[R]
@@ -5208,6 +5342,9 @@ Do not autocorrect.
 .B \f[B]\-no\-bidi\f[R]
 Do not convert bidirectional texts.
 .TP
+.B \f[B]\-bidi\f[R]
+Always convert bidirectional texts.
+.TP
 .B \f[B]\-no\-warn\f[R]
 Do not write warning messages to stderr.
 .TP
@@ -5275,7 +5412,7 @@ This option overrides the setting of environment variable
 $\f[B]PAGER\f[R].
 .RE
 .TP
-.B \f[B]\-no\-view\f[R]
+.B \f[B]\-no\-view\f[R], \f[B]\-no\-pager\f[R]
 Do not view the translation in a terminal pager.
 .TP
 .B \f[B]\-browser\f[R] \f[I]PROGRAM\f[R]
@@ -5285,6 +5422,9 @@ Specify the web browser to use.
 This option overrides the setting of environment variable
 $\f[B]BROWSER\f[R].
 .RE
+.TP
+.B \f[B]\-no\-browser\f[R]
+Do not open the web browser.
 .SS Networking options
 .TP
 .B \f[B]\-x\f[R] \f[I]HOST:PORT\f[R], \f[B]\-proxy\f[R] \f[I]HOST:PORT\f[R]
@@ -5302,6 +5442,12 @@ Specify the User\-Agent to identify as.
 This option overrides the setting of environment variables
 $\f[B]USER_AGENT\f[R].
 .RE
+.TP
+.B \f[B]\-4\f[R], \f[B]\-ipv4\f[R], \f[B]\-inet4\-only\f[R]
+Connect only to IPv4 addresses.
+.TP
+.B \f[B]\-6\f[R], \f[B]\-ipv6\f[R], \f[B]\-inet6\-only\f[R]
+Connect only to IPv6 addresses.
 .SS Interactive shell options
 .TP
 .B \f[B]\-I\f[R], \f[B]\-interactive\f[R], \f[B]\-shell\f[R]
@@ -5357,12 +5503,13 @@ This option is optional.
 When its setting is omitted, English will be used.
 .PP
 This option overrides the setting of environment variables
-$\f[B]LANGUAGE\f[R], $\f[B]LC_ALL\f[R], $\f[B]LANG\f[R] and
-$\f[B]HOME_LANG\f[R].
+$\f[B]LC_ALL\f[R], $\f[B]LANG\f[R], and $\f[B]HOME_LANG\f[R].
 .RE
 .TP
-.B \f[B]\-s\f[R] \f[I]CODE\f[R], \f[B]\-sl\f[R] \f[I]CODE\f[R], \f[B]\-source\f[R] \f[I]CODE\f[R], \f[B]\-from\f[R] \f[I]CODE\f[R]
-Specify the source language (the language of original text).
+.B \f[B]\-s\f[R] \f[I]CODES\f[R], \f[B]\-sl\f[R] \f[I]CODES\f[R], \f[B]\-source\f[R] \f[I]CODES\f[R], \f[B]\-from\f[R] \f[I]CODES\f[R]
+Specify the source language(s) (the language(s) of original text).
+When specifying two or more language codes, concatenate them by plus
+sign \[dq]+\[dq].
 .RS
 .PP
 This option is optional.
@@ -5373,7 +5520,7 @@ This option overrides the setting of environment variable
 $\f[B]SOURCE_LANG\f[R].
 .RE
 .TP
-.B \f[B]\-t\f[R] \f[I]CODES\f[R], \f[B]\-tl\f[R] \f[I]CODE\f[R], \f[B]\-target\f[R] \f[I]CODES\f[R], \f[B]\-to\f[R] \f[I]CODES\f[R]
+.B \f[B]\-t\f[R] \f[I]CODES\f[R], \f[B]\-tl\f[R] \f[I]CODES\f[R], \f[B]\-target\f[R] \f[I]CODES\f[R], \f[B]\-to\f[R] \f[I]CODES\f[R]
 Specify the target language(s) (the language(s) of translated text).
 When specifying two or more language codes, concatenate them by plus
 sign \[dq]+\[dq].
@@ -5383,8 +5530,7 @@ This option is optional.
 When its setting is omitted, everything will be translated into English.
 .PP
 This option overrides the setting of environment variables
-$\f[B]LANGUAGE\f[R], $\f[B]LC_ALL\f[R], $\f[B]LANG\f[R] and
-$\f[B]TARGET_LANG\f[R].
+$\f[B]LC_ALL\f[R], $\f[B]LANG\f[R], and $\f[B]TARGET_LANG\f[R].
 .RE
 .TP
 .B [\f[I]SOURCE\f[R]]:[\f[I]TARGETS\f[R]]
@@ -5405,6 +5551,10 @@ Delimiter \[dq]:\[dq] and \[dq]=\[dq] can be used interchangeably.
 Either \f[I]SOURCE\f[R] or \f[I]TARGETS\f[R] may be omitted, but the
 delimiter character must be kept.
 .RE
+.SS Text preprocessing options
+.TP
+.B \f[B]\-j\f[R], \f[B]\-join\-sentence\f[R]
+Treat all arguments as one single sentence.
 .SS Other options
 .TP
 .B \f[B]\-no\-init\f[R]
