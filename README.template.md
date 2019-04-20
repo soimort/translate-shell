@@ -54,6 +54,7 @@ In order to be happy, the best way is to be loved by people.
 * GNU/Linux
 * macOS
 * *BSD
+* Android (through Termux)
 * Windows (through WSL, Cygwin, or MSYS2)
 
 ### Dependencies
