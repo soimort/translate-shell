@@ -6,7 +6,7 @@ BEGIN {
     T("GawkVersion", 1)
     {
         initGawk()
-        assertTrue(GawkVersion ~ "^4.")
+        assertTrue(GawkVersion ~ "^(4|5).")
     }
 
     T("Rlwrap", 1)
