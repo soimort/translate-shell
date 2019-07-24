@@ -195,6 +195,19 @@ function bingTranslate(text, sl, tl, hl,
 
     # Translation
     content = postResponse(text, _sl, _tl, _hl, "translate")
+    if (content == "") {
+        # Empty content. Assume "301 Moved Permanently" and use cn.bing.com
+        HttpHost = "cn.bing.com"
+        # Just dirty hack
+        if (Option["proxy"]) {
+            HttpPathPrefix = HttpProtocol HttpHost
+        } else {
+            HttpService = "/" "inet" "/tcp/0/" HttpHost "/" HttpPort  # FIXME: inet version
+        }
+
+        # Try again
+        content = postResponse(text, _sl, _tl, _hl, "translate")
+    }
     if (Option["dump"])
         return content
     tokenize(tokens, content)
