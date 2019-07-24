@@ -2,7 +2,7 @@
 # BingTranslator.awk                                               #
 ####################################################################
 #
-# Last Updated: 23 Dec 2018
+# Last Updated: 24 Jul 2019
 BEGIN { provides("bing") }
 
 function bingInit() {
@@ -133,15 +133,14 @@ function bingRequestUrl(text, sl, tl, hl) {
         "from=" sl "&to=" tl "&text=" preprocess(text)
 }
 
+# Main Bing Translator API (via HTTP POST).
 function bingPostRequestUrl(text, sl, tl, hl, type) {
-    if (type == "translate")
-        return HttpPathPrefix "/ttranslate"
-    else if (type == "translationlookup")
-        return HttpPathPrefix "/ttranslationlookup"
+    if (type == "lookup")
+        return HttpPathPrefix "/tlookupv3"
     else if (type == "transliterate")
-        return HttpPathPrefix "/ttransliterate"
-    else # type == "detect"
-        return HttpPathPrefix "/tdetect"
+        return HttpPathPrefix "/ttransliteratev3"
+    else # type == "translate"
+        return HttpPathPrefix "/ttranslatev3"
 }
 
 function bingPostRequestContentType(text, sl, tl, hl, type) {
@@ -149,14 +148,12 @@ function bingPostRequestContentType(text, sl, tl, hl, type) {
 }
 
 function bingPostRequestBody(text, sl, tl, hl, type) {
-    if (type == "translate")
-        return "&text=" quote(text) "&from=" sl "&to=" tl
-    else if (type == "translationlookup")
-        return "&text=" quote(text) "&from=" sl "&to=" tl
+    if (type == "lookup")
+        return "&text=" quote(text) "&fromLang=" sl "&to=" tl  # FIXME!
     else if (type == "transliterate")
-        return "&text=" quote(text) "&language=" sl "&toScript=" "latn"
-    else # type == "detect"
-        return "&text=" quote(text)
+        return "&text=" quote(text) "&language=" sl "&toScript=" "latn"  # FIXME!
+    else # type == "translate"
+        return "&text=" quote(text) "&fromLang=" sl "&to=" tl
 }
 
 # Get the translation of a string.
@@ -186,28 +183,15 @@ function bingTranslate(text, sl, tl, hl,
 
     #bingSetIG() # set IG (no longer needed)
 
-    # Language identification
-    il = postResponse(text, _sl, _tl, _hl, "detect")
-    if (!il) {
-        e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
-        ExitCode = 1
-        return
-    }
-    returnIl[0] = il
-    if (Option["verbose"] < -1)
-        return il
-    if (Option["verbose"] < 0)
-        return getList(il)
-
     # Hot-patches for Bing's own translator language codes
     # See: <https://msdn.microsoft.com/en-us/library/hh456380.aspx>
-    if (_sl == "auto")  _sl = il
-    if (_sl == "bs")    _sl = "bs-Latn" # 'bs' is not recognized as valid code
-    if (_sl == "zh-CN") _sl = "zh-CHS"
-    if (_sl == "zh-TW") _sl = "zh-CHT"
+    if (_sl == "auto")  _sl = "auto-detect"
+    if (_sl == "bs")    _sl = "bs-Latn" # 'bs' is not recognized as valid code  # FIXME
+    if (_sl == "zh-CN") _sl = "zh-Hans"
+    if (_sl == "zh-TW") _sl = "zh-Hant"
     if (_tl == "bs")    _tl = "bs-Latn"
-    if (_tl == "zh-CN") _tl = "zh-CHS"
-    if (_tl == "zh-TW") _tl = "zh-CHT"
+    if (_tl == "zh-CN") _tl = "zh-Hans"
+    if (_tl == "zh-TW") _tl = "zh-Hant"
 
     # Translation
     content = postResponse(text, _sl, _tl, _hl, "translate")
@@ -223,20 +207,25 @@ function bingTranslate(text, sl, tl, hl,
         e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
         ExitCode = 1
         return
-    } else if (ast[0 SUBSEP "statusCode"] != "200") {
-        e("[ERROR] statusCode: " ast[0 SUBSEP "statusCode"])
-        ExitCode = 1
-        return
     }
 
-    translation = unparameterize(ast[0 SUBSEP "translationResponse"])
+    translation = unparameterize(ast[0 SUBSEP 0 SUBSEP "translations" SUBSEP 0 SUBSEP "text"])
+
+    returnIl[0] = il = _sl == "auto-detect" ?
+        unparameterize(ast[0 SUBSEP 0 SUBSEP "detectedLanguage" SUBSEP "language"]) : _sl
+    if (Option["verbose"] < -1)
+        return il
+    if (Option["verbose"] < 0)
+        return getList(il)
 
     # Transliteration
     wShowTranslationPhonetics = Option["show-translation-phonetics"]
     if (wShowTranslationPhonetics) {
         split(_tl, group, "-")
-        content = postResponse(translation, group[1], group[1], _hl, "transliterate")
-        phonetics = unparameterize(content)
+        #content = postResponse(translation, group[1], group[1], _hl, "transliterate")
+        #phonetics = unparameterize(content)
+        phonetics = unparameterize(ast[0 SUBSEP 0 SUBSEP "translations" SUBSEP 0 SUBSEP "transliteration" \
+                                       SUBSEP "text"])
         if (phonetics == translation) phonetics = ""
     }
 
@@ -260,8 +249,9 @@ function bingTranslate(text, sl, tl, hl,
         wShowOriginalPhonetics = Option["show-original-phonetics"]
         if (wShowOriginalPhonetics) {
             split(_sl, group, "-")
-            content = postResponse(text, group[1], group[1], _hl, "transliterate")
-            oPhonetics = unparameterize(content)
+            #content = postResponse(text, group[1], group[1], _hl, "transliterate")
+            #oPhonetics = unparameterize(content)
+            # TODO
             if (oPhonetics == text) oPhonetics = ""
         }
 
@@ -295,9 +285,9 @@ function bingTranslate(text, sl, tl, hl,
             split(temp, group, /(%s|%S|%t|%T)/)
             r = r prettify("languages", group[1])
             if (temp ~ /%s/)
-                r = r prettify("languages-sl", getDisplay(_sl))
+                r = r prettify("languages-sl", getDisplay(il))
             if (temp ~ /%S/)
-                r = r prettify("languages-sl", getName(_sl))
+                r = r prettify("languages-sl", getName(il))
             r = r prettify("languages", group[2])
             if (temp ~ /%t/)
                 r = r prettify("languages-tl", getDisplay(tl))
