@@ -219,6 +219,16 @@ function dump(text, group,    command, temp) {
     return length(group) - 1
 }
 
+# Dump a Unicode string into a byte array (hexadecimal). Return the length of the array.
+function dumpX(text, group,    command, temp) {
+    command = "hexdump" " -v -e'1/1 \"%02X\" \" \"'"
+    command = "echo " parameterize(text) PIPE command
+    command | getline temp
+    split(temp, group, " ")
+    close(command)
+    return length(group) - 1
+}
+
 # Base64 encode a string.
 function base64(text,    command, temp) {
     command = "echo -n " parameterize(text) PIPE "base64"
