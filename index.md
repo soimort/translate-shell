@@ -1,14 +1,14 @@
 ---
 title: Translate Shell
 project-name: Translate Shell
-project-version: 0.9.6.10
+project-version: 0.9.6.11
 project-logo: images/logo.jpg
 background: images/background.png
 github: soimort/translate-shell
 url: https://www.soimort.org/translate-shell/
 download-url: https://www.soimort.org/translate-shell/trans
 download-checksum-type: SHA1SUM
-download-checksum-data: 7c77f3e372912bce188541e966dfda87b4ea5f8a
+download-checksum-data: d148a087f7e37d09bb11bf68efc58c4314d4b28c
 download-signature: https://www.soimort.org/translate-shell/trans.sig
 
 ---
@@ -68,6 +68,7 @@ In order to be happy, the best way is to be loved by people.
 * GNU/Linux
 * macOS
 * *BSD
+* Android (through Termux)
 * Windows (through WSL, Cygwin, or MSYS2)
 
 ### Dependencies
