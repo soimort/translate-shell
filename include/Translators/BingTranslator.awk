@@ -11,7 +11,7 @@ function bingInit() {
     HttpPort = 80
 }
 
-# Retrieve the Cookie and set IG.
+# [OBSOLETE] Retrieve the Cookie and set IG.
 function bingSetIG(    content, cookie, group, header, isBody,
                        url, status, location) {
     url = HttpPathPrefix "/translator"
@@ -57,6 +57,7 @@ function bingSetIG(    content, cookie, group, header, isBody,
     }
 }
 
+# FIXME!
 function bingTTSUrl(text, tl,
                     ####
                     country, gender, i, group,
@@ -122,9 +123,19 @@ function bingTTSUrl(text, tl,
     return TempFile
 }
 
-function bingWebTranslateUrl(uri, sl, tl, hl) {
-    return "http://www.microsofttranslator.com/bv.aspx?"        \
-        "from=" sl "&to=" tl "&a=" uri
+function bingWebTranslateUrl(uri, sl, tl, hl,    _sl, _tl) {
+    # Hot-patches for language codes
+    _sl = sl; _tl = tl
+    if (_sl == "bs")    _sl = "bs-Latn" # 'bs' is not recognized as valid code
+    if (_sl == "zh")    _sl = "zh-CHS" # still old format
+    if (_sl == "zh-CN") _sl = "zh-CHS"
+    if (_sl == "zh-TW") _sl = "zh-CHT"
+    if (_tl == "bs")    _tl = "bs-Latn"
+    if (_tl == "zh")    _tl = "zh-CHS"
+    if (_tl == "zh-CN") _tl = "zh-CHS"
+    if (_tl == "zh-TW") _tl = "zh-CHT"
+
+    return "https://www.translatetheweb.com/?" "from=" _sl "&to=" _tl "&a=" uri
 }
 
 # Dictionary API (via HTTP GET).
