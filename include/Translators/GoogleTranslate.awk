@@ -2,10 +2,11 @@
 # GoogleTranslate.awk                                              #
 ####################################################################
 #
-# Last Updated: 18 Dec 2015
-# https://translate.google.com/translate/releases/twsfe_w_20151214_RC03/r/js/desktop_module_main.js
+# Last Updated: 25 Jul 2019
 BEGIN { provides("google") }
 
+# FIXME!
+# See: <https://translate.google.com/translate/releases/twsfe_w_20151214_RC03/r/js/desktop_module_main.js>
 function genRL(a, x,
                ####
                b, c, d, i, y) {
@@ -21,7 +22,6 @@ function genRL(a, x,
     }
     return a
 }
-
 function genTK(text,
                ####
                a, d, dLen, e, tkk, ub, vb) {
@@ -59,12 +59,12 @@ function googleRequestUrl(text, sl, tl, hl,    qc) {
         "&ie=UTF-8&oe=UTF-8"                                            \
         "&dt=bd&dt=ex&dt=ld&dt=md&dt=rw&dt=rm&dt=ss&dt=t&dt=at&dt=gt"   \
         "&dt=" qc "&sl=" sl "&tl=" tl "&hl=" hl                         \
-        "&q=" preprocess(text)
+        "&q=" preprocessByDump(text)
 }
 
 function googleTTSUrl(text, tl) {
     return HttpProtocol HttpHost "/translate_tts?ie=UTF-8&client=gtx"	\
-        "&tl=" tl "&q=" preprocess(text)
+        "&tl=" tl "&q=" preprocessByDump(text)
 }
 
 function googleWebTranslateUrl(uri, sl, tl, hl) {
