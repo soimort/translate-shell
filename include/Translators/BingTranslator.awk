@@ -278,11 +278,12 @@ function bingTranslate(text, sl, tl, hl,
             split(_sl, group, "-")
             #content = postResponse(text, group[1], group[1], _hl, "transliterate")
             #oPhonetics = unparameterize(content)
+            delete ast  # purge old AST
             content = postResponse(text, il, il, _hl, "translate")
             tokenize(tokens, content)
             parseJson(ast, tokens)
-            oPhonetics = unparameterize(ast[0 SUBSEP 0 SUBSEP "translations" SUBSEP 0 SUBSEP "transliteration" \
-                                            SUBSEP "text"])
+            oPhonetics = unparameterize(ast[0 SUBSEP 0 SUBSEP "translations" SUBSEP 0 \
+                                            SUBSEP "transliteration" SUBSEP "text"])
             if (oPhonetics == text) oPhonetics = ""
         }
 
