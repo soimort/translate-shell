@@ -29,8 +29,7 @@ check: test
 	$(BUILDDIR)/$(COMMAND) -V
 	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b 忍者`" = 'Ninja' ] &&\
 	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b -e bing 忍者`" = 'Ninja' ] &&\
-	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b -e yandex Ninja`" = 'Ninja' ] &&\
-	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b -e deepl -s en -t de hello`" = 'Hallo' ]
+	[ "`$(BUILDDIR)/$(COMMAND) -no-init -D -b -e yandex Ninja`" = 'Ninja' ]
 
 install: build
 	@mkdir -p $(DESTDIR)$(PREFIX)/bin &&\
