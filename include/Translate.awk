@@ -86,6 +86,15 @@ function preprocess(text) {
     return quote(text)
 }
 
+# Pre-process string (using hexdump to URL-encode everything).
+function preprocessByDump(text,    arr, len, temp) {
+    len = dumpX(text, arr)
+    temp = ""
+    for (i = 1; i <= len; i++)
+        temp = temp "%" arr[i]
+    return temp
+}
+
 # [OBSOLETE] Is this function still relevant?
 # Post-process string (remove any redundant whitespace).
 function postprocess(text) {
