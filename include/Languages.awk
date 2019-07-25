@@ -1849,6 +1849,8 @@ function initLocaleAlias(    i) {
     LocaleAlias["zh"]      = "zh-CN" # Chinese: default to Chinese Simplified
     LocaleAlias["zh-CHS"]  = "zh-CN"
     LocaleAlias["zh-CHT"]  = "zh-TW"
+    LocaleAlias["zh-Hans"] = "zh-CN"
+    LocaleAlias["zh-Hant"] = "zh-TW"
     LocaleAlias["zho"]     = "zh-CN"
     LocaleAlias["chinese"] = "zh-CN"
     LocaleAlias["tlh-Latn"] = "tlh"
