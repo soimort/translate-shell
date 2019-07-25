@@ -278,7 +278,11 @@ function bingTranslate(text, sl, tl, hl,
             split(_sl, group, "-")
             #content = postResponse(text, group[1], group[1], _hl, "transliterate")
             #oPhonetics = unparameterize(content)
-            # FIXME!
+            content = postResponse(text, il, il, _hl, "translate")
+            tokenize(tokens, content)
+            parseJson(ast, tokens)
+            oPhonetics = unparameterize(ast[0 SUBSEP 0 SUBSEP "translations" SUBSEP 0 SUBSEP "transliteration" \
+                                            SUBSEP "text"])
             if (oPhonetics == text) oPhonetics = ""
         }
 
@@ -330,9 +334,9 @@ function bingTranslate(text, sl, tl, hl,
                 tokenize(dicTokens, dicContent)
                 parseJson(dicAst, dicTokens)
 
-                l(dicContent, "content", 1, 1)
-                l(dicTokens, "tokens", 1, 0, 1)
-                l(dicAst, "ast")
+                l(dicContent, "dicContent", 1, 1)
+                l(dicTokens, "dicTokens", 1, 0, 1)
+                l(dicAst, "dicAst")
 
                 saveSortedIn = PROCINFO["sorted_in"]
                 PROCINFO["sorted_in"] = "compareByIndexFields"
