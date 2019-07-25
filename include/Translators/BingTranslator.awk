@@ -2,7 +2,7 @@
 # BingTranslator.awk                                               #
 ####################################################################
 #
-# Last Updated: 24 Jul 2019
+# Last Updated: 25 Jul 2019
 BEGIN { provides("bing") }
 
 function bingInit() {
@@ -11,7 +11,7 @@ function bingInit() {
     HttpPort = 80
 }
 
-# [OBSOLETE] Retrieve the Cookie and set IG.
+# [OBSOLETE?] Retrieve the Cookie and set IG.
 function bingSetIG(    content, cookie, group, header, isBody,
                        url, status, location) {
     url = HttpPathPrefix "/translator"
@@ -138,7 +138,7 @@ function bingWebTranslateUrl(uri, sl, tl, hl,    _sl, _tl) {
     return "https://www.translatetheweb.com/?" "from=" _sl "&to=" _tl "&a=" uri
 }
 
-# Dictionary API (via HTTP GET).
+# [OBSOLETE?] Old dictionary API (via HTTP GET).
 function bingRequestUrl(text, sl, tl, hl) {
     return HttpPathPrefix "/translator/api/Dictionary/Lookup?"  \
         "from=" sl "&to=" tl "&text=" preprocess(text)
@@ -148,8 +148,8 @@ function bingRequestUrl(text, sl, tl, hl) {
 function bingPostRequestUrl(text, sl, tl, hl, type) {
     if (type == "lookup")
         return HttpPathPrefix "/tlookupv3"
-    else if (type == "transliterate")
-        return HttpPathPrefix "/ttransliteratev3"
+    #else if (type == "transliterate")
+    #    return HttpPathPrefix "/ttransliteratev3"
     else # type == "translate"
         return HttpPathPrefix "/ttranslatev3"
 }
@@ -160,9 +160,9 @@ function bingPostRequestContentType(text, sl, tl, hl, type) {
 
 function bingPostRequestBody(text, sl, tl, hl, type) {
     if (type == "lookup")
-        return "&text=" quote(text) "&fromLang=" sl "&to=" tl  # FIXME!
-    else if (type == "transliterate")
-        return "&text=" quote(text) "&language=" sl "&toScript=" "latn"  # FIXME!
+        return "&text=" quote(text) "&from=" sl "&to=" tl
+    #else if (type == "transliterate")
+    #    return "&text=" quote(text) "&language=" sl "&toScript=" "latn"
     else # type == "translate"
         return "&text=" quote(text) "&fromLang=" sl "&to=" tl
 }
@@ -172,11 +172,14 @@ function bingTranslate(text, sl, tl, hl,
                        isVerbose, toSpeech, returnPlaylist, returnIl,
                        ####
                        r,
-                       content, tokens, ast,
+                       content, tokens, ast, dicContent, dicTokens, dicAst,
                        _sl, _tl, _hl, il, isPhonetic,
-                       translation,
-                       wShowOriginal, wShowTranslation, wShowLanguages,
-                       group, temp) {
+                       translation, phonetics, oPhonetics,
+                       wordClasses, words, wordBackTranslations,
+                       wShowOriginal, wShowOriginalPhonetics,
+                       wShowTranslation, wShowTranslationPhonetics,
+                       wShowLanguages, wShowDictionary,
+                       i, j, k, group, temp, saveSortedIn) {
     isPhonetic = match(tl, /^@/)
     tl = substr(tl, 1 + isPhonetic)
 
@@ -275,7 +278,7 @@ function bingTranslate(text, sl, tl, hl,
             split(_sl, group, "-")
             #content = postResponse(text, group[1], group[1], _hl, "transliterate")
             #oPhonetics = unparameterize(content)
-            # TODO
+            # FIXME!
             if (oPhonetics == text) oPhonetics = ""
         }
 
@@ -320,19 +323,60 @@ function bingTranslate(text, sl, tl, hl,
             r = r prettify("languages", group[3])
         }
 
-        if (wShowDictionary && false) { # FIXME!
+        if (wShowDictionary) {
             # Dictionary API
-            # Note: source language must be identified
-            dicContent = getResponse(text, _sl, _tl, _hl)
-            tokenize(dicTokens, dicContent)
-            parseJson(dicAst, dicTokens) # FIXME: inefficient parser
+            dicContent = postResponse(text, il, _tl, _hl, "lookup")
+            if (dicContent != "") {
+                tokenize(dicTokens, dicContent)
+                parseJson(dicAst, dicTokens)
 
-            if (anything(dicAst)) {
+                l(dicContent, "content", 1, 1)
+                l(dicTokens, "tokens", 1, 0, 1)
+                l(dicAst, "ast")
+
+                saveSortedIn = PROCINFO["sorted_in"]
+                PROCINFO["sorted_in"] = "compareByIndexFields"
+                for (i in dicAst) {
+                    if (match(i, "^0" SUBSEP "0" SUBSEP "translations" SUBSEP "([[:digit:]]+)" SUBSEP \
+                              "posTag$", group))
+                        wordClasses[group[1]] = tolower(literal(dicAst[i]))
+                }
+                for (i in dicAst) {
+                    if (match(i, "^0" SUBSEP "0" SUBSEP "translations" SUBSEP "([[:digit:]]+)" SUBSEP \
+                              "displayTarget$", group))
+                        words[wordClasses[group[1]]][group[1]] = literal(dicAst[i])
+                    if (match(i, "^0" SUBSEP "0" SUBSEP "translations" SUBSEP "([[:digit:]]+)" SUBSEP \
+                              "backTranslations" SUBSEP "([[:digit:]]+)" SUBSEP "displayText$", group))
+                        wordBackTranslations[wordClasses[group[1]]][group[1]][group[2]] = literal(dicAst[i])
+                }
+                PROCINFO["sorted_in"] = saveSortedIn
+
                 # Display: dictionary entries
                 if (r) r = r RS
                 r = r m("-- display dictionary entries")
+                for (i = 0; i < length(words); i++) {
+                    r = (i > 0 ? r RS : r) RS prettify("dictionary-word-class", s(wordClasses[i], hl))
 
-                # TODO
+                    for (j in words[wordClasses[i]]) {
+                        r = r RS prettify("dictionary-word", ins(1, words[wordClasses[i]][j], tl))
+
+                        if (isRTL(il))
+                            explanation = join(wordBackTranslations[wordClasses[i]][j], ", ")
+                        else {
+                            explanation = prettify("dictionary-explanation-item",
+                                                   wordBackTranslations[wordClasses[i]][j][0])
+                            for (k = 1; k < length(wordBackTranslations[wordClasses[i]][j]); k++)
+                                explanation = explanation prettify("dictionary-explanation", ", ") \
+                                    prettify("dictionary-explanation-item",
+                                             wordBackTranslations[wordClasses[i]][j][k])
+                        }
+
+                        if (isRTL(il))
+                            r = r RS prettify("dictionary-explanation-item", ins(2, explanation, il))
+                        else
+                            r = r RS ins(2, explanation)
+                    }
+                }
             }
         }
     }
