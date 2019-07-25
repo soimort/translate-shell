@@ -76,7 +76,7 @@ function bingTTSUrl(text, tl,
 
     # Automatic ISO country code
     if (country) tl = tl "-" country
-    else if (tl == "ar") tl = tl "-EG" # FIXME: sometimes doesn't work. Why?
+    else if (tl == "ar") tl = tl "-EG" # sometimes doesn't work. Why?
     else if (tl == "da") tl = tl "-DK"
     else if (tl == "de") tl = tl "-DE"
     else if (tl == "en") tl = tl "-US"
@@ -200,7 +200,7 @@ function bingTranslate(text, sl, tl, hl,
     # Hot-patches for Bing's own translator language codes
     # See: <https://msdn.microsoft.com/en-us/library/hh456380.aspx>
     if (_sl == "auto")  _sl = "auto-detect"
-    if (_sl == "bs")    _sl = "bs-Latn" # 'bs' is not recognized as valid code  # FIXME
+    if (_sl == "bs")    _sl = "bs-Latn" # 'bs' is not recognized as valid code
     if (_sl == "zh-CN") _sl = "zh-Hans"
     if (_sl == "zh-TW") _sl = "zh-Hant"
     if (_tl == "bs")    _tl = "bs-Latn"
