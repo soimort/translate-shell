@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches:
+    - develop
+    - stable
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install dependencies
+      run: |
+        apt-get update
+        apt-get -y install gawk curl rlwrap emacs
+    - name: Sanity check
+      run: |
+        make test
