@@ -2,6 +2,7 @@
 
 [![Icon](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/icon.png)](https://www.soimort.org/translate-shell)
 [![CircleCI](https://circleci.com/gh/soimort/translate-shell.svg?style=svg)](https://circleci.com/gh/soimort/translate-shell)
+[![Actions](https://github.com/soimort/translate-shell/workflows/CI/badge.svg)](https://github.com/soimort/translate-shell/actions)
 [![Version](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-release.png)](https://github.com/soimort/translate-shell/releases)
 [![Download](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png)](https://www.soimort.org/translate-shell/trans)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/soimort/translate-shell?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
