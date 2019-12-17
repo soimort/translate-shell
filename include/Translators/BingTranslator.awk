@@ -200,9 +200,11 @@ function bingTranslate(text, sl, tl, hl,
     # Hot-patches for Bing's own translator language codes
     # See: <https://msdn.microsoft.com/en-us/library/hh456380.aspx>
     if (_sl == "auto")  _sl = "auto-detect"
+    if (_sl == "no")    _sl = "nb" # Bing uses Norwegian Bokmål
     if (_sl == "bs")    _sl = "bs-Latn" # 'bs' is not recognized as valid code
     if (_sl == "zh-CN") _sl = "zh-Hans"
     if (_sl == "zh-TW") _sl = "zh-Hant"
+    if (_tl == "no")    _tl = "nb"
     if (_tl == "bs")    _tl = "bs-Latn"
     if (_tl == "zh-CN") _tl = "zh-Hans"
     if (_tl == "zh-TW") _tl = "zh-Hant"

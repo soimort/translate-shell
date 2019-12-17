@@ -1840,7 +1840,7 @@ function initLocaleAlias(    i) {
     LocaleAlias["ji"] = "yi" # withdrawn language code for Yiddish
     LocaleAlias["jw"] = "jv" # withdrawn language code for Javanese
     LocaleAlias["mo"] = "ro" # Moldavian or Moldovan considered a variant of the Romanian language
-    LocaleAlias["nb"] = "no" # Google Translate does not distinguish between Bokmål and Nynorsk
+    LocaleAlias["nb"] = "no" # Google Translate does not distinguish between Bokmål and Nynorsk (but Bing does!)
     LocaleAlias["nn"] = "no"
     LocaleAlias["sh"]      = "sr-Cyrl" # Serbo-Croatian: default to Serbian
     LocaleAlias["sr"]      = "sr-Cyrl" # Serbian: default to Serbian Cyrillic
