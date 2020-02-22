@@ -74,6 +74,7 @@ BEGIN {
     T("base64()", 1)
     {
         assertEqual(base64("ninja"), "bmluamE=")
+        assertEqual(base64("ninjaninjaninjaninjaninjaninjaninjaninjaninjaninjaninjaninjaninjaninjaninjaninjaninjaninjaninjaninjaninjaninjaninjaninja"), "bmluamFuaW5qYW5pbmphbmluamFuaW5qYW5pbmphbmluamFuaW5qYW5pbmphbmluamFuaW5qYW5pbmphbmluamFuaW5qYW5pbmphbmluamFuaW5qYW5pbmphbmluamFuaW5qYW5pbmphbmluamFuaW5qYW5pbmph")
     }
 
     T("uprintf", 1)

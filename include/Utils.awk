@@ -231,7 +231,10 @@ function dumpX(text, group,    command, temp) {
 
 # Base64 encode a string.
 function base64(text,    command, temp) {
-    command = "echo -n " parameterize(text) PIPE "base64"
+    if (detectProgram("uname", "-s", 1) == "Linux") # GNU base64 wraps lines by default
+        command = "echo -n " parameterize(text) PIPE "base64 -w0"
+    else
+        command = "echo -n " parameterize(text) PIPE "base64"
     command = "bash -c " parameterize(command, "\"")
     command | getline temp
     close(command)
