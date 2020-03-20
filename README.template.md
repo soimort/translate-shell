@@ -99,6 +99,16 @@ Start an interactive shell and translate anything you input into your native lan
 
     $ gawk -f (curl -Ls git.io/translate | psub) -- -shell
 
+### Using Docker
+
+To try out via [Docker](https://www.docker.com/), run:
+
+    $ docker pull soimort/translate-shell
+
+Then you may start an interactive shell from the Docker image for translating:
+
+    $ docker run -it soimort/translate-shell -shell
+
 ## Installation
 
 ### Option #1. Direct Download
@@ -112,17 +122,17 @@ There is a [GPG signature](https://www.soimort.org/translate-shell/trans.sig).
 
 ### Option #2. From A Package Manager
 
-#### Using [Antigen](https://github.com/zsh-users/antigen) (Recommended for Zsh users)
+#### Using your favorite package manager
+
+See **[wiki: Distros](https://github.com/soimort/translate-shell/wiki/Distros)** on how to install from a specific package manager on your distro.
+
+#### Using [Antigen](https://github.com/zsh-users/antigen) (for Zsh users)
 
 Add the following line to your `.zshrc`:
 
     antigen bundle soimort/translate-shell
 
-#### Using your favorite package manager
-
-See **[wiki: Distros](https://github.com/soimort/translate-shell/wiki/Distros)** on how to install from a specific package manager on your distro.
-
-### Option #3. From Git (Recommended for seasoned hackers)
+### Option #3. From Git
 
     $ git clone https://github.com/soimort/translate-shell
     $ cd translate-shell/
