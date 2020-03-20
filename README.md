@@ -46,6 +46,22 @@ Learning without thought is labor lost, thought without learning is perilous.
 In order to be happy, the best way is to be loved by people.
 ```
 
+
+### Docker version
+
+To quickly try out `translate-shell` via docker you could make use of docker image like so
+
+```sh
+docker pull soimort/translate-shell
+docker run -it soimort/translate-shell
+```
+
+And you should be able to use `translate-shell` like so
+
+```sh
+ docker run -it translate-shell vorto
+```
+
 ## Prerequisites
 
 ### System Requirements
