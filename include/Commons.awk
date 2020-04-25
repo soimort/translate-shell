@@ -190,6 +190,8 @@ function escapeChar(char) {
         return "<" # Unicode Character 'LESS-THAN SIGN'
     case "u003e":
         return ">" # Unicode Character 'GREATER-THAN SIGN'
+    case "u200b":
+        return "" # Unicode Character 'ZERO WIDTH SPACE'
     default:
         return char
     }
