@@ -108,8 +108,9 @@ function wiki(    code, group, iso, language, saveSortedIn) {
     saveSortedIn = PROCINFO["sorted_in"]
     PROCINFO["sorted_in"] = "@ind_num_asc"
     for (code in Locale) {
-        # Ignore unstable languages
+        # Ignore unstable languages and non-languages
         if (Locale[code]["support"] == "unstable") continue
+        if (Locale[code]["status"] == "non-language") continue
 
         split(getISO(code), group, "-")
         iso = group[1]

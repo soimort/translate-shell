@@ -1812,6 +1812,7 @@ function initLocale() {
     Locale["chr"]["script"]            = "Cher"
 
     #? Emoji
+    Locale["emj"]["status"]            = "non-language"
     Locale["emj"]["support"]           = "yandex-only"
     Locale["emj"]["name"]              = "Emoji"
     Locale["emj"]["endonym"]           = "Emoji"
