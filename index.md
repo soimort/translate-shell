@@ -1,14 +1,14 @@
 ---
 title: Translate Shell
 project-name: Translate Shell
-project-version: 0.9.6.11
+project-version: 0.9.6.12
 project-logo: images/logo.jpg
 background: images/background.png
 github: soimort/translate-shell
 url: https://www.soimort.org/translate-shell/
 download-url: https://www.soimort.org/translate-shell/trans
 download-checksum-type: SHA1SUM
-download-checksum-data: d148a087f7e37d09bb11bf68efc58c4314d4b28c
+download-checksum-data: e9959df02300279b46e1bf7bc4739b07891d86b4
 download-signature: https://www.soimort.org/translate-shell/trans.sig
 
 ---
@@ -16,6 +16,7 @@ download-signature: https://www.soimort.org/translate-shell/trans.sig
 
 [![Icon](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/icon.png)](https://www.soimort.org/translate-shell)
 [![CircleCI](https://circleci.com/gh/soimort/translate-shell.svg?style=svg)](https://circleci.com/gh/soimort/translate-shell)
+[![Actions](https://github.com/soimort/translate-shell/workflows/CI/badge.svg)](https://github.com/soimort/translate-shell/actions)
 [![Version](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-release.png)](https://github.com/soimort/translate-shell/releases)
 [![Download](https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png)](https://www.soimort.org/translate-shell/trans)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/soimort/translate-shell?utm_source=badge$readme$utm_medium=badge$readme$utm_campaign=pr-badge$readme$utm_content=badge)
@@ -112,6 +113,16 @@ Start an interactive shell and translate anything you input into your native lan
 
     $ gawk -f (curl -Ls git.io/translate | psub) -- -shell
 
+### Using Docker
+
+To try out via [Docker](https://www.docker.com/), run:
+
+    $ docker pull soimort/translate-shell
+
+Then you may start an interactive shell from the Docker image for translating:
+
+    $ docker run -it soimort/translate-shell -shell
+
 ## Installation
 
 ### Option #1. Direct Download
@@ -125,17 +136,17 @@ There is a [GPG signature](https://www.soimort.org/translate-shell/trans.sig).
 
 ### Option #2. From A Package Manager
 
-#### Using [Antigen](https://github.com/zsh-users/antigen) (Recommended for Zsh users)
+#### Using your favorite package manager
+
+See **[wiki: Distros](https://github.com/soimort/translate-shell/wiki/Distros)** on how to install from a specific package manager on your distro.
+
+#### Using [Antigen](https://github.com/zsh-users/antigen) (for Zsh users)
 
 Add the following line to your `.zshrc`:
 
     antigen bundle soimort/translate-shell
 
-#### Using your favorite package manager
-
-See **[wiki: Distros](https://github.com/soimort/translate-shell/wiki/Distros)** on how to install from a specific package manager on your distro.
-
-### Option #3. From Git (Recommended for seasoned hackers)
+### Option #3. From Git
 
     $ git clone https://github.com/soimort/translate-shell
     $ cd translate-shell/

@@ -27,11 +27,11 @@
   <a href="https://www.soimort.org/translate-shell/"><img src="images/logo.jpg"/></a>
   <div id="desc">
     <h1>Translate Shell</h1>
-    <h2>version 0.9.6.11</h2>
+    <h2>version 0.9.6.12</h2>
     <a href="https://github.com/soimort/translate-shell">Star <i class="fa fa-github-square fa-2x"></i></a>
     <a href="https://www.soimort.org/translate-shell/trans">Download <i class="fa fa-download fa-2x"></i></a>
     <div id="msg">
-      <span id="checksum" onmouseover="this.innerHTML='d148a087f7e37d09bb11bf68efc58c4314d4b28c'" onmouseout="this.innerHTML='SHA1SUM'">SHA1SUM</span>
+      <span id="checksum" onmouseover="this.innerHTML='e9959df02300279b46e1bf7bc4739b07891d86b4'" onmouseout="this.innerHTML='SHA1SUM'">SHA1SUM</span>
       <a href="https://www.soimort.org/translate-shell/trans.sig">PGP SIGNATURE</a>
     </div>
   </div>
@@ -61,7 +61,7 @@
 </header>
 
 <h1 id="translate-shell">Translate Shell</h1>
-<p><a href="https://www.soimort.org/translate-shell"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/icon.png" alt="Icon" /></a> <a href="https://circleci.com/gh/soimort/translate-shell"><img src="https://circleci.com/gh/soimort/translate-shell.svg?style=svg" alt="CircleCI" /></a> <a href="https://github.com/soimort/translate-shell/releases"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-release.png" alt="Version" /></a> <a href="https://www.soimort.org/translate-shell/trans"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png" alt="Download" /></a> <a href="https://gitter.im/soimort/translate-shell?utm_source=badge$readme$utm_medium=badge$readme$utm_campaign=pr-badge$readme$utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter" /></a></p>
+<p><a href="https://www.soimort.org/translate-shell"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/icon.png" alt="Icon" /></a> <a href="https://circleci.com/gh/soimort/translate-shell"><img src="https://circleci.com/gh/soimort/translate-shell.svg?style=svg" alt="CircleCI" /></a> <a href="https://github.com/soimort/translate-shell/actions"><img src="https://github.com/soimort/translate-shell/workflows/CI/badge.svg" alt="Actions" /></a> <a href="https://github.com/soimort/translate-shell/releases"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-release.png" alt="Version" /></a> <a href="https://www.soimort.org/translate-shell/trans"><img src="https://raw.githubusercontent.com/soimort/translate-shell/gh-pages/images/badge-download.png" alt="Download" /></a> <a href="https://gitter.im/soimort/translate-shell?utm_source=badge$readme$utm_medium=badge$readme$utm_campaign=pr-badge$readme$utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter" /></a></p>
 <p><strong><a href="https://www.soimort.org/translate-shell">Translate Shell</a></strong> (formerly <em>Google Translate CLI</em>) is a command-line translator powered by <strong><a href="https://translate.google.com/">Google Translate</a></strong> (default), <strong><a href="https://www.bing.com/translator">Bing Translator</a></strong>, <strong><a href="https://translate.yandex.com/">Yandex.Translate</a></strong>, and <strong><a href="https://www.apertium.org/">Apertium</a></strong>. It gives you easy access to one of these translation engines in your terminal:</p>
 <pre><code>$ trans &#39;Saluton, Mondo!&#39;
 Saluton, Mondo!
@@ -148,6 +148,11 @@ In order to be happy, the best way is to be loved by people.</code></pre>
 <pre><code>$ gawk -f &lt;(curl -Ls git.io/translate) -- -shell</code></pre>
 <p>(in <strong>fish</strong>)</p>
 <pre><code>$ gawk -f (curl -Ls git.io/translate | psub) -- -shell</code></pre>
+<h3 id="using-docker">Using Docker</h3>
+<p>To try out via <a href="https://www.docker.com/">Docker</a>, run:</p>
+<pre><code>$ docker pull soimort/translate-shell</code></pre>
+<p>Then you may start an interactive shell from the Docker image for translating:</p>
+<pre><code>$ docker run -it soimort/translate-shell -shell</code></pre>
 <h2 id="installation">Installation</h2>
 <h3 id="option-1.-direct-download">Option #1. Direct Download</h3>
 <p>Download <a href="http://git.io/trans">the self-contained executable</a> and place it into your path. It’s everything you need.</p>
@@ -155,12 +160,12 @@ In order to be happy, the best way is to be loved by people.</code></pre>
 $ chmod +x ./trans</code></pre>
 <p>There is a <a href="https://www.soimort.org/translate-shell/trans.sig">GPG signature</a>.</p>
 <h3 id="option-2.-from-a-package-manager">Option #2. From A Package Manager</h3>
-<h4 id="using-antigen-recommended-for-zsh-users">Using <a href="https://github.com/zsh-users/antigen">Antigen</a> (Recommended for Zsh users)</h4>
-<p>Add the following line to your <code>.zshrc</code>:</p>
-<pre><code>antigen bundle soimort/translate-shell</code></pre>
 <h4 id="using-your-favorite-package-manager">Using your favorite package manager</h4>
 <p>See <strong><a href="https://github.com/soimort/translate-shell/wiki/Distros">wiki: Distros</a></strong> on how to install from a specific package manager on your distro.</p>
-<h3 id="option-3.-from-git-recommended-for-seasoned-hackers">Option #3. From Git (Recommended for seasoned hackers)</h3>
+<h4 id="using-antigen-for-zsh-users">Using <a href="https://github.com/zsh-users/antigen">Antigen</a> (for Zsh users)</h4>
+<p>Add the following line to your <code>.zshrc</code>:</p>
+<pre><code>antigen bundle soimort/translate-shell</code></pre>
+<h3 id="option-3.-from-git">Option #3. From Git</h3>
 <pre><code>$ git clone https://github.com/soimort/translate-shell
 $ cd translate-shell/
 $ make

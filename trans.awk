@@ -2,8 +2,8 @@
 BEGIN {
 Name        = "Translate Shell"
 Description = "Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc."
-Version     = "0.9.6.11"
-ReleaseDate = "2019-07-25"
+Version     = "0.9.6.12"
+ReleaseDate = "2020-05-11"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 EntryScript = "translate"
@@ -134,6 +134,8 @@ case "u003c":
 return "<"
 case "u003e":
 return ">"
+case "u200b":
+return ""
 default:
 return char
 }
@@ -627,6 +629,9 @@ close(command)
 return length(group) - 1
 }
 function base64(text,    command, temp) {
+if (detectProgram("uname", "-s", 1) == "Linux")
+command = "echo -n " parameterize(text) PIPE "base64 -w0"
+else
 command = "echo -n " parameterize(text) PIPE "base64"
 command = "bash -c " parameterize(command, "\"")
 command | getline temp
@@ -3119,9 +3124,10 @@ return assert(content, "[ERROR] Null response.")
 }
 function postResponse(text, sl, tl, hl, type,
 content, contentLength, contentType, group,
-header, isBody, reqBody, url, status, location) {
+header, isBody, reqBody, url, status, location, userAgent) {
 url = _PostRequestUrl(text, sl, tl, hl, type)
 contentType = _PostRequestContentType(text, sl, tl, hl, type)
+userAgent = _PostRequestUserAgent(text, sl, tl, hl, type)
 reqBody = _PostRequestBody(text, sl, tl, hl, type)
 if (DumpContentengths[reqBody])
 contentLength = DumpContentengths[reqBody]
@@ -3132,8 +3138,10 @@ header = "POST " url " HTTP/1.1\r\n"\
 "Connection: close\r\n"\
 "Content-Length: " contentLength "\r\n"\
 "Content-Type: " contentType "\r\n"
-if (Option["user-agent"])
+if (Option["user-agent"] && !userAgent)
 header = header "User-Agent: " Option["user-agent"] "\r\n"
+if (userAgent)
+header = header "User-Agent: " userAgent "\r\n"
 if (Cookie)
 header = header "Cookie: " Cookie "\r\n"
 if (HttpAuthUser && HttpAuthPass)
@@ -3330,6 +3338,10 @@ return @vm(text, sl, tl, hl, type)
 }
 function _PostRequestContentType(text, sl, tl, hl, type,    vm) {
 vm = engineMethod("PostRequestContentType")
+return @vm(text, sl, tl, hl, type)
+}
+function _PostRequestUserAgent(text, sl, tl, hl, type,    vm) {
+vm = engineMethod("PostRequestUserAgent")
 return @vm(text, sl, tl, hl, type)
 }
 function _PostRequestBody(text, sl, tl, hl, type,    vm) {
@@ -3873,6 +3885,9 @@ return HttpPathPrefix "/ttranslatev3"
 function bingPostRequestContentType(text, sl, tl, hl, type) {
 return "application/x-www-form-urlencoded"
 }
+function bingPostRequestUserAgent(text, sl, tl, hl, type) {
+return ""
+}
 function bingPostRequestBody(text, sl, tl, hl, type) {
 if (type == "lookup")
 return "&text=" quote(text) "&from=" sl "&to=" tl
@@ -3903,9 +3918,13 @@ _tl = getCode(tl); if (!_tl) _tl = tl
 _hl = getCode(hl); if (!_hl) _hl = hl
 if (_sl == "auto")  _sl = "auto-detect"
 if (_sl == "bs")    _sl = "bs-Latn"
+if (_sl == "no")    _sl = "nb"
+if (_sl == "pt")    _sl = "pt-pt"
 if (_sl == "zh-CN") _sl = "zh-Hans"
 if (_sl == "zh-TW") _sl = "zh-Hant"
 if (_tl == "bs")    _tl = "bs-Latn"
+if (_tl == "no")    _tl = "nb"
+if (_tl == "pt")    _tl = "pt-pt"
 if (_tl == "zh-CN") _tl = "zh-Hans"
 if (_tl == "zh-TW") _tl = "zh-Hant"
 content = postResponse(text, _sl, _tl, _hl, "translate")
@@ -4697,9 +4716,10 @@ Option["pager"] = ENVIRON["PAGER"]
 Option["browser"] = ENVIRON["BROWSER"]
 Option["proxy"] = ENVIRON["HTTP_PROXY"] ? ENVIRON["HTTP_PROXY"] : ENVIRON["http_proxy"]
 Option["user-agent"] = ENVIRON["USER_AGENT"] ? ENVIRON["USER_AGENT"] :
-"Mozilla/5.0 (X11; Linux x86_64) "\
-"AppleWebKit/602.1 (KHTML, like Gecko) Version/8.0 "\
-"Safari/602.1 Epiphany/3.18.2"
+"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) "\
+"AppleWebKit/537.36 (KHTML, like Gecko) "\
+"Chrome/81.0.4044.138 "\
+"Safari/537.36"
 Option["ip-version"] = 0
 Option["no-rlwrap"] = 0
 Option["interactive"] = 0
