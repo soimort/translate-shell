@@ -59,9 +59,10 @@ function init() {
     # Networking
     Option["proxy"] = ENVIRON["HTTP_PROXY"] ? ENVIRON["HTTP_PROXY"] : ENVIRON["http_proxy"]
     Option["user-agent"] = ENVIRON["USER_AGENT"] ? ENVIRON["USER_AGENT"] :
-        "Mozilla/5.0 (X11; Linux x86_64) "                   \
-        "AppleWebKit/602.1 (KHTML, like Gecko) Version/8.0 " \
-        "Safari/602.1 Epiphany/3.18.2"
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) "   \
+        "AppleWebKit/537.36 (KHTML, like Gecko) "            \
+        "Chrome/81.0.4044.138 "                              \
+        "Safari/537.36"
     Option["ip-version"] = 0
 
     # Interactive shell
