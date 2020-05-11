@@ -1,6 +1,6 @@
-% TRANS(1) 0.9.6.11
+% TRANS(1) 0.9.6.12
 % Mort Yao <soi@mort.ninja>
-% 2019-07-25
+% 2020-05-11
 
 # NAME
 
