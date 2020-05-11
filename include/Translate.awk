@@ -158,9 +158,10 @@ function getResponse(text, sl, tl, hl,
 function postResponse(text, sl, tl, hl, type,
                       ####
                       content, contentLength, contentType, group,
-                      header, isBody, reqBody, url, status, location) {
+                      header, isBody, reqBody, url, status, location, userAgent) {
     url = _PostRequestUrl(text, sl, tl, hl, type)
     contentType = _PostRequestContentType(text, sl, tl, hl, type)
+    userAgent = _PostRequestUserAgent(text, sl, tl, hl, type)
     reqBody = _PostRequestBody(text, sl, tl, hl, type)
     if (DumpContentengths[reqBody])
         contentLength = DumpContentengths[reqBody]
@@ -172,8 +173,10 @@ function postResponse(text, sl, tl, hl, type,
         "Connection: close\r\n"                           \
         "Content-Length: " contentLength "\r\n"           \
         "Content-Type: " contentType "\r\n"     # must!
-    if (Option["user-agent"])
+    if (Option["user-agent"] && !userAgent)
         header = header "User-Agent: " Option["user-agent"] "\r\n"
+    if (userAgent)
+        header = header "User-Agent: " userAgent "\r\n"
     if (Cookie)
         header = header "Cookie: " Cookie "\r\n"
     if (HttpAuthUser && HttpAuthPass)

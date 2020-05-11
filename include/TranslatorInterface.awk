@@ -26,6 +26,12 @@ function _PostRequestContentType(text, sl, tl, hl, type,    vm) {
     return @vm(text, sl, tl, hl, type)
 }
 
+# Abstract method foobarPostRequestUserAgent(text, sl, tl, hl, type: string): string
+function _PostRequestUserAgent(text, sl, tl, hl, type,    vm) {
+    vm = engineMethod("PostRequestUserAgent")
+    return @vm(text, sl, tl, hl, type)
+}
+
 # Abstract method foobarPostRequestBody(text, sl, tl, hl, type: string): string
 function _PostRequestBody(text, sl, tl, hl, type,    vm) {
     vm = engineMethod("PostRequestBody")

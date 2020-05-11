@@ -158,6 +158,10 @@ function bingPostRequestContentType(text, sl, tl, hl, type) {
     return "application/x-www-form-urlencoded"
 }
 
+function bingPostRequestUserAgent(text, sl, tl, hl, type) {
+    return ""
+}
+
 function bingPostRequestBody(text, sl, tl, hl, type) {
     if (type == "lookup")
         return "&text=" quote(text) "&from=" sl "&to=" tl
