@@ -271,7 +271,7 @@ function getReference(displayName,
                     case "he":
                         t1 = sprintf(" %-18s", t1)
                         break
-                    case "ur":
+                    case "or": case "ur":
                         t1 = sprintf(" %-17s", t1)
                         break
                     case "hi": case "gu": case "km": case "kn":
