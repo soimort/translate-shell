@@ -983,19 +983,19 @@ function initLocale() {
     Locale["pl"]["glotto"]             = "poli1260"
     Locale["pl"]["script"]             = "Latn"
 
-    #73 Portuguese
-    Locale["pt"]["name"]               = "Portuguese"
-    Locale["pt"]["endonym"]            = "Português"
-    Locale["pt"]["translations-of"]    = "Traduções de %s"
-    Locale["pt"]["definitions-of"]     = "Definições de %s"
-    Locale["pt"]["synonyms"]           = "Sinônimos"
-    Locale["pt"]["examples"]           = "Exemplos"
-    Locale["pt"]["see-also"]           = "Veja também"
-    Locale["pt"]["family"]             = "Indo-European"
-    Locale["pt"]["iso"]                = "por"
-    Locale["pt"]["glotto"]             = "port1283"
-    Locale["pt"]["script"]             = "Latn"
-    Locale["pt"]["dictionary"]         = "true" # has dictionary
+    #73 Portuguese (Brazilian)
+    Locale["pt-BR"]["name"]            = "Portuguese (Brazilian)"
+    Locale["pt-BR"]["endonym"]         = "Português Brasileiro"
+    Locale["pt-BR"]["translations-of"] = "Traduções de %s"
+    Locale["pt-BR"]["definitions-of"]  = "Definições de %s"
+    Locale["pt-BR"]["synonyms"]        = "Sinônimos"
+    Locale["pt-BR"]["examples"]        = "Exemplos"
+    Locale["pt-BR"]["see-also"]        = "Veja também"
+    Locale["pt-BR"]["family"]          = "Indo-European"
+    Locale["pt-BR"]["iso"]             = "por"
+    Locale["pt-BR"]["glotto"]          = "braz1246"
+    Locale["pt-BR"]["script"]          = "Latn"
+    Locale["pt-BR"]["dictionary"]      = "true" # has dictionary
 
     #74 Punjabi, Gurmukhī alphabet
     Locale["pa"]["name"]               = "Punjabi"
@@ -1512,6 +1512,20 @@ function initLocale() {
     Locale["mww"]["glotto"]            = "hmon1333"
     Locale["mww"]["script"]            = "Latn"
 
+    #* Portuguese (European)
+    Locale["pt-PT"]["support"]         = "bing-only"
+    Locale["pt-PT"]["name"]            = "Portuguese (European)"
+    Locale["pt-PT"]["endonym"]         = "Português Europeu"
+    Locale["pt-PT"]["translations-of"] = "Traduções de %s"
+    Locale["pt-PT"]["definitions-of"]  = "Definições de %s"
+    Locale["pt-PT"]["synonyms"]        = "Sinônimos"
+    Locale["pt-PT"]["examples"]        = "Exemplos"
+    Locale["pt-PT"]["see-also"]        = "Veja também"
+    Locale["pt-PT"]["family"]          = "Indo-European"
+    Locale["pt-PT"]["iso"]             = "por"
+    Locale["pt-PT"]["glotto"]          = "port1283"
+    Locale["pt-PT"]["script"]          = "Latn"
+
     #* Querétaro Otomi
     Locale["otq"]["support"]           = "bing-only"
     Locale["otq"]["name"]              = "Querétaro Otomi"
@@ -1872,6 +1886,8 @@ function initLocaleAlias(    i) {
     LocaleAlias["mo"] = "ro" # Moldavian or Moldovan considered a variant of the Romanian language
     LocaleAlias["nb"] = "no" # Google Translate does not distinguish between Bokmål and Nynorsk (but Bing does!)
     LocaleAlias["nn"] = "no"
+    LocaleAlias["pt"] = "pt-BR" # Portuguese: default to Brazilian Portuguese (as in Google Translate)
+    LocaleAlias["portuguese"] = "pt-BR"
     LocaleAlias["sh"]      = "sr-Cyrl" # Serbo-Croatian: default to Serbian
     LocaleAlias["sr"]      = "sr-Cyrl" # Serbian: default to Serbian Cyrillic
     LocaleAlias["srp"]     = "sr-Cyrl"

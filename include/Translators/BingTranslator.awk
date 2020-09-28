@@ -206,12 +206,15 @@ function bingTranslate(text, sl, tl, hl,
     if (_sl == "auto")  _sl = "auto-detect"
     if (_sl == "bs")    _sl = "bs-Latn"  # 'bs' is not recognized as valid code
     if (_sl == "no")    _sl = "nb"  # Bing uses Norwegian Bokmål
-    if (_sl == "pt")    _sl = "pt-pt"  # 'pt' and 'pt-PT' are not recognized (FIXME: support pt-br)
+    # Bing uses 'pt' or 'pt-br' for Brazilian Portuguese, 'pt-pt' for European Portuguese
+    if (_sl == "pt-BR") _sl = "pt" # just pt-br
+    else if (_sl == "pt-PT") _sl = "pt" # FIXME: support pt-pt
     if (_sl == "zh-CN") _sl = "zh-Hans"
     if (_sl == "zh-TW") _sl = "zh-Hant"
     if (_tl == "bs")    _tl = "bs-Latn"
     if (_tl == "no")    _tl = "nb"
-    if (_tl == "pt")    _tl = "pt-pt"
+    if (_tl == "pt-BR") _tl = "pt"
+    else if (_tl == "pt-PT") _tl = "pt-pt"
     if (_tl == "zh-CN") _tl = "zh-Hans"
     if (_tl == "zh-TW") _tl = "zh-Hant"
 
