@@ -119,8 +119,9 @@ function initLocale() {
     Locale["be"]["glotto"]             = "bela1254"
     Locale["be"]["script"]             = "Cyrl"
 
-    #9 Bengali
+    #9 Bengali / Bangla
     Locale["bn"]["name"]               = "Bengali"
+    Locale["bn"]["name2"]              = "Bangla"
     Locale["bn"]["endonym"]            = "বাংলা"
     Locale["bn"]["translations-of"]    = "%s এর অনুবাদ"
     Locale["bn"]["definitions-of"]     = "%s এর সংজ্ঞা"
@@ -333,6 +334,7 @@ function initLocale() {
 
     #24 Filipino / Tagalog
     Locale["tl"]["name"]               = "Filipino"
+    Locale["tl"]["name2"]              = "Tagalog"
     Locale["tl"]["endonym"]            = "Tagalog"
     Locale["tl"]["translations-of"]    = "Mga pagsasalin ng %s"
     Locale["tl"]["definitions-of"]     = "Mga kahulugan ng %s"
@@ -885,6 +887,7 @@ function initLocale() {
 
     #66 Myanmar / Burmese
     Locale["my"]["name"]               = "Myanmar"
+    Locale["my"]["name2"]              = "Burmese"
     Locale["my"]["endonym"]            = "မြန်မာစာ"
     Locale["my"]["translations-of"]    = "%s၏ ဘာသာပြန်ဆိုချက်များ"
     Locale["my"]["definitions-of"]     = "%s၏ အနက်ဖွင့်ဆိုချက်များ"
@@ -935,8 +938,9 @@ function initLocale() {
     Locale["or"]["glotto"]             = "macr1269"
     Locale["or"]["script"]             = "Orya"
 
-    #70 Pashto
+    #70 Pashto / Pushto
     Locale["ps"]["name"]               = "Pashto"
+    Locale["ps"]["name2"]              = "Pushto"
     Locale["ps"]["endonym"]            = "پښتو"
     Locale["ps"]["translations-of"]    = "د %sژباړې"
     Locale["ps"]["definitions-of"]     = "د%s تعریفونه"
@@ -1150,6 +1154,7 @@ function initLocale() {
 
     #85 Slovenian / Slovene
     Locale["sl"]["name"]               = "Slovenian"
+    Locale["sl"]["name2"]              = "Slovene"
     Locale["sl"]["endonym"]            = "Slovenščina"
     Locale["sl"]["translations-of"]    = "Prevodi za %s"
     Locale["sl"]["definitions-of"]     = "Razlage za %s"
@@ -1201,8 +1206,9 @@ function initLocale() {
     Locale["su"]["glotto"]             = "sund1252"
     Locale["su"]["script"]             = "Latn"
 
-    #89 Swahili
+    #89 Swahili / Kiswahili
     Locale["sw"]["name"]               = "Swahili"
+    Locale["sw"]["name2"]              = "Kiswahili"
     Locale["sw"]["endonym"]            = "Kiswahili"
     Locale["sw"]["translations-of"]    = "Tafsiri ya %s"
     Locale["sw"]["definitions-of"]     = "Ufafanuzi wa %s"
@@ -1227,8 +1233,9 @@ function initLocale() {
     Locale["sv"]["glotto"]             = "swed1254"
     Locale["sv"]["script"]             = "Latn"
 
-    #91 Tajik, Cyrillic alphabet
+    #91 Tajik / Tajiki, Cyrillic alphabet
     Locale["tg"]["name"]               = "Tajik"
+    Locale["tg"]["name2"]              = "Tajiki"
     Locale["tg"]["endonym"]            = "Тоҷикӣ"
     Locale["tg"]["translations-of"]    = "Тарҷумаҳои %s"
     Locale["tg"]["definitions-of"]     = "Таърифҳои %s"
@@ -1826,6 +1833,8 @@ function initLocaleAlias(    i) {
 
         # Names and endonyms as aliases
         LocaleAlias[tolower(Locale[i]["name"])] = i
+        if ("name2" in Locale[i])
+            LocaleAlias[tolower(Locale[i]["name2"])] = i
         LocaleAlias[tolower(Locale[i]["endonym"])] = i
     }
 
@@ -1881,6 +1890,14 @@ function getCode(code,    group) {
 # Return the name of a language.
 function getName(code) {
     return Locale[getCode(code)]["name"]
+}
+
+# Return all the names of a language, separated by "/"
+function getNames(code) {
+    if ("name2" in Locale[getCode(code)])
+        return Locale[getCode(code)]["name"] " / " Locale[getCode(code)]["name2"]
+    else
+        return Locale[getCode(code)]["name"]
 }
 
 # Return the endonym of a language.
@@ -2006,7 +2023,7 @@ function scriptName(code) {
 }
 
 # Return detailed information of a language as a string.
-function getDetails(code,    group, iso, language, script) {
+function getDetails(code,    group, iso, script) {
     if (code == "auto" || !getCode(code)) {
         e("[ERROR] Language not found: " code "\n"                      \
           "        Run '-reference / -R' to see a list of available languages.")
@@ -2017,11 +2034,8 @@ function getDetails(code,    group, iso, language, script) {
     if (isRTL(code)) script = script " (R-to-L)"
     split(getISO(code), group, "-")
     iso = group[1]
-    split(getName(code), group, " ")
-    language = length(group) == 1 ? group[1] "_language" :
-        group[2] ~ /^\(.*\)$/ ? group[1] "_language" : join(group, "_")
     return ansi("bold", sprintf("%s\n", getDisplay(code)))              \
-        sprintf("%-22s%s\n", "Name", ansi("bold", getName(code)))       \
+        sprintf("%-22s%s\n", "Name", ansi("bold", getNames(code)))      \
         sprintf("%-22s%s\n", "Family", ansi("bold", getFamily(code)))   \
         sprintf("%-22s%s\n", "Writing system", ansi("bold", script))    \
         sprintf("%-22s%s\n", "Code", ansi("bold", getCode(code)))       \
