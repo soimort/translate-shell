@@ -690,9 +690,11 @@ function initLocale() {
     Locale["ko"]["script"]             = "Kore"
     Locale["ko"]["dictionary"]         = "true" # has dictionary
 
-    #51 Kurdish (Central Kurdish, Sorani), Latin alphabet
-    Locale["ku"]["name"]               = "Kurdish"
-    Locale["ku"]["endonym"]            = "Kurdî"
+    #51 Kurdish (Central Kurdish / Sorani), Latin alphabet (Arabic alphabet for Bing)
+    Locale["ku"]["name"]               = "Kurdish (Central)"
+    Locale["ku"]["name2"]              = "Sorani"
+    Locale["ku"]["endonym"]            = "Soranî"
+    Locale["ku"]["endonym2"]           = "Kurdî"
     #Locale["ku"]["translations-of"]
     #Locale["ku"]["definitions-of"]
     #Locale["ku"]["synonyms"]
@@ -1563,6 +1565,16 @@ function initLocale() {
     #Locale["tlh-Qaak"]["glotto"]
     Locale["tlh-Qaak"]["script"]       = "Piqd"
 
+    #* Kurdish (Northern Kurdish / Kurmanji), Latin alphabet
+    Locale["kmr"]["support"]           = "bing-only"
+    Locale["kmr"]["name"]              = "Kurdish (Northern)"
+    Locale["kmr"]["name2"]             = "Kurmanji"
+    Locale["kmr"]["endonym"]           = "Kurmancî"
+    Locale["kmr"]["family"]            = "Indo-European"
+    Locale["kmr"]["iso"]               = "kmr"
+    Locale["kmr"]["glotto"]            = "nort2641"
+    Locale["kmr"]["script"]            = "Latn"
+
     #? Assamese
     Locale["as"]["support"]            = "unstable"
     Locale["as"]["name"]               = "Assamese"
@@ -1855,6 +1867,7 @@ function initLocaleAlias(    i) {
     LocaleAlias["iw"] = "he" # withdrawn language code for Hebrew
     LocaleAlias["ji"] = "yi" # withdrawn language code for Yiddish
     LocaleAlias["jw"] = "jv" # withdrawn language code for Javanese
+    LocaleAlias["kurdish"] = "ku" # Kurdish: default to "ku" (N.B. Google uses this code for Kurmanji)
     LocaleAlias["mo"] = "ro" # Moldavian or Moldovan considered a variant of the Romanian language
     LocaleAlias["nb"] = "no" # Google Translate does not distinguish between Bokmål and Nynorsk (but Bing does!)
     LocaleAlias["nn"] = "no"
