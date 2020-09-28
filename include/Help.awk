@@ -261,36 +261,38 @@ function getReference(displayName,
     PROCINFO["sorted_in"] = saveSortedIn
 
     if (displayName == "endonym") {
-        r = "┌" replicate("─", 23) "┬" replicate("─", 23) "┬" replicate("─", 23) "┐" RS
+        r = "┌" replicate("─", 25) "┬" replicate("─", 25) "┬" replicate("─", 25) "┐" RS
         for (i = 0; i < rows; i++) {
             r = r "│"
             for (j = 0; j < 3; j++) {
                 if (cols[j][i]) {
                     t1 = getDisplay(cols[j][i])
+                    if (length(t1) > 17)
+                        t1 = substr(t1, 1, 14) "..."
                     switch (cols[j][i]) { # fix rendered text width
                     case "he":
-                        t1 = sprintf(" %-18s", t1)
+                        t1 = sprintf(" %-20s", t1)
                         break
                     case "or": case "ur":
-                        t1 = sprintf(" %-17s", t1)
+                        t1 = sprintf(" %-19s", t1)
                         break
                     case "hi": case "gu": case "km": case "kn":
                     case "my": case "ne": case "pa": case "si":
                     case "ta": case "te": case "yi":
-                        t1 = sprintf(" %-16s", t1)
+                        t1 = sprintf(" %-18s", t1)
                         break
                     case "yue":
-                        t1 = sprintf(" %-13s", t1)
+                        t1 = sprintf(" %-15s", t1)
                         break
                     case "ja": case "ko":
-                        t1 = sprintf(" %-12s", t1)
+                        t1 = sprintf(" %-14s", t1)
                         break
                     case "zh-CN": case "zh-TW":
-                        t1 = sprintf(" %-11s", t1)
+                        t1 = sprintf(" %-13s", t1)
                         break
                     default:
-                        if (length(t1) <= 15)
-                            t1 = sprintf(" %-15s", t1)
+                        if (length(t1) <= 17)
+                            t1 = sprintf(" %-17s", t1)
                     }
                     switch (length(cols[j][i])) {
                     case 1: case 2: case 3: case 4:
@@ -310,21 +312,21 @@ function getReference(displayName,
                     }
                     r = r t1 t2
                 } else
-                    r = r sprintf("%23s│", NULLSTR)
+                    r = r sprintf("%25s│", NULLSTR)
             }
             r = r RS
         }
-        r = r "└" replicate("─", 23) "┴" replicate("─", 23) "┴" replicate("─", 23) "┘"
+        r = r "└" replicate("─", 25) "┴" replicate("─", 25) "┴" replicate("─", 25) "┘"
     } else {
-        r = "┌" replicate("─", 23) "┬" replicate("─", 23) "┬" replicate("─", 23) "┐" RS
+        r = "┌" replicate("─", 25) "┬" replicate("─", 25) "┬" replicate("─", 25) "┐" RS
         for (i = 0; i < rows; i++) {
             r = r "│"
             for (j = 0; j < 3; j++) {
                 if (cols[j][i]) {
                     t1 = getName(cols[j][i])
-                    if (length(t1) > 15)
-                        t1 = substr(t1, 1, 12) "..."
-                    t1 = sprintf(" %-15s", t1)
+                    if (length(t1) > 17)
+                        t1 = substr(t1, 1, 14) "..."
+                    t1 = sprintf(" %-17s", t1)
                     switch (length(cols[j][i])) {
                     case 1: case 2: case 3: case 4:
                         t2 = sprintf("- %s │", ansi("bold", sprintf("%4s", cols[j][i])))
@@ -343,11 +345,11 @@ function getReference(displayName,
                     }
                     r = r t1 t2
                 } else
-                    r = r sprintf("%23s│", NULLSTR)
+                    r = r sprintf("%25s│", NULLSTR)
             }
             r = r RS
         }
-        r = r "└" replicate("─", 23) "┴" replicate("─", 23) "┴" replicate("─", 23) "┘"
+        r = r "└" replicate("─", 25) "┴" replicate("─", 25) "┴" replicate("─", 25) "┘"
     }
     return r
 }
