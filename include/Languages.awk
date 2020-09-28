@@ -953,8 +953,9 @@ function initLocale() {
     Locale["ps"]["script"]             = "Arab"
     Locale["ps"]["rtl"]                = "true" # RTL language
 
-    #71 Persian (Western Farsi)
+    #71 Persian / Farsi (Western Farsi / Iranian Persian)
     Locale["fa"]["name"]               = "Persian"
+    Locale["fa"]["name2"]              = "Farsi"
     Locale["fa"]["endonym"]            = "فارسی"
     Locale["fa"]["translations-of"]    = "ترجمه‌های %s"
     Locale["fa"]["definitions-of"]     = "تعریف‌های %s"
@@ -1233,7 +1234,7 @@ function initLocale() {
     Locale["sv"]["glotto"]             = "swed1254"
     Locale["sv"]["script"]             = "Latn"
 
-    #91 Tajik / Tajiki, Cyrillic alphabet
+    #91 Tajik / Tajiki (Tajiki Persian), Cyrillic alphabet
     Locale["tg"]["name"]               = "Tajik"
     Locale["tg"]["name2"]              = "Tajiki"
     Locale["tg"]["endonym"]            = "Тоҷикӣ"
@@ -1480,6 +1481,16 @@ function initLocale() {
     Locale["yue"]["glotto"]            = "cant1236"
     Locale["yue"]["script"]            = "Hant"
 
+    #* Dari (Dari Persian)
+    Locale["prs"]["support"]           = "bing-only"
+    Locale["prs"]["name"]              = "Dari"
+    Locale["prs"]["endonym"]           = "دری"
+    Locale["prs"]["family"]            = "Indo-European"
+    Locale["prs"]["iso"]               = "prs"
+    Locale["prs"]["glotto"]            = "dari1249"
+    Locale["prs"]["script"]            = "Arab"
+    Locale["prs"]["rtl"]               = "true" # RTL language
+
     #* Fijian
     Locale["fj"]["support"]           = "bing-only"
     Locale["fj"]["name"]              = "Fijian"
@@ -1489,7 +1500,7 @@ function initLocale() {
     Locale["fj"]["glotto"]            = "fiji1243"
     Locale["fj"]["script"]            = "Latn"
 
-    #* Hmong Daw
+    #* Hmong Daw (White Hmong)
     Locale["mww"]["support"]           = "bing-only"
     Locale["mww"]["name"]              = "Hmong Daw"
     Locale["mww"]["endonym"]           = "Hmoob Daw"
