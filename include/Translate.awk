@@ -87,7 +87,7 @@ function preprocess(text) {
 }
 
 # Pre-process string (using hexdump to URL-encode everything).
-function preprocessByDump(text,    arr, len, temp) {
+function preprocessByDump(text,    arr, i, len, temp) {
     len = dumpX(text, arr)
     temp = ""
     for (i = 1; i <= len; i++)
