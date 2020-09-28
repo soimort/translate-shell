@@ -2026,10 +2026,10 @@ function getDetails(code,    group, iso, language, script) {
         sprintf("%-22s%s\n", "Writing system", ansi("bold", script))    \
         sprintf("%-22s%s\n", "Code", ansi("bold", getCode(code)))       \
         sprintf("%-22s%s\n", "ISO 639-3", ansi("bold", iso))            \
-        sprintf("%-22s%s\n", "SIL", ansi("bold", "http://www-01.sil.org/iso639-3/documentation.asp?id=" iso)) \
+        sprintf("%-22s%s\n", "SIL", ansi("bold", "https://iso639-3.sil.org/code/" iso)) \
         sprintf("%-22s%s\n", "Glottolog", getGlotto(code) ?
-                ansi("bold", "http://glottolog.org/resource/languoid/id/" getGlotto(code)) : "") \
-        sprintf("%-22s%s", "Wikipedia", ansi("bold", "http://en.wikipedia.org/wiki/" language))
+                ansi("bold", "https://glottolog.org/resource/languoid/id/" getGlotto(code)) : "") \
+        sprintf("%-22s%s", "Wikipedia", ansi("bold", "https://en.wikipedia.org/wiki/ISO_639:" iso))
 }
 
 # Add /slashes/ for IPA phonemic notations and (parentheses) for others.
