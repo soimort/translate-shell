@@ -1077,6 +1077,7 @@ function initLocale() {
     Locale["sr-Cyrl"]["script"]        = "Cyrl"
 
     #79b Serbian, Latin alphabet
+    Locale["sr-Latn"]["support"]       = "bing-only"
     Locale["sr-Latn"]["name"]          = "Serbian (Latin)"
     Locale["sr-Latn"]["endonym"]       = "srpski"
     Locale["sr-Latn"]["translations-of"] = "Prevodi za „%s“"
