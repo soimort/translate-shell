@@ -922,8 +922,8 @@ function initLocale() {
     Locale["no"]["glotto"]             = "norw1258"
     Locale["no"]["script"]             = "Latn"
 
-    #69 Oriya / Odia
-    Locale["or"]["name"]               = "Oriya"
+    #69 Odia / Oriya
+    Locale["or"]["name"]               = "Odia"
     Locale["or"]["endonym"]            = "ଓଡ଼ିଆ"
     #Locale["or"]["translations-of"]
     #Locale["or"]["definitions-of"]
