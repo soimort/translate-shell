@@ -148,8 +148,15 @@ function getResponse(text, sl, tl, hl,
             break
     }
 
-    if ((status == "301" || status == "302") && location)
+    if ((status == "301" || status == "302") && location) {
         content = curl(location)
+    } else if (status == "429") {
+        e("[ERROR] " ucfirst(Option["engine"]) " did not return results because rate limiting is in effect")
+        assert(false, "[ERROR] Rate limiting")
+    } else if (status >= "400") {
+        e("[ERROR] " ucfirst(Option["engine"]) " returned an error response. HTTP status code: " status)
+        assert(false, "[ERROR] Other HTTP error")
+    }
 
     return assert(content, "[ERROR] Null response.")
 }
@@ -218,6 +225,12 @@ function postResponse(text, sl, tl, hl, type,
     if ((status == "301" || status == "302") && location) {
         url = "https" substr(url, 5) # switch to HTTPS; don't use location!
         content = curlPost(url, reqBody)
+    } else if (status == "429") {
+        e("[ERROR] " ucfirst(Option["engine"]) " did not return results because rate limiting is in effect")
+        assert(false, "[ERROR] Rate limiting")
+    } else if (status >= "400") {
+        e("[ERROR] " ucfirst(Option["engine"]) " returned an error response. HTTP status code: " status)
+        assert(false, "[ERROR] Other HTTP error")
     }
 
     return content

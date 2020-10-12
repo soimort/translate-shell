@@ -117,6 +117,16 @@ function matchesAny(string, patterns,
     return NULLSTR
 }
 
+# Make the first character of string upper-case.
+function ucfirst(string) {
+    if (length(string) >= 2)
+        return toupper(substr(string, 1, 1)) substr(string, 2)
+    else if (length(string) == 1)
+        return toupper(string)
+
+    return NULLSTR
+}
+
 # Replicate a string.
 function replicate(string, len,
                    ####
