@@ -239,8 +239,9 @@ function postResponse(text, sl, tl, hl, type,
 # Print a string (to output file or terminal pager).
 function p(string) {
     if (Option["view"]) {
-        print string | Option["pager"]
-        close(Option["pager"])
+        # For environments that don't have LESS="-R"
+        print string | Option["pager"] (Option["pager"] == "less" ? " -R" : "")
+        close(Option["pager"] (Option["pager"] == "less" ? " -R" : ""))
     } else
         print string > Option["output"]
 }
