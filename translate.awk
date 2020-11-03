@@ -12,7 +12,7 @@
 
 @include "include/Translate.awk"
 @include "include/TranslatorInterface.awk"
-@include "include/Translators/*"
+@include "include/Translators/_"
 
 @include "include/Script.awk"
 @include "include/REPL.awk"
