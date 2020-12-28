@@ -274,24 +274,24 @@ kbd {
 }
 
 @media (prefers-color-scheme: dark) {
-    body {
-        background: #000;
-        color: #bbb;
-    }
+  body {
+    background: #000;
+    color: #bbb;
+  }
 
-    a {
-        color: #ddd;
-    }
+  a {
+    color: #ddd;
+  }
 
-    code {
-        background: #111 !important;
-    }
+  code {
+    background: #111 !important;
+  }
 
-    table {
-        border-color: #222;
-    }
+  table {
+    border-color: #222;
+  }
 
-    td {
-        background: #111;
-    }
+  td {
+    background: #111;
+  }
 }
