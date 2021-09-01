@@ -198,6 +198,8 @@ function escapeChar(char) {
         return "&" # Unicode Character 'AMPERSAND'
     case "u003c":
         return "<" # Unicode Character 'LESS-THAN SIGN'
+    case "u003d":
+        return "=" # Unicode Character 'EQUALS SIGN'
     case "u003e":
         return ">" # Unicode Character 'GREATER-THAN SIGN'
     case "u200b":
