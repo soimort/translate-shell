@@ -1,0 +1,20 @@
+_translate() {
+    COMPREPLY=()
+    cur=`_get_cword`
+
+    if [ $COMP_CWORD -eq 1 ]; then
+        COMPREPLY=($(compgen -W "$(trans -help \
+            | awk '{ gsub(/\x1b\[([0-9]{1,3}(;[0-9]{1,2})?)?m/, ""); print }' \
+            | awk '{\
+                for (i = 1; i <= NF; i++) {\
+                    if (index($i, "-") == 1) {\
+                        sub(/[,\.]$/, "", $i);\
+                        print $i\
+                    }\
+                }\
+            }')" -- "$cur"))
+    fi
+
+    return 0
+} &&
+complete -F _translate default trans
