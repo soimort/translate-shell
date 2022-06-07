@@ -119,6 +119,19 @@ function initLocale() {
     Locale["az"]["glotto"]             = "nort2697"
     Locale["az"]["script"]             = "Latn"
 
+    # Bambara
+    Locale["bm"]["name"]               = "Bambara"
+    Locale["bm"]["endonym"]            = "Bamanankan"
+    #Locale["bm"]["translations-of"]
+    #Locale["bm"]["definitions-of"]
+    #Locale["bm"]["synonyms"]
+    #Locale["bm"]["examples"]
+    #Locale["bm"]["see-also"]
+    Locale["bm"]["family"]             = "Mande"
+    Locale["bm"]["iso"]                = "bam"
+    Locale["bm"]["glotto"]             = "bamb1269"
+    Locale["bm"]["script"]             = "Latn"
+
     #7 Basque
     Locale["eu"]["name"]               = "Basque"
     Locale["eu"]["endonym"]            = "Euskara"
