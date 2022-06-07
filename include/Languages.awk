@@ -93,6 +93,19 @@ function initLocale() {
     Locale["as"]["glotto"]             = "assa1263"
     Locale["as"]["script"]             = "Beng"
 
+    # Aymara
+    Locale["ay"]["name"]               = "Aymara"
+    Locale["ay"]["endonym"]            = "Aymar aru"
+    #Locale["ay"]["translations-of"]
+    #Locale["ay"]["definitions-of"]
+    #Locale["ay"]["synonyms"]
+    #Locale["ay"]["examples"]
+    #Locale["ay"]["see-also"]
+    Locale["ay"]["family"]             = "Aymaran"
+    Locale["ay"]["iso"]                = "aym"
+    Locale["ay"]["glotto"]             = "nucl1667"
+    Locale["ay"]["script"]             = "Latn"
+
     #6 Azerbaijani (North Azerbaijani)
     Locale["az"]["name"]               = "Azerbaijani"
     Locale["az"]["endonym"]            = "Azərbaycanca"
