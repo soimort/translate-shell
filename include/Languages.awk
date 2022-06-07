@@ -80,6 +80,19 @@ function initLocale() {
     Locale["hy"]["glotto"]             = "nucl1235"
     Locale["hy"]["script"]             = "Armn"
 
+    # Assamese
+    Locale["as"]["name"]               = "Assamese"
+    Locale["as"]["endonym"]            = "অসমীয়া"
+    #Locale["as"]["translations-of"]
+    #Locale["as"]["definitions-of"]
+    #Locale["as"]["synonyms"]
+    #Locale["as"]["examples"]
+    #Locale["as"]["see-also"]
+    Locale["as"]["family"]             = "Indo-European"
+    Locale["as"]["iso"]                = "asm"
+    Locale["as"]["glotto"]             = "assa1263"
+    Locale["as"]["script"]             = "Beng"
+
     #6 Azerbaijani (North Azerbaijani)
     Locale["az"]["name"]               = "Azerbaijani"
     Locale["az"]["endonym"]            = "Azərbaycanca"
@@ -1589,20 +1602,6 @@ function initLocale() {
     Locale["kmr"]["iso"]               = "kmr"
     Locale["kmr"]["glotto"]            = "nort2641"
     Locale["kmr"]["script"]            = "Latn"
-
-    #? Assamese
-    Locale["as"]["support"]            = "unstable"
-    Locale["as"]["name"]               = "Assamese"
-    Locale["as"]["endonym"]            = "অসমীয়া"
-    #Locale["as"]["translations-of"]
-    #Locale["as"]["definitions-of"]
-    #Locale["as"]["synonyms"]
-    #Locale["as"]["examples"]
-    #Locale["as"]["see-also"]
-    Locale["as"]["family"]             = "Indo-European"
-    Locale["as"]["iso"]                = "asm"
-    Locale["as"]["glotto"]             = "assa1263"
-    Locale["as"]["script"]             = "Beng"
 
     #? Bashkir
     Locale["ba"]["support"]            = "yandex-only"
