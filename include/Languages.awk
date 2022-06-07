@@ -172,6 +172,19 @@ function initLocale() {
     Locale["bn"]["glotto"]             = "beng1280"
     Locale["bn"]["script"]             = "Beng"
 
+    # Bhojpuri
+    Locale["bho"]["name"]              = "Bhojpuri"
+    Locale["bho"]["endonym"]           = "भोजपुरी"
+    #Locale["bho"]["translations-of"]
+    #Locale["bho"]["definitions-of"]
+    #Locale["bho"]["synonyms"]
+    #Locale["bho"]["examples"]
+    #Locale["bho"]["see-also"]
+    Locale["bho"]["family"]            = "Indo-European"
+    Locale["bho"]["iso"]               = "bho"
+    Locale["bho"]["glotto"]            = "bhoj1246"
+    Locale["bho"]["script"]            = "Deva"
+
     #10 Bosnian, Latin alphabet
     Locale["bs"]["name"]               = "Bosnian"
     Locale["bs"]["endonym"]            = "Bosanski"
