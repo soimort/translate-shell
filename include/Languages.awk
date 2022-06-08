@@ -345,6 +345,19 @@ function initLocale() {
     Locale["dv"]["script"]             = "Thaa"
     Locale["dv"]["rtl"]                = "true" # RTL language
 
+    # Dogri
+    Locale["doi"]["name"]              = "Dogri"
+    Locale["doi"]["endonym"]           = "डोगरी"
+    #Locale["doi"]["translations-of"]
+    #Locale["doi"]["definitions-of"]
+    #Locale["doi"]["synonyms"]
+    #Locale["doi"]["examples"]
+    #Locale["doi"]["see-also"]
+    Locale["doi"]["family"]            = "Indo-European"
+    Locale["doi"]["iso"]               = "doi"
+    Locale["doi"]["glotto"]            = "indo1311"
+    Locale["doi"]["script"]            = "Deva"
+
     #20 Dutch
     Locale["nl"]["name"]               = "Dutch"
     Locale["nl"]["endonym"]            = "Nederlands"
