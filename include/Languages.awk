@@ -420,10 +420,10 @@ function initLocale() {
     #Locale["ee"]["synonyms"]
     #Locale["ee"]["examples"]
     #Locale["ee"]["see-also"]
-    Locale["ee"]["family"]            = "Atlantic-Congo"
-    Locale["ee"]["iso"]               = "ewe"
-    Locale["ee"]["glotto"]            = "ewee1241"
-    Locale["ee"]["script"]            = "Latn"
+    Locale["ee"]["family"]             = "Atlantic-Congo"
+    Locale["ee"]["iso"]                = "ewe"
+    Locale["ee"]["glotto"]             = "ewee1241"
+    Locale["ee"]["script"]             = "Latn"
 
     #24 Filipino / Tagalog
     Locale["tl"]["name"]               = "Filipino"
@@ -835,10 +835,10 @@ function initLocale() {
     Locale["kri"]["glotto"]            = "krio1253"
     Locale["kri"]["script"]            = "Latn"
 
-    #51 Kurdish (Central Kurdish / Sorani), Latin alphabet (Arabic alphabet for Bing)
-    Locale["ku"]["name"]               = "Kurdish (Central)"
-    Locale["ku"]["name2"]              = "Sorani"
-    Locale["ku"]["endonym"]            = "Soranî"
+    #51 Kurdish (Northern) / Kurmanji
+    Locale["ku"]["name"]               = "Kurdish (Northern)"
+    Locale["ku"]["name2"]              = "Kurmanji"
+    Locale["ku"]["endonym"]            = "Kurmancî"
     Locale["ku"]["endonym2"]           = "Kurdî"
     #Locale["ku"]["translations-of"]
     #Locale["ku"]["definitions-of"]
@@ -846,9 +846,25 @@ function initLocale() {
     #Locale["ku"]["examples"]
     #Locale["ku"]["see-also"]
     Locale["ku"]["family"]             = "Indo-European"
-    Locale["ku"]["iso"]                = "kur"
-    Locale["ku"]["glotto"]             = "kurd1259"
+    Locale["ku"]["iso"]                = "kmr"
+    Locale["ku"]["glotto"]             = "nort2641"
     Locale["ku"]["script"]             = "Latn"
+
+    # Kurdish (Central) / Sorani
+    Locale["ckb"]["name"]              = "Kurdish (Central)"
+    Locale["ckb"]["name2"]             = "Sorani"
+    Locale["ckb"]["endonym"]           = "سۆرانی"
+    Locale["ckb"]["endonym2"]          = "کوردیی ناوەندی"
+    #Locale["ckb"]["translations-of"]
+    #Locale["ckb"]["definitions-of"]
+    #Locale["ckb"]["synonyms"]
+    #Locale["ckb"]["examples"]
+    #Locale["ckb"]["see-also"]
+    Locale["ckb"]["family"]            = "Indo-European"
+    Locale["ckb"]["iso"]               = "ckb"
+    Locale["ckb"]["glotto"]            = "cent1972"
+    Locale["ckb"]["script"]            = "Arab"
+    Locale["ckb"]["rtl"]               = "true" # RTL language
 
     #52 Kyrgyz
     Locale["ky"]["name"]               = "Kyrgyz"
@@ -1724,16 +1740,6 @@ function initLocale() {
     Locale["tlh-Qaak"]["iso"]          = "tlh"
     #Locale["tlh-Qaak"]["glotto"]
     Locale["tlh-Qaak"]["script"]       = "Piqd"
-
-    #* Kurdish (Northern Kurdish / Kurmanji), Latin alphabet
-    Locale["kmr"]["support"]           = "bing-only"
-    Locale["kmr"]["name"]              = "Kurdish (Northern)"
-    Locale["kmr"]["name2"]             = "Kurmanji"
-    Locale["kmr"]["endonym"]           = "Kurmancî"
-    Locale["kmr"]["family"]            = "Indo-European"
-    Locale["kmr"]["iso"]               = "kmr"
-    Locale["kmr"]["glotto"]            = "nort2641"
-    Locale["kmr"]["script"]            = "Latn"
 
     #? Bashkir
     Locale["ba"]["support"]            = "yandex-only"
