@@ -412,6 +412,19 @@ function initLocale() {
     Locale["et"]["glotto"]             = "esto1258"
     Locale["et"]["script"]             = "Latn"
 
+    # Ewe
+    Locale["ee"]["name"]               = "Ewe"
+    Locale["ee"]["endonym"]            = "Eʋegbe"
+    #Locale["ee"]["translations-of"]
+    #Locale["ee"]["definitions-of"]
+    #Locale["ee"]["synonyms"]
+    #Locale["ee"]["examples"]
+    #Locale["ee"]["see-also"]
+    Locale["ee"]["family"]            = "Atlantic-Congo"
+    Locale["ee"]["iso"]               = "ewe"
+    Locale["ee"]["glotto"]            = "ewee1241"
+    Locale["ee"]["script"]            = "Latn"
+
     #24 Filipino / Tagalog
     Locale["tl"]["name"]               = "Filipino"
     Locale["tl"]["name2"]              = "Tagalog"
