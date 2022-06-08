@@ -330,6 +330,21 @@ function initLocale() {
     Locale["da"]["glotto"]             = "dani1285"
     Locale["da"]["script"]             = "Latn"
 
+    # Dhivehi
+    Locale["dv"]["name"]               = "Dhivehi"
+    Locale["dv"]["name2"]              = "Divehi"
+    Locale["dv"]["endonym"]            = "ދިވެހި"
+    #Locale["dv"]["translations-of"]
+    #Locale["dv"]["definitions-of"]
+    #Locale["dv"]["synonyms"]
+    #Locale["dv"]["examples"]
+    #Locale["dv"]["see-also"]
+    Locale["dv"]["family"]             = "Indo-European"
+    Locale["dv"]["iso"]                = "div"
+    Locale["dv"]["glotto"]             = "dhiv1236"
+    Locale["dv"]["script"]             = "Thaa"
+    Locale["dv"]["rtl"]                = "true" # RTL language
+
     #20 Dutch
     Locale["nl"]["name"]               = "Dutch"
     Locale["nl"]["endonym"]            = "Nederlands"
@@ -2095,6 +2110,7 @@ function scriptName(code) {
     case "Sinh": return "Sinhala"
     case "Taml": return "Tamil"
     case "Telu": return "Telugu"
+    case "Thaa": return "Thaana"
     case "Thai": return "Thai"
     case "Tibt": return "Tibetan"
     default: return "Unknown"
