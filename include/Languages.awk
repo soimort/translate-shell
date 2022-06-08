@@ -1075,19 +1075,6 @@ function initLocale() {
     Locale["mr"]["glotto"]             = "mara1378"
     Locale["mr"]["script"]             = "Deva"
 
-    #65 Mongolian, Cyrillic alphabet
-    Locale["mn"]["name"]               = "Mongolian"
-    Locale["mn"]["endonym"]            = "Монгол"
-    Locale["mn"]["translations-of"]    = "%s-н орчуулга"
-    Locale["mn"]["definitions-of"]     = "%s үгийн тодорхойлолт"
-    Locale["mn"]["synonyms"]           = "Ойролцоо утгатай"
-    Locale["mn"]["examples"]           = "Жишээнүүд"
-    Locale["mn"]["see-also"]           = "Мөн харах"
-    Locale["mn"]["family"]             = "Mongolic"
-    Locale["mn"]["iso"]                = "mon"
-    Locale["mn"]["glotto"]             = "mong1331"
-    Locale["mn"]["script"]             = "Cyrl"
-
     # Meiteilon / Manipuri
     Locale["mni-Mtei"]["name"]         = "Meiteilon"
     Locale["mni-Mtei"]["name2"]        = "Manipuri"
@@ -1103,6 +1090,32 @@ function initLocale() {
     Locale["mni-Mtei"]["iso"]          = "mni"
     Locale["mni-Mtei"]["glotto"]       = "mani1292"
     Locale["mni-Mtei"]["script"]       = "Mtei"
+
+    # Mizo
+    Locale["lus"]["name"]              = "Mizo"
+    Locale["lus"]["endonym"]           = "Mizo ṭawng"
+    #Locale["lus"]["translations-of"]
+    #Locale["lus"]["definitions-of"]
+    #Locale["lus"]["synonyms"]
+    #Locale["lus"]["examples"]
+    #Locale["lus"]["see-also"]
+    Locale["lus"]["family"]            = "Sino-Tibetan"
+    Locale["lus"]["iso"]               = "lus"
+    Locale["lus"]["glotto"]            = "lush1249"
+    Locale["lus"]["script"]            = "Latn"
+
+    #65 Mongolian, Cyrillic alphabet
+    Locale["mn"]["name"]               = "Mongolian"
+    Locale["mn"]["endonym"]            = "Монгол"
+    Locale["mn"]["translations-of"]    = "%s-н орчуулга"
+    Locale["mn"]["definitions-of"]     = "%s үгийн тодорхойлолт"
+    Locale["mn"]["synonyms"]           = "Ойролцоо утгатай"
+    Locale["mn"]["examples"]           = "Жишээнүүд"
+    Locale["mn"]["see-also"]           = "Мөн харах"
+    Locale["mn"]["family"]             = "Mongolic"
+    Locale["mn"]["iso"]                = "mon"
+    Locale["mn"]["glotto"]             = "mong1331"
+    Locale["mn"]["script"]             = "Cyrl"
 
     #66 Myanmar / Burmese
     Locale["my"]["name"]               = "Myanmar"
