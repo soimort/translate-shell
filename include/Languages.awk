@@ -822,6 +822,19 @@ function initLocale() {
     Locale["ko"]["script"]             = "Kore"
     Locale["ko"]["dictionary"]         = "true" # has dictionary
 
+    # Krio
+    Locale["kri"]["name"]              = "Krio"
+    Locale["kri"]["endonym"]           = "Krio"
+    #Locale["kri"]["translations-of"]
+    #Locale["kri"]["definitions-of"]
+    #Locale["kri"]["synonyms"]
+    #Locale["kri"]["examples"]
+    #Locale["kri"]["see-also"]
+    Locale["kri"]["family"]            = "Indo-European"
+    Locale["kri"]["iso"]               = "kri"
+    Locale["kri"]["glotto"]            = "krio1253"
+    Locale["kri"]["script"]            = "Latn"
+
     #51 Kurdish (Central Kurdish / Sorani), Latin alphabet (Arabic alphabet for Bing)
     Locale["ku"]["name"]               = "Kurdish (Central)"
     Locale["ku"]["name2"]              = "Sorani"
