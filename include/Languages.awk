@@ -663,6 +663,19 @@ function initLocale() {
     Locale["ig"]["glotto"]             = "nucl1417"
     Locale["ig"]["script"]             = "Latn"
 
+    # Ilocano
+    Locale["ilo"]["name"]              = "Ilocano"
+    Locale["ilo"]["endonym"]           = "Ilokano"
+    #Locale["ilo"]["translations-of"]
+    #Locale["ilo"]["definitions-of"]
+    #Locale["ilo"]["synonyms"]
+    #Locale["ilo"]["examples"]
+    #Locale["ilo"]["see-also"]
+    Locale["ilo"]["family"]            = "Austronesian"
+    Locale["ilo"]["iso"]               = "ilo"
+    Locale["ilo"]["glotto"]            = "ilok1237"
+    Locale["ilo"]["script"]            = "Latn"
+
     #41 Indonesian
     Locale["id"]["name"]               = "Indonesian"
     Locale["id"]["endonym"]            = "Bahasa Indonesia"
