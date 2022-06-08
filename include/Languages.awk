@@ -944,6 +944,20 @@ function initLocale() {
     Locale["lt"]["glotto"]             = "lith1251"
     Locale["lt"]["script"]             = "Latn"
 
+    # Luganda
+    Locale["lg"]["name"]               = "Luganda"
+    Locale["lg"]["endonym"]            = "Luganda"
+    Locale["lg"]["endonym2"]           = "Oluganda"
+    #Locale["lg"]["translations-of"]
+    #Locale["lg"]["definitions-of"]
+    #Locale["lg"]["synonyms"]
+    #Locale["lg"]["examples"]
+    #Locale["lg"]["see-also"]
+    Locale["lg"]["family"]             = "Atlantic-Congo"
+    Locale["lg"]["iso"]                = "lug"
+    Locale["lg"]["glotto"]             = "gand1255"
+    Locale["lg"]["script"]             = "Latn"
+
     #57 Luxembourgish
     Locale["lb"]["name"]               = "Luxembourgish"
     Locale["lb"]["endonym"]            = "Lëtzebuergesch"
