@@ -984,6 +984,19 @@ function initLocale() {
     Locale["mk"]["glotto"]             = "mace1250"
     Locale["mk"]["script"]             = "Cyrl"
 
+    # Maithili
+    Locale["mai"]["name"]              = "Maithili"
+    Locale["mai"]["endonym"]           = "मैथिली"
+    #Locale["mai"]["translations-of"]
+    #Locale["mai"]["definitions-of"]
+    #Locale["mai"]["synonyms"]
+    #Locale["mai"]["examples"]
+    #Locale["mai"]["see-also"]
+    Locale["mai"]["family"]            = "Indo-European"
+    Locale["mai"]["iso"]               = "mai"
+    Locale["mai"]["glotto"]            = "mait1250"
+    Locale["mai"]["script"]            = "Deva"
+
     #59 Malagasy (Plateau Malagasy)
     Locale["mg"]["name"]               = "Malagasy"
     Locale["mg"]["endonym"]            = "Malagasy"
