@@ -795,6 +795,19 @@ function initLocale() {
     Locale["rw"]["glotto"]             = "kiny1244"
     Locale["rw"]["script"]             = "Latn"
 
+    # Konkani (Goan Konkani)
+    Locale["gom"]["name"]              = "Konkani"
+    Locale["gom"]["endonym"]           = "कोंकणी"
+    #Locale["gom"]["translations-of"]
+    #Locale["gom"]["definitions-of"]
+    #Locale["gom"]["synonyms"]
+    #Locale["gom"]["examples"]
+    #Locale["gom"]["see-also"]
+    Locale["gom"]["family"]            = "Indo-European"
+    Locale["gom"]["iso"]               = "gom"
+    Locale["gom"]["glotto"]            = "goan1235"
+    Locale["gom"]["script"]            = "Deva"
+
     #50 Korean
     Locale["ko"]["name"]               = "Korean"
     Locale["ko"]["endonym"]            = "한국어"
