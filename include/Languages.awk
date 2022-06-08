@@ -1254,6 +1254,19 @@ function initLocale() {
     Locale["pa"]["glotto"]             = "panj1256"
     Locale["pa"]["script"]             = "Guru"
 
+    # Quechua
+    Locale["qu"]["name"]               = "Quechua"
+    Locale["qu"]["endonym"]            = "Runasimi"
+    #Locale["qu"]["translations-of"]
+    #Locale["qu"]["definitions-of"]
+    #Locale["qu"]["synonyms"]
+    #Locale["qu"]["examples"]
+    #Locale["qu"]["see-also"]
+    Locale["qu"]["family"]             = "Quechuan"
+    Locale["qu"]["iso"]                = "que"
+    Locale["qu"]["glotto"]             = "quec1387"
+    Locale["qu"]["script"]             = "Latn"
+
     #75 Romanian
     Locale["ro"]["name"]               = "Romanian"
     Locale["ro"]["endonym"]            = "Română"
