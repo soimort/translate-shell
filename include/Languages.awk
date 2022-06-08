@@ -519,6 +519,19 @@ function initLocale() {
     Locale["el"]["glotto"]             = "mode1248"
     Locale["el"]["script"]             = "Grek"
 
+    # Guarani
+    Locale["gn"]["name"]               = "Guarani"
+    Locale["gn"]["endonym"]            = "Avañe'ẽ"
+    #Locale["gn"]["translations-of"]
+    #Locale["gn"]["definitions-of"]
+    #Locale["gn"]["synonyms"]
+    #Locale["gn"]["examples"]
+    #Locale["gn"]["see-also"]
+    Locale["gn"]["family"]            = "Tupian"
+    Locale["gn"]["iso"]               = "gug"
+    Locale["gn"]["glotto"]            = "para1311"
+    Locale["gn"]["script"]            = "Latn"
+
     #31 Gujarati
     Locale["gu"]["name"]               = "Gujarati"
     Locale["gu"]["endonym"]            = "ગુજરાતી"
@@ -1752,20 +1765,6 @@ function initLocale() {
     Locale["fo"]["iso"]                = "fao"
     Locale["fo"]["glotto"]             = "faro1244"
     Locale["fo"]["script"]             = "Latn"
-
-    #? Guarani
-    Locale["gn"]["support"]            = "unstable"
-    Locale["gn"]["name"]               = "Guarani"
-    Locale["gn"]["endonym"]            = "Avañe'ẽ"
-    #Locale["gn"]["translations-of"]
-    #Locale["gn"]["definitions-of"]
-    #Locale["gn"]["synonyms"]
-    #Locale["gn"]["examples"]
-    #Locale["gn"]["see-also"]
-    Locale["gn"]["family"]             = "Tupian"
-    Locale["gn"]["iso"]                = "grn"
-    Locale["gn"]["glotto"]             = "para1311"
-    Locale["gn"]["script"]             = "Latn"
 
     #? Hill Mari
     Locale["mrj"]["support"]           = "yandex-only"
