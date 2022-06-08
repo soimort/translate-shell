@@ -1307,6 +1307,19 @@ function initLocale() {
     Locale["sm"]["glotto"]             = "samo1305"
     Locale["sm"]["script"]             = "Latn"
 
+    # Sanskrit
+    Locale["sa"]["name"]               = "Sanskrit"
+    Locale["sa"]["endonym"]            = "संस्कृतम्"
+    #Locale["sa"]["translations-of"]
+    #Locale["sa"]["definitions-of"]
+    #Locale["sa"]["synonyms"]
+    #Locale["sa"]["examples"]
+    #Locale["sa"]["see-also"]
+    Locale["sa"]["family"]             = "Indo-European"
+    Locale["sa"]["iso"]                = "san"
+    Locale["sa"]["glotto"]             = "sans1269"
+    Locale["sa"]["script"]             = "Deva"
+
     #78 Scots Gaelic
     Locale["gd"]["name"]               = "Scots Gaelic"
     Locale["gd"]["endonym"]            = "Gàidhlig"
