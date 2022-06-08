@@ -1603,6 +1603,19 @@ function initLocale() {
     Locale["ti"]["glotto"]             = "tigr1271"
     Locale["ti"]["script"]             = "Ethi"
 
+    # Tsonga
+    Locale["ts"]["name"]               = "Tsonga"
+    Locale["ts"]["endonym"]            = "Xitsonga"
+    #Locale["ts"]["translations-of"]
+    #Locale["ts"]["definitions-of"]
+    #Locale["ts"]["synonyms"]
+    #Locale["ts"]["examples"]
+    #Locale["ts"]["see-also"]
+    Locale["ts"]["family"]             = "Atlantic–Congo"
+    Locale["ts"]["iso"]                = "tso"
+    Locale["ts"]["glotto"]             = "tson1249"
+    Locale["ts"]["script"]             = "Latn"
+
     #96 Turkish
     Locale["tr"]["name"]               = "Turkish"
     Locale["tr"]["endonym"]            = "Türkçe"
