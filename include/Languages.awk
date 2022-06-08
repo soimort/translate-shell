@@ -1333,6 +1333,21 @@ function initLocale() {
     Locale["gd"]["glotto"]             = "scot1245"
     Locale["gd"]["script"]             = "Latn"
 
+    #80 Sepedi (Northern Sotho)
+    Locale["nso"]["name"]              = "Sepedi"
+    Locale["nso"]["name2"]             = "Pedi"
+    Locale["nso"]["name3"]             = "Northern Sotho"
+    Locale["nso"]["endonym"]           = "Sepedi"
+    #Locale["nso"]["translations-of"]
+    #Locale["nso"]["definitions-of"]
+    #Locale["nso"]["synonyms"]
+    #Locale["nso"]["examples"]
+    #Locale["nso"]["see-also"]
+    Locale["nso"]["family"]            = "Atlantic-Congo"
+    Locale["nso"]["iso"]               = "nso"
+    Locale["nso"]["glotto"]            = "nort3233"
+    Locale["nso"]["script"]            = "Latn"
+
     #79a Serbian, Cyrillic alphabet
     Locale["sr-Cyrl"]["name"]          = "Serbian (Cyrillic)"
     Locale["sr-Cyrl"]["endonym"]       = "српски"
@@ -1362,6 +1377,8 @@ function initLocale() {
 
     #80 Sesotho (Southern Sotho)
     Locale["st"]["name"]               = "Sesotho"
+    Locale["st"]["name2"]              = "Sotho"
+    Locale["st"]["name3"]              = "Southern Sotho"
     Locale["st"]["endonym"]            = "Sesotho"
     Locale["st"]["translations-of"]    = "Liphetolelo tsa %s"
     Locale["st"]["definitions-of"]     = "Meelelo ea %s"
