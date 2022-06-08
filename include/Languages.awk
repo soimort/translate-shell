@@ -1642,6 +1642,20 @@ function initLocale() {
     Locale["tk"]["glotto"]             = "turk1304"
     Locale["tk"]["script"]             = "Latn"
 
+    # Twi
+    Locale["tw"]["name"]               = "Twi"
+    Locale["tw"]["name2"]              = "Akan Kasa"
+    Locale["tw"]["endonym"]            = "Twi"
+    #Locale["tw"]["translations-of"]
+    #Locale["tw"]["definitions-of"]
+    #Locale["tw"]["synonyms"]
+    #Locale["tw"]["examples"]
+    #Locale["tw"]["see-also"]
+    Locale["tw"]["family"]             = "Atlantic-Congo"
+    Locale["tw"]["iso"]                = "twi"
+    Locale["tw"]["glotto"]             = "akua1239"
+    Locale["tw"]["script"]             = "Latn"
+
     #98 Ukrainian
     Locale["uk"]["name"]               = "Ukrainian"
     Locale["uk"]["endonym"]            = "Українська"
