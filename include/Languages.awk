@@ -1170,6 +1170,19 @@ function initLocale() {
     Locale["or"]["glotto"]             = "macr1269"
     Locale["or"]["script"]             = "Orya"
 
+    # Oromo
+    Locale["om"]["name"]               = "Oromo"
+    Locale["om"]["endonym"]            = "Afaan Oromoo"
+    #Locale["om"]["translations-of"]
+    #Locale["om"]["definitions-of"]
+    #Locale["om"]["synonyms"]
+    #Locale["om"]["examples"]
+    #Locale["om"]["see-also"]
+    Locale["om"]["family"]             = "Afro-Asiatic"
+    Locale["om"]["iso"]                = "orm"
+    Locale["om"]["glotto"]             = "nucl1736"
+    Locale["om"]["script"]             = "Latn"
+
     #70 Pashto / Pushto
     Locale["ps"]["name"]               = "Pashto"
     Locale["ps"]["name2"]              = "Pushto"
@@ -1921,20 +1934,6 @@ function initLocale() {
     Locale["oc"]["iso"]                = "oci"
     Locale["oc"]["glotto"]             = "occi1239"
     Locale["oc"]["script"]             = "Latn"
-
-    #? Oromo
-    Locale["om"]["support"]            = "unstable"
-    Locale["om"]["name"]               = "Oromo"
-    Locale["om"]["endonym"]            = "Afaan Oromoo"
-    #Locale["om"]["translations-of"]
-    #Locale["om"]["definitions-of"]
-    #Locale["om"]["synonyms"]
-    #Locale["om"]["examples"]
-    #Locale["om"]["see-also"]
-    Locale["om"]["family"]             = "Afro-Asiatic"
-    Locale["om"]["iso"]                = "orm"
-    Locale["om"]["glotto"]             = "nucl1736"
-    Locale["om"]["script"]             = "Latn"
 
     #? Papiamento
     Locale["pap"]["support"]           = "yandex-only"
