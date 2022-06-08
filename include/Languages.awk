@@ -1159,6 +1159,7 @@ function initLocale() {
 
     #69 Odia / Oriya
     Locale["or"]["name"]               = "Odia"
+    Locale["or"]["name2"]              = "Oriya"
     Locale["or"]["endonym"]            = "ଓଡ଼ିଆ"
     #Locale["or"]["translations-of"]
     #Locale["or"]["definitions-of"]
