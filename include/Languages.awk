@@ -918,6 +918,19 @@ function initLocale() {
     Locale["lv"]["glotto"]             = "latv1249"
     Locale["lv"]["script"]             = "Latn"
 
+    # Lingala
+    Locale["ln"]["name"]               = "Lingala"
+    Locale["ln"]["endonym"]            = "Lingála"
+    #Locale["ln"]["translations-of"]
+    #Locale["ln"]["definitions-of"]
+    #Locale["ln"]["synonyms"]
+    #Locale["ln"]["examples"]
+    #Locale["ln"]["see-also"]
+    Locale["ln"]["family"]             = "Atlantic-Congo"
+    Locale["ln"]["iso"]                = "lin"
+    Locale["ln"]["glotto"]             = "ling1269"
+    Locale["ln"]["script"]             = "Latn"
+
     #56 Lithuanian
     Locale["lt"]["name"]               = "Lithuanian"
     Locale["lt"]["endonym"]            = "Lietuvių"
