@@ -1590,6 +1590,19 @@ function initLocale() {
     Locale["th"]["glotto"]             = "thai1261"
     Locale["th"]["script"]             = "Thai"
 
+    # Tigrinya
+    Locale["ti"]["name"]               = "Tigrinya"
+    Locale["ti"]["endonym"]            = "ትግርኛ"
+    #Locale["ti"]["translations-of"]
+    #Locale["ti"]["definitions-of"]
+    #Locale["ti"]["synonyms"]
+    #Locale["ti"]["examples"]
+    #Locale["ti"]["see-also"]
+    Locale["ti"]["family"]             = "Afro-Asiatic"
+    Locale["ti"]["iso"]                = "tir"
+    Locale["ti"]["glotto"]             = "tigr1271"
+    Locale["ti"]["script"]             = "Ethi"
+
     #96 Turkish
     Locale["tr"]["name"]               = "Turkish"
     Locale["tr"]["endonym"]            = "Türkçe"
@@ -2006,20 +2019,6 @@ function initLocale() {
     Locale["rm"]["iso"]                = "roh"
     Locale["rm"]["glotto"]             = "roma1326"
     Locale["rm"]["script"]             = "Latn"
-
-    #? Tigrinya
-    Locale["ti"]["support"]            = "unstable"
-    Locale["ti"]["name"]               = "Tigrinya"
-    Locale["ti"]["endonym"]            = "ትግርኛ"
-    #Locale["ti"]["translations-of"]
-    #Locale["ti"]["definitions-of"]
-    #Locale["ti"]["synonyms"]
-    #Locale["ti"]["examples"]
-    #Locale["ti"]["see-also"]
-    Locale["ti"]["family"]             = "Afro-Asiatic"
-    Locale["ti"]["iso"]                = "tir"
-    Locale["ti"]["glotto"]             = "tigr1271"
-    Locale["ti"]["script"]             = "Ethi"
 
     #? Tibetan (Standard Tibetan)
     Locale["bo"]["support"]            = "unstable"
