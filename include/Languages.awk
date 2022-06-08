@@ -1088,6 +1088,22 @@ function initLocale() {
     Locale["mn"]["glotto"]             = "mong1331"
     Locale["mn"]["script"]             = "Cyrl"
 
+    # Meiteilon / Manipuri
+    Locale["mni-Mtei"]["name"]         = "Meiteilon"
+    Locale["mni-Mtei"]["name2"]        = "Manipuri"
+    Locale["mni-Mtei"]["name3"]        = "Meitei"
+    Locale["mni-Mtei"]["name4"]        = "Meetei"
+    Locale["mni-Mtei"]["endonym"]      = "ꯃꯤꯇꯩꯂꯣꯟ"
+    #Locale["mni-Mtei"]["translations-of"]
+    #Locale["mni-Mtei"]["definitions-of"]
+    #Locale["mni-Mtei"]["synonyms"]
+    #Locale["mni-Mtei"]["examples"]
+    #Locale["mni-Mtei"]["see-also"]
+    Locale["mni-Mtei"]["family"]       = "Sino-Tibetan"
+    Locale["mni-Mtei"]["iso"]          = "mni"
+    Locale["mni-Mtei"]["glotto"]       = "mani1292"
+    Locale["mni-Mtei"]["script"]       = "Mtei"
+
     #66 Myanmar / Burmese
     Locale["my"]["name"]               = "Myanmar"
     Locale["my"]["name2"]              = "Burmese"
@@ -2064,6 +2080,7 @@ function initLocaleAlias(    i) {
     LocaleAlias["chinese"] = "zh-CN"
     LocaleAlias["tlh-Latn"] = "tlh"
     LocaleAlias["tlh-Piqd"] = "tlh-Qaak"
+    LocaleAlias["mni"] = "mni-Mtei" # Meitei: default to Meitei Mayek
     # TODO: more aliases
 }
 
@@ -2213,6 +2230,7 @@ function scriptName(code) {
     case "Kore": return "Korean (Hangul + Han)"
     case "Laoo": return "Lao"
     case "Latn": return "Latin"
+    case "Mtei": return "Meitei Mayek"
     case "Mlym": return "Malayalam"
     case "Mymr": return "Myanmar"
     case "Orya": return "Oriya"
