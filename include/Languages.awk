@@ -14,7 +14,7 @@
 #      <http://glottolog.org/>
 function initLocale() {
 
-    #1 Afrikaans
+    # Afrikaans
     Locale["af"]["name"]               = "Afrikaans"
     Locale["af"]["endonym"]            = "Afrikaans"
     Locale["af"]["translations-of"]    = "Vertalings van %s"
@@ -23,24 +23,31 @@ function initLocale() {
     Locale["af"]["examples"]           = "Voorbeelde"
     Locale["af"]["see-also"]           = "Sien ook"
     Locale["af"]["family"]             = "Indo-European"
+    Locale["af"]["branch"]             = "West Germanic"
     Locale["af"]["iso"]                = "afr"
     Locale["af"]["glotto"]             = "afri1274"
     Locale["af"]["script"]             = "Latn"
+    Locale["af"]["spoken-in"]          = "South Africa; Namibia"
+    Locale["af"]["supported-by"]       = "google; bing; yandex"
 
-    #2 Albanian
+    # Albanian
     Locale["sq"]["name"]               = "Albanian"
     Locale["sq"]["endonym"]            = "Shqip"
+    Locale["sq"]["endonym2"]           = "Gjuha shqipe"
     Locale["sq"]["translations-of"]    = "Përkthimet e %s"
     Locale["sq"]["definitions-of"]     = "Përkufizime të %s"
     Locale["sq"]["synonyms"]           = "Sinonime"
     Locale["sq"]["examples"]           = "Shembuj"
     Locale["sq"]["see-also"]           = "Shihni gjithashtu"
     Locale["sq"]["family"]             = "Indo-European"
+    Locale["sq"]["branch"]             = "Paleo-Balkan"
     Locale["sq"]["iso"]                = "sqi"
     Locale["sq"]["glotto"]             = "alba1267"
     Locale["sq"]["script"]             = "Latn"
+    Locale["sq"]["spoken-in"]          = "Albania; Kosovo; Montenegro; North Macedonia"
+    Locale["sq"]["supported-by"]       = "google; bing; yandex"
 
-    #3 Amharic
+    # Amharic
     Locale["am"]["name"]               = "Amharic"
     Locale["am"]["endonym"]            = "አማርኛ"
     Locale["am"]["translations-of"]    = "የ %s ትርጉሞች"
@@ -49,11 +56,14 @@ function initLocale() {
     Locale["am"]["examples"]           = "ምሳሌዎች"
     Locale["am"]["see-also"]           = "የሚከተለውንም ይመልከቱ"
     Locale["am"]["family"]             = "Afro-Asiatic"
+    Locale["am"]["branch"]             = "Semitic"
     Locale["am"]["iso"]                = "amh"
     Locale["am"]["glotto"]             = "amha1245"
     Locale["am"]["script"]             = "Ethi"
+    Locale["am"]["spoken-in"]          = "Ethiopia"
+    Locale["am"]["supported-by"]       = "google; bing; yandex"
 
-    #4 Arabic (Standard Arabic)
+    # Arabic (Modern Standard Arabic)
     Locale["ar"]["name"]               = "Arabic"
     Locale["ar"]["endonym"]            = "العربية"
     Locale["ar"]["translations-of"]    = "ترجمات %s"
@@ -62,12 +72,15 @@ function initLocale() {
     Locale["ar"]["examples"]           = "أمثلة"
     Locale["ar"]["see-also"]           = "انظر أيضًا"
     Locale["ar"]["family"]             = "Afro-Asiatic"
+    Locale["ar"]["branch"]             = "Semitic"
     Locale["ar"]["iso"]                = "ara"
     Locale["ar"]["glotto"]             = "stan1318"
     Locale["ar"]["script"]             = "Arab"
     Locale["ar"]["rtl"]                = "true" # RTL language
+    Locale["ar"]["spoken-in"]          = "the Arab world"
+    Locale["ar"]["supported-by"]       = "google; bing; yandex"
 
-    #5 Armenian (Modern Armenian)
+    # Armenian (Eastern Armenian)
     Locale["hy"]["name"]               = "Armenian"
     Locale["hy"]["endonym"]            = "Հայերեն"
     Locale["hy"]["translations-of"]    = "%s-ի թարգմանությունները"
@@ -76,9 +89,12 @@ function initLocale() {
     Locale["hy"]["examples"]           = "Օրինակներ"
     Locale["hy"]["see-also"]           = "Տես նաև"
     Locale["hy"]["family"]             = "Indo-European"
+    #Locale["hy"]["branch"]            = "Armenian"
     Locale["hy"]["iso"]                = "hye"
     Locale["hy"]["glotto"]             = "nucl1235"
     Locale["hy"]["script"]             = "Armn"
+    Locale["hy"]["spoken-in"]          = "Armenia"
+    Locale["hy"]["supported-by"]       = "google; bing; yandex"
 
     # Assamese
     Locale["as"]["name"]               = "Assamese"
@@ -89,9 +105,12 @@ function initLocale() {
     #Locale["as"]["examples"]
     #Locale["as"]["see-also"]
     Locale["as"]["family"]             = "Indo-European"
+    Locale["as"]["branch"]             = "Indo-Aryan"
     Locale["as"]["iso"]                = "asm"
     Locale["as"]["glotto"]             = "assa1263"
     Locale["as"]["script"]             = "Beng"
+    Locale["as"]["spoken-in"]          = "the northeast Indian state of Assam"
+    Locale["as"]["supported-by"]       = "google; bing"
 
     # Aymara
     Locale["ay"]["name"]               = "Aymara"
@@ -102,11 +121,14 @@ function initLocale() {
     #Locale["ay"]["examples"]
     #Locale["ay"]["see-also"]
     Locale["ay"]["family"]             = "Aymaran"
+    #Locale["ay"]["branch"]            = "Aymaran"
     Locale["ay"]["iso"]                = "aym"
     Locale["ay"]["glotto"]             = "nucl1667"
     Locale["ay"]["script"]             = "Latn"
+    Locale["ay"]["spoken-in"]          = "Bolivia; Peru"
+    Locale["ay"]["supported-by"]       = "google"
 
-    #6 Azerbaijani (North Azerbaijani)
+    # Azerbaijani (North Azerbaijani)
     Locale["az"]["name"]               = "Azerbaijani"
     Locale["az"]["endonym"]            = "Azərbaycanca"
     Locale["az"]["translations-of"]    = "%s sözünün tərcüməsi"
@@ -115,9 +137,12 @@ function initLocale() {
     Locale["az"]["examples"]           = "Nümunələr"
     Locale["az"]["see-also"]           = "Həmçinin, baxın:"
     Locale["az"]["family"]             = "Turkic"
+    Locale["az"]["branch"]             = "Oghuz"
     Locale["az"]["iso"]                = "aze"
     Locale["az"]["glotto"]             = "nort2697"
     Locale["az"]["script"]             = "Latn"
+    Locale["az"]["spoken-in"]          = "Azerbaijan"
+    Locale["az"]["supported-by"]       = "google; bing; yandex"
 
     # Bambara
     Locale["bm"]["name"]               = "Bambara"
@@ -1823,13 +1848,13 @@ function initLocale() {
     Locale["prs"]["rtl"]               = "true" # RTL language
 
     #* Fijian
-    Locale["fj"]["support"]           = "bing-only"
-    Locale["fj"]["name"]              = "Fijian"
-    Locale["fj"]["endonym"]           = "Vosa Vakaviti"
-    Locale["fj"]["family"]            = "Austronesian"
-    Locale["fj"]["iso"]               = "fij"
-    Locale["fj"]["glotto"]            = "fiji1243"
-    Locale["fj"]["script"]            = "Latn"
+    Locale["fj"]["support"]            = "bing-only"
+    Locale["fj"]["name"]               = "Fijian"
+    Locale["fj"]["endonym"]            = "Vosa Vakaviti"
+    Locale["fj"]["family"]             = "Austronesian"
+    Locale["fj"]["iso"]                = "fij"
+    Locale["fj"]["glotto"]             = "fiji1243"
+    Locale["fj"]["script"]             = "Latn"
 
     #* Hmong Daw (White Hmong)
     Locale["mww"]["support"]           = "bing-only"
@@ -1864,22 +1889,22 @@ function initLocale() {
     Locale["otq"]["script"]            = "Latn"
 
     #* Tahitian
-    Locale["ty"]["support"]           = "bing-only"
-    Locale["ty"]["name"]              = "Tahitian"
-    Locale["ty"]["endonym"]           = "Reo Tahiti"
-    Locale["ty"]["family"]            = "Austronesian"
-    Locale["ty"]["iso"]               = "tah"
-    Locale["ty"]["glotto"]            = "tahi1242"
-    Locale["ty"]["script"]            = "Latn"
+    Locale["ty"]["support"]            = "bing-only"
+    Locale["ty"]["name"]               = "Tahitian"
+    Locale["ty"]["endonym"]            = "Reo Tahiti"
+    Locale["ty"]["family"]             = "Austronesian"
+    Locale["ty"]["iso"]                = "tah"
+    Locale["ty"]["glotto"]             = "tahi1242"
+    Locale["ty"]["script"]             = "Latn"
 
     #* Tongan
-    Locale["to"]["support"]           = "bing-only"
-    Locale["to"]["name"]              = "Tongan"
-    Locale["to"]["endonym"]           = "Lea faka-Tonga"
-    Locale["to"]["family"]            = "Austronesian"
-    Locale["to"]["iso"]               = "ton"
-    Locale["to"]["glotto"]            = "tong1325"
-    Locale["to"]["script"]            = "Latn"
+    Locale["to"]["support"]            = "bing-only"
+    Locale["to"]["name"]               = "Tongan"
+    Locale["to"]["endonym"]            = "Lea faka-Tonga"
+    Locale["to"]["family"]             = "Austronesian"
+    Locale["to"]["iso"]                = "ton"
+    Locale["to"]["glotto"]             = "tong1325"
+    Locale["to"]["script"]             = "Latn"
 
     #* Yucatec Maya
     Locale["yua"]["support"]           = "bing-only"
