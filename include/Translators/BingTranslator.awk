@@ -2,7 +2,7 @@
 # BingTranslator.awk                                               #
 ####################################################################
 #
-# Last Updated: 25 Jul 2019
+# Last Updated: 8 Jun 2022
 BEGIN { provides("bing") }
 
 function bingInit() {
@@ -11,9 +11,9 @@ function bingInit() {
     HttpPort = 80
 }
 
-# [OBSOLETE?] Retrieve the Cookie and set IG.
-function bingSetIG(    content, cookie, group, header, isBody,
-                       url, status, location) {
+# Set IG, IID, and BingTokenKey (a URL-encoded string containing token and key).
+function bingSetup(    ast, content, cookie, group, header, isBody, key,
+                       location, status, token, tokens, url) {
     url = HttpPathPrefix "/translator"
 
     header = "GET " url " HTTP/1.1\r\n"                                 \
@@ -46,13 +46,36 @@ function bingSetIG(    content, cookie, group, header, isBody,
     if ((status == "301" || status == "302") && location)
         content = curl(location)
     # FIXME: cookie
-
     Cookie = cookie
+
     match(content, /IG:"([^"]+)"/, group)
     if (group[1]) {
         IG = group[1]
+        l(IG, "IG")
     } else {
-        e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
+        e("[ERROR] Failed to extract IG.")
+        exit 1
+    }
+
+    match(content, /data-iid="([^"]+)"/, group)
+    if (group[1]) {
+        IID = group[1]
+        l(IID, "IID")
+    } else {
+        e("[ERROR] Failed to extract IID.")
+        exit 1
+    }
+
+    match(content, /params_RichTranslateHelper = ([^;]+);/, group)
+    if (group[1]) {
+        tokenize(tokens, group[1])
+        parseJson(ast, tokens)
+        key = ast[0 SUBSEP 0]
+        token = unparameterize(ast[0 SUBSEP 1])
+        BingTokenKey = sprintf("&token=%s&key=%s", quote(token), quote(key))
+        l(BingTokenKey, "BingTokenKey")
+    } else {
+        e("[ERROR] Failed to extract token & key.")
         exit 1
     }
 }
@@ -151,7 +174,7 @@ function bingPostRequestUrl(text, sl, tl, hl, type) {
     #else if (type == "transliterate")
     #    return HttpPathPrefix "/ttransliteratev3"
     else # type == "translate"
-        return HttpPathPrefix "/ttranslatev3"
+        return HttpPathPrefix "/ttranslatev3" sprintf("?IG=%s&IID=%s", IG, IID)
 }
 
 function bingPostRequestContentType(text, sl, tl, hl, type) {
@@ -168,7 +191,7 @@ function bingPostRequestBody(text, sl, tl, hl, type) {
     #else if (type == "transliterate")
     #    return "&text=" quote(text) "&language=" sl "&toScript=" "latn"
     else # type == "translate"
-        return "&text=" quote(text) "&fromLang=" sl "&to=" tl
+        return "&text=" quote(text) "&fromLang=" sl "&to=" tl BingTokenKey
 }
 
 # Get the translation of a string.
@@ -199,7 +222,7 @@ function bingTranslate(text, sl, tl, hl,
     _tl = getCode(tl); if (!_tl) _tl = tl
     _hl = getCode(hl); if (!_hl) _hl = hl
 
-    #bingSetIG() # set IG (no longer needed)
+    bingSetup()
 
     # Hot-patches for Bing's own translator language codes
     # See: <https://msdn.microsoft.com/en-us/library/hh456380.aspx>
