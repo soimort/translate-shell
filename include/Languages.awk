@@ -2281,6 +2281,11 @@ function getFamily(code) {
     return Locale[getCode(code)]["family"]
 }
 
+# Return the branch of a language.
+function getBranch(code) {
+    return Locale[getCode(code)]["branch"]
+}
+
 # Return the ISO 639-3 code of a language.
 function getISO(code) {
     return Locale[getCode(code)]["iso"]
@@ -2355,8 +2360,49 @@ function scriptName(code) {
     }
 }
 
+# Return the regions that a language is spoken in, as an English string.
+function getSpokenIn(code,    i, j, r, regions, str) {
+    r = NULLSTR
+    str = Locale[getCode(code)]["spoken-in"]
+    if (str) {
+        split(str, regions, /\s?;\s?/)
+        j = 0
+        for (i in regions) {
+            r = r regions[i]
+            j++
+            if (j < length(regions) - 1)
+                r = r ", "
+            else if (j == length(regions) - 1)
+                r = r " and "
+        }
+    }
+    return r
+}
+
+# Return 1 if a language is supported by Google; otherwise return 0.
+function isSupportedByGoogle(code,    engines, i, str) {
+    str = Locale[getCode(code)]["supported-by"]
+    if (str) {
+        split(str, engines, /\s?;\s?/)
+        for (i in engines)
+            if (engines[i] == "google") return 1
+    }
+    return 0
+}
+
+# Return 1 if a language is supported by Bing; otherwise return 0.
+function isSupportedByBing(code,    engines, i, str) {
+    str = Locale[getCode(code)]["supported-by"]
+    if (str) {
+        split(str, engines, /\s?;\s?/)
+        for (i in engines)
+            if (engines[i] == "bing") return 1
+    }
+    return 0
+}
+
 # Return detailed information of a language as a string.
-function getDetails(code,    group, iso, script) {
+function getDetails(code,    article, desc, group, iso, script) {
     if (code == "auto" || !getCode(code)) {
         e("[ERROR] Language not found: " code "\n"                      \
           "        Run '-reference / -R' to see a list of available languages.")
@@ -2367,6 +2413,15 @@ function getDetails(code,    group, iso, script) {
     if (isRTL(code)) script = script " (R-to-L)"
     split(getISO(code), group, "-")
     iso = group[1]
+
+    if (getBranch(code)) {
+        article = match(tolower(getBranch(code)), /^[aeiou]/) ? "an" : "a"
+        desc = sprintf("%s is %s %s language spoken mainly in %s.",
+                       getNames(code), article, getBranch(code), getSpokenIn(code))
+    } else
+        desc = sprintf("%s is a language of the %s family, spoken mainly in %s.",
+                       getNames(code), getFamily(code), getSpokenIn(code))
+
     return ansi("bold", sprintf("%s\n", getDisplay(code)))              \
         sprintf("%-22s%s\n", "Name", ansi("bold", getNames(code)))      \
         sprintf("%-22s%s\n", "Family", ansi("bold", getFamily(code)))   \
@@ -2376,7 +2431,12 @@ function getDetails(code,    group, iso, script) {
         sprintf("%-22s%s\n", "SIL", ansi("bold", "https://iso639-3.sil.org/code/" iso)) \
         sprintf("%-22s%s\n", "Glottolog", getGlotto(code) ?
                 ansi("bold", "https://glottolog.org/resource/languoid/id/" getGlotto(code)) : "") \
-        sprintf("%-22s%s", "Wikipedia", ansi("bold", "https://en.wikipedia.org/wiki/ISO_639:" iso))
+        sprintf("%-22s%s\n", "Wikipedia", ansi("bold", "https://en.wikipedia.org/wiki/ISO_639:" iso)) \
+        (Locale[getCode(code)]["supported-by"] ? # FIXME
+        sprintf("%-22s%s\n", "Translator support", sprintf("Google [%s]    Bing [%s]",
+                isSupportedByGoogle(code) ? "✔" : "✘", isSupportedByBing(code) ? "✔" : "✘")) : "") \
+        (Locale[getCode(code)]["spoken-in"] ? # FIXME
+        ansi("bold", sprintf("\n%s", desc)) : "")
 }
 
 # Add /slashes/ for IPA phonemic notations and (parentheses) for others.
