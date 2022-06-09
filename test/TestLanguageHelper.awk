@@ -1,7 +1,8 @@
-@include "include/Languages"
+@include "include/LanguageData"
+@include "include/LanguageHelper"
 
 BEGIN {
-    START_TEST("Languages.awk")
+    START_TEST("LanguageHelper.awk")
 
     T("getCode()", 5)
     {

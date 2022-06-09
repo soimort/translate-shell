@@ -4,7 +4,8 @@
 # But the build.awk script and the single build should support gawk 4.0+.
 @include "include/Commons.awk"
 @include "include/Utils.awk"
-@include "include/Languages.awk"
+@include "include/LanguageData.awk"
+@include "include/LanguageHelper.awk"
 @include "metainfo.awk"
 
 function init() {

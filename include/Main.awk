@@ -8,7 +8,7 @@ function init() {
     initBiDiTerm()
     initBiDi()
 
-    # (Languages.awk)
+    # (LanguageData.awk & LanguageHelper.awk)
     initLocale()
     initLocaleAlias()
     initUserLang()
@@ -143,7 +143,7 @@ function initMisc(    command, group, temp) {
         BiDi = "sed \"s/'/\\\\\\'/\" | xargs -0 printf '%%%ss'"
     }
 
-    # (Languages.awk)
+    # (LanguageData.awk)
     initLocaleDisplay()
 
     # Disable everything stderr

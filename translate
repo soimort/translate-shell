@@ -4,7 +4,8 @@ gawk \
 -i "${TRANS_DIR}/metainfo.awk" \
 -i "${TRANS_DIR}/include/Commons.awk" \
 -i "${TRANS_DIR}/include/Utils.awk" \
--i "${TRANS_DIR}/include/Languages.awk" \
+-i "${TRANS_DIR}/include/LanguageData.awk" \
+-i "${TRANS_DIR}/include/LanguageHelper.awk" \
 -i "${TRANS_DIR}/include/Help.awk" \
 -i "${TRANS_DIR}/include/Parser.awk" \
 -i "${TRANS_DIR}/include/Theme.awk" \

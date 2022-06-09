@@ -5,7 +5,8 @@
 @include "include/Commons.awk"
 @include "include/Utils.awk"
 
-@include "include/Languages.awk"
+@include "include/LanguageData.awk"
+@include "include/LanguageHelper.awk"
 @include "include/Help.awk"
 @include "include/Parser.awk"
 @include "include/Theme.awk"
