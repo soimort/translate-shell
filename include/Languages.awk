@@ -267,6 +267,7 @@ function initLocale() {
     #15b Chinese (Mandarin), Traditional
     Locale["zh-TW"]["name"]            = "Chinese Traditional"
     Locale["zh-TW"]["endonym"]         = "繁體中文"
+    Locale["zh-TW"]["endonym2"]        = "正體中文"
     Locale["zh-TW"]["translations-of"] = "「%s」的翻譯"
     Locale["zh-TW"]["definitions-of"]  = "「%s」的定義"
     Locale["zh-TW"]["synonyms"]        = "同義詞"
@@ -2135,6 +2136,8 @@ function initLocaleAlias(    i) {
         if ("name2" in Locale[i])
             LocaleAlias[tolower(Locale[i]["name2"])] = i
         LocaleAlias[tolower(Locale[i]["endonym"])] = i
+        if ("endonym2" in Locale[i])
+            LocaleAlias[tolower(Locale[i]["endonym2"])] = i
     }
 
     # Other aliases
