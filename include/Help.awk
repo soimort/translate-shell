@@ -270,7 +270,10 @@ function getReference(displayName,
                     if (length(t1) > 17)
                         t1 = substr(t1, 1, 14) "..."
                     switch (cols[j][i]) { # fix rendered text width
-                    case "he":
+                    case "sa":
+                        t1 = sprintf(" %-21s", t1)
+                        break
+                    case "he": case "dv":
                         t1 = sprintf(" %-20s", t1)
                         break
                     case "or": case "ur":
@@ -278,7 +281,8 @@ function getReference(displayName,
                         break
                     case "hi": case "gu": case "km": case "kn":
                     case "my": case "ne": case "pa": case "si":
-                    case "ta": case "te": case "yi":
+                    case "ta": case "te": case "yi": case "as":
+                    case "bho": case "mai": case "gom":
                         t1 = sprintf(" %-18s", t1)
                         break
                     case "yue":
