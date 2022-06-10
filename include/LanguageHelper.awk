@@ -219,6 +219,9 @@ function getDetails(code,    article, desc, group, iso, script) {
         article = match(tolower(getBranch(code)), /^[aeiou]/) ? "an" : "a"
         desc = sprintf("%s is %s %s language spoken mainly in %s.",
                        getNames(code), article, getBranch(code), getSpokenIn(code))
+    } else if (getFamily(code) == NULLSTR || tolower(getFamily(code)) == "language isolate") {
+        desc = sprintf("%s is a language spoken mainly in %s.",
+                       getNames(code), getSpokenIn(code))
     } else
         desc = sprintf("%s is a language of the %s family, spoken mainly in %s.",
                        getNames(code), getFamily(code), getSpokenIn(code))
