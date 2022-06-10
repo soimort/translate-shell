@@ -149,11 +149,9 @@ function bingTTSUrl(text, tl,
 function bingWebTranslateUrl(uri, sl, tl, hl,    _sl, _tl) {
     # Hot-patches for language codes
     _sl = sl; _tl = tl
-    if (_sl == "bs")    _sl = "bs-Latn" # 'bs' is not recognized as valid code
     if (_sl == "zh")    _sl = "zh-CHS" # still old format
     if (_sl == "zh-CN") _sl = "zh-CHS"
     if (_sl == "zh-TW") _sl = "zh-CHT"
-    if (_tl == "bs")    _tl = "bs-Latn"
     if (_tl == "zh")    _tl = "zh-CHS"
     if (_tl == "zh-CN") _tl = "zh-CHS"
     if (_tl == "zh-TW") _tl = "zh-CHT"
@@ -225,16 +223,14 @@ function bingTranslate(text, sl, tl, hl,
     bingSetup()
 
     # Hot-patches for Bing's own translator language codes
-    # See: <https://msdn.microsoft.com/en-us/library/hh456380.aspx>
+    # See: <https://docs.microsoft.com/en-us/azure/cognitive-services/Translator/language-support>
     if (_sl == "auto")  _sl = "auto-detect"
-    if (_sl == "bs")    _sl = "bs-Latn"  # 'bs' is not recognized as valid code
     if (_sl == "no")    _sl = "nb"  # Bing uses Norwegian Bokmål
     # Bing uses 'pt' or 'pt-br' for Brazilian Portuguese, 'pt-pt' for European Portuguese
     if (_sl == "pt-BR") _sl = "pt" # just pt-br
     else if (_sl == "pt-PT") _sl = "pt" # FIXME: support pt-pt
     if (_sl == "zh-CN") _sl = "zh-Hans"
     if (_sl == "zh-TW") _sl = "zh-Hant"
-    if (_tl == "bs")    _tl = "bs-Latn"
     if (_tl == "no")    _tl = "nb"
     if (_tl == "pt-BR") _tl = "pt"
     else if (_tl == "pt-PT") _tl = "pt-pt"
