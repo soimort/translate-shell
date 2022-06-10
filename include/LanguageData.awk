@@ -130,6 +130,7 @@ function initLocale() {
 
     # Azerbaijani (North Azerbaijani)
     Locale["az"]["name"]               = "Azerbaijani"
+    Locale["az"]["name2"]              = "Azeri"
     Locale["az"]["endonym"]            = "Azərbaycanca"
     Locale["az"]["translations-of"]    = "%s sözünün tərcüməsi"
     Locale["az"]["definitions-of"]     = "%s sözünün tərifləri"
@@ -147,17 +148,38 @@ function initLocale() {
     # Bambara
     Locale["bm"]["name"]               = "Bambara"
     Locale["bm"]["endonym"]            = "Bamanankan"
+    Locale["bm"]["endonym2"]           = "Bamana"
     #Locale["bm"]["translations-of"]
     #Locale["bm"]["definitions-of"]
     #Locale["bm"]["synonyms"]
     #Locale["bm"]["examples"]
     #Locale["bm"]["see-also"]
     Locale["bm"]["family"]             = "Mande"
+    Locale["bm"]["branch"]             = "Manding"
     Locale["bm"]["iso"]                = "bam"
     Locale["bm"]["glotto"]             = "bamb1269"
     Locale["bm"]["script"]             = "Latn"
+    Locale["bm"]["spoken-in"]          = "Mali"
+    Locale["bm"]["supported-by"]       = "google"
 
-    #7 Basque
+    # Bashkir
+    Locale["ba"]["name"]               = "Bashkir"
+    Locale["ba"]["endonym"]            = "Башҡортса"
+    Locale["ba"]["endonym2"]           = "башҡорт теле"
+    #Locale["ba"]["translations-of"]
+    #Locale["ba"]["definitions-of"]
+    #Locale["ba"]["synonyms"]
+    #Locale["ba"]["examples"]
+    #Locale["ba"]["see-also"]
+    Locale["ba"]["family"]             = "Turkic"
+    Locale["ba"]["branch"]             = "Kipchak"
+    Locale["ba"]["iso"]                = "bak"
+    Locale["ba"]["glotto"]             = "bash1264"
+    Locale["ba"]["script"]             = "Cyrl"
+    Locale["ba"]["spoken-in"]          = "the Republic of Bashkortostan in Russia"
+    Locale["ba"]["supported-by"]       = "bing; yandex"
+
+    # Basque
     Locale["eu"]["name"]               = "Basque"
     Locale["eu"]["endonym"]            = "Euskara"
     Locale["eu"]["translations-of"]    = "%s esapidearen itzulpena"
@@ -165,12 +187,15 @@ function initLocale() {
     Locale["eu"]["synonyms"]           = "Sinonimoak"
     Locale["eu"]["examples"]           = "Adibideak"
     Locale["eu"]["see-also"]           = "Ikusi hauek ere"
-    Locale["eu"]["family"]             = "Language Isolate"
+    Locale["eu"]["family"]             = "Language isolate"
+    #Locale["eu"]["branch"]            = "Language isolate"
     Locale["eu"]["iso"]                = "eus"
     Locale["eu"]["glotto"]             = "basq1248"
     Locale["eu"]["script"]             = "Latn"
+    Locale["eu"]["spoken-in"]          = "Euskal Herria in Spain and France"
+    Locale["eu"]["supported-by"]       = "google; bing; yandex"
 
-    #8 Belarusian, Cyrillic alphabet
+    # Belarusian, Cyrillic alphabet
     Locale["be"]["name"]               = "Belarusian"
     Locale["be"]["endonym"]            = "беларуская"
     Locale["be"]["translations-of"]    = "Пераклады %s"
@@ -179,11 +204,14 @@ function initLocale() {
     Locale["be"]["examples"]           = "Прыклады"
     Locale["be"]["see-also"]           = "Гл. таксама"
     Locale["be"]["family"]             = "Indo-European"
+    Locale["be"]["branch"]             = "East Slavic"
     Locale["be"]["iso"]                = "bel"
     Locale["be"]["glotto"]             = "bela1254"
     Locale["be"]["script"]             = "Cyrl"
+    Locale["be"]["spoken-in"]          = "Belarus"
+    Locale["be"]["supported-by"]       = "google; yandex"
 
-    #9 Bengali / Bangla
+    # Bengali / Bangla
     Locale["bn"]["name"]               = "Bengali"
     Locale["bn"]["name2"]              = "Bangla"
     Locale["bn"]["endonym"]            = "বাংলা"
@@ -193,9 +221,12 @@ function initLocale() {
     Locale["bn"]["examples"]           = "উদাহরণ"
     Locale["bn"]["see-also"]           = "আরো দেখুন"
     Locale["bn"]["family"]             = "Indo-European"
+    Locale["bn"]["branch"]             = "Indo-Aryan"
     Locale["bn"]["iso"]                = "ben"
     Locale["bn"]["glotto"]             = "beng1280"
     Locale["bn"]["script"]             = "Beng"
+    Locale["bn"]["spoken-in"]          = "Bangladesh; India"
+    Locale["bn"]["supported-by"]       = "google; bing; yandex"
 
     # Bhojpuri
     Locale["bho"]["name"]              = "Bhojpuri"
@@ -206,11 +237,14 @@ function initLocale() {
     #Locale["bho"]["examples"]
     #Locale["bho"]["see-also"]
     Locale["bho"]["family"]            = "Indo-European"
+    Locale["bho"]["branch"]            = "Indo-Aryan"
     Locale["bho"]["iso"]               = "bho"
     Locale["bho"]["glotto"]            = "bhoj1246"
     Locale["bho"]["script"]            = "Deva"
+    Locale["bho"]["spoken-in"]         = "India; Nepal; Fiji"
+    Locale["bho"]["supported-by"]      = "google"
 
-    #10 Bosnian, Latin alphabet
+    # Bosnian, Latin alphabet
     Locale["bs"]["name"]               = "Bosnian"
     Locale["bs"]["endonym"]            = "Bosanski"
     Locale["bs"]["translations-of"]    = "Prijevod za: %s"
@@ -219,11 +253,14 @@ function initLocale() {
     Locale["bs"]["examples"]           = "Primjeri"
     Locale["bs"]["see-also"]           = "Pogledajte i"
     Locale["bs"]["family"]             = "Indo-European"
+    Locale["bs"]["branch"]             = "South Slavic"
     Locale["bs"]["iso"]                = "bos"
     Locale["bs"]["glotto"]             = "bosn1245"
     Locale["bs"]["script"]             = "Latn"
+    Locale["bs"]["spoken-in"]          = "Bosnia and Herzegovina"
+    Locale["bs"]["supported-by"]       = "google; bing; yandex"
 
-    #11 Bulgarian
+    # Bulgarian
     Locale["bg"]["name"]               = "Bulgarian"
     Locale["bg"]["endonym"]            = "български"
     Locale["bg"]["translations-of"]    = "Преводи на %s"
@@ -232,9 +269,14 @@ function initLocale() {
     Locale["bg"]["examples"]           = "Примери"
     Locale["bg"]["see-also"]           = "Вижте също"
     Locale["bg"]["family"]             = "Indo-European"
+    Locale["bg"]["branch"]             = "South Slavic"
     Locale["bg"]["iso"]                = "bul"
     Locale["bg"]["glotto"]             = "bulg1262"
     Locale["bg"]["script"]             = "Cyrl"
+    Locale["bg"]["spoken-in"]          = "Bulgaria"
+    Locale["bg"]["supported-by"]       = "google; bing; yandex"
+
+
 
     #12 Catalan (Standard Catalan)
     Locale["ca"]["name"]               = "Catalan"
@@ -1932,20 +1974,6 @@ function initLocale() {
     Locale["tlh-Qaak"]["iso"]          = "tlh"
     #Locale["tlh-Qaak"]["glotto"]
     Locale["tlh-Qaak"]["script"]       = "Piqd"
-
-    #? Bashkir
-    Locale["ba"]["support"]            = "yandex-only"
-    Locale["ba"]["name"]               = "Bashkir"
-    Locale["ba"]["endonym"]            = "башҡорт теле"
-    #Locale["ba"]["translations-of"]
-    #Locale["ba"]["definitions-of"]
-    #Locale["ba"]["synonyms"]
-    #Locale["ba"]["examples"]
-    #Locale["ba"]["see-also"]
-    Locale["ba"]["family"]             = "Turkic"
-    Locale["ba"]["iso"]                = "bak"
-    Locale["ba"]["glotto"]             = "bash1264"
-    Locale["ba"]["script"]             = "Cyrl"
 
     #? Breton
     Locale["br"]["support"]            = "unstable"
