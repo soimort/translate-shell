@@ -180,6 +180,25 @@ function getSpokenIn(code,    i, j, r, regions, str) {
     return r
 }
 
+# Return the regions that a script is written in, as an English string.
+function getWrittenIn(code,    i, j, r, regions, str) {
+    r = NULLSTR
+    str = Locale[getCode(code)]["written-in"]
+    if (str) {
+        split(str, regions, /\s?;\s?/)
+        j = 0
+        for (i in regions) {
+            r = r regions[i]
+            j++
+            if (j < length(regions) - 1)
+                r = r ", "
+            else if (j == length(regions) - 1)
+                r = r " and "
+        }
+    }
+    return r
+}
+
 # Return 1 if a language is supported by Google; otherwise return 0.
 function isSupportedByGoogle(code,    engines, i, str) {
     str = Locale[getCode(code)]["supported-by"]
@@ -203,7 +222,7 @@ function isSupportedByBing(code,    engines, i, str) {
 }
 
 # Return detailed information of a language as a string.
-function getDetails(code,    article, desc, group, iso, script) {
+function getDetails(code,    article, desc, group, iso, name, names, script, writing) {
     if (code == "auto" || !getCode(code)) {
         e("[ERROR] Language not found: " code "\n"                      \
           "        Run '-reference / -R' to see a list of available languages.")
@@ -212,22 +231,34 @@ function getDetails(code,    article, desc, group, iso, script) {
 
     script = scriptName(getScript(code))
     if (isRTL(code)) script = script " (R-to-L)"
+
     split(getISO(code), group, "-")
     iso = group[1]
+
+    name = getName(code)
+    names = getNames(code)
+    if (match(name, /\(.*\)/)) {
+        writing = substr(name, match(name, /\(.*\)/) + 1)
+        writing = substr(writing, 1, length(writing) - 1)
+        name = substr(name, 1, match(name, /\(.*\)/) - 2)
+    }
 
     if (getBranch(code)) {
         article = match(tolower(getBranch(code)), /^[aeiou]/) ? "an" : "a"
         desc = sprintf("%s is %s %s language spoken mainly in %s.",
-                       getNames(code), article, getBranch(code), getSpokenIn(code))
+                       names, article, getBranch(code), getSpokenIn(code))
     } else if (getFamily(code) == NULLSTR || tolower(getFamily(code)) == "language isolate") {
         desc = sprintf("%s is a language spoken mainly in %s.",
-                       getNames(code), getSpokenIn(code))
+                       names, getSpokenIn(code))
     } else
         desc = sprintf("%s is a language of the %s family, spoken mainly in %s.",
-                       getNames(code), getFamily(code), getSpokenIn(code))
+                       names, getFamily(code), getSpokenIn(code))
+    if (writing && getWrittenIn(code))
+        desc = desc sprintf(" The %s writing system is officially used in %s.",
+                            tolower(writing), getWrittenIn(code))
 
     return ansi("bold", sprintf("%s\n", getDisplay(code)))              \
-        sprintf("%-22s%s\n", "Name", ansi("bold", getNames(code)))      \
+        sprintf("%-22s%s\n", "Name", ansi("bold", names))               \
         sprintf("%-22s%s\n", "Family", ansi("bold", getFamily(code)))   \
         sprintf("%-22s%s\n", "Writing system", ansi("bold", script))    \
         sprintf("%-22s%s\n", "Code", ansi("bold", getCode(code)))       \
