@@ -276,9 +276,24 @@ function initLocale() {
     Locale["bg"]["spoken-in"]          = "Bulgaria"
     Locale["bg"]["supported-by"]       = "google; bing; yandex"
 
+    # Cantonese
+    Locale["yue"]["name"]              = "Cantonese"
+    Locale["yue"]["endonym"]           = "粵語"
+    Locale["yue"]["endonym2"]          = "廣東話"
+    #Locale["yue"]["translations-of"]
+    #Locale["yue"]["definitions-of"]
+    #Locale["yue"]["synonyms"]
+    #Locale["yue"]["examples"] 
+    #Locale["yue"]["see-also"]
+    Locale["yue"]["family"]            = "Sino-Tibetan"
+    Locale["yue"]["branch"]            = "Sinitic"
+    Locale["yue"]["iso"]               = "yue"
+    Locale["yue"]["glotto"]            = "cant1236"
+    Locale["yue"]["script"]            = "Hant"
+    Locale["yue"]["spoken-in"]         = "southeastern China; Hong Kong; Macau"
+    Locale["yue"]["supported-by"]      = "bing"
 
-
-    #12 Catalan (Standard Catalan)
+    # Catalan (Standard Catalan)
     Locale["ca"]["name"]               = "Catalan"
     Locale["ca"]["endonym"]            = "Català"
     Locale["ca"]["translations-of"]    = "Traduccions per a %s"
@@ -287,11 +302,14 @@ function initLocale() {
     Locale["ca"]["examples"]           = "Exemples"
     Locale["ca"]["see-also"]           = "Vegeu també"
     Locale["ca"]["family"]             = "Indo-European"
+    Locale["ca"]["branch"]             = "Western Romance"
     Locale["ca"]["iso"]                = "cat"
     Locale["ca"]["glotto"]             = "stan1289"
     Locale["ca"]["script"]             = "Latn"
+    Locale["ca"]["spoken-in"]          = "Països Catalans in Andorra, Spain, France and Italy"
+    Locale["ca"]["supported-by"]       = "google; bing; yandex"
 
-    #13 Cebuano
+    # Cebuano
     Locale["ceb"]["name"]              = "Cebuano"
     Locale["ceb"]["endonym"]           = "Cebuano"
     Locale["ceb"]["translations-of"]   = "%s Mga Paghubad sa PULONG_O_HUGPONG SA PAMULONG"
@@ -300,12 +318,16 @@ function initLocale() {
     Locale["ceb"]["examples"]          = "Mga pananglitan:"
     Locale["ceb"]["see-also"]          = "Kitaa pag-usab"
     Locale["ceb"]["family"]            = "Austronesian"
+    Locale["ceb"]["branch"]            = "Malayo-Polynesian"
     Locale["ceb"]["iso"]               = "ceb"
     Locale["ceb"]["glotto"]            = "cebu1242"
     Locale["ceb"]["script"]            = "Latn"
+    Locale["ceb"]["spoken-in"]         = "the southern Philippines"
+    Locale["ceb"]["supported-by"]      = "google; yandex"
 
-    #14 Chichewa
+    # Chichewa
     Locale["ny"]["name"]               = "Chichewa"
+    Locale["ny"]["name2"]              = "Chinyanja"
     Locale["ny"]["endonym"]            = "Nyanja"
     Locale["ny"]["translations-of"]    = "Matanthauzidwe a %s"
     Locale["ny"]["definitions-of"]     = "Mamasulidwe a %s"
@@ -313,12 +335,34 @@ function initLocale() {
     Locale["ny"]["examples"]           = "Zitsanzo"
     Locale["ny"]["see-also"]           = "Onaninso"
     Locale["ny"]["family"]             = "Atlantic-Congo"
+    Locale["ny"]["branch"]             = "Bantu"
     Locale["ny"]["iso"]                = "nya"
     Locale["ny"]["glotto"]             = "nyan1308"
     Locale["ny"]["script"]             = "Latn"
+    Locale["ny"]["spoken-in"]          = "Malawi; Zambia"
+    Locale["ny"]["supported-by"]       = "google"
 
-    #15a Chinese (Mandarin), Simplified
-    Locale["zh-CN"]["name"]            = "Chinese Simplified"
+    # Chinese (Literary)
+    Locale["lzh"]["name"]              = "Chinese (Literary)"
+    #Locale["lzh"]["name2"]            = "Literary Chinese"
+    #Locale["lzh"]["name3"]            = "Classical Chinese"
+    Locale["lzh"]["endonym"]           = "文言"
+    Locale["lzh"]["endonym2"]          = "古漢語"
+    #Locale["lzh"]["translations-of"]
+    #Locale["lzh"]["definitions-of"]
+    #Locale["lzh"]["synonyms"]
+    #Locale["lzh"]["examples"]
+    #Locale["lzh"]["see-also"]
+    Locale["lzh"]["family"]            = "Sino-Tibetan"
+    Locale["lzh"]["branch"]            = "Sinitic"
+    Locale["lzh"]["iso"]               = "lzh"
+    Locale["lzh"]["glotto"]            = "lite1248"
+    Locale["lzh"]["script"]            = "Hans" # should actually be Hant
+    Locale["lzh"]["spoken-in"]         = "ancient China"
+    Locale["lzh"]["supported-by"]      = "bing"
+
+    # Chinese (Standard Mandarin), Simplified
+    Locale["zh-CN"]["name"]            = "Chinese (Simplified)"
     Locale["zh-CN"]["endonym"]         = "简体中文"
     Locale["zh-CN"]["translations-of"] = "%s 的翻译"
     Locale["zh-CN"]["definitions-of"]  = "%s的定义"
@@ -326,13 +370,17 @@ function initLocale() {
     Locale["zh-CN"]["examples"]        = "示例"
     Locale["zh-CN"]["see-also"]        = "另请参阅"
     Locale["zh-CN"]["family"]          = "Sino-Tibetan"
+    Locale["zh-CN"]["branch"]          = "Sinitic"
     Locale["zh-CN"]["iso"]             = "zho-CN"
     Locale["zh-CN"]["glotto"]          = "mand1415"
     Locale["zh-CN"]["script"]          = "Hans"
     Locale["zh-CN"]["dictionary"]      = "true" # has dictionary
+    Locale["zh-CN"]["spoken-in"]       = "the Greater China regions"
+    Locale["zh-CN"]["written-in"]      = "mainland China; Singapore"
+    Locale["zh-CN"]["supported-by"]    = "google; bing; yandex"
 
-    #15b Chinese (Mandarin), Traditional
-    Locale["zh-TW"]["name"]            = "Chinese Traditional"
+    # Chinese (Standard Mandarin), Traditional
+    Locale["zh-TW"]["name"]            = "Chinese (Traditional)"
     Locale["zh-TW"]["endonym"]         = "繁體中文"
     Locale["zh-TW"]["endonym2"]        = "正體中文"
     Locale["zh-TW"]["translations-of"] = "「%s」的翻譯"
@@ -341,12 +389,32 @@ function initLocale() {
     Locale["zh-TW"]["examples"]        = "例句"
     Locale["zh-TW"]["see-also"]        = "另請參閱"
     Locale["zh-TW"]["family"]          = "Sino-Tibetan"
+    Locale["zh-TW"]["branch"]          = "Sinitic"
     Locale["zh-TW"]["iso"]             = "zho-TW"
     Locale["zh-TW"]["glotto"]          = "mand1415"
     Locale["zh-TW"]["script"]          = "Hant"
     Locale["zh-TW"]["dictionary"]      = "true" # has dictionary
+    Locale["zh-TW"]["spoken-in"]       = "the Greater China regions"
+    Locale["zh-TW"]["written-in"]      = "Taiwan (Republic of China); Hong Kong; Macau"
+    Locale["zh-TW"]["supported-by"]    = "google; bing"
 
-    #16 Corsican
+    # Chuvash
+    Locale["cv"]["name"]               = "Chuvash"
+    Locale["cv"]["endonym"]            = "Чӑвашла"
+    #Locale["cv"]["translations-of"]
+    #Locale["cv"]["definitions-of"]
+    #Locale["cv"]["synonyms"]
+    #Locale["cv"]["examples"] 
+    #Locale["cv"]["see-also"]
+    Locale["cv"]["family"]             = "Turkic"
+    Locale["cv"]["branch"]             = "Oghur"
+    Locale["cv"]["iso"]                = "chv"
+    Locale["cv"]["glotto"]             = "chuv1255"
+    Locale["cv"]["script"]             = "Cyrl"
+    Locale["cv"]["spoken-in"]          = "the Chuvash Republic in Russia"
+    Locale["cv"]["supported-by"]       = "yandex"
+
+    # Corsican
     Locale["co"]["name"]               = "Corsican"
     Locale["co"]["endonym"]            = "Corsu"
     Locale["co"]["translations-of"]    = "Traductions de %s"
@@ -355,11 +423,14 @@ function initLocale() {
     Locale["co"]["examples"]           = "Exemples"
     Locale["co"]["see-also"]           = "Voir aussi"
     Locale["co"]["family"]             = "Indo-European"
+    Locale["co"]["branch"]             = "Italo-Dalmatian"
     Locale["co"]["iso"]                = "cos"
-    Locale["co"]["glotto"]             = "cors1242"
+    Locale["co"]["glotto"]             = "cors1241"
     Locale["co"]["script"]             = "Latn"
+    Locale["co"]["spoken-in"]          = "Corsica in France; the northern end of the island of Sardinia in Italy"
+    Locale["co"]["supported-by"]       = "google"
 
-    #17 Croatian
+    # Croatian
     Locale["hr"]["name"]               = "Croatian"
     Locale["hr"]["endonym"]            = "Hrvatski"
     Locale["hr"]["translations-of"]    = "Prijevodi riječi ili izraza %s"
@@ -368,11 +439,14 @@ function initLocale() {
     Locale["hr"]["examples"]           = "Primjeri"
     Locale["hr"]["see-also"]           = "Također pogledajte"
     Locale["hr"]["family"]             = "Indo-European"
+    Locale["hr"]["branch"]             = "South Slavic"
     Locale["hr"]["iso"]                = "hrv"
     Locale["hr"]["glotto"]             = "croa1245"
     Locale["hr"]["script"]             = "Latn"
+    Locale["hr"]["spoken-in"]          = "Croatia; Bosnia and Herzegovina"
+    Locale["hr"]["supported-by"]       = "google; bing; yandex"
 
-    #18 Czech
+    # Czech
     Locale["cs"]["name"]               = "Czech"
     Locale["cs"]["endonym"]            = "Čeština"
     Locale["cs"]["translations-of"]    = "Překlad výrazu %s"
@@ -381,9 +455,14 @@ function initLocale() {
     Locale["cs"]["examples"]           = "Příklady"
     Locale["cs"]["see-also"]           = "Viz také"
     Locale["cs"]["family"]             = "Indo-European"
+    Locale["cs"]["branch"]             = "West Slavic"
     Locale["cs"]["iso"]                = "ces"
     Locale["cs"]["glotto"]             = "czec1258"
     Locale["cs"]["script"]             = "Latn"
+    Locale["cs"]["spoken-in"]          = "Czechia"
+    Locale["cs"]["supported-by"]       = "google; bing; yandex"
+
+
 
     #19 Danish
     Locale["da"]["name"]               = "Danish"
@@ -1869,15 +1948,6 @@ function initLocale() {
     Locale["zu"]["iso"]                = "zul"
     Locale["zu"]["glotto"]             = "zulu1248"
     Locale["zu"]["script"]             = "Latn"
-
-    #* Cantonese
-    Locale["yue"]["support"]           = "bing-only"
-    Locale["yue"]["name"]              = "Cantonese"
-    Locale["yue"]["endonym"]           = "粵語"
-    Locale["yue"]["family"]            = "Sino-Tibetan"
-    Locale["yue"]["iso"]               = "yue"
-    Locale["yue"]["glotto"]            = "cant1236"
-    Locale["yue"]["script"]            = "Hant"
 
     #* Dari (Dari Persian)
     Locale["prs"]["support"]           = "bing-only"
