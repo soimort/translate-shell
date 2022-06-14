@@ -462,9 +462,7 @@ function initLocale() {
     Locale["cs"]["spoken-in"]          = "Czechia"
     Locale["cs"]["supported-by"]       = "google; bing; yandex"
 
-
-
-    #19 Danish
+    # Danish
     Locale["da"]["name"]               = "Danish"
     Locale["da"]["endonym"]            = "Dansk"
     Locale["da"]["translations-of"]    = "Oversættelser af %s"
@@ -473,13 +471,34 @@ function initLocale() {
     Locale["da"]["examples"]           = "Eksempler"
     Locale["da"]["see-also"]           = "Se også"
     Locale["da"]["family"]             = "Indo-European"
+    Locale["da"]["branch"]             = "North Germanic"
     Locale["da"]["iso"]                = "dan"
     Locale["da"]["glotto"]             = "dani1285"
     Locale["da"]["script"]             = "Latn"
+    Locale["da"]["spoken-in"]          = "Denmark; Greenland; the Faroe Islands; the northern German region of Southern Schleswig"
+    Locale["da"]["supported-by"]       = "google; bing; yandex"
+
+    # Dari (Dari Persian)
+    Locale["prs"]["name"]              = "Dari"
+    Locale["prs"]["endonym"]           = "دری"
+    #Locale["prs"]["translations-of"]
+    #Locale["prs"]["definitions-of"]
+    #Locale["prs"]["synonyms"]
+    #Locale["prs"]["examples"]
+    #Locale["prs"]["see-also"]
+    Locale["prs"]["family"]            = "Indo-European"
+    Locale["prs"]["branch"]            = "Iranian"
+    Locale["prs"]["iso"]               = "prs"
+    Locale["prs"]["glotto"]            = "dari1249"
+    Locale["prs"]["script"]            = "Arab"
+    Locale["prs"]["rtl"]               = "true" # RTL language
+    Locale["prs"]["spoken-in"]         = "Afghanistan; Iran"
+    Locale["prs"]["supported-by"]      = "bing"
 
     # Dhivehi
     Locale["dv"]["name"]               = "Dhivehi"
     Locale["dv"]["name2"]              = "Divehi"
+    Locale["dv"]["name3"]              = "Maldivian"
     Locale["dv"]["endonym"]            = "ދިވެހި"
     #Locale["dv"]["translations-of"]
     #Locale["dv"]["definitions-of"]
@@ -487,10 +506,13 @@ function initLocale() {
     #Locale["dv"]["examples"]
     #Locale["dv"]["see-also"]
     Locale["dv"]["family"]             = "Indo-European"
+    Locale["dv"]["branch"]             = "Indo-Aryan"
     Locale["dv"]["iso"]                = "div"
     Locale["dv"]["glotto"]             = "dhiv1236"
     Locale["dv"]["script"]             = "Thaa"
     Locale["dv"]["rtl"]                = "true" # RTL language
+    Locale["dv"]["spoken-in"]          = "the Maldives"
+    Locale["dv"]["supported-by"]       = "google; bing"
 
     # Dogri
     Locale["doi"]["name"]              = "Dogri"
@@ -501,11 +523,14 @@ function initLocale() {
     #Locale["doi"]["examples"]
     #Locale["doi"]["see-also"]
     Locale["doi"]["family"]            = "Indo-European"
+    Locale["doi"]["branch"]            = "Indo-Aryan"
     Locale["doi"]["iso"]               = "doi"
     Locale["doi"]["glotto"]            = "indo1311"
     Locale["doi"]["script"]            = "Deva"
+    Locale["doi"]["spoken-in"]         = "the Jammu region in northern India"
+    Locale["doi"]["supported-by"]      = "google"
 
-    #20 Dutch
+    # Dutch
     Locale["nl"]["name"]               = "Dutch"
     Locale["nl"]["endonym"]            = "Nederlands"
     Locale["nl"]["translations-of"]    = "Vertalingen van %s"
@@ -514,10 +539,31 @@ function initLocale() {
     Locale["nl"]["examples"]           = "Voorbeelden"
     Locale["nl"]["see-also"]           = "Zie ook"
     Locale["nl"]["family"]             = "Indo-European"
+    Locale["nl"]["branch"]             = "West Germanic"
     Locale["nl"]["iso"]                = "nld"
     Locale["nl"]["glotto"]             = "dutc1256"
     Locale["nl"]["script"]             = "Latn"
     Locale["nl"]["dictionary"]         = "true" # has dictionary
+    Locale["nl"]["spoken-in"]          = "the Netherlands; Belgium; Suriname; Aruba; Curaçao; Sint Maarten; the Caribbean Netherlands"
+    Locale["nl"]["supported-by"]       = "google; bing; yandex"
+
+    # Dzongkha
+    Locale["dz"]["name"]               = "Dzongkha"
+    Locale["dz"]["endonym"]            = "རྫོང་ཁ"
+    #Locale["dz"]["translations-of"]
+    #Locale["dz"]["definitions-of"]
+    #Locale["dz"]["synonyms"]
+    #Locale["dz"]["examples"]
+    #Locale["dz"]["see-also"]
+    Locale["dz"]["family"]             = "Sino-Tibetan"
+    Locale["dz"]["branch"]             = "Tibetic"
+    Locale["dz"]["iso"]                = "dzo"
+    Locale["dz"]["glotto"]             = "nucl1307"
+    Locale["dz"]["script"]             = "Tibt"
+    Locale["dz"]["spoken-in"]          = "Bhutan"
+    Locale["dz"]["supported-by"]       = ""
+
+
 
     #21 English (Standard English)
     Locale["en"]["name"]               = "English"
@@ -1949,16 +1995,6 @@ function initLocale() {
     Locale["zu"]["glotto"]             = "zulu1248"
     Locale["zu"]["script"]             = "Latn"
 
-    #* Dari (Dari Persian)
-    Locale["prs"]["support"]           = "bing-only"
-    Locale["prs"]["name"]              = "Dari"
-    Locale["prs"]["endonym"]           = "دری"
-    Locale["prs"]["family"]            = "Indo-European"
-    Locale["prs"]["iso"]               = "prs"
-    Locale["prs"]["glotto"]            = "dari1249"
-    Locale["prs"]["script"]            = "Arab"
-    Locale["prs"]["rtl"]               = "true" # RTL language
-
     #* Fijian
     Locale["fj"]["support"]            = "bing-only"
     Locale["fj"]["name"]               = "Fijian"
@@ -2058,20 +2094,6 @@ function initLocale() {
     Locale["br"]["iso"]                = "bre"
     Locale["br"]["glotto"]             = "bret1244"
     Locale["br"]["script"]             = "Latn"
-
-    #? Dzongkha
-    Locale["dz"]["support"]            = "unstable"
-    Locale["dz"]["name"]               = "Dzongkha"
-    Locale["dz"]["endonym"]            = "རྫོང་ཁ"
-    #Locale["dz"]["translations-of"]
-    #Locale["dz"]["definitions-of"]
-    #Locale["dz"]["synonyms"]
-    #Locale["dz"]["examples"]
-    #Locale["dz"]["see-also"]
-    Locale["dz"]["family"]             = "Sino-Tibetan"
-    Locale["dz"]["iso"]                = "dzo"
-    Locale["dz"]["glotto"]             = "nucl1307"
-    Locale["dz"]["script"]             = "Tibt"
 
     #? Eastern Mari
     Locale["mhr"]["support"]           = "yandex-only"
