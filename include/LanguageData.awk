@@ -2274,13 +2274,15 @@ function initLocale() {
 function initLocaleAlias(    i) {
     for (i in Locale) {
         # ISO 639-3 codes as aliases
-        LocaleAlias[Locale[i]["iso"]] = i
-
+        if ("iso" in Locale[i])
+            LocaleAlias[Locale[i]["iso"]] = i
         # Names and endonyms as aliases
-        LocaleAlias[tolower(Locale[i]["name"])] = i
+        if ("name" in Locale[i])
+            LocaleAlias[tolower(Locale[i]["name"])] = i
         if ("name2" in Locale[i])
             LocaleAlias[tolower(Locale[i]["name2"])] = i
-        LocaleAlias[tolower(Locale[i]["endonym"])] = i
+        if ("endonym" in Locale[i])
+            LocaleAlias[tolower(Locale[i]["endonym"])] = i
         if ("endonym2" in Locale[i])
             LocaleAlias[tolower(Locale[i]["endonym2"])] = i
     }
