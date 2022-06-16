@@ -587,7 +587,7 @@ function initLocale() {
     Locale["eo"]["synonyms"]           = "Sinonimoj"
     Locale["eo"]["examples"]           = "Ekzemploj"
     Locale["eo"]["see-also"]           = "Vidu ankaŭ"
-    Locale["eo"]["family"]             = "Artificial Language"
+    Locale["eo"]["family"]             = "Constructed language"
     Locale["eo"]["iso"]                = "epo"
     Locale["eo"]["glotto"]             = "espe1235"
     Locale["eo"]["script"]             = "Latn"
@@ -2067,7 +2067,7 @@ function initLocale() {
     Locale["tlh"]["support"]           = "bing-only"
     Locale["tlh"]["name"]              = "Klingon"
     Locale["tlh"]["endonym"]           = "tlhIngan Hol"
-    Locale["tlh"]["family"]            = "Artificial Language"
+    Locale["tlh"]["family"]            = "Constructed language"
     Locale["tlh"]["iso"]               = "tlh"
     #Locale["tlh"]["glotto"]
     Locale["tlh"]["script"]            = "Latn"
@@ -2076,7 +2076,7 @@ function initLocale() {
     Locale["tlh-Qaak"]["support"]      = "bing-only"
     Locale["tlh-Qaak"]["name"]         = "Klingon (pIqaD)"
     Locale["tlh-Qaak"]["endonym"]      = " "
-    Locale["tlh-Qaak"]["family"]       = "Artificial Language"
+    Locale["tlh-Qaak"]["family"]       = "Constructed language"
     Locale["tlh-Qaak"]["iso"]          = "tlh"
     #Locale["tlh-Qaak"]["glotto"]
     Locale["tlh-Qaak"]["script"]       = "Piqd"
@@ -2146,7 +2146,7 @@ function initLocale() {
     #Locale["ie"]["synonyms"]
     #Locale["ie"]["examples"]
     #Locale["ie"]["see-also"]
-    Locale["ie"]["family"]             = "Artificial Language"
+    Locale["ie"]["family"]             = "Constructed language"
     Locale["ie"]["iso"]                = "ile"
     Locale["ie"]["glotto"]             = "occi1241"
     Locale["ie"]["script"]             = "Latn"
@@ -2230,7 +2230,7 @@ function initLocale() {
     #Locale["vo"]["synonyms"]
     #Locale["vo"]["examples"]
     #Locale["vo"]["see-also"]
-    Locale["vo"]["family"]             = "Artificial Language"
+    Locale["vo"]["family"]             = "Constructed language"
     Locale["vo"]["iso"]                = "vol"
     #Locale["vo"]["glotto"]
     Locale["vo"]["script"]             = "Latn"
