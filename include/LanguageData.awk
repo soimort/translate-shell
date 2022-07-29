@@ -664,7 +664,8 @@ function initLocale() {
     # Filipino / Tagalog
     Locale["tl"]["name"]               = "Filipino"
     Locale["tl"]["name2"]              = "Tagalog"
-    Locale["tl"]["endonym"]            = "Tagalog"
+    Locale["tl"]["endonym"]            = "Filipino"
+    Locale["tl"]["endonym2"]           = "Tagalog"
     Locale["tl"]["translations-of"]    = "Mga pagsasalin ng %s"
     Locale["tl"]["definitions-of"]     = "Mga kahulugan ng %s"
     Locale["tl"]["synonyms"]           = "Mga Kasingkahulugan"
