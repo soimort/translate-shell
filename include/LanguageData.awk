@@ -563,9 +563,7 @@ function initLocale() {
     Locale["dz"]["spoken-in"]          = "Bhutan"
     Locale["dz"]["supported-by"]       = ""
 
-
-
-    #21 English (Standard English)
+    # English
     Locale["en"]["name"]               = "English"
     Locale["en"]["endonym"]            = "English"
     Locale["en"]["translations-of"]    = "Translations of %s"
@@ -574,12 +572,15 @@ function initLocale() {
     Locale["en"]["examples"]           = "Examples"
     Locale["en"]["see-also"]           = "See also"
     Locale["en"]["family"]             = "Indo-European"
+    Locale["en"]["branch"]             = "West Germanic"
     Locale["en"]["iso"]                = "eng"
     Locale["en"]["glotto"]             = "stan1293"
     Locale["en"]["script"]             = "Latn"
     Locale["en"]["dictionary"]         = "true" # has dictionary
+    Locale["en"]["spoken-in"]          = "worldwide"
+    Locale["en"]["supported-by"]       = "google; bing; yandex"
 
-    #22 Esperanto
+    # Esperanto
     Locale["eo"]["name"]               = "Esperanto"
     Locale["eo"]["endonym"]            = "Esperanto"
     Locale["eo"]["translations-of"]    = "Tradukoj de %s"
@@ -588,11 +589,15 @@ function initLocale() {
     Locale["eo"]["examples"]           = "Ekzemploj"
     Locale["eo"]["see-also"]           = "Vidu ankaŭ"
     Locale["eo"]["family"]             = "Constructed language"
+    #Locale["eo"]["branch"]
     Locale["eo"]["iso"]                = "epo"
     Locale["eo"]["glotto"]             = "espe1235"
     Locale["eo"]["script"]             = "Latn"
+    Locale["eo"]["spoken-in"]          = "worldwide"
+    Locale["eo"]["description"]        = "the world's most widely spoken constructed international auxiliary language, designed to be a universal second language for international communication"
+    Locale["eo"]["supported-by"]       = "google; yandex"
 
-    #23 Estonian
+    # Estonian
     Locale["et"]["name"]               = "Estonian"
     Locale["et"]["endonym"]            = "Eesti"
     Locale["et"]["translations-of"]    = "Sõna(de) %s tõlked"
@@ -601,9 +606,12 @@ function initLocale() {
     Locale["et"]["examples"]           = "Näited"
     Locale["et"]["see-also"]           = "Vt ka"
     Locale["et"]["family"]             = "Uralic"
+    Locale["et"]["branch"]             = "Finnic"
     Locale["et"]["iso"]                = "est"
     Locale["et"]["glotto"]             = "esto1258"
     Locale["et"]["script"]             = "Latn"
+    Locale["et"]["spoken-in"]          = "Estonia"
+    Locale["et"]["supported-by"]       = "google; bing; yandex"
 
     # Ewe
     Locale["ee"]["name"]               = "Ewe"
@@ -614,9 +622,14 @@ function initLocale() {
     #Locale["ee"]["examples"]
     #Locale["ee"]["see-also"]
     Locale["ee"]["family"]             = "Atlantic-Congo"
+    Locale["ee"]["branch"]             = "Gbe"
     Locale["ee"]["iso"]                = "ewe"
     Locale["ee"]["glotto"]             = "ewee1241"
     Locale["ee"]["script"]             = "Latn"
+    Locale["ee"]["spoken-in"]          = "Ghana; Togo; Benin"
+    Locale["ee"]["supported-by"]       = "google"
+
+
 
     #24 Filipino / Tagalog
     Locale["tl"]["name"]               = "Filipino"
