@@ -629,9 +629,39 @@ function initLocale() {
     Locale["ee"]["spoken-in"]          = "Ghana; Togo; Benin"
     Locale["ee"]["supported-by"]       = "google"
 
+    # Faroese
+    Locale["fo"]["name"]               = "Faroese"
+    Locale["fo"]["endonym"]            = "Føroyskt"
+    #Locale["fo"]["translations-of"]
+    #Locale["fo"]["definitions-of"]
+    #Locale["fo"]["synonyms"]
+    #Locale["fo"]["examples"]
+    #Locale["fo"]["see-also"]
+    Locale["fo"]["family"]             = "Indo-European"
+    Locale["fo"]["branch"]             = "North Germanic"
+    Locale["fo"]["iso"]                = "fao"
+    Locale["fo"]["glotto"]             = "faro1244"
+    Locale["fo"]["script"]             = "Latn"
+    Locale["fo"]["spoken-in"]          = "the Faroe Islands"
+    Locale["fo"]["supported-by"]       = "bing"
 
+    # Fijian
+    Locale["fj"]["name"]               = "Fijian"
+    Locale["fj"]["endonym"]            = "Vosa Vakaviti"
+    #Locale["fj"]["translations-of"]
+    #Locale["fj"]["definitions-of"]
+    #Locale["fj"]["synonyms"]
+    #Locale["fj"]["examples"]
+    #Locale["fj"]["see-also"]
+    Locale["fj"]["family"]             = "Austronesian"
+    Locale["fj"]["branch"]             = "Malayo-Polynesian"
+    Locale["fj"]["iso"]                = "fij"
+    Locale["fj"]["glotto"]             = "fiji1243"
+    Locale["fj"]["script"]             = "Latn"
+    Locale["fj"]["spoken-in"]          = "Fiji"
+    Locale["fj"]["supported-by"]       = "bing"
 
-    #24 Filipino / Tagalog
+    # Filipino / Tagalog
     Locale["tl"]["name"]               = "Filipino"
     Locale["tl"]["name2"]              = "Tagalog"
     Locale["tl"]["endonym"]            = "Tagalog"
@@ -641,11 +671,14 @@ function initLocale() {
     Locale["tl"]["examples"]           = "Mga Halimbawa"
     Locale["tl"]["see-also"]           = "Tingnan rin ang"
     Locale["tl"]["family"]             = "Austronesian"
-    Locale["tl"]["iso"]                = "tgl"
-    Locale["tl"]["glotto"]             = "taga1270"
+    Locale["tl"]["branch"]             = "Malayo-Polynesian"
+    Locale["tl"]["iso"]                = "fil"
+    Locale["tl"]["glotto"]             = "fili1244"
     Locale["tl"]["script"]             = "Latn"
+    Locale["tl"]["spoken-in"]          = "the Philippines"
+    Locale["tl"]["supported-by"]       = "google; bing; yandex"
 
-    #25 Finnish
+    # Finnish
     Locale["fi"]["name"]               = "Finnish"
     Locale["fi"]["endonym"]            = "Suomi"
     Locale["fi"]["translations-of"]    = "Käännökset tekstille %s"
@@ -654,11 +687,14 @@ function initLocale() {
     Locale["fi"]["examples"]           = "Esimerkkejä"
     Locale["fi"]["see-also"]           = "Katso myös"
     Locale["fi"]["family"]             = "Uralic"
+    Locale["fi"]["branch"]             = "Finnic"
     Locale["fi"]["iso"]                = "fin"
     Locale["fi"]["glotto"]             = "finn1318"
     Locale["fi"]["script"]             = "Latn"
+    Locale["fi"]["spoken-in"]          = "Finland"
+    Locale["fi"]["supported-by"]       = "google; bing; yandex"
 
-    #26 French (Standard French)
+    # French (Standard French)
     Locale["fr"]["name"]               = "French"
     Locale["fr"]["endonym"]            = "Français"
     Locale["fr"]["translations-of"]    = "Traductions de %s"
@@ -667,10 +703,31 @@ function initLocale() {
     Locale["fr"]["examples"]           = "Exemples"
     Locale["fr"]["see-also"]           = "Voir aussi"
     Locale["fr"]["family"]             = "Indo-European"
+    Locale["fr"]["branch"]             = "Western Romance"
     Locale["fr"]["iso"]                = "fra"
     Locale["fr"]["glotto"]             = "stan1290"
     Locale["fr"]["script"]             = "Latn"
     Locale["fr"]["dictionary"]         = "true" # has dictionary
+    Locale["fr"]["spoken-in"]          = "France; Switzerland; Belgium; Luxembourg"
+    Locale["fr"]["supported-by"]       = "google; bing; yandex"
+
+    # French (Canadian French)
+    Locale["fr-CA"]["name"]            = "French (Canadian)"
+    Locale["fr-CA"]["endonym"]         = "Français canadien"
+    Locale["fr-CA"]["translations-of"] = "Traductions de %s"
+    Locale["fr-CA"]["definitions-of"]  = "Définitions de %s"
+    Locale["fr-CA"]["synonyms"]        = "Synonymes"
+    Locale["fr-CA"]["examples"]        = "Exemples"
+    Locale["fr-CA"]["see-also"]        = "Voir aussi"
+    Locale["fr-CA"]["family"]          = "Indo-European"
+    Locale["fr-CA"]["branch"]          = "Western Romance"
+    Locale["fr-CA"]["iso"]             = "fra-CA"
+    Locale["fr-CA"]["glotto"]          = "queb1247"
+    Locale["fr-CA"]["script"]          = "Latn"
+    Locale["fr-CA"]["spoken-in"]       = "Canada"
+    Locale["fr-CA"]["supported-by"]    = "bing"
+
+
 
     #27 Galician
     Locale["gl"]["name"]               = "Galician"
@@ -2008,15 +2065,6 @@ function initLocale() {
     Locale["zu"]["glotto"]             = "zulu1248"
     Locale["zu"]["script"]             = "Latn"
 
-    #* Fijian
-    Locale["fj"]["support"]            = "bing-only"
-    Locale["fj"]["name"]               = "Fijian"
-    Locale["fj"]["endonym"]            = "Vosa Vakaviti"
-    Locale["fj"]["family"]             = "Austronesian"
-    Locale["fj"]["iso"]                = "fij"
-    Locale["fj"]["glotto"]             = "fiji1243"
-    Locale["fj"]["script"]             = "Latn"
-
     #* Hmong Daw (White Hmong)
     Locale["mww"]["support"]           = "bing-only"
     Locale["mww"]["name"]              = "Hmong Daw"
@@ -2121,20 +2169,6 @@ function initLocale() {
     Locale["mhr"]["iso"]               = "mhr"
     Locale["mhr"]["glotto"]            = "east2328"
     Locale["mhr"]["script"]            = "Cyrl"
-
-    #? Faroese
-    Locale["fo"]["support"]            = "unstable"
-    Locale["fo"]["name"]               = "Faroese"
-    Locale["fo"]["endonym"]            = "Føroyskt"
-    #Locale["fo"]["translations-of"]
-    #Locale["fo"]["definitions-of"]
-    #Locale["fo"]["synonyms"]
-    #Locale["fo"]["examples"]
-    #Locale["fo"]["see-also"]
-    Locale["fo"]["family"]             = "Indo-European"
-    Locale["fo"]["iso"]                = "fao"
-    Locale["fo"]["glotto"]             = "faro1244"
-    Locale["fo"]["script"]             = "Latn"
 
     #? Hill Mari
     Locale["mrj"]["support"]           = "yandex-only"
