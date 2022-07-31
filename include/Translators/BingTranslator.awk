@@ -226,6 +226,7 @@ function bingTranslate(text, sl, tl, hl,
     # See: <https://docs.microsoft.com/en-us/azure/cognitive-services/Translator/language-support>
     if (_sl == "auto")  _sl = "auto-detect"
     if (_sl == "tl")    _sl = "fil" # Bing uses 'fil' for Filipino
+    if (_sl == "hmn")   _sl = "mww" # Bing uses 'mww' for Hmong Daw
     if (_sl == "no")    _sl = "nb"  # Bing uses Norwegian Bokmål
     # Bing uses 'pt' or 'pt-br' for Brazilian Portuguese, 'pt-pt' for European Portuguese
     if (_sl == "pt-BR") _sl = "pt" # just pt-br
@@ -233,6 +234,7 @@ function bingTranslate(text, sl, tl, hl,
     if (_sl == "zh-CN") _sl = "zh-Hans"
     if (_sl == "zh-TW") _sl = "zh-Hant"
     if (_tl == "tl")    _tl = "fil"
+    if (_tl == "hmn")   _tl = "mww"
     if (_tl == "no")    _tl = "nb"
     if (_tl == "pt-BR") _tl = "pt"
     else if (_tl == "pt-PT") _tl = "pt-pt"
