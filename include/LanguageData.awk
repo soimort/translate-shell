@@ -825,9 +825,7 @@ function initLocale() {
     Locale["gu"]["spoken-in"]          = "the Indian state of Gujarat"
     Locale["gu"]["supported-by"]       = "google; bing; yandex"
 
-
-
-    #32 Haitian Creole
+    # Haitian Creole
     Locale["ht"]["name"]               = "Haitian Creole"
     Locale["ht"]["endonym"]            = "Kreyòl Ayisyen"
     Locale["ht"]["translations-of"]    = "Tradiksyon %s"
@@ -836,11 +834,14 @@ function initLocale() {
     Locale["ht"]["examples"]           = "Egzanp:"
     Locale["ht"]["see-also"]           = "Wè tou"
     Locale["ht"]["family"]             = "Indo-European"
+    Locale["ht"]["branch"]             = "French Creole"
     Locale["ht"]["iso"]                = "hat"
     Locale["ht"]["glotto"]             = "hait1244"
     Locale["ht"]["script"]             = "Latn"
+    Locale["ht"]["spoken-in"]          = "Haiti"
+    Locale["ht"]["supported-by"]       = "google; bing; yandex"
 
-    #33 Hawaiian
+    # Hawaiian
     Locale["haw"]["name"]              = "Hawaiian"
     Locale["haw"]["endonym"]           = "ʻŌlelo Hawaiʻi"
     #Locale["haw"]["translations-of"]
@@ -849,11 +850,14 @@ function initLocale() {
     #Locale["haw"]["examples"]
     #Locale["haw"]["see-also"]
     Locale["haw"]["family"]            = "Austronesian"
+    Locale["haw"]["branch"]            = "Malayo-Polynesian"
     Locale["haw"]["iso"]               = "haw"
     Locale["haw"]["glotto"]            = "hawa1245"
     Locale["haw"]["script"]            = "Latn"
+    Locale["haw"]["spoken-in"]         = "the US state of Hawaii"
+    Locale["haw"]["supported-by"]      = "google"
 
-    #34 Hausa, Latin alphabet
+    # Hausa, Latin alphabet
     Locale["ha"]["name"]               = "Hausa"
     Locale["ha"]["endonym"]            = "Hausa"
     Locale["ha"]["translations-of"]    = "Fassarar %s"
@@ -862,11 +866,14 @@ function initLocale() {
     Locale["ha"]["examples"]           = "Misalai"
     Locale["ha"]["see-also"]           = "Duba kuma"
     Locale["ha"]["family"]             = "Afro-Asiatic"
+    Locale["ha"]["branch"]             = "Chadic"
     Locale["ha"]["iso"]                = "hau"
     Locale["ha"]["glotto"]             = "haus1257"
     Locale["ha"]["script"]             = "Latn"
+    Locale["ha"]["spoken-in"]          = "Chad; Nigeria; Niger; Ghana; Cameroon; Benin"
+    Locale["ha"]["supported-by"]       = "google"
 
-    #35 Hebrew
+    # Hebrew
     Locale["he"]["name"]               = "Hebrew"
     Locale["he"]["endonym"]            = "עִבְרִית"
     Locale["he"]["translations-of"]    = "תרגומים של %s"
@@ -875,12 +882,31 @@ function initLocale() {
     Locale["he"]["examples"]           = "דוגמאות"
     Locale["he"]["see-also"]           = "ראה גם"
     Locale["he"]["family"]             = "Afro-Asiatic"
+    Locale["he"]["branch"]             = "Semitic"
     Locale["he"]["iso"]                = "heb"
     Locale["he"]["glotto"]             = "hebr1245"
     Locale["he"]["script"]             = "Hebr"
     Locale["he"]["rtl"]                = "true" # RTL language
+    Locale["he"]["spoken-in"]          = "Israel"
+    Locale["he"]["supported-by"]       = "google; bing; yandex"
 
-    #36 Hindi
+    # Hill Mari / Western Mari
+    Locale["mrj"]["name"]              = "Hill Mari"
+    Locale["mrj"]["endonym"]           = "Кырык мары"
+    #Locale["mrj"]["translations-of"]
+    #Locale["mrj"]["definitions-of"]
+    #Locale["mrj"]["synonyms"]
+    #Locale["mrj"]["examples"]
+    #Locale["mrj"]["see-also"]
+    Locale["mrj"]["family"]            = "Uralic"
+    Locale["mrj"]["branch"]            = "Mari"
+    Locale["mrj"]["iso"]               = "mrj"
+    Locale["mrj"]["glotto"]            = "west2392"
+    Locale["mrj"]["script"]            = "Cyrl"
+    Locale["mrj"]["spoken-in"]         = "the Gornomariysky, Yurinsky and Kilemarsky districts of Mari El, Russia"
+    Locale["mrj"]["supported-by"]      = "yandex"
+
+    # Hindi
     Locale["hi"]["name"]               = "Hindi"
     Locale["hi"]["endonym"]            = "हिन्दी"
     Locale["hi"]["translations-of"]    = "%s के अनुवाद"
@@ -889,11 +915,14 @@ function initLocale() {
     Locale["hi"]["examples"]           = "उदाहरण"
     Locale["hi"]["see-also"]           = "यह भी देखें"
     Locale["hi"]["family"]             = "Indo-European"
+    Locale["hi"]["branch"]             = "Indo-Aryan"
     Locale["hi"]["iso"]                = "hin"
     Locale["hi"]["glotto"]             = "hind1269"
     Locale["hi"]["script"]             = "Deva"
+    Locale["hi"]["spoken-in"]          = "India"
+    Locale["hi"]["supported-by"]       = "google; bing; yandex"
 
-    #37 Hmong (First Vernacular Hmong)
+    # Hmong (First Vernacular Hmong)
     Locale["hmn"]["name"]              = "Hmong"
     Locale["hmn"]["endonym"]           = "Hmoob"
     Locale["hmn"]["translations-of"]   = "Lus txhais: %s"
@@ -902,11 +931,25 @@ function initLocale() {
     #Locale["hmn"]["examples"]
     #Locale["hmn"]["see-also"]
     Locale["hmn"]["family"]            = "Hmong-Mien"
+    Locale["hmn"]["branch"]            = "Hmongic"
     Locale["hmn"]["iso"]               = "hmn"
     Locale["hmn"]["glotto"]            = "firs1234"
     Locale["hmn"]["script"]            = "Latn"
+    Locale["hmn"]["spoken-in"]         = "China; Vietnam; Laos; Myanmar; Thailand"
+    Locale["hmn"]["supported-by"]      = "google; bing"
 
-    #38 Hungarian
+    # Hmong Daw (White Hmong)
+    #Locale["mww"]["name"]              = "Hmong Daw"
+    #Locale["mww"]["endonym"]           = "Hmoob Daw"
+    #Locale["mww"]["family"]            = "Hmong-Mien"
+    #Locale["mww"]["branch"]            = "Hmongic"
+    #Locale["mww"]["iso"]               = "mww"
+    #Locale["mww"]["glotto"]            = "hmon1333"
+    #Locale["mww"]["script"]            = "Latn"
+    #Locale["mww"]["spoken-in"]         = "China; Vietnam; Laos; Myanmar; Thailand"
+    #Locale["mww"]["supported-by"]      = "bing"
+
+    # Hungarian
     Locale["hu"]["name"]               = "Hungarian"
     Locale["hu"]["endonym"]            = "Magyar"
     Locale["hu"]["translations-of"]    = "%s fordításai"
@@ -915,9 +958,14 @@ function initLocale() {
     Locale["hu"]["examples"]           = "Példák"
     Locale["hu"]["see-also"]           = "Lásd még"
     Locale["hu"]["family"]             = "Uralic"
+    Locale["hu"]["branch"]             = "Ugric"
     Locale["hu"]["iso"]                = "hun"
     Locale["hu"]["glotto"]             = "hung1274"
     Locale["hu"]["script"]             = "Latn"
+    Locale["hu"]["spoken-in"]          = "Hungary"
+    Locale["hu"]["supported-by"]       = "google; bing; yandex"
+
+
 
     #39 Icelandic
     Locale["is"]["name"]               = "Icelandic"
@@ -2084,15 +2132,6 @@ function initLocale() {
     Locale["zu"]["glotto"]             = "zulu1248"
     Locale["zu"]["script"]             = "Latn"
 
-    #* Hmong Daw (White Hmong)
-    Locale["mww"]["support"]           = "bing-only"
-    Locale["mww"]["name"]              = "Hmong Daw"
-    Locale["mww"]["endonym"]           = "Hmoob Daw"
-    Locale["mww"]["family"]            = "Hmong-Mien"
-    Locale["mww"]["iso"]               = "mww"
-    Locale["mww"]["glotto"]            = "hmon1333"
-    Locale["mww"]["script"]            = "Latn"
-
     #* Portuguese (European)
     Locale["pt-PT"]["support"]         = "bing-only"
     Locale["pt-PT"]["name"]            = "Portuguese (European)"
@@ -2188,20 +2227,6 @@ function initLocale() {
     Locale["mhr"]["iso"]               = "mhr"
     Locale["mhr"]["glotto"]            = "east2328"
     Locale["mhr"]["script"]            = "Cyrl"
-
-    #? Hill Mari
-    Locale["mrj"]["support"]           = "yandex-only"
-    Locale["mrj"]["name"]              = "Hill Mari"
-    Locale["mrj"]["endonym"]           = "Кырык мары"
-    #Locale["mrj"]["translations-of"]
-    #Locale["mrj"]["definitions-of"]
-    #Locale["mrj"]["synonyms"]
-    #Locale["mrj"]["examples"]
-    #Locale["mrj"]["see-also"]
-    Locale["mrj"]["family"]            = "Uralic"
-    Locale["mrj"]["iso"]               = "mrj"
-    Locale["mrj"]["glotto"]            = "west2392"
-    Locale["mrj"]["script"]            = "Cyrl"
 
     #? Interlingue
     Locale["ie"]["support"]            = "unstable"
@@ -2356,6 +2381,7 @@ function initLocaleAlias(    i) {
     LocaleAlias["jw"] = "jv" # withdrawn language code for Javanese
     LocaleAlias["kurdish"] = "ku" # Kurdish: default to "ku" (N.B. Google uses this code for Kurmanji)
     LocaleAlias["mo"] = "ro" # Moldavian or Moldovan considered a variant of the Romanian language
+    LocaleAlias["mww"] = "hmn" # mww (Hmong Daw) treated the same as hmn (the inclusive code for Hmong)
     LocaleAlias["nb"] = "no" # Google Translate does not distinguish between Bokmål and Nynorsk (but Bing does!)
     LocaleAlias["nn"] = "no"
     LocaleAlias["pt"] = "pt-BR" # Portuguese: default to Brazilian Portuguese (as in Google Translate)
