@@ -728,9 +728,7 @@ function initLocale() {
     Locale["fr-CA"]["spoken-in"]       = "Canada"
     Locale["fr-CA"]["supported-by"]    = "bing"
 
-
-
-    #27 Galician
+    # Galician
     Locale["gl"]["name"]               = "Galician"
     Locale["gl"]["endonym"]            = "Galego"
     Locale["gl"]["translations-of"]    = "Traducións de %s"
@@ -739,11 +737,14 @@ function initLocale() {
     Locale["gl"]["examples"]           = "Exemplos"
     Locale["gl"]["see-also"]           = "Ver tamén"
     Locale["gl"]["family"]             = "Indo-European"
+    Locale["gl"]["branch"]             = "Western Romance"
     Locale["gl"]["iso"]                = "glg"
     Locale["gl"]["glotto"]             = "gali1258"
     Locale["gl"]["script"]             = "Latn"
+    Locale["gl"]["spoken-in"]          = "Galicia in northwestern Spain"
+    Locale["gl"]["supported-by"]       = "google; bing; yandex"
 
-    #28 Georgian (Modern Georgian)
+    # Georgian (Modern Georgian)
     Locale["ka"]["name"]               = "Georgian"
     Locale["ka"]["endonym"]            = "ქართული"
     Locale["ka"]["translations-of"]    = "%s-ის თარგმანები"
@@ -752,11 +753,14 @@ function initLocale() {
     Locale["ka"]["examples"]           = "მაგალითები"
     Locale["ka"]["see-also"]           = "ასევე იხილეთ"
     Locale["ka"]["family"]             = "Kartvelian"
+    Locale["ka"]["branch"]             = "Karto-Zan"
     Locale["ka"]["iso"]                = "kat"
     Locale["ka"]["glotto"]             = "nucl1302"
     Locale["ka"]["script"]             = "Geor"
+    Locale["ka"]["spoken-in"]          = "Georgia"
+    Locale["ka"]["supported-by"]       = "google; bing; yandex"
 
-    #29 German (Standard German)
+    # German (Standard German)
     Locale["de"]["name"]               = "German"
     Locale["de"]["endonym"]            = "Deutsch"
     Locale["de"]["translations-of"]    = "Übersetzungen für %s"
@@ -765,12 +769,15 @@ function initLocale() {
     Locale["de"]["examples"]           = "Beispiele"
     Locale["de"]["see-also"]           = "Siehe auch"
     Locale["de"]["family"]             = "Indo-European"
+    Locale["de"]["branch"]             = "West Germanic"
     Locale["de"]["iso"]                = "deu"
     Locale["de"]["glotto"]             = "stan1295"
     Locale["de"]["script"]             = "Latn"
     Locale["de"]["dictionary"]         = "true" # has dictionary
+    Locale["de"]["spoken-in"]          = "Central Europe"
+    Locale["de"]["supported-by"]       = "google; bing; yandex"
 
-    #30 Greek (Modern Greek)
+    # Greek (Modern Greek)
     Locale["el"]["name"]               = "Greek"
     Locale["el"]["endonym"]            = "Ελληνικά"
     Locale["el"]["translations-of"]    = "Μεταφράσεις του %s"
@@ -779,9 +786,12 @@ function initLocale() {
     Locale["el"]["examples"]           = "Παραδείγματα"
     Locale["el"]["see-also"]           = "Δείτε επίσης"
     Locale["el"]["family"]             = "Indo-European"
+    Locale["el"]["branch"]             = "Paleo-Balkan"
     Locale["el"]["iso"]                = "ell"
     Locale["el"]["glotto"]             = "mode1248"
     Locale["el"]["script"]             = "Grek"
+    Locale["el"]["spoken-in"]          = "Greece; Cyprus; southern Albania"
+    Locale["el"]["supported-by"]       = "google; bing; yandex"
 
     # Guarani
     Locale["gn"]["name"]               = "Guarani"
@@ -791,12 +801,15 @@ function initLocale() {
     #Locale["gn"]["synonyms"]
     #Locale["gn"]["examples"]
     #Locale["gn"]["see-also"]
-    Locale["gn"]["family"]            = "Tupian"
-    Locale["gn"]["iso"]               = "gug"
-    Locale["gn"]["glotto"]            = "para1311"
-    Locale["gn"]["script"]            = "Latn"
+    Locale["gn"]["family"]             = "Tupian"
+    #Locale["gn"]["branch"]            = "Guaraní"
+    Locale["gn"]["iso"]                = "gug"
+    Locale["gn"]["glotto"]             = "para1311"
+    Locale["gn"]["script"]             = "Latn"
+    Locale["gn"]["spoken-in"]          = "Paraguay; Bolivia; Argentina; Brazil"
+    Locale["gn"]["supported-by"]       = "google"
 
-    #31 Gujarati
+    # Gujarati
     Locale["gu"]["name"]               = "Gujarati"
     Locale["gu"]["endonym"]            = "ગુજરાતી"
     Locale["gu"]["translations-of"]    = "%s ના અનુવાદ"
@@ -805,9 +818,14 @@ function initLocale() {
     Locale["gu"]["examples"]           = "ઉદાહરણો"
     Locale["gu"]["see-also"]           = "આ પણ જુઓ"
     Locale["gu"]["family"]             = "Indo-European"
+    Locale["gu"]["branch"]             = "Indo-Aryan"
     Locale["gu"]["iso"]                = "guj"
     Locale["gu"]["glotto"]             = "guja1252"
     Locale["gu"]["script"]             = "Gujr"
+    Locale["gu"]["spoken-in"]          = "the Indian state of Gujarat"
+    Locale["gu"]["supported-by"]       = "google; bing; yandex"
+
+
 
     #32 Haitian Creole
     Locale["ht"]["name"]               = "Haitian Creole"
