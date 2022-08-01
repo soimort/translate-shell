@@ -199,6 +199,11 @@ function getWrittenIn(code,    i, j, r, regions, str) {
     return r
 }
 
+# Return the extra description of a language.
+function getDescription(code) {
+    return Locale[getCode(code)]["description"]
+}
+
 # Return 1 if a language is supported by Google; otherwise return 0.
 function isSupportedByGoogle(code,    engines, i, str) {
     str = Locale[getCode(code)]["supported-by"]
@@ -245,12 +250,17 @@ function getDetails(code,    article, desc, group, iso, name, names, script, wri
 
     if (getBranch(code)) {
         article = match(tolower(getBranch(code)), /^[aeiou]/) ? "an" : "a"
-        desc = sprintf("%s is %s %s language spoken mainly in %s.",
-                       names, article, getBranch(code), getSpokenIn(code))
-    } else if (getFamily(code) == NULLSTR || tolower(getFamily(code)) == "language isolate") {
-        desc = sprintf("%s is a language spoken mainly in %s.",
-                       names, getSpokenIn(code))
-    } else
+        if (iso == "eng")
+            desc = sprintf("%s is %s %s language spoken %s.",
+                           names, article, getBranch(code), getSpokenIn(code))
+        else
+            desc = sprintf("%s is %s %s language spoken mainly in %s.",
+                           names, article, getBranch(code), getSpokenIn(code))
+    } else if (getFamily(code) == NULLSTR || tolower(getFamily(code)) == "language isolate")
+        desc = sprintf("%s is a language spoken mainly in %s.", names, getSpokenIn(code))
+    else if (tolower(getFamily(code)) == "constructed language")
+        desc = sprintf("%s is %s.", names, getDescription(code))
+    else
         desc = sprintf("%s is a language of the %s family, spoken mainly in %s.",
                        names, getFamily(code), getSpokenIn(code))
     if (writing && getWrittenIn(code))
