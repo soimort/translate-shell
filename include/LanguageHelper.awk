@@ -128,6 +128,7 @@ function scriptName(code) {
     case "Arab": return "Arabic"
     case "Armn": return "Armenian"
     case "Beng": return "Bengali"
+    case "Cans": return "Canadian Aboriginal Syllabics"
     case "Cher": return "Cherokee"
     case "Cyrl": return "Cyrillic"
     case "Deva": return "Devanagari"
