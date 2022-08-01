@@ -793,6 +793,22 @@ function initLocale() {
     Locale["el"]["spoken-in"]          = "Greece; Cyprus; southern Albania"
     Locale["el"]["supported-by"]       = "google; bing; yandex"
 
+    # Greenlandic (West Greenlandic)
+    Locale["kl"]["name"]               = "Greenlandic"
+    Locale["kl"]["endonym"]            = "Kalaallisut"
+    #Locale["kl"]["translations-of"]
+    #Locale["kl"]["definitions-of"]
+    #Locale["kl"]["synonyms"]
+    #Locale["kl"]["examples"]
+    #Locale["kl"]["see-also"]
+    Locale["kl"]["family"]             = "Eskimo-Aleut"
+    Locale["kl"]["branch"]             = "Inuit"
+    Locale["kl"]["iso"]                = "kal"
+    Locale["kl"]["glotto"]             = "kala1399"
+    Locale["kl"]["script"]             = "Latn"
+    Locale["kl"]["spoken-in"]          = "Greenland"
+    Locale["kl"]["supported-by"]       = ""
+
     # Guarani
     Locale["gn"]["name"]               = "Guarani"
     Locale["gn"]["endonym"]            = "Avañe'ẽ"
@@ -1046,6 +1062,54 @@ function initLocale() {
     Locale["ie"]["spoken-in"]          = "worldwide"
     Locale["ie"]["description"]        = "an international auxiliary language"
     Locale["ie"]["supported-by"]       = ""
+
+    # Inuinnaqtun
+    Locale["ikt"]["name"]              = "Inuinnaqtun"
+    Locale["ikt"]["endonym"]           = "Inuinnaqtun"
+    #Locale["ikt"]["translations-of"]
+    #Locale["ikt"]["definitions-of"]
+    #Locale["ikt"]["synonyms"]
+    #Locale["ikt"]["examples"]
+    #Locale["ikt"]["see-also"]
+    Locale["ikt"]["family"]            = "Eskimo-Aleut"
+    Locale["ikt"]["branch"]            = "Inuit"
+    Locale["ikt"]["iso"]               = "ikt"
+    Locale["ikt"]["glotto"]            = "copp1244"
+    Locale["ikt"]["script"]            = "Latn"
+    Locale["ikt"]["spoken-in"]         = "the Canadian Arctic"
+    Locale["ikt"]["supported-by"]      = "bing"
+
+    # Inuktitut
+    Locale["iu"]["name"]               = "Inuktitut"
+    Locale["iu"]["endonym"]            = "ᐃᓄᒃᑎᑐᑦ"
+    #Locale["iu"]["translations-of"]
+    #Locale["iu"]["definitions-of"]
+    #Locale["iu"]["synonyms"]
+    #Locale["iu"]["examples"]
+    #Locale["iu"]["see-also"]
+    Locale["iu"]["family"]             = "Eskimo-Aleut"
+    Locale["iu"]["branch"]             = "Inuit"
+    Locale["iu"]["iso"]                = "iku"
+    Locale["iu"]["glotto"]             = "east2534"
+    Locale["iu"]["script"]             = "Cans"
+    Locale["iu"]["spoken-in"]          = "the Canadian Arctic"
+    Locale["iu"]["supported-by"]       = "bing"
+
+    # Inuktitut, Latin alphabet
+    Locale["iu-Latn"]["name"]          = "Inuktitut (Latin)"
+    Locale["iu-Latn"]["endonym"]       = "Inuktitut"
+    #Locale["iu-Latn"]["translations-of"]
+    #Locale["iu-Latn"]["definitions-of"]
+    #Locale["iu-Latn"]["synonyms"]
+    #Locale["iu-Latn"]["examples"]
+    #Locale["iu-Latn"]["see-also"]
+    Locale["iu-Latn"]["family"]        = "Eskimo-Aleut"
+    Locale["iu-Latn"]["branch"]        = "Inuit"
+    Locale["iu-Latn"]["iso"]           = "iku"
+    Locale["iu-Latn"]["glotto"]        = "east2534"
+    Locale["iu-Latn"]["script"]        = "Latn"
+    Locale["iu-Latn"]["spoken-in"]     = "the Canadian Arctic"
+    Locale["iu-Latn"]["supported-by"]  = "bing"
 
     # Irish
     Locale["ga"]["name"]               = "Irish"
