@@ -965,9 +965,7 @@ function initLocale() {
     Locale["hu"]["spoken-in"]          = "Hungary"
     Locale["hu"]["supported-by"]       = "google; bing; yandex"
 
-
-
-    #39 Icelandic
+    # Icelandic
     Locale["is"]["name"]               = "Icelandic"
     Locale["is"]["endonym"]            = "Íslenska"
     Locale["is"]["translations-of"]    = "Þýðingar á %s"
@@ -976,11 +974,14 @@ function initLocale() {
     Locale["is"]["examples"]           = "Dæmi"
     Locale["is"]["see-also"]           = "Sjá einnig"
     Locale["is"]["family"]             = "Indo-European"
+    Locale["is"]["branch"]             = "North Germanic"
     Locale["is"]["iso"]                = "isl"
     Locale["is"]["glotto"]             = "icel1247"
     Locale["is"]["script"]             = "Latn"
+    Locale["is"]["spoken-in"]          = "Iceland"
+    Locale["is"]["supported-by"]       = "google; bing; yandex"
 
-    #40 Igbo
+    # Igbo
     Locale["ig"]["name"]               = "Igbo"
     Locale["ig"]["endonym"]            = "Igbo"
     Locale["ig"]["translations-of"]    = "Ntụgharị asụsụ nke %s"
@@ -989,9 +990,12 @@ function initLocale() {
     Locale["ig"]["examples"]           = "Ọmụmaatụ"
     Locale["ig"]["see-also"]           = "Hụkwuo"
     Locale["ig"]["family"]             = "Atlantic-Congo"
+    Locale["ig"]["branch"]             = "Igboid"
     Locale["ig"]["iso"]                = "ibo"
     Locale["ig"]["glotto"]             = "nucl1417"
     Locale["ig"]["script"]             = "Latn"
+    Locale["ig"]["spoken-in"]          = "southeastern Nigeria"
+    Locale["ig"]["supported-by"]       = "google"
 
     # Ilocano
     Locale["ilo"]["name"]              = "Ilocano"
@@ -1002,11 +1006,14 @@ function initLocale() {
     #Locale["ilo"]["examples"]
     #Locale["ilo"]["see-also"]
     Locale["ilo"]["family"]            = "Austronesian"
+    Locale["ilo"]["branch"]            = "Malayo-Polynesian"
     Locale["ilo"]["iso"]               = "ilo"
     Locale["ilo"]["glotto"]            = "ilok1237"
     Locale["ilo"]["script"]            = "Latn"
+    Locale["ilo"]["spoken-in"]         = "the northern Philippines"
+    Locale["ilo"]["supported-by"]      = "google"
 
-    #41 Indonesian
+    # Indonesian
     Locale["id"]["name"]               = "Indonesian"
     Locale["id"]["endonym"]            = "Bahasa Indonesia"
     Locale["id"]["translations-of"]    = "Terjemahan dari %s"
@@ -1015,12 +1022,34 @@ function initLocale() {
     Locale["id"]["examples"]           = "Contoh"
     Locale["id"]["see-also"]           = "Lihat juga"
     Locale["id"]["family"]             = "Austronesian"
+    Locale["id"]["branch"]             = "Malayo-Polynesian"
     Locale["id"]["iso"]                = "ind"
     Locale["id"]["glotto"]             = "indo1316"
     Locale["id"]["script"]             = "Latn"
+    Locale["id"]["spoken-in"]          = "Indonesia"
+    Locale["id"]["supported-by"]       = "google; bing; yandex"
 
-    #42 Irish
+    # Interlingue
+    Locale["ie"]["name"]               = "Interlingue"
+    Locale["ie"]["name2"]              = "Occidental"
+    Locale["ie"]["endonym"]            = "Interlingue"
+    #Locale["ie"]["translations-of"]
+    #Locale["ie"]["definitions-of"]
+    #Locale["ie"]["synonyms"]
+    #Locale["ie"]["examples"]
+    #Locale["ie"]["see-also"]
+    Locale["ie"]["family"]             = "Constructed language"
+    #Locale["ie"]["branch"]
+    Locale["ie"]["iso"]                = "ile"
+    Locale["ie"]["glotto"]             = "occi1241"
+    Locale["ie"]["script"]             = "Latn"
+    Locale["ie"]["spoken-in"]          = "worldwide"
+    Locale["ie"]["description"]        = "an international auxiliary language"
+    Locale["ie"]["supported-by"]       = ""
+
+    # Irish
     Locale["ga"]["name"]               = "Irish"
+    Locale["ga"]["name2"]              = "Gaelic"
     Locale["ga"]["endonym"]            = "Gaeilge"
     Locale["ga"]["translations-of"]    = "Aistriúcháin ar %s"
     Locale["ga"]["definitions-of"]     = "Sainmhínithe ar %s"
@@ -1028,11 +1057,14 @@ function initLocale() {
     Locale["ga"]["examples"]           = "Samplaí"
     Locale["ga"]["see-also"]           = "féach freisin"
     Locale["ga"]["family"]             = "Indo-European"
+    Locale["ga"]["branch"]             = "Celtic"
     Locale["ga"]["iso"]                = "gle"
     Locale["ga"]["glotto"]             = "iris1253"
     Locale["ga"]["script"]             = "Latn"
+    Locale["ga"]["spoken-in"]          = "Ireland"
+    Locale["ga"]["supported-by"]       = "google; bing; yandex"
 
-    #43 Italian
+    # Italian
     Locale["it"]["name"]               = "Italian"
     Locale["it"]["endonym"]            = "Italiano"
     Locale["it"]["translations-of"]    = "Traduzioni di %s"
@@ -1041,10 +1073,15 @@ function initLocale() {
     Locale["it"]["examples"]           = "Esempi"
     Locale["it"]["see-also"]           = "Vedi anche"
     Locale["it"]["family"]             = "Indo-European"
+    Locale["it"]["branch"]             = "Italo-Dalmatian"
     Locale["it"]["iso"]                = "ita"
     Locale["it"]["glotto"]             = "ital1282"
     Locale["it"]["script"]             = "Latn"
     Locale["it"]["dictionary"]         = "true" # has dictionary
+    Locale["it"]["spoken-in"]          = "Italy; Switzerland; San Marino; Vatican City"
+    Locale["it"]["supported-by"]       = "google; bing; yandex"
+
+
 
     #44 Japanese
     Locale["ja"]["name"]               = "Japanese"
@@ -2227,20 +2264,6 @@ function initLocale() {
     Locale["mhr"]["iso"]               = "mhr"
     Locale["mhr"]["glotto"]            = "east2328"
     Locale["mhr"]["script"]            = "Cyrl"
-
-    #? Interlingue
-    Locale["ie"]["support"]            = "unstable"
-    Locale["ie"]["name"]               = "Interlingue"
-    Locale["ie"]["endonym"]            = "Interlingue"
-    #Locale["ie"]["translations-of"]
-    #Locale["ie"]["definitions-of"]
-    #Locale["ie"]["synonyms"]
-    #Locale["ie"]["examples"]
-    #Locale["ie"]["see-also"]
-    Locale["ie"]["family"]             = "Constructed language"
-    Locale["ie"]["iso"]                = "ile"
-    Locale["ie"]["glotto"]             = "occi1241"
-    Locale["ie"]["script"]             = "Latn"
 
     #? Occitan
     Locale["oc"]["support"]            = "unstable"
