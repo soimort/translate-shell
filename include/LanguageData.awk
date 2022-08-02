@@ -1178,9 +1178,7 @@ function initLocale() {
     Locale["jv"]["spoken-in"]          = "Java, Indonesia"
     Locale["jv"]["supported-by"]       = "google; yandex"
 
-
-
-    #46 Kannada (Modern Kannada)
+    # Kannada (Modern Kannada)
     Locale["kn"]["name"]               = "Kannada"
     Locale["kn"]["endonym"]            = "ಕನ್ನಡ"
     Locale["kn"]["translations-of"]    = "%s ನ ಅನುವಾದಗಳು"
@@ -1189,11 +1187,14 @@ function initLocale() {
     Locale["kn"]["examples"]           = "ಉದಾಹರಣೆಗಳು"
     Locale["kn"]["see-also"]           = "ಇದನ್ನೂ ಗಮನಿಸಿ"
     Locale["kn"]["family"]             = "Dravidian"
+    Locale["kn"]["branch"]             = "South Dravidian"
     Locale["kn"]["iso"]                = "kan"
     Locale["kn"]["glotto"]             = "nucl1305"
     Locale["kn"]["script"]             = "Knda"
+    Locale["kn"]["spoken-in"]          = "the southwestern India"
+    Locale["kn"]["supported-by"]       = "google; bing; yandex"
 
-    #47 Kazakh, Cyrillic alphabet
+    # Kazakh, Cyrillic alphabet
     Locale["kk"]["name"]               = "Kazakh"
     Locale["kk"]["endonym"]            = "Қазақ тілі"
     Locale["kk"]["translations-of"]    = "%s аудармалары"
@@ -1202,11 +1203,14 @@ function initLocale() {
     Locale["kk"]["examples"]           = "Мысалдар"
     Locale["kk"]["see-also"]           = "Келесі тізімді де көріңіз:"
     Locale["kk"]["family"]             = "Turkic"
+    Locale["kk"]["branch"]             = "Kipchak"
     Locale["kk"]["iso"]                = "kaz"
     Locale["kk"]["glotto"]             = "kaza1248"
     Locale["kk"]["script"]             = "Cyrl"
+    Locale["kk"]["spoken-in"]          = "Kazakhstan; China; Mongolia; Russia; Kyrgyzstan; Uzbekistan"
+    Locale["kk"]["supported-by"]       = "google; bing; yandex"
 
-    #48 Khmer (Central Khmer)
+    # Khmer (Central Khmer)
     Locale["km"]["name"]               = "Khmer"
     Locale["km"]["endonym"]            = "ភាសាខ្មែរ"
     Locale["km"]["translations-of"]    = "ការ​បក​ប្រែ​នៃ %s"
@@ -1215,11 +1219,14 @@ function initLocale() {
     Locale["km"]["examples"]           = "ឧទាហរណ៍"
     Locale["km"]["see-also"]           = "មើល​ផង​ដែរ"
     Locale["km"]["family"]             = "Austroasiatic"
+    Locale["km"]["branch"]             = "Khmeric"
     Locale["km"]["iso"]                = "khm"
     Locale["km"]["glotto"]             = "cent1989"
     Locale["km"]["script"]             = "Khmr"
+    Locale["km"]["spoken-in"]          = "Cambodia; Thailand; Vietnam"
+    Locale["km"]["supported-by"]       = "google; bing; yandex"
 
-    #49 Kinyarwanda
+    # Kinyarwanda
     Locale["rw"]["name"]               = "Kinyarwanda"
     Locale["rw"]["endonym"]            = "Ikinyarwanda"
     #Locale["rw"]["translations-of"]
@@ -1228,9 +1235,12 @@ function initLocale() {
     #Locale["rw"]["examples"]
     #Locale["rw"]["see-also"]
     Locale["rw"]["family"]             = "Atlantic-Congo"
+    Locale["rw"]["branch"]             = "Bantu"
     Locale["rw"]["iso"]                = "kin"
     Locale["rw"]["glotto"]             = "kiny1244"
     Locale["rw"]["script"]             = "Latn"
+    Locale["rw"]["spoken-in"]          = "Rwanda; Uganda; DR Congo; Tanzania"
+    Locale["rw"]["supported-by"]       = "google"
 
     # Konkani (Goan Konkani)
     Locale["gom"]["name"]              = "Konkani"
@@ -1241,11 +1251,14 @@ function initLocale() {
     #Locale["gom"]["examples"]
     #Locale["gom"]["see-also"]
     Locale["gom"]["family"]            = "Indo-European"
+    Locale["gom"]["branch"]            = "Indo-Aryan"
     Locale["gom"]["iso"]               = "gom"
     Locale["gom"]["glotto"]            = "goan1235"
     Locale["gom"]["script"]            = "Deva"
+    Locale["gom"]["spoken-in"]         = "the western coastal region of India"
+    Locale["gom"]["supported-by"]      = "google"
 
-    #50 Korean
+    # Korean
     Locale["ko"]["name"]               = "Korean"
     Locale["ko"]["endonym"]            = "한국어"
     Locale["ko"]["translations-of"]    = "%s의 번역"
@@ -1254,10 +1267,13 @@ function initLocale() {
     Locale["ko"]["examples"]           = "예문"
     Locale["ko"]["see-also"]           = "참조"
     Locale["ko"]["family"]             = "Koreanic"
+    #Locale["ko"]["branch"]
     Locale["ko"]["iso"]                = "kor"
     Locale["ko"]["glotto"]             = "kore1280"
     Locale["ko"]["script"]             = "Kore"
     Locale["ko"]["dictionary"]         = "true" # has dictionary
+    Locale["ko"]["spoken-in"]          = "South Korea; North Korea; China"
+    Locale["ko"]["supported-by"]       = "google; bing; yandex"
 
     # Krio
     Locale["kri"]["name"]              = "Krio"
@@ -1268,11 +1284,14 @@ function initLocale() {
     #Locale["kri"]["examples"]
     #Locale["kri"]["see-also"]
     Locale["kri"]["family"]            = "Indo-European"
+    Locale["kri"]["branch"]            = "English Creole"
     Locale["kri"]["iso"]               = "kri"
     Locale["kri"]["glotto"]            = "krio1253"
     Locale["kri"]["script"]            = "Latn"
+    Locale["kri"]["spoken-in"]         = "Sierra Leone"
+    Locale["kri"]["supported-by"]      = "google"
 
-    #51 Kurdish (Northern) / Kurmanji
+    # Kurdish (Northern Kurdish) / Kurmanji
     Locale["ku"]["name"]               = "Kurdish (Northern)"
     Locale["ku"]["name2"]              = "Kurmanji"
     Locale["ku"]["endonym"]            = "Kurmancî"
@@ -1283,11 +1302,14 @@ function initLocale() {
     #Locale["ku"]["examples"]
     #Locale["ku"]["see-also"]
     Locale["ku"]["family"]             = "Indo-European"
+    Locale["ku"]["branch"]             = "Iranian"
     Locale["ku"]["iso"]                = "kmr"
     Locale["ku"]["glotto"]             = "nort2641"
     Locale["ku"]["script"]             = "Latn"
+    Locale["ku"]["spoken-in"]          = "southeast Turkey; northwest and northeast Iran; northern Iraq; northern Syria; the Caucasus and Khorasan regions"
+    Locale["ku"]["supported-by"]       = "google"
 
-    # Kurdish (Central) / Sorani
+    # Kurdish (Central Kurdish) / Sorani
     Locale["ckb"]["name"]              = "Kurdish (Central)"
     Locale["ckb"]["name2"]             = "Sorani"
     Locale["ckb"]["endonym"]           = "سۆرانی"
@@ -1298,12 +1320,15 @@ function initLocale() {
     #Locale["ckb"]["examples"]
     #Locale["ckb"]["see-also"]
     Locale["ckb"]["family"]            = "Indo-European"
+    Locale["ckb"]["branch"]            = "Iranian"
     Locale["ckb"]["iso"]               = "ckb"
     Locale["ckb"]["glotto"]            = "cent1972"
     Locale["ckb"]["script"]            = "Arab"
     Locale["ckb"]["rtl"]               = "true" # RTL language
+    Locale["ckb"]["spoken-in"]         = "Iraqi Kurdistan; western Iran"
+    Locale["ckb"]["supported-by"]      = "google"
 
-    #52 Kyrgyz
+    # Kyrgyz, Cyrillic alphabet
     Locale["ky"]["name"]               = "Kyrgyz"
     Locale["ky"]["endonym"]            = "Кыргызча"
     Locale["ky"]["translations-of"]    = "%s котормосу"
@@ -1312,9 +1337,14 @@ function initLocale() {
     Locale["ky"]["examples"]           = "Мисалдар"
     Locale["ky"]["see-also"]           = "Дагы караңыз"
     Locale["ky"]["family"]             = "Turkic"
+    Locale["ky"]["branch"]             = "Kipchak"
     Locale["ky"]["iso"]                = "kir"
     Locale["ky"]["glotto"]             = "kirg1245"
     Locale["ky"]["script"]             = "Cyrl"
+    Locale["ky"]["spoken-in"]          = "Kyrgyzstan; China; Tajikistan; Afghanistan; Pakistan"
+    Locale["ky"]["supported-by"]       = "google; bing; yandex"
+
+
 
     #53 Lao
     Locale["lo"]["name"]               = "Lao"
