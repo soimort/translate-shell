@@ -1242,6 +1242,30 @@ function initLocale() {
     Locale["rw"]["spoken-in"]          = "Rwanda; Uganda; DR Congo; Tanzania"
     Locale["rw"]["supported-by"]       = "google"
 
+    # Klingon, Latin alphabet
+    Locale["tlh-Latn"]["name"]         = "Klingon"
+    Locale["tlh-Latn"]["endonym"]      = "tlhIngan Hol"
+    Locale["tlh-Latn"]["family"]       = "Constructed language"
+    #Locale["tlh-Latn"]["branch"]
+    Locale["tlh-Latn"]["iso"]          = "tlh-Latn"
+    Locale["tlh-Latn"]["glotto"]       = "klin1234"
+    Locale["tlh-Latn"]["script"]       = "Latn"
+    Locale["tlh-Latn"]["spoken-in"]    = "the Star Trek universe"
+    Locale["tlh-Latn"]["description"]  = "a fictional language spoken by the Klingons in the Star Trek universe"
+    Locale["tlh-Latn"]["supported-by"] = "bing"
+
+    ## Klingon, pIqaD
+    #Locale["tlh-Piqd"]["name"]         = "Klingon (pIqaD)"
+    #Locale["tlh-Piqd"]["endonym"]      = " "
+    #Locale["tlh-Piqd"]["family"]       = "Constructed language"
+    ##Locale["tlh-Piqd"]["branch"]
+    #Locale["tlh-Piqd"]["iso"]          = "tlh-Piqd"
+    #Locale["tlh-Piqd"]["glotto"]       = "klin1234"
+    #Locale["tlh-Piqd"]["script"]       = "Piqd"
+    #Locale["tlh-Piqd"]["spoken-in"]    = "the Star Trek universe"
+    #Locale["tlh-Piqd"]["description"]  = "a fictional language spoken by the Klingons in the Star Trek universe"
+    #Locale["tlh-Piqd"]["supported-by"] = "bing"
+
     # Konkani (Goan Konkani)
     Locale["gom"]["name"]              = "Konkani"
     Locale["gom"]["endonym"]           = "कोंकणी"
@@ -2319,24 +2343,6 @@ function initLocale() {
     Locale["yua"]["glotto"]            = "yuca1254"
     Locale["yua"]["script"]            = "Latn"
 
-    #* Klingon, Latin alphabet
-    Locale["tlh"]["support"]           = "bing-only"
-    Locale["tlh"]["name"]              = "Klingon"
-    Locale["tlh"]["endonym"]           = "tlhIngan Hol"
-    Locale["tlh"]["family"]            = "Constructed language"
-    Locale["tlh"]["iso"]               = "tlh"
-    #Locale["tlh"]["glotto"]
-    Locale["tlh"]["script"]            = "Latn"
-
-    #* Klingon, pIqaD
-    Locale["tlh-Qaak"]["support"]      = "bing-only"
-    Locale["tlh-Qaak"]["name"]         = "Klingon (pIqaD)"
-    Locale["tlh-Qaak"]["endonym"]      = " "
-    Locale["tlh-Qaak"]["family"]       = "Constructed language"
-    Locale["tlh-Qaak"]["iso"]          = "tlh"
-    #Locale["tlh-Qaak"]["glotto"]
-    Locale["tlh-Qaak"]["script"]       = "Piqd"
-
     #? Breton
     Locale["br"]["support"]            = "unstable"
     Locale["br"]["name"]               = "Breton"
@@ -2520,8 +2526,7 @@ function initLocaleAlias(    i) {
     LocaleAlias["zh-Hant"] = "zh-TW"
     LocaleAlias["zho"]     = "zh-CN"
     LocaleAlias["chinese"] = "zh-CN"
-    LocaleAlias["tlh-Latn"] = "tlh"
-    LocaleAlias["tlh-Piqd"] = "tlh-Qaak"
+    LocaleAlias["tlh"] = "tlh-Latn"
     LocaleAlias["mni"] = "mni-Mtei" # Meitei: default to Meitei Mayek
     # TODO: more aliases
 }
