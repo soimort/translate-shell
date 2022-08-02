@@ -1079,7 +1079,7 @@ function initLocale() {
     Locale["ikt"]["spoken-in"]         = "the Canadian Arctic"
     Locale["ikt"]["supported-by"]      = "bing"
 
-    # Inuktitut
+    # Inuktitut (Eastern Canadian Inuktitut)
     Locale["iu"]["name"]               = "Inuktitut"
     Locale["iu"]["endonym"]            = "ᐃᓄᒃᑎᑐᑦ"
     #Locale["iu"]["translations-of"]
@@ -1095,7 +1095,7 @@ function initLocale() {
     Locale["iu"]["spoken-in"]          = "the Canadian Arctic"
     Locale["iu"]["supported-by"]       = "bing"
 
-    # Inuktitut, Latin alphabet
+    # Inuktitut (Eastern Canadian Inuktitut), Latin alphabet
     Locale["iu-Latn"]["name"]          = "Inuktitut (Latin)"
     Locale["iu-Latn"]["endonym"]       = "Inuktitut"
     #Locale["iu-Latn"]["translations-of"]
@@ -1145,9 +1145,7 @@ function initLocale() {
     Locale["it"]["spoken-in"]          = "Italy; Switzerland; San Marino; Vatican City"
     Locale["it"]["supported-by"]       = "google; bing; yandex"
 
-
-
-    #44 Japanese
+    # Japanese
     Locale["ja"]["name"]               = "Japanese"
     Locale["ja"]["endonym"]            = "日本語"
     Locale["ja"]["translations-of"]    = "「%s」の翻訳"
@@ -1156,12 +1154,15 @@ function initLocale() {
     Locale["ja"]["examples"]           = "例"
     Locale["ja"]["see-also"]           = "関連項目"
     Locale["ja"]["family"]             = "Japonic"
+    #Locale["ja"]["branch"]
     Locale["ja"]["iso"]                = "jpn"
     Locale["ja"]["glotto"]             = "nucl1643"
     Locale["ja"]["script"]             = "Jpan"
     Locale["ja"]["dictionary"]         = "true" # has dictionary
+    Locale["ja"]["spoken-in"]          = "Japan"
+    Locale["ja"]["supported-by"]       = "google; bing; yandex"
 
-    #45 Javanese, Latin alphabet
+    # Javanese, Latin alphabet
     Locale["jv"]["name"]               = "Javanese"
     Locale["jv"]["endonym"]            = "Basa Jawa"
     Locale["jv"]["translations-of"]    = "Terjemahan %s"
@@ -1170,9 +1171,14 @@ function initLocale() {
     Locale["jv"]["examples"]           = "Conto"
     Locale["jv"]["see-also"]           = "Deleng uga"
     Locale["jv"]["family"]             = "Austronesian"
+    Locale["jv"]["branch"]             = "Malayo-Polynesian"
     Locale["jv"]["iso"]                = "jav"
     Locale["jv"]["glotto"]             = "java1254"
     Locale["jv"]["script"]             = "Latn"
+    Locale["jv"]["spoken-in"]          = "Java, Indonesia"
+    Locale["jv"]["supported-by"]       = "google; yandex"
+
+
 
     #46 Kannada (Modern Kannada)
     Locale["kn"]["name"]               = "Kannada"
