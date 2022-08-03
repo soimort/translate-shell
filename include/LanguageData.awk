@@ -1481,9 +1481,7 @@ function initLocale() {
     Locale["lb"]["spoken-in"]          = "Luxembourg"
     Locale["lb"]["supported-by"]       = "google; yandex"
 
-
-
-    #58 Macedonian
+    # Macedonian
     Locale["mk"]["name"]               = "Macedonian"
     Locale["mk"]["endonym"]            = "Македонски"
     Locale["mk"]["translations-of"]    = "Преводи на %s"
@@ -1492,9 +1490,12 @@ function initLocale() {
     Locale["mk"]["examples"]           = "Примери"
     Locale["mk"]["see-also"]           = "Види и"
     Locale["mk"]["family"]             = "Indo-European"
+    Locale["mk"]["branch"]             = "South Slavic"
     Locale["mk"]["iso"]                = "mkd"
     Locale["mk"]["glotto"]             = "mace1250"
     Locale["mk"]["script"]             = "Cyrl"
+    Locale["mk"]["spoken-in"]          = "North Macedonia; Albania; Bosnia and Herzegovina; Romania; Serbia"
+    Locale["mk"]["supported-by"]       = "google; bing; yandex"
 
     # Maithili
     Locale["mai"]["name"]              = "Maithili"
@@ -1505,11 +1506,14 @@ function initLocale() {
     #Locale["mai"]["examples"]
     #Locale["mai"]["see-also"]
     Locale["mai"]["family"]            = "Indo-European"
+    Locale["mai"]["branch"]            = "Indo-Aryan"
     Locale["mai"]["iso"]               = "mai"
     Locale["mai"]["glotto"]            = "mait1250"
     Locale["mai"]["script"]            = "Deva"
+    Locale["mai"]["spoken-in"]         = "the Mithila region in India and Nepal"
+    Locale["mai"]["supported-by"]      = "google"
 
-    #59 Malagasy (Plateau Malagasy)
+    # Malagasy (Plateau Malagasy)
     Locale["mg"]["name"]               = "Malagasy"
     Locale["mg"]["endonym"]            = "Malagasy"
     Locale["mg"]["translations-of"]    = "Dikan'ny %s"
@@ -1518,11 +1522,14 @@ function initLocale() {
     Locale["mg"]["examples"]           = "Ohatra"
     Locale["mg"]["see-also"]           = "Jereo ihany koa"
     Locale["mg"]["family"]             = "Austronesian"
+    Locale["mg"]["branch"]             = "Malayo-Polynesian"
     Locale["mg"]["iso"]                = "mlg"
     Locale["mg"]["glotto"]             = "plat1254"
     Locale["mg"]["script"]             = "Latn"
+    Locale["mg"]["spoken-in"]          = "Madagascar; the Comoros; Mayotte"
+    Locale["mg"]["supported-by"]       = "google; bing; yandex"
 
-    #60 Malay (Standard Malay)
+    # Malay (Standard Malay), Latin alphabet
     Locale["ms"]["name"]               = "Malay"
     Locale["ms"]["endonym"]            = "Bahasa Melayu"
     Locale["ms"]["translations-of"]    = "Terjemahan %s"
@@ -1531,11 +1538,14 @@ function initLocale() {
     Locale["ms"]["examples"]           = "Contoh"
     Locale["ms"]["see-also"]           = "Lihat juga"
     Locale["ms"]["family"]             = "Austronesian"
+    Locale["ms"]["branch"]             = "Malayo-Polynesian"
     Locale["ms"]["iso"]                = "msa"
     Locale["ms"]["glotto"]             = "stan1306"
     Locale["ms"]["script"]             = "Latn"
+    Locale["ms"]["spoken-in"]          = "Malaysia; Singapore; Indonesia; Brunei; East Timor"
+    Locale["ms"]["supported-by"]       = "google; bing; yandex"
 
-    #61 Malayalam
+    # Malayalam
     Locale["ml"]["name"]               = "Malayalam"
     Locale["ml"]["endonym"]            = "മലയാളം"
     Locale["ml"]["translations-of"]    = "%s എന്നതിന്റെ വിവർത്തനങ്ങൾ"
@@ -1544,11 +1554,14 @@ function initLocale() {
     Locale["ml"]["examples"]           = "ഉദാഹരണങ്ങള്‍"
     Locale["ml"]["see-also"]           = "ഇതും കാണുക"
     Locale["ml"]["family"]             = "Dravidian"
+    Locale["ml"]["branch"]             = "South Dravidian"
     Locale["ml"]["iso"]                = "mal"
     Locale["ml"]["glotto"]             = "mala1464"
     Locale["ml"]["script"]             = "Mlym"
+    Locale["ml"]["spoken-in"]          = "Kerala, Lakshadweep and Puducherry in India"
+    Locale["ml"]["supported-by"]       = "google; bing; yandex"
 
-    #62 Maltese
+    # Maltese
     Locale["mt"]["name"]               = "Maltese"
     Locale["mt"]["endonym"]            = "Malti"
     Locale["mt"]["translations-of"]    = "Traduzzjonijiet ta' %s"
@@ -1557,11 +1570,14 @@ function initLocale() {
     Locale["mt"]["examples"]           = "Eżempji"
     Locale["mt"]["see-also"]           = "Ara wkoll"
     Locale["mt"]["family"]             = "Afro-Asiatic"
+    Locale["mt"]["branch"]             = "Semitic"
     Locale["mt"]["iso"]                = "mlt"
     Locale["mt"]["glotto"]             = "malt1254"
     Locale["mt"]["script"]             = "Latn"
+    Locale["mt"]["spoken-in"]          = "Malta"
+    Locale["mt"]["supported-by"]       = "google; bing; yandex"
 
-    #63 Maori
+    # Maori
     Locale["mi"]["name"]               = "Maori"
     Locale["mi"]["endonym"]            = "Māori"
     Locale["mi"]["translations-of"]    = "Ngā whakamāoritanga o %s"
@@ -1570,11 +1586,14 @@ function initLocale() {
     Locale["mi"]["examples"]           = "Ngā Tauira:"
     Locale["mi"]["see-also"]           = "Tiro hoki:"
     Locale["mi"]["family"]             = "Austronesian"
+    Locale["mi"]["branch"]             = "Malayo-Polynesian"
     Locale["mi"]["iso"]                = "mri"
     Locale["mi"]["glotto"]             = "maor1246"
     Locale["mi"]["script"]             = "Latn"
+    Locale["mi"]["spoken-in"]          = "New Zealand"
+    Locale["mi"]["supported-by"]       = "google; bing; yandex"
 
-    #64 Marathi
+    # Marathi
     Locale["mr"]["name"]               = "Marathi"
     Locale["mr"]["endonym"]            = "मराठी"
     Locale["mr"]["translations-of"]    = "%s ची भाषांतरे"
@@ -1583,9 +1602,28 @@ function initLocale() {
     Locale["mr"]["examples"]           = "उदाहरणे"
     Locale["mr"]["see-also"]           = "हे देखील पहा"
     Locale["mr"]["family"]             = "Indo-European"
+    Locale["mr"]["branch"]             = "Indo-Aryan"
     Locale["mr"]["iso"]                = "mar"
     Locale["mr"]["glotto"]             = "mara1378"
     Locale["mr"]["script"]             = "Deva"
+    Locale["mr"]["spoken-in"]          = "the Indian state of Maharashtra"
+    Locale["mr"]["supported-by"]       = "google; bing; yandex"
+
+    # Eastern Mari / Meadow Mari
+    Locale["mhr"]["name"]              = "Eastern Mari"
+    Locale["mhr"]["endonym"]           = "Олык марий"
+    #Locale["mhr"]["translations-of"]
+    #Locale["mhr"]["definitions-of"]
+    #Locale["mhr"]["synonyms"]
+    #Locale["mhr"]["examples"]
+    #Locale["mhr"]["see-also"]
+    Locale["mhr"]["family"]            = "Uralic"
+    Locale["mhr"]["branch"]            = "Mari"
+    Locale["mhr"]["iso"]               = "mhr"
+    Locale["mhr"]["glotto"]            = "east2328"
+    Locale["mhr"]["script"]            = "Cyrl"
+    Locale["mhr"]["spoken-in"]         = "Mari El, Russia"
+    Locale["mhr"]["supported-by"]      = "yandex"
 
     # Meiteilon / Manipuri
     Locale["mni-Mtei"]["name"]         = "Meiteilon"
@@ -1599,9 +1637,12 @@ function initLocale() {
     #Locale["mni-Mtei"]["examples"]
     #Locale["mni-Mtei"]["see-also"]
     Locale["mni-Mtei"]["family"]       = "Sino-Tibetan"
+    Locale["mni-Mtei"]["branch"]       = "Tibeto-Burman"
     Locale["mni-Mtei"]["iso"]          = "mni"
     Locale["mni-Mtei"]["glotto"]       = "mani1292"
     Locale["mni-Mtei"]["script"]       = "Mtei"
+    Locale["mni-Mtei"]["spoken-in"]    = "the northeast India; Bangladesh; Myanmar"
+    Locale["mni-Mtei"]["supported-by"] = "google"
 
     # Mizo
     Locale["lus"]["name"]              = "Mizo"
@@ -1612,11 +1653,14 @@ function initLocale() {
     #Locale["lus"]["examples"]
     #Locale["lus"]["see-also"]
     Locale["lus"]["family"]            = "Sino-Tibetan"
+    Locale["lus"]["branch"]            = "Tibeto-Burman"
     Locale["lus"]["iso"]               = "lus"
     Locale["lus"]["glotto"]            = "lush1249"
     Locale["lus"]["script"]            = "Latn"
+    Locale["lus"]["spoken-in"]         = "the Indian state of Mizoram"
+    Locale["lus"]["supported-by"]      = "google"
 
-    #65 Mongolian, Cyrillic alphabet
+    # Mongolian, Cyrillic alphabet
     Locale["mn"]["name"]               = "Mongolian"
     Locale["mn"]["endonym"]            = "Монгол"
     Locale["mn"]["translations-of"]    = "%s-н орчуулга"
@@ -1625,11 +1669,30 @@ function initLocale() {
     Locale["mn"]["examples"]           = "Жишээнүүд"
     Locale["mn"]["see-also"]           = "Мөн харах"
     Locale["mn"]["family"]             = "Mongolic"
+    #Locale["mn"]["branch"]
     Locale["mn"]["iso"]                = "mon"
     Locale["mn"]["glotto"]             = "mong1331"
     Locale["mn"]["script"]             = "Cyrl"
+    Locale["mn"]["spoken-in"]          = "Mongolia; Inner Mongolia in China"
+    Locale["mn"]["supported-by"]       = "google; bing; yandex"
 
-    #66 Myanmar / Burmese
+    # Mongolian, traditional Mongolian alphabet
+    Locale["mn-Mong"]["name"]          = "Mongolian (Traditional)"
+    Locale["mn-Mong"]["endonym"]       = "ᠮᠣᠩᠭᠣᠯ"
+    #Locale["mn-Mong"]["translations-of"]
+    #Locale["mn-Mong"]["definitions-of"]
+    #Locale["mn-Mong"]["synonyms"]
+    #Locale["mn-Mong"]["examples"]
+    #Locale["mn-Mong"]["see-also"]
+    Locale["mn-Mong"]["family"]        = "Mongolic"
+    #Locale["mn-Mong"]["branch"]
+    Locale["mn-Mong"]["iso"]           = "mon-Mong"
+    Locale["mn-Mong"]["glotto"]        = "mong1331"
+    Locale["mn-Mong"]["script"]        = "Mong"
+    Locale["mn-Mong"]["spoken-in"]     = "Mongolia; Inner Mongolia in China"
+    Locale["mn-Mong"]["supported-by"]  = "bing"
+
+    # Myanmar / Burmese
     Locale["my"]["name"]               = "Myanmar"
     Locale["my"]["name2"]              = "Burmese"
     Locale["my"]["endonym"]            = "မြန်မာစာ"
@@ -1639,9 +1702,14 @@ function initLocale() {
     Locale["my"]["examples"]           = "ဥပမာ"
     Locale["my"]["see-also"]           = "ဖော်ပြပါများကိုလဲ ကြည့်ပါ"
     Locale["my"]["family"]             = "Sino-Tibetan"
+    Locale["my"]["branch"]             = "Tibeto-Burman"
     Locale["my"]["iso"]                = "mya"
     Locale["my"]["glotto"]             = "nucl1310"
     Locale["my"]["script"]             = "Mymr"
+    Locale["my"]["spoken-in"]          = "Myanmar"
+    Locale["my"]["supported-by"]       = "google; bing; yandex"
+
+
 
     #67 Nepali
     Locale["ne"]["name"]               = "Nepali"
@@ -2378,20 +2446,6 @@ function initLocale() {
     Locale["br"]["glotto"]             = "bret1244"
     Locale["br"]["script"]             = "Latn"
 
-    #? Eastern Mari
-    Locale["mhr"]["support"]           = "yandex-only"
-    Locale["mhr"]["name"]              = "Eastern Mari"
-    Locale["mhr"]["endonym"]           = "Олык марий"
-    #Locale["mhr"]["translations-of"]
-    #Locale["mhr"]["definitions-of"]
-    #Locale["mhr"]["synonyms"]
-    #Locale["mhr"]["examples"]
-    #Locale["mhr"]["see-also"]
-    Locale["mhr"]["family"]            = "Uralic"
-    Locale["mhr"]["iso"]               = "mhr"
-    Locale["mhr"]["glotto"]            = "east2328"
-    Locale["mhr"]["script"]            = "Cyrl"
-
     #? Occitan
     Locale["oc"]["support"]            = "unstable"
     Locale["oc"]["name"]               = "Occitan"
@@ -2530,6 +2584,7 @@ function initLocaleAlias(    i) {
     LocaleAlias["ji"] = "yi" # withdrawn language code for Yiddish
     LocaleAlias["jw"] = "jv" # withdrawn language code for Javanese
     LocaleAlias["kurdish"] = "ku" # Kurdish: default to "ku" (N.B. Google uses this code for Kurmanji)
+    LocaleAlias["mari"] = "mhr" # Mari: default to "mhr" (Eastern Mari)
     LocaleAlias["mo"] = "ro" # Moldavian or Moldovan considered a variant of the Romanian language
     LocaleAlias["mww"] = "hmn" # mww (Hmong Daw) treated the same as hmn (the inclusive code for Hmong)
     LocaleAlias["nb"] = "no" # Google Translate does not distinguish between Bokmål and Nynorsk (but Bing does!)
