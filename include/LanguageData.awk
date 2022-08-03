@@ -1368,9 +1368,7 @@ function initLocale() {
     Locale["ky"]["spoken-in"]          = "Kyrgyzstan; China; Tajikistan; Afghanistan; Pakistan"
     Locale["ky"]["supported-by"]       = "google; bing; yandex"
 
-
-
-    #53 Lao
+    # Lao
     Locale["lo"]["name"]               = "Lao"
     Locale["lo"]["endonym"]            = "ລາວ"
     Locale["lo"]["translations-of"]    = "ຄຳ​ແປ​ສຳລັບ %s"
@@ -1378,12 +1376,15 @@ function initLocale() {
     Locale["lo"]["synonyms"]           = "ຄຳທີ່ຄ້າຍກັນ %s"
     Locale["lo"]["examples"]           = "ຕົວຢ່າງ"
     Locale["lo"]["see-also"]           = "ເບິ່ງ​ເພີ່ມ​ເຕີມ"
-    Locale["lo"]["family"]             = "Tai-Kadai"
+    Locale["lo"]["family"]             = "Kra-Dai"
+    Locale["lo"]["branch"]             = "Tai"
     Locale["lo"]["iso"]                = "lao"
     Locale["lo"]["glotto"]             = "laoo1244"
     Locale["lo"]["script"]             = "Laoo"
+    Locale["lo"]["spoken-in"]          = "Laos; Thailand; Cambodia"
+    Locale["lo"]["supported-by"]       = "google; bing; yandex"
 
-    #54 Latin
+    # Latin
     Locale["la"]["name"]               = "Latin"
     Locale["la"]["endonym"]            = "Latina"
     Locale["la"]["translations-of"]    = "Versio de %s"
@@ -1392,11 +1393,14 @@ function initLocale() {
     #Locale["la"]["examples"]
     #Locale["la"]["see-also"]
     Locale["la"]["family"]             = "Indo-European"
+    Locale["la"]["branch"]             = "Latino-Faliscan"
     Locale["la"]["iso"]                = "lat"
     Locale["la"]["glotto"]             = "lati1261"
     Locale["la"]["script"]             = "Latn"
+    Locale["la"]["spoken-in"]          = "ancient Rome"
+    Locale["la"]["supported-by"]       = "google; yandex"
 
-    #55 Latvian
+    # Latvian
     Locale["lv"]["name"]               = "Latvian"
     Locale["lv"]["endonym"]            = "Latviešu"
     Locale["lv"]["translations-of"]    = "%s tulkojumi"
@@ -1405,9 +1409,12 @@ function initLocale() {
     Locale["lv"]["examples"]           = "Piemēri"
     Locale["lv"]["see-also"]           = "Skatiet arī"
     Locale["lv"]["family"]             = "Indo-European"
+    Locale["lv"]["branch"]             = "Eastern Baltic"
     Locale["lv"]["iso"]                = "lav"
     Locale["lv"]["glotto"]             = "latv1249"
     Locale["lv"]["script"]             = "Latn"
+    Locale["lv"]["spoken-in"]          = "Latvia"
+    Locale["lv"]["supported-by"]       = "google; bing; yandex"
 
     # Lingala
     Locale["ln"]["name"]               = "Lingala"
@@ -1418,11 +1425,14 @@ function initLocale() {
     #Locale["ln"]["examples"]
     #Locale["ln"]["see-also"]
     Locale["ln"]["family"]             = "Atlantic-Congo"
+    Locale["ln"]["branch"]             = "Bantu"
     Locale["ln"]["iso"]                = "lin"
     Locale["ln"]["glotto"]             = "ling1269"
     Locale["ln"]["script"]             = "Latn"
+    Locale["ln"]["spoken-in"]          = "DR Congo; Republic of the Congo; Angola; Central African Republic; southern South Sudan"
+    Locale["ln"]["supported-by"]       = "google"
 
-    #56 Lithuanian
+    # Lithuanian
     Locale["lt"]["name"]               = "Lithuanian"
     Locale["lt"]["endonym"]            = "Lietuvių"
     Locale["lt"]["translations-of"]    = "„%s“ vertimai"
@@ -1431,9 +1441,12 @@ function initLocale() {
     Locale["lt"]["examples"]           = "Pavyzdžiai"
     Locale["lt"]["see-also"]           = "Taip pat žiūrėkite"
     Locale["lt"]["family"]             = "Indo-European"
+    Locale["lt"]["branch"]             = "Eastern Baltic"
     Locale["lt"]["iso"]                = "lit"
     Locale["lt"]["glotto"]             = "lith1251"
     Locale["lt"]["script"]             = "Latn"
+    Locale["lt"]["spoken-in"]          = "Lithuania"
+    Locale["lt"]["supported-by"]       = "google; bing; yandex"
 
     # Luganda
     Locale["lg"]["name"]               = "Luganda"
@@ -1445,11 +1458,14 @@ function initLocale() {
     #Locale["lg"]["examples"]
     #Locale["lg"]["see-also"]
     Locale["lg"]["family"]             = "Atlantic-Congo"
+    Locale["lg"]["branch"]             = "Bantu"
     Locale["lg"]["iso"]                = "lug"
     Locale["lg"]["glotto"]             = "gand1255"
     Locale["lg"]["script"]             = "Latn"
+    Locale["lg"]["spoken-in"]          = "Uganda; Rwanda"
+    Locale["lg"]["supported-by"]       = "google"
 
-    #57 Luxembourgish
+    # Luxembourgish
     Locale["lb"]["name"]               = "Luxembourgish"
     Locale["lb"]["endonym"]            = "Lëtzebuergesch"
     #Locale["lb"]["translations-of"]
@@ -1458,9 +1474,14 @@ function initLocale() {
     #Locale["lb"]["examples"]
     #Locale["lb"]["see-also"]
     Locale["lb"]["family"]             = "Indo-European"
+    Locale["lb"]["branch"]             = "West Germanic"
     Locale["lb"]["iso"]                = "ltz"
     Locale["lb"]["glotto"]             = "luxe1241"
     Locale["lb"]["script"]             = "Latn"
+    Locale["lb"]["spoken-in"]          = "Luxembourg"
+    Locale["lb"]["supported-by"]       = "google; yandex"
+
+
 
     #58 Macedonian
     Locale["mk"]["name"]               = "Macedonian"
@@ -2076,7 +2097,7 @@ function initLocale() {
     Locale["th"]["synonyms"]           = "คำพ้องความหมาย"
     Locale["th"]["examples"]           = "ตัวอย่าง"
     Locale["th"]["see-also"]           = "ดูเพิ่มเติม"
-    Locale["th"]["family"]             = "Tai-Kadai"
+    Locale["th"]["family"]             = "Kra-Dai"
     Locale["th"]["iso"]                = "tha"
     Locale["th"]["glotto"]             = "thai1261"
     Locale["th"]["script"]             = "Thai"
