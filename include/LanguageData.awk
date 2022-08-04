@@ -1609,8 +1609,9 @@ function initLocale() {
     Locale["mr"]["spoken-in"]          = "the Indian state of Maharashtra"
     Locale["mr"]["supported-by"]       = "google; bing; yandex"
 
-    # Eastern Mari / Meadow Mari
+    # Mari (Eastern Mari / Meadow Mari)
     Locale["mhr"]["name"]              = "Eastern Mari"
+    Locale["mhr"]["name2"]             = "Meadow Mari"
     Locale["mhr"]["endonym"]           = "Олык марий"
     #Locale["mhr"]["translations-of"]
     #Locale["mhr"]["definitions-of"]
@@ -1709,9 +1710,7 @@ function initLocale() {
     Locale["my"]["spoken-in"]          = "Myanmar"
     Locale["my"]["supported-by"]       = "google; bing; yandex"
 
-
-
-    #67 Nepali
+    # Nepali
     Locale["ne"]["name"]               = "Nepali"
     Locale["ne"]["endonym"]            = "नेपाली"
     Locale["ne"]["translations-of"]    = "%sका अनुवाद"
@@ -1720,11 +1719,14 @@ function initLocale() {
     Locale["ne"]["examples"]           = "उदाहरणहरु"
     Locale["ne"]["see-also"]           = "यो पनि हेर्नुहोस्"
     Locale["ne"]["family"]             = "Indo-European"
+    Locale["ne"]["branch"]             = "Indo-Aryan"
     Locale["ne"]["iso"]                = "nep"
     Locale["ne"]["glotto"]             = "nepa1254"
     Locale["ne"]["script"]             = "Deva"
+    Locale["ne"]["spoken-in"]          = "Nepal; India"
+    Locale["ne"]["supported-by"]       = "google; bing; yandex"
 
-    #68 Norwegian
+    # Norwegian
     Locale["no"]["name"]               = "Norwegian"
     Locale["no"]["endonym"]            = "Norsk"
     Locale["no"]["translations-of"]    = "Oversettelser av %s"
@@ -1733,9 +1735,14 @@ function initLocale() {
     Locale["no"]["examples"]           = "Eksempler"
     Locale["no"]["see-also"]           = "Se også"
     Locale["no"]["family"]             = "Indo-European"
+    Locale["no"]["branch"]             = "North Germanic"
     Locale["no"]["iso"]                = "nor"
     Locale["no"]["glotto"]             = "norw1258"
     Locale["no"]["script"]             = "Latn"
+    Locale["no"]["spoken-in"]          = "Norway"
+    Locale["no"]["supported-by"]       = "google; bing; yandex"
+
+
 
     #69 Odia / Oriya
     Locale["or"]["name"]               = "Odia"
