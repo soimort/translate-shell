@@ -1742,9 +1742,7 @@ function initLocale() {
     Locale["no"]["spoken-in"]          = "Norway"
     Locale["no"]["supported-by"]       = "google; bing; yandex"
 
-
-
-    #69 Odia / Oriya
+    # Odia / Oriya
     Locale["or"]["name"]               = "Odia"
     Locale["or"]["name2"]              = "Oriya"
     Locale["or"]["endonym"]            = "ଓଡ଼ିଆ"
@@ -1754,9 +1752,12 @@ function initLocale() {
     #Locale["or"]["examples"]
     #Locale["or"]["see-also"]
     Locale["or"]["family"]             = "Indo-European"
+    Locale["or"]["branch"]             = "Indo-Aryan"
     Locale["or"]["iso"]                = "ori"
     Locale["or"]["glotto"]             = "macr1269"
     Locale["or"]["script"]             = "Orya"
+    Locale["or"]["spoken-in"]          = "the Indian state of Odisha"
+    Locale["or"]["supported-by"]       = "google; bing"
 
     # Oromo
     Locale["om"]["name"]               = "Oromo"
@@ -1767,9 +1768,14 @@ function initLocale() {
     #Locale["om"]["examples"]
     #Locale["om"]["see-also"]
     Locale["om"]["family"]             = "Afro-Asiatic"
+    Locale["om"]["branch"]             = "Cushitic"
     Locale["om"]["iso"]                = "orm"
     Locale["om"]["glotto"]             = "nucl1736"
     Locale["om"]["script"]             = "Latn"
+    Locale["om"]["spoken-in"]          = "the Ethiopian state of Oromia; northeastern Kenya"
+    Locale["om"]["supported-by"]       = "google"
+
+
 
     #70 Pashto / Pushto
     Locale["ps"]["name"]               = "Pashto"
