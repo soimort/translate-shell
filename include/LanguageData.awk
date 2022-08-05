@@ -1892,8 +1892,6 @@ function initLocale() {
     Locale["pa"]["spoken-in"]          = "the Punjab region of India and Pakistan"
     Locale["pa"]["supported-by"]       = "google; bing; yandex"
 
-
-
     # Quechua
     Locale["qu"]["name"]               = "Quechua"
     Locale["qu"]["endonym"]            = "Runasimi"
@@ -1903,9 +1901,25 @@ function initLocale() {
     #Locale["qu"]["examples"]
     #Locale["qu"]["see-also"]
     Locale["qu"]["family"]             = "Quechuan"
+    #Locale["qu"]["branch"]
     Locale["qu"]["iso"]                = "que"
     Locale["qu"]["glotto"]             = "quec1387"
     Locale["qu"]["script"]             = "Latn"
+    Locale["qu"]["spoken-in"]          = "Peru; Bolivia; Ecuador; surrounding countries"
+    Locale["qu"]["supported-by"]       = "google"
+
+    # Querétaro Otomi
+    Locale["otq"]["name"]              = "Querétaro Otomi"
+    Locale["otq"]["endonym"]           = "Hñąñho"
+    Locale["otq"]["family"]            = "Oto-Manguean"
+    #Locale["otq"]["branch"]
+    Locale["otq"]["iso"]               = "otq"
+    Locale["otq"]["glotto"]            = "quer1236"
+    Locale["otq"]["script"]            = "Latn"
+    Locale["otq"]["spoken-in"]         = "Querétaro in Mexico"
+    Locale["otq"]["supported-by"]      = "bing"
+
+
 
     #75 Romanian
     Locale["ro"]["name"]               = "Romanian"
@@ -2441,15 +2455,6 @@ function initLocale() {
     Locale["zu"]["iso"]                = "zul"
     Locale["zu"]["glotto"]             = "zulu1248"
     Locale["zu"]["script"]             = "Latn"
-
-    #* Querétaro Otomi
-    Locale["otq"]["support"]           = "bing-only"
-    Locale["otq"]["name"]              = "Querétaro Otomi"
-    Locale["otq"]["endonym"]           = "Hñąñho"
-    Locale["otq"]["family"]            = "Oto-Manguean"
-    Locale["otq"]["iso"]               = "otq"
-    Locale["otq"]["glotto"]            = "quer1236"
-    Locale["otq"]["script"]            = "Latn"
 
     #* Tahitian
     Locale["ty"]["support"]            = "bing-only"
