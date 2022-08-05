@@ -1775,9 +1775,23 @@ function initLocale() {
     Locale["om"]["spoken-in"]          = "the Ethiopian state of Oromia; northeastern Kenya"
     Locale["om"]["supported-by"]       = "google"
 
+    # Papiamento
+    Locale["pap"]["name"]              = "Papiamento"
+    Locale["pap"]["endonym"]           = "Papiamentu"
+    #Locale["pap"]["translations-of"]
+    #Locale["pap"]["definitions-of"]
+    #Locale["pap"]["synonyms"]
+    #Locale["pap"]["examples"]
+    #Locale["pap"]["see-also"]
+    Locale["pap"]["family"]            = "Indo-European"
+    Locale["pap"]["branch"]            = "Portuguese Creole"
+    Locale["pap"]["iso"]               = "pap"
+    Locale["pap"]["glotto"]            = "papi1253"
+    Locale["pap"]["script"]            = "Latn"
+    Locale["pap"]["spoken-in"]         = "the Dutch Caribbean"
+    Locale["pap"]["supported-by"]      = "yandex"
 
-
-    #70 Pashto / Pushto
+    # Pashto / Pushto
     Locale["ps"]["name"]               = "Pashto"
     Locale["ps"]["name2"]              = "Pushto"
     Locale["ps"]["endonym"]            = "پښتو"
@@ -1787,12 +1801,15 @@ function initLocale() {
     Locale["ps"]["examples"]           = "بېلګې"
     Locale["ps"]["see-also"]           = "دا هم ووینئ"
     Locale["ps"]["family"]             = "Indo-European"
+    Locale["ps"]["branch"]             = "Iranian"
     Locale["ps"]["iso"]                = "pus"
     Locale["ps"]["glotto"]             = "pash1269"
     Locale["ps"]["script"]             = "Arab"
     Locale["ps"]["rtl"]                = "true" # RTL language
+    Locale["ps"]["spoken-in"]          = "Afghanistan; Pakistan"
+    Locale["ps"]["supported-by"]       = "google; bing"
 
-    #71 Persian / Farsi (Western Farsi / Iranian Persian)
+    # Persian / Farsi (Western Farsi / Iranian Persian)
     Locale["fa"]["name"]               = "Persian"
     Locale["fa"]["name2"]              = "Farsi"
     Locale["fa"]["endonym"]            = "فارسی"
@@ -1802,12 +1819,15 @@ function initLocale() {
     Locale["fa"]["examples"]           = "مثال‌ها"
     Locale["fa"]["see-also"]           = "همچنین مراجعه کنید به"
     Locale["fa"]["family"]             = "Indo-European"
+    Locale["fa"]["branch"]             = "Iranian"
     Locale["fa"]["iso"]                = "fas"
     Locale["fa"]["glotto"]             = "west2369"
     Locale["fa"]["script"]             = "Arab"
     Locale["fa"]["rtl"]                = "true" # RTL language
+    Locale["fa"]["spoken-in"]          = "Iran"
+    Locale["fa"]["supported-by"]       = "google; bing; yandex"
 
-    #72 Polish
+    # Polish
     Locale["pl"]["name"]               = "Polish"
     Locale["pl"]["endonym"]            = "Polski"
     Locale["pl"]["translations-of"]    = "Tłumaczenia %s"
@@ -1816,11 +1836,14 @@ function initLocale() {
     Locale["pl"]["examples"]           = "Przykłady"
     Locale["pl"]["see-also"]           = "Zobacz też"
     Locale["pl"]["family"]             = "Indo-European"
+    Locale["pl"]["branch"]             = "West Slavic"
     Locale["pl"]["iso"]                = "pol"
     Locale["pl"]["glotto"]             = "poli1260"
     Locale["pl"]["script"]             = "Latn"
+    Locale["pl"]["spoken-in"]          = "Poland"
+    Locale["pl"]["supported-by"]       = "google; bing; yandex"
 
-    #73 Portuguese (Brazilian)
+    # Portuguese (Brazilian)
     Locale["pt-BR"]["name"]            = "Portuguese (Brazilian)"
     Locale["pt-BR"]["endonym"]         = "Português Brasileiro"
     Locale["pt-BR"]["translations-of"] = "Traduções de %s"
@@ -1829,12 +1852,31 @@ function initLocale() {
     Locale["pt-BR"]["examples"]        = "Exemplos"
     Locale["pt-BR"]["see-also"]        = "Veja também"
     Locale["pt-BR"]["family"]          = "Indo-European"
+    Locale["pt-BR"]["branch"]          = "Western Romance"
     Locale["pt-BR"]["iso"]             = "por"
     Locale["pt-BR"]["glotto"]          = "braz1246"
     Locale["pt-BR"]["script"]          = "Latn"
     Locale["pt-BR"]["dictionary"]      = "true" # has dictionary
+    Locale["pt-BR"]["spoken-in"]       = "Portugal; Brazil; Cape Verde; Angola; Mozambique; Guinea-Bissau; Equatorial Guinea; São Tomé and Príncipe; East Timor; Macau"
+    Locale["pt-BR"]["supported-by"]    = "google; bing; yandex"
 
-    #74 Punjabi, Gurmukhī alphabet
+    # Portuguese (European)
+    Locale["pt-PT"]["name"]            = "Portuguese (European)"
+    Locale["pt-PT"]["endonym"]         = "Português Europeu"
+    Locale["pt-PT"]["translations-of"] = "Traduções de %s"
+    Locale["pt-PT"]["definitions-of"]  = "Definições de %s"
+    Locale["pt-PT"]["synonyms"]        = "Sinônimos"
+    Locale["pt-PT"]["examples"]        = "Exemplos"
+    Locale["pt-PT"]["see-also"]        = "Veja também"
+    Locale["pt-PT"]["family"]          = "Indo-European"
+    Locale["pt-PT"]["branch"]          = "Western Romance"
+    Locale["pt-PT"]["iso"]             = "por"
+    Locale["pt-PT"]["glotto"]          = "port1283"
+    Locale["pt-PT"]["script"]          = "Latn"
+    Locale["pt-PT"]["spoken-in"]       = "Portugal; Brazil; Cape Verde; Angola; Mozambique; Guinea-Bissau; Equatorial Guinea; São Tomé and Príncipe; East Timor; Macau"
+    Locale["pt-PT"]["supported-by"]    = "bing"
+
+    # Punjabi, Gurmukhī alphabet
     Locale["pa"]["name"]               = "Punjabi"
     Locale["pa"]["endonym"]            = "ਪੰਜਾਬੀ"
     Locale["pa"]["translations-of"]    = "ਦੇ ਅਨੁਵਾਦ%s"
@@ -1843,9 +1885,14 @@ function initLocale() {
     Locale["pa"]["examples"]           = "ਉਦਾਹਰਣਾਂ"
     Locale["pa"]["see-also"]           = "ਇਹ ਵੀ ਵੇਖੋ"
     Locale["pa"]["family"]             = "Indo-European"
+    Locale["pa"]["branch"]             = "Indo-Aryan"
     Locale["pa"]["iso"]                = "pan"
     Locale["pa"]["glotto"]             = "panj1256"
     Locale["pa"]["script"]             = "Guru"
+    Locale["pa"]["spoken-in"]          = "the Punjab region of India and Pakistan"
+    Locale["pa"]["supported-by"]       = "google; bing; yandex"
+
+
 
     # Quechua
     Locale["qu"]["name"]               = "Quechua"
@@ -2395,20 +2442,6 @@ function initLocale() {
     Locale["zu"]["glotto"]             = "zulu1248"
     Locale["zu"]["script"]             = "Latn"
 
-    #* Portuguese (European)
-    Locale["pt-PT"]["support"]         = "bing-only"
-    Locale["pt-PT"]["name"]            = "Portuguese (European)"
-    Locale["pt-PT"]["endonym"]         = "Português Europeu"
-    Locale["pt-PT"]["translations-of"] = "Traduções de %s"
-    Locale["pt-PT"]["definitions-of"]  = "Definições de %s"
-    Locale["pt-PT"]["synonyms"]        = "Sinônimos"
-    Locale["pt-PT"]["examples"]        = "Exemplos"
-    Locale["pt-PT"]["see-also"]        = "Veja também"
-    Locale["pt-PT"]["family"]          = "Indo-European"
-    Locale["pt-PT"]["iso"]             = "por"
-    Locale["pt-PT"]["glotto"]          = "port1283"
-    Locale["pt-PT"]["script"]          = "Latn"
-
     #* Querétaro Otomi
     Locale["otq"]["support"]           = "bing-only"
     Locale["otq"]["name"]              = "Querétaro Otomi"
@@ -2472,20 +2505,6 @@ function initLocale() {
     Locale["oc"]["iso"]                = "oci"
     Locale["oc"]["glotto"]             = "occi1239"
     Locale["oc"]["script"]             = "Latn"
-
-    #? Papiamento
-    Locale["pap"]["support"]           = "yandex-only"
-    Locale["pap"]["name"]              = "Papiamento"
-    Locale["pap"]["endonym"]           = "Papiamentu"
-    #Locale["pap"]["translations-of"]
-    #Locale["pap"]["definitions-of"]
-    #Locale["pap"]["synonyms"]
-    #Locale["pap"]["examples"]
-    #Locale["pap"]["see-also"]
-    Locale["pap"]["family"]            = "Indo-European"
-    Locale["pap"]["iso"]               = "pap"
-    Locale["pap"]["glotto"]            = "papi1253"
-    Locale["pap"]["script"]            = "Latn"
 
     #? Romansh
     Locale["rm"]["support"]            = "unstable"
