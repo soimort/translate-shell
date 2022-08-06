@@ -1919,9 +1919,7 @@ function initLocale() {
     Locale["otq"]["spoken-in"]         = "Querétaro in Mexico"
     Locale["otq"]["supported-by"]      = "bing"
 
-
-
-    #75 Romanian
+    # Romanian / Moldovan, Latin alphabet
     Locale["ro"]["name"]               = "Romanian"
     Locale["ro"]["endonym"]            = "Română"
     Locale["ro"]["translations-of"]    = "Traduceri pentru %s"
@@ -1930,11 +1928,30 @@ function initLocale() {
     Locale["ro"]["examples"]           = "Exemple"
     Locale["ro"]["see-also"]           = "Vedeți și"
     Locale["ro"]["family"]             = "Indo-European"
+    Locale["ro"]["branch"]             = "Eastern Romance"
     Locale["ro"]["iso"]                = "ron"
     Locale["ro"]["glotto"]             = "roma1327"
     Locale["ro"]["script"]             = "Latn"
+    Locale["ro"]["spoken-in"]          = "Romania; Moldova"
+    Locale["ro"]["supported-by"]       = "google; bing; yandex"
 
-    #76 Russian
+    # Romansh
+    Locale["rm"]["name"]               = "Romansh"
+    Locale["rm"]["endonym"]            = "Rumantsch"
+    #Locale["rm"]["translations-of"]
+    #Locale["rm"]["definitions-of"]
+    #Locale["rm"]["synonyms"]
+    #Locale["rm"]["examples"]
+    #Locale["rm"]["see-also"]
+    Locale["rm"]["family"]             = "Indo-European"
+    Locale["rm"]["branch"]             = "Western Romance"
+    Locale["rm"]["iso"]                = "roh"
+    Locale["rm"]["glotto"]             = "roma1326"
+    Locale["rm"]["script"]             = "Latn"
+    Locale["rm"]["spoken-in"]          = "the Swiss canton of the Grisons"
+    Locale["rm"]["supported-by"]       = ""
+
+    # Russian
     Locale["ru"]["name"]               = "Russian"
     Locale["ru"]["endonym"]            = "Русский"
     Locale["ru"]["translations-of"]    = "%s: варианты перевода"
@@ -1943,10 +1960,15 @@ function initLocale() {
     Locale["ru"]["examples"]           = "Примеры"
     Locale["ru"]["see-also"]           = "Похожие слова"
     Locale["ru"]["family"]             = "Indo-European"
+    Locale["ru"]["branch"]             = "East Slavic"
     Locale["ru"]["iso"]                = "rus"
     Locale["ru"]["glotto"]             = "russ1263"
     Locale["ru"]["script"]             = "Cyrl"
     Locale["ru"]["dictionary"]         = "true" # has dictionary
+    Locale["ru"]["spoken-in"]          = "the Russian-speaking world"
+    Locale["ru"]["supported-by"]       = "google; bing; yandex"
+
+
 
     #77 Samoan
     Locale["sm"]["name"]               = "Samoan"
@@ -2511,20 +2533,6 @@ function initLocale() {
     Locale["oc"]["glotto"]             = "occi1239"
     Locale["oc"]["script"]             = "Latn"
 
-    #? Romansh
-    Locale["rm"]["support"]            = "unstable"
-    Locale["rm"]["name"]               = "Romansh"
-    Locale["rm"]["endonym"]            = "Rumantsch"
-    #Locale["rm"]["translations-of"]
-    #Locale["rm"]["definitions-of"]
-    #Locale["rm"]["synonyms"]
-    #Locale["rm"]["examples"]
-    #Locale["rm"]["see-also"]
-    Locale["rm"]["family"]             = "Indo-European"
-    Locale["rm"]["iso"]                = "roh"
-    Locale["rm"]["glotto"]             = "roma1326"
-    Locale["rm"]["script"]             = "Latn"
-
     #? Tibetan (Standard Tibetan)
     Locale["bo"]["support"]            = "unstable"
     Locale["bo"]["name"]               = "Tibetan"
@@ -2623,6 +2631,8 @@ function initLocaleAlias(    i) {
     LocaleAlias["kurdish"] = "ku" # Kurdish: default to "ku" (N.B. Google uses this code for Kurmanji)
     LocaleAlias["mari"] = "mhr" # Mari: default to "mhr" (Eastern Mari)
     LocaleAlias["mo"] = "ro" # Moldavian or Moldovan considered a variant of the Romanian language
+    LocaleAlias["moldavian"] = "ro"
+    LocaleAlias["moldovan"] = "ro"
     LocaleAlias["mww"] = "hmn" # mww (Hmong Daw) treated the same as hmn (the inclusive code for Hmong)
     LocaleAlias["nb"] = "no" # Google Translate does not distinguish between Bokmål and Nynorsk (but Bing does!)
     LocaleAlias["nn"] = "no"
