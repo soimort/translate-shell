@@ -2549,9 +2549,7 @@ function initLocale() {
     Locale["uz"]["spoken-in"]          = "Uzbekistan; Afghanistan; Pakistan"
     Locale["uz"]["supported-by"]       = "google; bing; yandex"
 
-
-
-    #102 Vietnamese
+    # Vietnamese
     Locale["vi"]["name"]               = "Vietnamese"
     Locale["vi"]["endonym"]            = "Tiếng Việt"
     Locale["vi"]["translations-of"]    = "Bản dịch của %s"
@@ -2560,9 +2558,14 @@ function initLocale() {
     Locale["vi"]["examples"]           = "Ví dụ"
     Locale["vi"]["see-also"]           = "Xem thêm"
     Locale["vi"]["family"]             = "Austroasiatic"
+    Locale["vi"]["branch"]             = "Vietic"
     Locale["vi"]["iso"]                = "vie"
     Locale["vi"]["glotto"]             = "viet1252"
     Locale["vi"]["script"]             = "Latn"
+    Locale["vi"]["spoken-in"]          = "Vietnam"
+    Locale["vi"]["supported-by"]       = "google; bing; yandex"
+
+
 
     #103 Welsh
     Locale["cy"]["name"]               = "Welsh"
@@ -2679,20 +2682,6 @@ function initLocale() {
     Locale["oc"]["iso"]                = "oci"
     Locale["oc"]["glotto"]             = "occi1239"
     Locale["oc"]["script"]             = "Latn"
-
-    #? Udmurt
-    Locale["udm"]["support"]           = "yandex-only"
-    Locale["udm"]["name"]              = "Udmurt"
-    Locale["udm"]["endonym"]           = "удмурт"
-    #Locale["udm"]["translations-of"]
-    #Locale["udm"]["definitions-of"]
-    #Locale["udm"]["synonyms"]
-    #Locale["udm"]["examples"]
-    #Locale["udm"]["see-also"]
-    Locale["udm"]["family"]            = "Uralic"
-    Locale["udm"]["iso"]               = "udm"
-    Locale["udm"]["glotto"]            = "udmu1245"
-    Locale["udm"]["script"]            = "Cyrl"
 
     #? Volapük
     Locale["vo"]["support"]            = "unstable"
