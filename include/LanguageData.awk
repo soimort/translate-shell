@@ -2461,9 +2461,18 @@ function initLocale() {
     Locale["tw"]["spoken-in"]          = "Ghana"
     Locale["tw"]["supported-by"]       = "google"
 
+    # Udmurt
+    Locale["udm"]["name"]              = "Udmurt"
+    Locale["udm"]["endonym"]           = "Удмурт"
+    Locale["udm"]["family"]            = "Uralic"
+    Locale["udm"]["branch"]            = "Permic"
+    Locale["udm"]["iso"]               = "udm"
+    Locale["udm"]["glotto"]            = "udmu1245"
+    Locale["udm"]["script"]            = "Cyrl"
+    Locale["udm"]["spoken-in"]         = "the Republic of Udmurt in Russia"
+    Locale["udm"]["supported-by"]      = "yandex"
 
-
-    #98 Ukrainian
+    # Ukrainian
     Locale["uk"]["name"]               = "Ukrainian"
     Locale["uk"]["endonym"]            = "Українська"
     Locale["uk"]["translations-of"]    = "Переклади слова або виразу \"%s\""
@@ -2472,11 +2481,25 @@ function initLocale() {
     Locale["uk"]["examples"]           = "Приклади"
     Locale["uk"]["see-also"]           = "Дивіться також"
     Locale["uk"]["family"]             = "Indo-European"
+    Locale["uk"]["branch"]             = "East Slavic"
     Locale["uk"]["iso"]                = "ukr"
     Locale["uk"]["glotto"]             = "ukra1253"
     Locale["uk"]["script"]             = "Cyrl"
+    Locale["uk"]["spoken-in"]          = "Ukraine"
+    Locale["uk"]["supported-by"]       = "google; bing; yandex"
 
-    #99 Urdu
+    # Upper Sorbian
+    Locale["hsb"]["name"]              = "Upper Sorbian"
+    Locale["hsb"]["endonym"]           = "Hornjoserbšćina"
+    Locale["hsb"]["family"]            = "Indo-European"
+    Locale["hsb"]["branch"]            = "West Slavic"
+    Locale["hsb"]["iso"]               = "hsb"
+    Locale["hsb"]["glotto"]            = "uppe1395"
+    Locale["hsb"]["script"]            = "Latn"
+    Locale["hsb"]["spoken-in"]         = "Saxony, Germany"
+    Locale["hsb"]["supported-by"]      = "bing"
+
+    # Urdu
     Locale["ur"]["name"]               = "Urdu"
     Locale["ur"]["endonym"]            = "اُردُو"
     Locale["ur"]["translations-of"]    = "کے ترجمے %s"
@@ -2485,12 +2508,15 @@ function initLocale() {
     Locale["ur"]["examples"]           = "مثالیں"
     Locale["ur"]["see-also"]           = "نیز دیکھیں"
     Locale["ur"]["family"]             = "Indo-European"
+    Locale["ur"]["branch"]             = "Indo-Aryan"
     Locale["ur"]["iso"]                = "urd"
     Locale["ur"]["glotto"]             = "urdu1245"
     Locale["ur"]["script"]             = "Arab"
     Locale["ur"]["rtl"]                = "true" # RTL language
+    Locale["ur"]["spoken-in"]          = "Pakistan; India"
+    Locale["ur"]["supported-by"]       = "google; bing; yandex"
 
-    #100 Uyghur
+    # Uyghur
     Locale["ug"]["name"]               = "Uyghur"
     Locale["ug"]["endonym"]            = "ئۇيغۇر تىلى"
     #Locale["ug"]["translations-of"]
@@ -2499,12 +2525,15 @@ function initLocale() {
     #Locale["ug"]["examples"]
     #Locale["ug"]["see-also"]
     Locale["ug"]["family"]             = "Turkic"
+    Locale["ug"]["branch"]             = "Karluk"
     Locale["ug"]["iso"]                = "uig"
     Locale["ug"]["glotto"]             = "uigh1240"
     Locale["ug"]["script"]             = "Arab"
     Locale["ug"]["rtl"]                = "true" # RTL language
+    Locale["ug"]["spoken-in"]          = "the Xinjiang Uyghur Autonomous Region of China"
+    Locale["ug"]["supported-by"]       = "google; bing"
 
-    #101 Uzbek, Latin alphabet
+    # Uzbek, Latin alphabet
     Locale["uz"]["name"]               = "Uzbek"
     Locale["uz"]["endonym"]            = "Oʻzbek tili"
     Locale["uz"]["translations-of"]    = "%s: tarjima variantlari"
@@ -2513,9 +2542,14 @@ function initLocale() {
     Locale["uz"]["examples"]           = "Namunalar"
     Locale["uz"]["see-also"]           = "O‘xshash so‘zlar"
     Locale["uz"]["family"]             = "Turkic"
+    Locale["uz"]["branch"]             = "Karluk"
     Locale["uz"]["iso"]                = "uzb"
     Locale["uz"]["glotto"]             = "uzbe1247"
     Locale["uz"]["script"]             = "Latn"
+    Locale["uz"]["spoken-in"]          = "Uzbekistan; Afghanistan; Pakistan"
+    Locale["uz"]["supported-by"]       = "google; bing; yandex"
+
+
 
     #102 Vietnamese
     Locale["vi"]["name"]               = "Vietnamese"
