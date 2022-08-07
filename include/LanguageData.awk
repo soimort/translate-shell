@@ -2565,9 +2565,24 @@ function initLocale() {
     Locale["vi"]["spoken-in"]          = "Vietnam"
     Locale["vi"]["supported-by"]       = "google; bing; yandex"
 
+    # Volapük
+    Locale["vo"]["name"]               = "Volapük"
+    Locale["vo"]["endonym"]            = "Volapük"
+    #Locale["vo"]["translations-of"]
+    #Locale["vo"]["definitions-of"]
+    #Locale["vo"]["synonyms"]
+    #Locale["vo"]["examples"]
+    #Locale["vo"]["see-also"]
+    Locale["vo"]["family"]             = "Constructed language"
+    #Locale["vo"]["branch"]
+    Locale["vo"]["iso"]                = "vol"
+    Locale["vo"]["glotto"]             = "vola1234"
+    Locale["vo"]["script"]             = "Latn"
+    Locale["vo"]["spoken-in"]          = "worldwide"
+    Locale["vo"]["description"]        = "an international auxiliary language"
+    Locale["vo"]["supported-by"]       = ""
 
-
-    #103 Welsh
+    # Welsh
     Locale["cy"]["name"]               = "Welsh"
     Locale["cy"]["endonym"]            = "Cymraeg"
     Locale["cy"]["translations-of"]    = "Cyfieithiadau %s"
@@ -2576,11 +2591,14 @@ function initLocale() {
     Locale["cy"]["examples"]           = "Enghreifftiau"
     Locale["cy"]["see-also"]           = "Gweler hefyd"
     Locale["cy"]["family"]             = "Indo-European"
+    Locale["cy"]["branch"]             = "Celtic"
     Locale["cy"]["iso"]                = "cym"
     Locale["cy"]["glotto"]             = "wels1247"
     Locale["cy"]["script"]             = "Latn"
+    Locale["cy"]["spoken-in"]          = "Wales in the UK"
+    Locale["cy"]["supported-by"]       = "google; bing; yandex"
 
-    #104 West Frisian
+    # West Frisian
     Locale["fy"]["name"]               = "Frisian"
     Locale["fy"]["endonym"]            = "Frysk"
     Locale["fy"]["translations-of"]    = "Oersettings fan %s"
@@ -2589,9 +2607,30 @@ function initLocale() {
     Locale["fy"]["examples"]           = "Foarbylden"
     Locale["fy"]["see-also"]           = "Sjoch ek"
     Locale["fy"]["family"]             = "Indo-European"
+    Locale["fy"]["branch"]             = "West Germanic"
     Locale["fy"]["iso"]                = "fry"
     Locale["fy"]["glotto"]             = "west2354"
     Locale["fy"]["script"]             = "Latn"
+    Locale["fy"]["spoken-in"]          = "Friesland in the Netherlands"
+    Locale["fy"]["supported-by"]       = "google"
+
+    # Wolof
+    Locale["wo"]["name"]               = "Wolof"
+    Locale["wo"]["endonym"]            = "Wollof"
+    #Locale["wo"]["translations-of"]
+    #Locale["wo"]["definitions-of"]
+    #Locale["wo"]["synonyms"]
+    #Locale["wo"]["examples"]
+    #Locale["wo"]["see-also"]
+    Locale["wo"]["family"]             = "Atlantic-Congo"
+    Locale["wo"]["branch"]             = "Atlantic"
+    Locale["wo"]["iso"]                = "wol"
+    Locale["wo"]["glotto"]             = "wolo1247"
+    Locale["wo"]["script"]             = "Latn"
+    Locale["wo"]["spoken-in"]          = "Senegal; Mauritania; the Gambia"
+    Locale["wo"]["supported-by"]       = ""
+
+
 
     #105 Xhosa
     Locale["xh"]["name"]               = "Xhosa"
@@ -2682,34 +2721,6 @@ function initLocale() {
     Locale["oc"]["iso"]                = "oci"
     Locale["oc"]["glotto"]             = "occi1239"
     Locale["oc"]["script"]             = "Latn"
-
-    #? Volapük
-    Locale["vo"]["support"]            = "unstable"
-    Locale["vo"]["name"]               = "Volapük"
-    Locale["vo"]["endonym"]            = "Volapük"
-    #Locale["vo"]["translations-of"]
-    #Locale["vo"]["definitions-of"]
-    #Locale["vo"]["synonyms"]
-    #Locale["vo"]["examples"]
-    #Locale["vo"]["see-also"]
-    Locale["vo"]["family"]             = "Constructed language"
-    Locale["vo"]["iso"]                = "vol"
-    #Locale["vo"]["glotto"]
-    Locale["vo"]["script"]             = "Latn"
-
-    #? Wolof
-    Locale["wo"]["support"]            = "unstable"
-    Locale["wo"]["name"]               = "Wolof"
-    Locale["wo"]["endonym"]            = "Wollof"
-    #Locale["wo"]["translations-of"]
-    #Locale["wo"]["definitions-of"]
-    #Locale["wo"]["synonyms"]
-    #Locale["wo"]["examples"]
-    #Locale["wo"]["see-also"]
-    Locale["wo"]["family"]             = "Atlantic-Congo"
-    Locale["wo"]["iso"]                = "wol"
-    Locale["wo"]["glotto"]             = "wolo1247"
-    Locale["wo"]["script"]             = "Latn"
 
     #? Cherokee
     Locale["chr"]["support"]           = "unstable"
