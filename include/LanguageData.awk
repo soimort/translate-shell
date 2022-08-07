@@ -1968,9 +1968,7 @@ function initLocale() {
     Locale["ru"]["spoken-in"]          = "the Russian-speaking world"
     Locale["ru"]["supported-by"]       = "google; bing; yandex"
 
-
-
-    #77 Samoan
+    # Samoan
     Locale["sm"]["name"]               = "Samoan"
     Locale["sm"]["endonym"]            = "Gagana Sāmoa"
     #Locale["sm"]["translations-of"]
@@ -1979,9 +1977,12 @@ function initLocale() {
     #Locale["sm"]["examples"]
     #Locale["sm"]["see-also"]
     Locale["sm"]["family"]             = "Austronesian"
+    Locale["sm"]["branch"]             = "Malayo-Polynesian"
     Locale["sm"]["iso"]                = "smo"
     Locale["sm"]["glotto"]             = "samo1305"
     Locale["sm"]["script"]             = "Latn"
+    Locale["sm"]["spoken-in"]          = "the Samoan Islands"
+    Locale["sm"]["supported-by"]       = "google; bing"
 
     # Sanskrit
     Locale["sa"]["name"]               = "Sanskrit"
@@ -1992,11 +1993,14 @@ function initLocale() {
     #Locale["sa"]["examples"]
     #Locale["sa"]["see-also"]
     Locale["sa"]["family"]             = "Indo-European"
+    Locale["sa"]["branch"]             = "Indo-Aryan"
     Locale["sa"]["iso"]                = "san"
     Locale["sa"]["glotto"]             = "sans1269"
     Locale["sa"]["script"]             = "Deva"
+    Locale["sa"]["spoken-in"]          = "ancient India"
+    Locale["sa"]["supported-by"]       = "google"
 
-    #78 Scots Gaelic
+    # Scots Gaelic / Scottish Gaelic
     Locale["gd"]["name"]               = "Scots Gaelic"
     Locale["gd"]["endonym"]            = "Gàidhlig"
     Locale["gd"]["translations-of"]    = "Eadar-theangachadh airson %s"
@@ -2005,11 +2009,14 @@ function initLocale() {
     Locale["gd"]["examples"]           = "Buill-eisimpleir"
     Locale["gd"]["see-also"]           = "Faic na leanas cuideachd"
     Locale["gd"]["family"]             = "Indo-European"
+    Locale["gd"]["branch"]             = "Celtic"
     Locale["gd"]["iso"]                = "gla"
     Locale["gd"]["glotto"]             = "scot1245"
     Locale["gd"]["script"]             = "Latn"
+    Locale["gd"]["spoken-in"]          = "Scotland"
+    Locale["gd"]["supported-by"]       = "google; yandex"
 
-    #80 Sepedi (Northern Sotho)
+    # Sepedi (Northern Sotho)
     Locale["nso"]["name"]              = "Sepedi"
     Locale["nso"]["name2"]             = "Pedi"
     Locale["nso"]["name3"]             = "Northern Sotho"
@@ -2020,38 +2027,46 @@ function initLocale() {
     #Locale["nso"]["examples"]
     #Locale["nso"]["see-also"]
     Locale["nso"]["family"]            = "Atlantic-Congo"
+    Locale["nso"]["branch"]            = "Bantu"
     Locale["nso"]["iso"]               = "nso"
     Locale["nso"]["glotto"]            = "nort3233"
     Locale["nso"]["script"]            = "Latn"
+    Locale["nso"]["spoken-in"]         = "the northeastern provinces of South Africa"
+    Locale["nso"]["supported-by"]      = "google"
 
-    #79a Serbian, Cyrillic alphabet
+    # Serbian, Cyrillic alphabet
     Locale["sr-Cyrl"]["name"]          = "Serbian (Cyrillic)"
-    Locale["sr-Cyrl"]["endonym"]       = "српски"
+    Locale["sr-Cyrl"]["endonym"]       = "Српски"
     Locale["sr-Cyrl"]["translations-of"] = "Преводи за „%s“"
     Locale["sr-Cyrl"]["definitions-of"]  = "Дефиниције за %s"
     Locale["sr-Cyrl"]["synonyms"]      = "Синоними"
     Locale["sr-Cyrl"]["examples"]      = "Примери"
     Locale["sr-Cyrl"]["see-also"]      = "Погледајте такође"
     Locale["sr-Cyrl"]["family"]        = "Indo-European"
+    Locale["sr-Cyrl"]["branch"]        = "South Slavic"
     Locale["sr-Cyrl"]["iso"]           = "srp-Cyrl"
     Locale["sr-Cyrl"]["glotto"]        = "serb1264"
     Locale["sr-Cyrl"]["script"]        = "Cyrl"
+    Locale["sr-Cyrl"]["spoken-in"]     = "Serbia; Bosnia and Herzegovina; Montenegro; Kosovo"
+    Locale["sr-Cyrl"]["supported-by"]  = "google; bing; yandex"
 
-    #79b Serbian, Latin alphabet
-    Locale["sr-Latn"]["support"]       = "bing-only"
+    # Serbian, Latin alphabet
     Locale["sr-Latn"]["name"]          = "Serbian (Latin)"
-    Locale["sr-Latn"]["endonym"]       = "srpski"
+    Locale["sr-Latn"]["endonym"]       = "Srpski"
     Locale["sr-Latn"]["translations-of"] = "Prevodi za „%s“"
     Locale["sr-Latn"]["definitions-of"]  = "Definicije za %s"
     Locale["sr-Latn"]["synonyms"]      = "Sinonimi"
     Locale["sr-Latn"]["examples"]      = "Primeri"
     Locale["sr-Latn"]["see-also"]      = "Pogledajte takođe"
     Locale["sr-Latn"]["family"]        = "Indo-European"
+    Locale["sr-Latn"]["branch"]        = "South Slavic"
     Locale["sr-Latn"]["iso"]           = "srp-Latn"
     Locale["sr-Latn"]["glotto"]        = "serb1264"
     Locale["sr-Latn"]["script"]        = "Latn"
+    Locale["sr-Latn"]["spoken-in"]     = "Serbia; Bosnia and Herzegovina; Montenegro; Kosovo"
+    Locale["sr-Latn"]["supported-by"]  = "bing"
 
-    #80 Sesotho (Southern Sotho)
+    # Sesotho (Southern Sotho)
     Locale["st"]["name"]               = "Sesotho"
     Locale["st"]["name2"]              = "Sotho"
     Locale["st"]["name3"]              = "Southern Sotho"
@@ -2062,11 +2077,26 @@ function initLocale() {
     Locale["st"]["examples"]           = "Mehlala"
     Locale["st"]["see-also"]           = "Bona hape"
     Locale["st"]["family"]             = "Atlantic-Congo"
+    Locale["st"]["branch"]             = "Bantu"
     Locale["st"]["iso"]                = "sot"
     Locale["st"]["glotto"]             = "sout2807"
     Locale["st"]["script"]             = "Latn"
+    Locale["st"]["spoken-in"]          = "Lesotho; South Africa; Zimbabwe"
+    Locale["st"]["supported-by"]       = "google"
 
-    #81 Shona
+    # Setswana
+    Locale["tn"]["name"]               = "Setswana"
+    Locale["tn"]["name2"]              = "Tswana"
+    Locale["tn"]["endonym"]            = "Setswana"
+    Locale["tn"]["family"]             = "Atlantic-Congo"
+    Locale["tn"]["branch"]             = "Bantu"
+    Locale["tn"]["iso"]                = "tsn"
+    Locale["tn"]["glotto"]             = "tswa1253"
+    Locale["tn"]["script"]             = "Latn"
+    Locale["tn"]["spoken-in"]          = "Botswana; South Africa"
+    Locale["tn"]["supported-by"]       = ""
+
+    # Shona
     Locale["sn"]["name"]               = "Shona"
     Locale["sn"]["endonym"]            = "chiShona"
     Locale["sn"]["translations-of"]    = "Shanduro dze %s"
@@ -2075,11 +2105,14 @@ function initLocale() {
     Locale["sn"]["examples"]           = "Mienzaniso"
     Locale["sn"]["see-also"]           = "Onawo"
     Locale["sn"]["family"]             = "Atlantic-Congo"
+    Locale["sn"]["branch"]             = "Bantu"
     Locale["sn"]["iso"]                = "sna"
     Locale["sn"]["glotto"]             = "core1255"
     Locale["sn"]["script"]             = "Latn"
+    Locale["sn"]["spoken-in"]          = "Zimbabwe"
+    Locale["sn"]["supported-by"]       = "google"
 
-    #82 Sindhi
+    # Sindhi
     Locale["sd"]["name"]               = "Sindhi"
     Locale["sd"]["endonym"]            = "سنڌي"
     Locale["sd"]["translations-of"]    = "%s جو ترجمو"
@@ -2088,13 +2121,17 @@ function initLocale() {
     Locale["sd"]["examples"]           = "مثالون"
     Locale["sd"]["see-also"]           = "به ڏسو"
     Locale["sd"]["family"]             = "Indo-European"
+    Locale["sd"]["branch"]             = "Indo-Aryan"
     Locale["sd"]["iso"]                = "snd"
     Locale["sd"]["glotto"]             = "sind1272"
     Locale["sd"]["script"]             = "Arab"
     Locale["sd"]["rtl"]                = "true" # RTL language
+    Locale["sd"]["spoken-in"]          = "the region of Sindh in Pakistan; India"
+    Locale["sd"]["supported-by"]       = "google"
 
-    #83 Sinhala
+    # Sinhala / Sinhalese
     Locale["si"]["name"]               = "Sinhala"
+    Locale["si"]["name2"]              = "Sinhalese"
     Locale["si"]["endonym"]            = "සිංහල"
     Locale["si"]["translations-of"]    = "%s හි පරිවර්තන"
     Locale["si"]["definitions-of"]     = "%s හි නිර්වචන"
@@ -2102,11 +2139,14 @@ function initLocale() {
     Locale["si"]["examples"]           = "උදාහරණ"
     Locale["si"]["see-also"]           = "මෙයත් බලන්න"
     Locale["si"]["family"]             = "Indo-European"
+    Locale["si"]["branch"]             = "Indo-Aryan"
     Locale["si"]["iso"]                = "sin"
     Locale["si"]["glotto"]             = "sinh1246"
     Locale["si"]["script"]             = "Sinh"
+    Locale["si"]["spoken-in"]          = "Sri Lanka"
+    Locale["si"]["supported-by"]       = "google; yandex"
 
-    #84 Slovak
+    # Slovak
     Locale["sk"]["name"]               = "Slovak"
     Locale["sk"]["endonym"]            = "Slovenčina"
     Locale["sk"]["translations-of"]    = "Preklady výrazu: %s"
@@ -2115,11 +2155,14 @@ function initLocale() {
     Locale["sk"]["examples"]           = "Príklady"
     Locale["sk"]["see-also"]           = "Pozrite tiež"
     Locale["sk"]["family"]             = "Indo-European"
+    Locale["sk"]["branch"]             = "West Slavic"
     Locale["sk"]["iso"]                = "slk"
     Locale["sk"]["glotto"]             = "slov1269"
     Locale["sk"]["script"]             = "Latn"
+    Locale["sk"]["spoken-in"]          = "Slovakia"
+    Locale["sk"]["supported-by"]       = "google; bing; yandex"
 
-    #85 Slovenian / Slovene
+    # Slovenian / Slovene
     Locale["sl"]["name"]               = "Slovenian"
     Locale["sl"]["name2"]              = "Slovene"
     Locale["sl"]["endonym"]            = "Slovenščina"
@@ -2129,11 +2172,14 @@ function initLocale() {
     Locale["sl"]["examples"]           = "Primeri"
     Locale["sl"]["see-also"]           = "Glejte tudi"
     Locale["sl"]["family"]             = "Indo-European"
+    Locale["sl"]["branch"]             = "South Slavic"
     Locale["sl"]["iso"]                = "slv"
     Locale["sl"]["glotto"]             = "slov1268"
     Locale["sl"]["script"]             = "Latn"
+    Locale["sl"]["spoken-in"]          = "Slovenia"
+    Locale["sl"]["supported-by"]       = "google; bing; yandex"
 
-    #86 Somali
+    # Somali
     Locale["so"]["name"]               = "Somali"
     Locale["so"]["endonym"]            = "Soomaali"
     Locale["so"]["translations-of"]    = "Turjumaada %s"
@@ -2142,11 +2188,14 @@ function initLocale() {
     Locale["so"]["examples"]           = "Tusaalooyin"
     Locale["so"]["see-also"]           = "Sidoo kale eeg"
     Locale["so"]["family"]             = "Afro-Asiatic"
+    Locale["so"]["branch"]             = "Cushitic"
     Locale["so"]["iso"]                = "som"
     Locale["so"]["glotto"]             = "soma1255"
     Locale["so"]["script"]             = "Latn"
+    Locale["so"]["spoken-in"]          = "Somalia; Somaliland; Ethiopia; Djibouti"
+    Locale["so"]["supported-by"]       = "google; bing"
 
-    #87 Spanish
+    # Spanish
     Locale["es"]["name"]               = "Spanish"
     Locale["es"]["endonym"]            = "Español"
     Locale["es"]["translations-of"]    = "Traducciones de %s"
@@ -2155,12 +2204,15 @@ function initLocale() {
     Locale["es"]["examples"]           = "Ejemplos"
     Locale["es"]["see-also"]           = "Ver también"
     Locale["es"]["family"]             = "Indo-European"
+    Locale["es"]["branch"]             = "Western Romance"
     Locale["es"]["iso"]                = "spa"
     Locale["es"]["glotto"]             = "stan1288"
     Locale["es"]["script"]             = "Latn"
     Locale["es"]["dictionary"]         = "true" # has dictionary
+    Locale["es"]["spoken-in"]          = "Spain; the Americas"
+    Locale["es"]["supported-by"]       = "google; bing; yandex"
 
-    #88 Sundanese, Latin alphabet
+    # Sundanese, Latin alphabet
     Locale["su"]["name"]               = "Sundanese"
     Locale["su"]["endonym"]            = "Basa Sunda"
     Locale["su"]["translations-of"]    = "Tarjamahan tina %s"
@@ -2169,11 +2221,14 @@ function initLocale() {
     Locale["su"]["examples"]           = "Conto"
     Locale["su"]["see-also"]           = "Tingali ogé"
     Locale["su"]["family"]             = "Austronesian"
+    Locale["su"]["branch"]             = "Malayo-Polynesian"
     Locale["su"]["iso"]                = "sun"
     Locale["su"]["glotto"]             = "sund1252"
     Locale["su"]["script"]             = "Latn"
+    Locale["su"]["spoken-in"]          = "Java, Indonesia"
+    Locale["su"]["supported-by"]       = "google; yandex"
 
-    #89 Swahili / Kiswahili
+    # Swahili / Kiswahili
     Locale["sw"]["name"]               = "Swahili"
     Locale["sw"]["name2"]              = "Kiswahili"
     Locale["sw"]["endonym"]            = "Kiswahili"
@@ -2183,11 +2238,14 @@ function initLocale() {
     Locale["sw"]["examples"]           = "Mifano"
     Locale["sw"]["see-also"]           = "Angalia pia"
     Locale["sw"]["family"]             = "Atlantic-Congo"
+    Locale["sw"]["branch"]             = "Bantu"
     Locale["sw"]["iso"]                = "swa"
     Locale["sw"]["glotto"]             = "swah1253"
     Locale["sw"]["script"]             = "Latn"
+    Locale["sw"]["spoken-in"]          = "the East African coast and litoral islands"
+    Locale["sw"]["supported-by"]       = "google; bing; yandex"
 
-    #90 Swedish
+    # Swedish
     Locale["sv"]["name"]               = "Swedish"
     Locale["sv"]["endonym"]            = "Svenska"
     Locale["sv"]["translations-of"]    = "Översättningar av %s"
@@ -2196,9 +2254,14 @@ function initLocale() {
     Locale["sv"]["examples"]           = "Exempel"
     Locale["sv"]["see-also"]           = "Se även"
     Locale["sv"]["family"]             = "Indo-European"
+    Locale["sv"]["branch"]             = "North Germanic"
     Locale["sv"]["iso"]                = "swe"
     Locale["sv"]["glotto"]             = "swed1254"
     Locale["sv"]["script"]             = "Latn"
+    Locale["sv"]["spoken-in"]          = "Sweden; Finland; Estonia"
+    Locale["sv"]["supported-by"]       = "google; bing; yandex"
+
+
 
     #91 Tajik / Tajiki (Tajiki Persian), Cyrillic alphabet
     Locale["tg"]["name"]               = "Tajik"
