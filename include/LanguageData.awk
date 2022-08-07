@@ -260,6 +260,22 @@ function initLocale() {
     Locale["bs"]["spoken-in"]          = "Bosnia and Herzegovina"
     Locale["bs"]["supported-by"]       = "google; bing; yandex"
 
+    # Breton
+    Locale["br"]["name"]               = "Breton"
+    Locale["br"]["endonym"]            = "Brezhoneg"
+    #Locale["br"]["translations-of"]
+    #Locale["br"]["definitions-of"]
+    #Locale["br"]["synonyms"]
+    #Locale["br"]["examples"]
+    #Locale["br"]["see-also"]
+    Locale["br"]["family"]             = "Indo-European"
+    Locale["br"]["branch"]             = "Celtic"
+    Locale["br"]["iso"]                = "bre"
+    Locale["br"]["glotto"]             = "bret1244"
+    Locale["br"]["script"]             = "Latn"
+    Locale["br"]["spoken-in"]          = "Brittany in France"
+    Locale["br"]["supported-by"]       = ""
+
     # Bulgarian
     Locale["bg"]["name"]               = "Bulgarian"
     Locale["bg"]["endonym"]            = "български"
@@ -324,6 +340,22 @@ function initLocale() {
     Locale["ceb"]["script"]            = "Latn"
     Locale["ceb"]["spoken-in"]         = "the southern Philippines"
     Locale["ceb"]["supported-by"]      = "google; yandex"
+
+    # Cherokee
+    Locale["chr"]["name"]              = "Cherokee"
+    Locale["chr"]["endonym"]           = "ᏣᎳᎩ"
+    #Locale["chr"]["translations-of"]
+    #Locale["chr"]["definitions-of"]
+    #Locale["chr"]["synonyms"]
+    #Locale["chr"]["examples"]
+    #Locale["chr"]["see-also"]
+    Locale["chr"]["family"]            = "Iroquoian"
+    #Locale["chr"]["branch"]
+    Locale["chr"]["iso"]               = "chr"
+    Locale["chr"]["glotto"]            = "cher1273"
+    Locale["chr"]["script"]            = "Cher"
+    Locale["chr"]["spoken-in"]         = "North America"
+    Locale["chr"]["supported-by"]      = ""
 
     # Chichewa
     Locale["ny"]["name"]               = "Chichewa"
@@ -1742,6 +1774,22 @@ function initLocale() {
     Locale["no"]["spoken-in"]          = "Norway"
     Locale["no"]["supported-by"]       = "google; bing; yandex"
 
+    # Occitan
+    Locale["oc"]["name"]               = "Occitan"
+    Locale["oc"]["endonym"]            = "Occitan"
+    #Locale["oc"]["translations-of"]
+    #Locale["oc"]["definitions-of"]
+    #Locale["oc"]["synonyms"]
+    #Locale["oc"]["examples"]
+    #Locale["oc"]["see-also"]
+    Locale["oc"]["family"]             = "Indo-European"
+    Locale["oc"]["branch"]             = "Western Romance"
+    Locale["oc"]["iso"]                = "oci"
+    Locale["oc"]["glotto"]             = "occi1239"
+    Locale["oc"]["script"]             = "Latn"
+    Locale["oc"]["spoken-in"]          = "Occitania in France, Monaco, Italy and Spain"
+    Locale["oc"]["supported-by"]       = ""
+
     # Odia / Oriya
     Locale["or"]["name"]               = "Odia"
     Locale["or"]["name2"]              = "Oriya"
@@ -2630,9 +2678,7 @@ function initLocale() {
     Locale["wo"]["spoken-in"]          = "Senegal; Mauritania; the Gambia"
     Locale["wo"]["supported-by"]       = ""
 
-
-
-    #105 Xhosa
+    # Xhosa
     Locale["xh"]["name"]               = "Xhosa"
     Locale["xh"]["endonym"]            = "isiXhosa"
     Locale["xh"]["translations-of"]    = "Iinguqulelo zika-%s"
@@ -2641,9 +2687,14 @@ function initLocale() {
     Locale["xh"]["examples"]           = "Imizekelo"
     Locale["xh"]["see-also"]           = "Kwakhona bona"
     Locale["xh"]["family"]             = "Atlantic-Congo"
+    Locale["xh"]["branch"]             = "Bantu"
     Locale["xh"]["iso"]                = "xho"
     Locale["xh"]["glotto"]             = "xhos1239"
     Locale["xh"]["script"]             = "Latn"
+    Locale["xh"]["spoken-in"]          = "South Africa; Zimbabwe"
+    Locale["xh"]["supported-by"]       = "google; yandex"
+
+
 
     #106 Yiddish
     Locale["yi"]["name"]               = "Yiddish"
@@ -2693,48 +2744,6 @@ function initLocale() {
     Locale["yua"]["iso"]               = "yua"
     Locale["yua"]["glotto"]            = "yuca1254"
     Locale["yua"]["script"]            = "Latn"
-
-    #? Breton
-    Locale["br"]["support"]            = "unstable"
-    Locale["br"]["name"]               = "Breton"
-    Locale["br"]["endonym"]            = "Brezhoneg"
-    #Locale["br"]["translations-of"]
-    #Locale["br"]["definitions-of"]
-    #Locale["br"]["synonyms"]
-    #Locale["br"]["examples"]
-    #Locale["br"]["see-also"]
-    Locale["br"]["family"]             = "Indo-European"
-    Locale["br"]["iso"]                = "bre"
-    Locale["br"]["glotto"]             = "bret1244"
-    Locale["br"]["script"]             = "Latn"
-
-    #? Occitan
-    Locale["oc"]["support"]            = "unstable"
-    Locale["oc"]["name"]               = "Occitan"
-    Locale["oc"]["endonym"]            = "Occitan"
-    #Locale["oc"]["translations-of"]
-    #Locale["oc"]["definitions-of"]
-    #Locale["oc"]["synonyms"]
-    #Locale["oc"]["examples"]
-    #Locale["oc"]["see-also"]
-    Locale["oc"]["family"]             = "Indo-European"
-    Locale["oc"]["iso"]                = "oci"
-    Locale["oc"]["glotto"]             = "occi1239"
-    Locale["oc"]["script"]             = "Latn"
-
-    #? Cherokee
-    Locale["chr"]["support"]           = "unstable"
-    Locale["chr"]["name"]              = "Cherokee"
-    Locale["chr"]["endonym"]           = "ᏣᎳᎩ"
-    #Locale["chr"]["translations-of"]
-    #Locale["chr"]["definitions-of"]
-    #Locale["chr"]["synonyms"]
-    #Locale["chr"]["examples"]
-    #Locale["chr"]["see-also"]
-    Locale["chr"]["family"]            = "Iroquoian"
-    Locale["chr"]["iso"]               = "chr"
-    Locale["chr"]["glotto"]            = "cher1273"
-    Locale["chr"]["script"]            = "Cher"
 
 }
 
