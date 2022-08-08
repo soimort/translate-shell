@@ -2694,9 +2694,19 @@ function initLocale() {
     Locale["xh"]["spoken-in"]          = "South Africa; Zimbabwe"
     Locale["xh"]["supported-by"]       = "google; yandex"
 
+    # Yakut / Sakha
+    Locale["sah"]["name"]              = "Yakut"
+    Locale["sah"]["name2"]             = "Sakha"
+    Locale["sah"]["endonym"]           = "Sakha"
+    Locale["sah"]["family"]            = "Turkic"
+    Locale["sah"]["branch"]            = "Siberian Turkic"
+    Locale["sah"]["iso"]               = "sah"
+    Locale["sah"]["glotto"]            = "yaku1245"
+    Locale["sah"]["script"]            = "Latn"
+    Locale["sah"]["spoken-in"]         = "the Republic of Sakha (Yakutia) in Russia"
+    Locale["sah"]["supported-by"]      = "yandex"
 
-
-    #106 Yiddish
+    # Yiddish
     Locale["yi"]["name"]               = "Yiddish"
     Locale["yi"]["endonym"]            = "ייִדיש"
     Locale["yi"]["translations-of"]    = "איבערזעצונגען פון %s"
@@ -2705,12 +2715,16 @@ function initLocale() {
     Locale["yi"]["examples"]           = "ביישפילע"
     Locale["yi"]["see-also"]           = "זייען אויך"
     Locale["yi"]["family"]             = "Indo-European"
+    Locale["yi"]["branch"]             = "West Germanic"
     Locale["yi"]["iso"]                = "yid"
     Locale["yi"]["glotto"]             = "yidd1255"
     Locale["yi"]["script"]             = "Hebr"
     Locale["yi"]["rtl"]                = "true" # RTL language
+    Locale["yi"]["spoken-in"]          = "worldwide"
+    Locale["yi"]["description"]        = "a West Germanic language historically spoken by Ashkenazi Jews"
+    Locale["yi"]["supported-by"]       = "google; yandex"
 
-    #107 Yoruba
+    # Yoruba
     Locale["yo"]["name"]               = "Yoruba"
     Locale["yo"]["endonym"]            = "Yorùbá"
     Locale["yo"]["translations-of"]    = "Awọn itumọ ti %s"
@@ -2719,11 +2733,25 @@ function initLocale() {
     Locale["yo"]["examples"]           = "Awọn apẹrẹ"
     Locale["yo"]["see-also"]           = "Tun wo"
     Locale["yo"]["family"]             = "Atlantic-Congo"
+    #Locale["yo"]["branch"]
     Locale["yo"]["iso"]                = "yor"
     Locale["yo"]["glotto"]             = "yoru1245"
     Locale["yo"]["script"]             = "Latn"
+    Locale["yo"]["spoken-in"]          = "Nigeria; Benin"
+    Locale["yo"]["supported-by"]       = "google"
 
-    #108 Zulu
+    # Yucatec Maya
+    Locale["yua"]["name"]              = "Yucatec Maya"
+    Locale["yua"]["endonym"]           = "Màaya T'àan"
+    Locale["yua"]["family"]            = "Mayan"
+    #Locale["yua"]["branch"]
+    Locale["yua"]["iso"]               = "yua"
+    Locale["yua"]["glotto"]            = "yuca1254"
+    Locale["yua"]["script"]            = "Latn"
+    Locale["yua"]["spoken-in"]         = "Mexico; Belize"
+    Locale["yua"]["supported-by"]      = "bing"
+
+    # Zulu
     Locale["zu"]["name"]               = "Zulu"
     Locale["zu"]["endonym"]            = "isiZulu"
     Locale["zu"]["translations-of"]    = "Ukuhumusha i-%s"
@@ -2732,18 +2760,12 @@ function initLocale() {
     Locale["zu"]["examples"]           = "Izibonelo"
     Locale["zu"]["see-also"]           = "Bheka futhi"
     Locale["zu"]["family"]             = "Atlantic-Congo"
+    Locale["zu"]["branch"]             = "Bantu"
     Locale["zu"]["iso"]                = "zul"
     Locale["zu"]["glotto"]             = "zulu1248"
     Locale["zu"]["script"]             = "Latn"
-
-    #* Yucatec Maya
-    Locale["yua"]["support"]           = "bing-only"
-    Locale["yua"]["name"]              = "Yucatec Maya"
-    Locale["yua"]["endonym"]           = "Màaya T'àan"
-    Locale["yua"]["family"]            = "Mayan"
-    Locale["yua"]["iso"]               = "yua"
-    Locale["yua"]["glotto"]            = "yuca1254"
-    Locale["yua"]["script"]            = "Latn"
+    Locale["zu"]["spoken-in"]          = "South Africa; Lesotho; Eswatini"
+    Locale["zu"]["supported-by"]       = "google; bing; yandex"
 
 }
 
