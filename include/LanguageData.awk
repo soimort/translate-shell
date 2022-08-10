@@ -109,7 +109,7 @@ function initLocale() {
     Locale["as"]["iso"]                = "asm"
     Locale["as"]["glotto"]             = "assa1263"
     Locale["as"]["script"]             = "Beng"
-    Locale["as"]["spoken-in"]          = "the northeast Indian state of Assam"
+    Locale["as"]["spoken-in"]          = "the northeastern Indian state of Assam"
     Locale["as"]["supported-by"]       = "google; bing"
 
     # Aymara
@@ -1674,7 +1674,7 @@ function initLocale() {
     Locale["mni-Mtei"]["iso"]          = "mni"
     Locale["mni-Mtei"]["glotto"]       = "mani1292"
     Locale["mni-Mtei"]["script"]       = "Mtei"
-    Locale["mni-Mtei"]["spoken-in"]    = "the northeast India; Bangladesh; Myanmar"
+    Locale["mni-Mtei"]["spoken-in"]    = "the northeastern India; Bangladesh; Myanmar"
     Locale["mni-Mtei"]["supported-by"] = "google"
 
     # Mizo

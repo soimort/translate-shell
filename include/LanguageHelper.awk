@@ -249,7 +249,9 @@ function getDetails(code,    article, desc, group, iso, name, names, script, wri
         name = substr(name, 1, match(name, /\(.*\)/) - 2)
     }
 
-    if (getBranch(code)) {
+    if (getDescription(code))
+        desc = sprintf("%s is %s.", names, getDescription(code))
+    else if (getBranch(code)) {
         article = match(tolower(getBranch(code)), /^[aeiou]/) ? "an" : "a"
         if (iso == "eng")
             desc = sprintf("%s is %s %s language spoken %s.",
@@ -257,10 +259,9 @@ function getDetails(code,    article, desc, group, iso, name, names, script, wri
         else
             desc = sprintf("%s is %s %s language spoken mainly in %s.",
                            names, article, getBranch(code), getSpokenIn(code))
-    } else if (getFamily(code) == NULLSTR || tolower(getFamily(code)) == "language isolate")
+    }
+    else if (getFamily(code) == NULLSTR || tolower(getFamily(code)) == "language isolate")
         desc = sprintf("%s is a language spoken mainly in %s.", names, getSpokenIn(code))
-    else if (tolower(getFamily(code)) == "constructed language")
-        desc = sprintf("%s is %s.", names, getDescription(code))
     else
         desc = sprintf("%s is a language of the %s family, spoken mainly in %s.",
                        names, getFamily(code), getSpokenIn(code))
