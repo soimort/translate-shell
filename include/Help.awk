@@ -237,22 +237,30 @@ function showMan(    temp) {
 #     displayName = "endonym" or "name"
 function getReference(displayName,
                       ####
-                      code, col, cols, i, j, name, num, r, rows, saveSortedIn,
+                      code, col, cols, colNum, i, j, name, num, offset, r, rows, saveSortedIn,
                       t1, t2) {
     # number of language codes with stable support
     num = 0
-    for (code in Locale)
-        if (Locale[code]["support"] != "unstable")
-            num++
-    rows = int(num / 3) + (num % 3 ? 1 : 0)
-    cols[0][0] = cols[1][0] = cols[2][0] = NULLSTR
+    for (code in Locale) {
+        # only show languages that are supported
+        if (Locale[code]["supported-by"])
+           num++
+    }
+    colNum = (Option["width"] >= 104) ? 4 : 3
+    if (colNum == 4) {
+        rows = int(num / 4) + (num % 4 ? 1 : 0)
+        cols[0][0] = cols[1][0] = cols[2][0] = cols[3][0] = NULLSTR
+    } else {
+        rows = int(num / 3) + (num % 3 ? 1 : 0)
+        cols[0][0] = cols[1][0] = cols[2][0] = NULLSTR
+    }
     i = 0
     saveSortedIn = PROCINFO["sorted_in"]
     PROCINFO["sorted_in"] = displayName == "endonym" ? "@ind_num_asc" :
         "compName"
     for (code in Locale) {
-        # show languages only with stable support
-        if (Locale[code]["support"] != "unstable") {
+        # only show languages that are supported
+        if (Locale[code]["supported-by"]) {
             col = int(i / rows)
             append(cols[col], code)
             i++
@@ -261,99 +269,205 @@ function getReference(displayName,
     PROCINFO["sorted_in"] = saveSortedIn
 
     if (displayName == "endonym") {
-        r = "┌" replicate("─", 25) "┬" replicate("─", 25) "┬" replicate("─", 25) "┐" RS
-        for (i = 0; i < rows; i++) {
-            r = r "│"
-            for (j = 0; j < 3; j++) {
-                if (cols[j][i]) {
-                    t1 = getDisplay(cols[j][i])
-                    if (length(t1) > 17)
-                        t1 = substr(t1, 1, 14) "..."
-                    switch (cols[j][i]) { # fix rendered text width
-                    case "sa":
-                        t1 = sprintf(" %-21s", t1)
-                        break
-                    case "he": case "dv":
-                        t1 = sprintf(" %-20s", t1)
-                        break
-                    case "or": case "ur":
-                        t1 = sprintf(" %-19s", t1)
-                        break
-                    case "hi": case "gu": case "km": case "kn":
-                    case "my": case "ne": case "pa": case "si":
-                    case "ta": case "te": case "yi": case "as":
-                    case "bho": case "mai": case "gom":
-                        t1 = sprintf(" %-18s", t1)
-                        break
-                    case "yue":
-                        t1 = sprintf(" %-15s", t1)
-                        break
-                    case "ja": case "ko":
-                        t1 = sprintf(" %-14s", t1)
-                        break
-                    case "zh-CN": case "zh-TW":
-                        t1 = sprintf(" %-13s", t1)
-                        break
-                    default:
-                        if (length(t1) <= 17)
-                            t1 = sprintf(" %-17s", t1)
-                    }
-                    switch (length(cols[j][i])) {
-                    case 1: case 2: case 3: case 4:
-                        t2 = sprintf("- %s │", ansi("bold", sprintf("%4s", cols[j][i])))
-                        break
-                    case 5:
-                        t2 = sprintf("- %s│", ansi("bold", cols[j][i]))
-                        break
-                    case 6:
-                        t2 = sprintf("-%s│", ansi("bold", cols[j][i]))
-                        break
-                    case 7:
-                        t2 = sprintf("-%s", ansi("bold", cols[j][i]))
-                        break
-                    default:
-                        t2 = ansi("bold", cols[j][i])
-                    }
-                    r = r t1 t2
-                } else
-                    r = r sprintf("%25s│", NULLSTR)
+        if (colNum == 4) {  # 4-column
+            offset = int((Option["width"] - 104) / 4)
+            r = "┌" replicate("─", 25 + offset) "┬" replicate("─", 25 + offset) \
+                "┬" replicate("─", 25 + offset) "┬" replicate("─", 25 + offset) "┐" RS
+            for (i = 0; i < rows; i++) {
+                r = r "│"
+                for (j = 0; j < 4; j++) {
+                    if (cols[j][i]) {
+                        t1 = getDisplay(cols[j][i])
+                        if (length(t1) > 17 + offset)
+                            t1 = substr(t1, 1, 14 + offset) "..."
+                        switch (cols[j][i]) { # fix rendered text width
+                            case "sa":
+                                t1 = sprintf(" %-"21+offset"s", t1)
+                                break
+                            case "he": case "dv":
+                                t1 = sprintf(" %-"20+offset"s", t1)
+                                break
+                            case "bo": case "or": case "ur":
+                                t1 = sprintf(" %-"19+offset"s", t1)
+                                break
+                            case "as": case "gom": case "mai":
+                            case "gu": case "hi": case "bho":
+                            case "ta": case "te": case "my":
+                            case "ne": case "pa": case "km":
+                            case "kn": case "yi": case "si":
+                                t1 = sprintf(" %-"18+offset"s", t1)
+                                break
+                            case "lzh": case "yue":
+                                t1 = sprintf(" %-"15+offset"s", t1)
+                                break
+                            case "ja": case "ko":
+                                t1 = sprintf(" %-"14+offset"s", t1)
+                                break
+                            case "zh-CN": case "zh-TW":
+                                t1 = sprintf(" %-"13+offset"s", t1)
+                                break
+                            default:
+                                if (length(t1) <= 17+offset)
+                                    t1 = sprintf(" %-"17+offset"s", t1)
+                        }
+                        switch (length(cols[j][i])) {
+                            case 1: case 2: case 3: case 4:
+                                t2 = sprintf("- %s │", ansi("bold", sprintf("%4s", cols[j][i])))
+                                break
+                            case 5:
+                                t2 = sprintf("- %s│", ansi("bold", cols[j][i]))
+                                break
+                            case 6:
+                                t2 = sprintf("-%s│", ansi("bold", cols[j][i]))
+                                break
+                            case 7:
+                                t2 = sprintf("-%s", ansi("bold", cols[j][i]))
+                                break
+                            default:
+                                t2 = ansi("bold", cols[j][i])
+                        }
+                        r = r t1 t2
+                    } else
+                        r = r sprintf("%"25+offset"s│", NULLSTR)
+                }
+                r = r RS
             }
-            r = r RS
+            r = r "└" replicate("─", 25 + offset) "┴" replicate("─", 25 + offset) \
+                "┴" replicate("─", 25 + offset) "┴" replicate("─", 25 + offset) "┘"
+        } else {  # fixed-width 3-column
+            r = "┌" replicate("─", 25) "┬" replicate("─", 25) "┬" replicate("─", 25) "┐" RS
+            for (i = 0; i < rows; i++) {
+                r = r "│"
+                for (j = 0; j < 3; j++) {
+                    if (cols[j][i]) {
+                        t1 = getDisplay(cols[j][i])
+                        if (length(t1) > 17)
+                            t1 = substr(t1, 1, 14) "..."
+                        switch (cols[j][i]) { # fix rendered text width
+                            case "sa":
+                                t1 = sprintf(" %-21s", t1)
+                                break
+                            case "he": case "dv":
+                                t1 = sprintf(" %-20s", t1)
+                                break
+                            case "bo": case "or": case "ur":
+                                t1 = sprintf(" %-19s", t1)
+                                break
+                            case "as": case "gom": case "mai":
+                            case "gu": case "hi": case "bho":
+                            case "ta": case "te": case "my":
+                            case "ne": case "pa": case "km":
+                            case "kn": case "yi": case "si":
+                                t1 = sprintf(" %-18s", t1)
+                                break
+                            case "lzh": case "yue":
+                                t1 = sprintf(" %-15s", t1)
+                                break
+                            case "ja": case "ko":
+                                t1 = sprintf(" %-14s", t1)
+                                break
+                            case "zh-CN": case "zh-TW":
+                                t1 = sprintf(" %-13s", t1)
+                                break
+                            default:
+                                if (length(t1) <= 17)
+                                    t1 = sprintf(" %-17s", t1)
+                        }
+                        switch (length(cols[j][i])) {
+                            case 1: case 2: case 3: case 4:
+                                t2 = sprintf("- %s │", ansi("bold", sprintf("%4s", cols[j][i])))
+                                break
+                            case 5:
+                                t2 = sprintf("- %s│", ansi("bold", cols[j][i]))
+                                break
+                            case 6:
+                                t2 = sprintf("-%s│", ansi("bold", cols[j][i]))
+                                break
+                            case 7:
+                                t2 = sprintf("-%s", ansi("bold", cols[j][i]))
+                                break
+                            default:
+                                t2 = ansi("bold", cols[j][i])
+                        }
+                        r = r t1 t2
+                    } else
+                        r = r sprintf("%25s│", NULLSTR)
+                }
+                r = r RS
+            }
+            r = r "└" replicate("─", 25) "┴" replicate("─", 25) "┴" replicate("─", 25) "┘"
         }
-        r = r "└" replicate("─", 25) "┴" replicate("─", 25) "┴" replicate("─", 25) "┘"
     } else {
-        r = "┌" replicate("─", 25) "┬" replicate("─", 25) "┬" replicate("─", 25) "┐" RS
-        for (i = 0; i < rows; i++) {
-            r = r "│"
-            for (j = 0; j < 3; j++) {
-                if (cols[j][i]) {
-                    t1 = getName(cols[j][i])
-                    if (length(t1) > 17)
-                        t1 = substr(t1, 1, 14) "..."
-                    t1 = sprintf(" %-17s", t1)
-                    switch (length(cols[j][i])) {
-                    case 1: case 2: case 3: case 4:
-                        t2 = sprintf("- %s │", ansi("bold", sprintf("%4s", cols[j][i])))
-                        break
-                    case 5:
-                        t2 = sprintf("- %s│", ansi("bold", cols[j][i]))
-                        break
-                    case 6:
-                        t2 = sprintf("-%s│", ansi("bold", cols[j][i]))
-                        break
-                    case 7:
-                        t2 = sprintf("-%s", ansi("bold", cols[j][i]))
-                        break
-                    default:
-                        t2 = ansi("bold", cols[j][i])
-                    }
-                    r = r t1 t2
-                } else
-                    r = r sprintf("%25s│", NULLSTR)
+        if (colNum == 4) {  # 4-column
+            offset = int((Option["width"] - 104) / 4)
+            r = "┌" replicate("─", 25 + offset) "┬" replicate("─", 25 + offset) \
+                "┬" replicate("─", 25 + offset) "┬" replicate("─", 25 + offset) "┐" RS
+            for (i = 0; i < rows; i++) {
+                r = r "│"
+                for (j = 0; j < 4; j++) {
+                    if (cols[j][i]) {
+                        t1 = getName(cols[j][i])
+                        if (length(t1) > 17 + offset)
+                            t1 = substr(t1, 1, 14 + offset) "..."
+                        t1 = sprintf(" %-"17+offset"s", t1)
+                        switch (length(cols[j][i])) {
+                            case 1: case 2: case 3: case 4:
+                                t2 = sprintf("- %s │", ansi("bold", sprintf("%4s", cols[j][i])))
+                                break
+                            case 5:
+                                t2 = sprintf("- %s│", ansi("bold", cols[j][i]))
+                                break
+                            case 6:
+                                t2 = sprintf("-%s│", ansi("bold", cols[j][i]))
+                                break
+                            case 7:
+                                t2 = sprintf("-%s", ansi("bold", cols[j][i]))
+                                break
+                            default:
+                                t2 = ansi("bold", cols[j][i])
+                        }
+                        r = r t1 t2
+                    } else
+                        r = r sprintf("%"25+offset"s│", NULLSTR)
+                }
+                r = r RS
             }
-            r = r RS
+            r = r "└" replicate("─", 25 + offset) "┴" replicate("─", 25 + offset) \
+                "┴" replicate("─", 25 + offset) "┴" replicate("─", 25 + offset) "┘"
+        } else {  # fixed-width 3-column
+            r = "┌" replicate("─", 25) "┬" replicate("─", 25) "┬" replicate("─", 25) "┐" RS
+            for (i = 0; i < rows; i++) {
+                r = r "│"
+                for (j = 0; j < 3; j++) {
+                    if (cols[j][i]) {
+                        t1 = getName(cols[j][i])
+                        if (length(t1) > 17)
+                            t1 = substr(t1, 1, 14) "..."
+                        t1 = sprintf(" %-17s", t1)
+                        switch (length(cols[j][i])) {
+                            case 1: case 2: case 3: case 4:
+                                t2 = sprintf("- %s │", ansi("bold", sprintf("%4s", cols[j][i])))
+                                break
+                            case 5:
+                                t2 = sprintf("- %s│", ansi("bold", cols[j][i]))
+                                break
+                            case 6:
+                                t2 = sprintf("-%s│", ansi("bold", cols[j][i]))
+                                break
+                            case 7:
+                                t2 = sprintf("-%s", ansi("bold", cols[j][i]))
+                                break
+                            default:
+                                t2 = ansi("bold", cols[j][i])
+                        }
+                        r = r t1 t2
+                    } else
+                        r = r sprintf("%25s│", NULLSTR)
+                }
+                r = r RS
+            }
+            r = r "└" replicate("─", 25) "┴" replicate("─", 25) "┴" replicate("─", 25) "┘"
         }
-        r = r "└" replicate("─", 25) "┴" replicate("─", 25) "┴" replicate("─", 25) "┘"
     }
     return r
 }
