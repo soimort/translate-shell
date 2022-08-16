@@ -3,3 +3,4 @@
 @include "include/Translators/YandexTranslate.awk"
 @include "include/Translators/Apertium.awk"
 @include "include/Translators/SpellChecker.awk"
+@include "include/Translators/Auto.awk"
