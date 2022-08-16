@@ -20,7 +20,7 @@ function init() {
     Option["debug"] = 0
 
     # Translation engine
-    Option["engine"] = "google"
+    Option["engine"] = "auto"
 
     # Display
     Option["verbose"] = 1
@@ -780,8 +780,11 @@ BEGIN {
         print getList(Option["tl"])
         exit ExitCode
     case "list-engines":
+        saveSortedIn = PROCINFO["sorted_in"]
+        PROCINFO["sorted_in"] = "@ind_num_asc"
         for (translator in Translator)
             print (Option["engine"] == translator ? "* " : "  ") translator
+        PROCINFO["sorted_in"] = saveSortedIn
         exit ExitCode
     case "upgrade":
         upgrade()
