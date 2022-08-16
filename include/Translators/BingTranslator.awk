@@ -276,6 +276,12 @@ function bingTranslate(text, sl, tl, hl,
         return
     }
 
+    if (ast[0 SUBSEP "statusCode"] == "400") {
+        e("[ERROR] " ucfirst(Option["engine"]) " does not support the specified language(s)")
+        ExitCode = 1
+        return
+    }
+
     translation = unparameterize(ast[0 SUBSEP 0 SUBSEP "translations" SUBSEP 0 SUBSEP "text"])
 
     returnIl[0] = il = _sl == "auto-detect" ?
