@@ -75,7 +75,8 @@ function init() {
     Option["output"] = STDOUT
 
     # Language preference
-    Option["hl"] = ENVIRON["HOME_LANG"] ? ENVIRON["HOME_LANG"] : UserLang
+    Option["hl"] = ENVIRON["HOST_LANG"] ? ENVIRON["HOST_LANG"] :
+        ENVIRON["HOME_LANG"] ? ENVIRON["HOME_LANG"] : UserLang # FIXME[1.0]: HOME_LANG to be removed
     Option["sl"] = ENVIRON["SOURCE_LANG"] ? ENVIRON["SOURCE_LANG"] : "auto"
     Option["sls"][1] = Option["sl"]
     Option["tl"][1] = ENVIRON["TARGET_LANG"] ? ENVIRON["TARGET_LANG"] : UserLang
@@ -229,8 +230,8 @@ BEGIN {
         # FIXME[1.0]: to be removed
         match(ARGV[pos], /^--?r$/)
         if (RSTART) {
-            w("[WARNING] Option '-r' has been deprecated since version 0.9.\n" \
-              "          Use option '-T' or '-reference' instead.")
+            w("[ERROR] Option '-r' has been deprecated since version 0.9.\n" \
+              "        Use option '-T' or '-reference' instead.")
             exit 1
         }
 
@@ -669,9 +670,20 @@ BEGIN {
 
         ## Language preference options
 
-        # -l CODE, -hl CODE, -lang CODE
-        match(ARGV[pos], /^--?(l(a(ng?)?)?|hl)(=(.*)?)?$/, group)
+        # -hl CODE, -host CODE
+        match(ARGV[pos], /^--?(host|hl)(=(.*)?)?$/, group)
         if (RSTART) {
+            Option["hl"] = group[2] ?
+                (group[3] ? group[3] : Option["hl"]) :
+                ARGV[++pos]
+            continue
+        }
+        # FIXME[1.0]: to be removed
+        # -l CODE, -lang CODE
+        match(ARGV[pos], /^--?(l(a(ng?)?)?)(=(.*)?)?$/, group)
+        if (RSTART) {
+            w("[WARNING] Option '-l' / '-lang' will be deprecated in the next version.\n" \
+              "          Use '-hl' / '-host' instead.")
             Option["hl"] = group[4] ?
                 (group[5] ? group[5] : Option["hl"]) :
                 ARGV[++pos]

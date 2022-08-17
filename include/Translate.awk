@@ -312,11 +312,11 @@ function translate(text, inline,
                    i, j, playlist, il, saveSortedIn) {
 
     if (!getCode(Option["hl"])) {
-        # Check if home language is supported
+        # Check if host language is supported
         w("[WARNING] Unknown language code: " Option["hl"] ", fallback to English: en")
         Option["hl"] = "en" # fallback to English
     } else if (isRTL(Option["hl"])) {
-        # Check if home language is R-to-L
+        # Check if host language is R-to-L
         if (!FriBidi)
             w("[WARNING] " getName(Option["hl"]) " is a right-to-left language, but FriBidi is not found.")
     }

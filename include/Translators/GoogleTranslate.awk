@@ -284,9 +284,9 @@ function googleTranslate(text, sl, tl, hl,
                 # Display: prompt message (Definitions of ...)
                 if (r) r = r RS
                 r = r m("-- display prompt message (Definitions of ...)")
-                if (isRTL(hl)) # home language is R-to-L
+                if (isRTL(hl)) # host language is R-to-L
                     r = r prettify("prompt-message", s(showDefinitionsOf(hl, join(original, " "))))
-                else { # home language is L-to-R
+                else { # host language is L-to-R
                     split(showDefinitionsOf(hl, "\0%s\0"), group, "\0")
                     for (i = 1; i <= length(group); i++) {
                         if (group[i] == "%s")
@@ -299,9 +299,9 @@ function googleTranslate(text, sl, tl, hl,
                 # Display: prompt message (Translations of ...)
                 if (r) r = r RS
                 r = r m("-- display prompt message (Translations of ...)")
-                if (isRTL(hl)) # home language is R-to-L
+                if (isRTL(hl)) # host language is R-to-L
                     r = r prettify("prompt-message", s(showTranslationsOf(hl, join(original, " "))))
-                else { # home language is L-to-R
+                else { # host language is L-to-R
                     split(showTranslationsOf(hl, "\0%s\0"), group, "\0")
                     for (i = 1; i <= length(group); i++) {
                         if (group[i] == "%s")

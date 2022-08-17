@@ -57,11 +57,11 @@ function prompt(    i, p, temp) {
     if (p ~ /%_/)
         gsub(/%_/, showTranslationsOf(Option["hl"]), p)
 
-    # %l : home language
+    # %l : host language
     if (p ~ /%l/)
         gsub(/%l/, getDisplay(Option["hl"]), p)
 
-    # %L : home language (English name)
+    # %L : host language (English name)
     if (p ~ /%L/)
         gsub(/%L/, getName(Option["hl"]), p)
 

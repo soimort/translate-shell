@@ -29,7 +29,7 @@ function getVersion(    build, gitHead) {
         sprintf("%-22s%s\n", "web browser", Option["browser"] != NONE ?
                 Option["browser"] :"[NONE]")                            \
         sprintf("%-22s%s (%s)\n", "user locale", UserLocale, getName(UserLang)) \
-        sprintf("%-22s%s\n", "home language", Option["hl"])             \
+        sprintf("%-22s%s\n", "host language", Option["hl"])             \
         sprintf("%-22s%s\n", "source language", join(Option["sls"], "+")) \
         sprintf("%-22s%s\n", "target language", join(Option["tl"], "+")) \
         sprintf("%-22s%s\n", "translation engine", Option["engine"])    \
@@ -178,10 +178,9 @@ function getHelp() {
             ", " ansi("bold", "-output ") ansi("underline", "FILENAME")) RS \
         ins(2, "Specify the output file.") RS                           \
         RS "Language preference options:" RS                            \
-        ins(1, ansi("bold", "-l ") ansi("underline", "CODE")            \
-            ", " ansi("bold", "-hl ") ansi("underline", "CODE")         \
-            ", " ansi("bold", "-lang ") ansi("underline", "CODE")) RS   \
-        ins(2, "Specify your home language.") RS                        \
+        ins(1, ansi("bold", "-hl ") ansi("underline", "CODE")           \
+            ", " ansi("bold", "-host ") ansi("underline", "CODE")) RS   \
+        ins(2, "Specify the host (interface) language.") RS             \
         ins(1, ansi("bold", "-s ") ansi("underline", "CODES")           \
             ", " ansi("bold", "-sl ") ansi("underline", "CODES")        \
             ", " ansi("bold", "-source ") ansi("underline", "CODES")    \
