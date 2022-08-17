@@ -209,7 +209,7 @@ function googleTranslate(text, sl, tl, hl,
     if (Option["verbose"] < -1)
         return il
     else if (Option["verbose"] < 0)
-        return getList(il)
+        return getLanguage(il)
 
     # Generate output
     if (!isVerbose) {

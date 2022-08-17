@@ -242,10 +242,23 @@ BEGIN {
             continue
         }
 
-        # -L CODES, -list CODES
-        match(ARGV[pos], /^--?(L|list)(=(.*)?)?$/, group)
+        # -L CODES, -language CODES
+        match(ARGV[pos], /^--?(L|language)(=(.*)?)?$/, group)
         if (RSTART) {
-            InfoOnly = "list"
+            InfoOnly = "language"
+            if (group[2]) {
+                if (group[3]) split(group[3], Option["tl"], "+")
+            } else
+                split(ARGV[++pos], Option["tl"], "+")
+            continue
+        }
+        # FIXME[1.0]: to be removed
+        # -list CODE
+        match(ARGV[pos], /^--?(list)(=(.*)?)?$/, group)
+        if (RSTART) {
+            w("[WARNING] Option '-list' will be deprecated in the next version.\n" \
+              "          Use '-L' / '-language' instead.")
+            InfoOnly = "language"
             if (group[2]) {
                 if (group[3]) split(group[3], Option["tl"], "+")
             } else
@@ -788,8 +801,8 @@ BEGIN {
     case "reference-english":
         print getReference("name")
         exit ExitCode
-    case "list":
-        print getList(Option["tl"])
+    case "language":
+        print getLanguage(Option["tl"])
         exit ExitCode
     case "list-engines":
         saveSortedIn = PROCINFO["sorted_in"]

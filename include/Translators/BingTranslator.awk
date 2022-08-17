@@ -289,7 +289,7 @@ function bingTranslate(text, sl, tl, hl,
     if (Option["verbose"] < -1)
         return il
     if (Option["verbose"] < 0)
-        return getList(il)
+        return getLanguage(il)
 
     # Transliteration
     wShowTranslationPhonetics = Option["show-translation-phonetics"]

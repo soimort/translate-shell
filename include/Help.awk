@@ -63,7 +63,7 @@ function getHelp() {
         ins(1, ansi("bold", "-R") ", " ansi("bold", "-reference-english")) RS \
         ins(2, "Print reference table of languages (in English names) and exit.") RS \
         ins(1, ansi("bold", "-L ") ansi("underline", "CODES")           \
-            ", " ansi("bold", "-list ") ansi("underline", "CODES")) RS  \
+            ", " ansi("bold", "-language ") ansi("underline", "CODES")) RS \
         ins(2, "Print details of languages and exit.") RS               \
         ins(1, ansi("bold", "-S") ", " ansi("bold", "-list-engines")) RS \
         ins(2, "List available translation engines and exit.") RS       \
@@ -472,7 +472,7 @@ function getReference(displayName,
 }
 
 # Return detailed information of languages as a string.
-function getList(codes,    code, i, r, saveSortedIn) {
+function getLanguage(codes,    code, i, r, saveSortedIn) {
     r = NULLSTR
     if (!isarray(codes))
         r = getDetails(codes)
