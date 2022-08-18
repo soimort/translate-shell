@@ -59,14 +59,22 @@ function getHelp() {
         ins(1, ansi("bold", "-M") ", " ansi("bold", "-man")) RS         \
         ins(2, "Show man page and exit.") RS                            \
         ins(1, ansi("bold", "-T") ", " ansi("bold", "-reference")) RS   \
-        ins(2, "Print reference table of languages and exit.") RS       \
+        ins(2, "Print reference table of languages (in endonyms) and codes, and exit.") RS \
         ins(1, ansi("bold", "-R") ", " ansi("bold", "-reference-english")) RS \
-        ins(2, "Print reference table of languages (in English names) and exit.") RS \
-        ins(1, ansi("bold", "-L ") ansi("underline", "CODES")           \
-            ", " ansi("bold", "-language ") ansi("underline", "CODES")) RS \
-        ins(2, "Print details of languages and exit.") RS               \
+        ins(2, "Print reference table of languages (in English names) and codes, and exit.") RS \
         ins(1, ansi("bold", "-S") ", " ansi("bold", "-list-engines")) RS \
         ins(2, "List available translation engines and exit.") RS       \
+        ins(1, ansi("bold", "-list-languages")) RS                      \
+        ins(2, "List all languages (in endonyms) and exit.") RS         \
+        ins(1, ansi("bold", "-list-languages-english")) RS              \
+        ins(2, "List all languages (in English names) and exit.") RS    \
+        ins(1, ansi("bold", "-list-codes")) RS                          \
+        ins(2, "List all codes and exit.") RS                           \
+        ins(1, ansi("bold", "-list-all")) RS                            \
+        ins(2, "List all languages (endonyms and English names) and codes, and exit.") RS \
+        ins(1, ansi("bold", "-L ") ansi("underline", "CODES")           \
+            ", " ansi("bold", "-linguist ") ansi("underline", "CODES")) RS \
+        ins(2, "Print details of languages and exit.") RS               \
         ins(1, ansi("bold", "-U") ", " ansi("bold", "-upgrade")) RS     \
         ins(2, "Check for upgrade of this program.") RS                 \
         RS "Translator options:" RS                                     \

@@ -242,8 +242,43 @@ BEGIN {
             continue
         }
 
-        # -L CODES, -language CODES
-        match(ARGV[pos], /^--?(L|language)(=(.*)?)?$/, group)
+        # -S, -list-engines
+        match(ARGV[pos], /^--?(S|list-e(n(g(i(n(es?)?)?)?)?)?)$/)
+        if (RSTART) {
+            InfoOnly = "list-engines"
+            continue
+        }
+
+        # -list-languages
+        match(ARGV[pos], /^--?(list-languages)$/)
+        if (RSTART) {
+            InfoOnly = "list-languages"
+            continue
+        }
+
+        # -list-languages-english
+        match(ARGV[pos], /^--?(list-languages-english)$/)
+        if (RSTART) {
+            InfoOnly = "list-languages-english"
+            continue
+        }
+
+        # -list-codes
+        match(ARGV[pos], /^--?(list-codes)$/)
+        if (RSTART) {
+            InfoOnly = "list-codes"
+            continue
+        }
+
+        # -list-all
+        match(ARGV[pos], /^--?(list-all)$/)
+        if (RSTART) {
+            InfoOnly = "list-all"
+            continue
+        }
+
+        # -L CODES, -linguist CODES
+        match(ARGV[pos], /^--?(L|linguist)(=(.*)?)?$/, group)
         if (RSTART) {
             InfoOnly = "language"
             if (group[2]) {
@@ -257,19 +292,12 @@ BEGIN {
         match(ARGV[pos], /^--?(list)(=(.*)?)?$/, group)
         if (RSTART) {
             w("[WARNING] Option '-list' will be deprecated in the next version.\n" \
-              "          Use '-L' / '-language' instead.")
+              "          Use '-L' / '-linguist' instead.")
             InfoOnly = "language"
             if (group[2]) {
                 if (group[3]) split(group[3], Option["tl"], "+")
             } else
                 split(ARGV[++pos], Option["tl"], "+")
-            continue
-        }
-
-        # -S, -list-engines
-        match(ARGV[pos], /^--?(S|list-e(n(g(i(n(es?)?)?)?)?)?)$/)
-        if (RSTART) {
-            InfoOnly = "list-engines"
             continue
         }
 
@@ -801,15 +829,51 @@ BEGIN {
     case "reference-english":
         print getReference("name")
         exit ExitCode
-    case "language":
-        print getLanguage(Option["tl"])
-        exit ExitCode
     case "list-engines":
         saveSortedIn = PROCINFO["sorted_in"]
         PROCINFO["sorted_in"] = "@ind_num_asc"
         for (translator in Translator)
             print (Option["engine"] == translator ? "* " : "  ") translator
         PROCINFO["sorted_in"] = saveSortedIn
+        exit ExitCode
+    case "list-languages":
+        saveSortedIn = PROCINFO["sorted_in"]
+        PROCINFO["sorted_in"] = "@ind_num_asc"
+        for (code in Locale)
+            # only show languages that are supported
+            if (Locale[code]["supported-by"])
+                print getDisplay(Locale[code]["endonym"])
+        PROCINFO["sorted_in"] = saveSortedIn
+        exit ExitCode
+    case "list-languages-english":
+        saveSortedIn = PROCINFO["sorted_in"]
+        PROCINFO["sorted_in"] = "compName"
+        for (code in Locale)
+            # only show languages that are supported
+            if (Locale[code]["supported-by"])
+                print Locale[code]["name"] #(Locale[code]["name2"] ? " / " Locale[code]["name2"] : "")
+        PROCINFO["sorted_in"] = saveSortedIn
+        exit ExitCode
+    case "list-codes":
+        saveSortedIn = PROCINFO["sorted_in"]
+        PROCINFO["sorted_in"] = "@ind_num_asc"
+        for (code in Locale)
+            # only show languages that are supported
+            if (Locale[code]["supported-by"])
+                print code
+        PROCINFO["sorted_in"] = saveSortedIn
+        exit ExitCode
+    case "list-all":
+        saveSortedIn = PROCINFO["sorted_in"]
+        PROCINFO["sorted_in"] = "compName"
+        for (code in Locale)
+            # only show languages that are supported
+            if (Locale[code]["supported-by"])
+                printf("%-10s %-30s %s\n", code, Locale[code]["name"], getDisplay(Locale[code]["endonym"]))
+        PROCINFO["sorted_in"] = saveSortedIn
+        exit ExitCode
+    case "language":
+        print getLanguage(Option["tl"])
         exit ExitCode
     case "upgrade":
         upgrade()
