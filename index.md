@@ -331,7 +331,7 @@ A browser session will open for viewing the translation (via Google Translate's 
 
 ### Language Details
 
-Use the `-list` (`-L`) option to view details of one or more languages:
+Use the `-linguist` (`-L`) option to view details of one or more languages:
 
     $ trans -L fr
     $ trans -L de+en
