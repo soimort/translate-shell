@@ -2452,7 +2452,7 @@ function initLocale() {
     #Locale["ts"]["synonyms"]
     #Locale["ts"]["examples"]
     #Locale["ts"]["see-also"]
-    Locale["ts"]["family"]             = "Atlantic–Congo"
+    Locale["ts"]["family"]             = "Atlantic-Congo"
     Locale["ts"]["branch"]             = "Bantu"
     Locale["ts"]["iso"]                = "tso"
     Locale["ts"]["glotto"]             = "tson1249"
