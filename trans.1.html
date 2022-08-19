@@ -5,8 +5,8 @@
   <meta name="generator" content="pandoc">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta name="author" content="Mort Yao soi@mort.ninja">
-      <meta name="dcterms.date" content="2020-05-11">
-    <title>TRANS(1) 0.9.6.12</title>
+      <meta name="dcterms.date" content="2022-08-19">
+    <title>TRANS(1) 0.9.7</title>
   <style type='text/css' media='all'>
   /* style: man */
   body#manpage {margin:0}
@@ -89,7 +89,7 @@
     </div>
 
   <ol class='man-decor man-head man head'>
-    <li class='tl'>TRANS(1) 0.9.6.12</li>
+    <li class='tl'>TRANS(1) 0.9.7</li>
     <li class='tc'></li>
     <li class='tr'></li>
   </ol>
@@ -109,8 +109,9 @@
   <dd>Print version and exit.
   </dd>
   <dt><strong>-H</strong>, <strong>-help</strong></dt>
-  <dd>Print help message and exit. <strong>-M</strong>, <strong>-man</strong>
+  <dd>Print help message and exit.
   </dd>
+  <dt><strong>-M</strong>, <strong>-man</strong></dt>
   <dd>Show man page and exit.
   </dd>
   <dt><strong>-T</strong>, <strong>-reference</strong></dt>
@@ -119,11 +120,23 @@
   <dt><strong>-R</strong>, <strong>-reference-english</strong></dt>
   <dd>Print reference table of all supported languages and codes, and exit. Names of languages are displayed in English.
   </dd>
-  <dt><strong>-L</strong> <em>CODES</em>, <strong>-list</strong> <em>CODES</em></dt>
-  <dd>Print details of languages and exit. When specifying two or more language codes, concatenate them by plus sign "+".
-  </dd>
   <dt><strong>-S</strong>, <strong>-list-engines</strong></dt>
   <dd>List available translation engines and exit.
+  </dd>
+  <dt><strong>-list-languages</strong></dt>
+  <dd>List all supported languages (in endonyms) and exit.
+  </dd>
+  <dt><strong>-list-languages-english</strong></dt>
+  <dd>List all supported languages (in English names) and exit.
+  </dd>
+  <dt><strong>-list-codes</strong></dt>
+  <dd>List all supported codes and exit.
+  </dd>
+  <dt><strong>-list-all</strong></dt>
+  <dd>List all supported languages (endonyms and English names) and codes, and exit.
+  </dd>
+  <dt><strong>-L</strong> <em>CODES</em>, <strong>-linguist</strong> <em>CODES</em></dt>
+  <dd>Print details of languages and exit. When specifying two or more language codes, concatenate them by plus sign "+".
   </dd>
   <dt><strong>-U</strong>, <strong>-upgrade</strong></dt>
   <dd>Check for upgrade of this program.
@@ -132,7 +145,7 @@
   <h2 id="translator-options">Translator options</h2>
   <dl>
   <dt><strong>-e</strong> <em>ENGINE</em>, <strong>-engine</strong> <em>ENGINE</em></dt>
-  <dd>Specify the translation engine to use. (default: google)
+  <dd>Specify the translation engine to use. (default: auto)
   </dd>
   </dl>
   <h2 id="display-options">Display options</h2>
@@ -309,11 +322,11 @@
   </dl>
   <h2 id="language-preference-options">Language preference options</h2>
   <dl>
-  <dt><strong>-l</strong> <em>CODE</em>, <strong>-hl</strong> <em>CODE</em>, <strong>-lang</strong> <em>CODE</em></dt>
+  <dt><strong>-hl</strong> <em>CODE</em>, <strong>-host</strong> <em>CODE</em></dt>
   <dd><p>Specify your home language (the language you would like to see for displaying prompt messages in the translation).</p>
   <p>This option affects only the display in verbose mode (anything other than source language and target language will be displayed in your home language). This option has no effect in brief mode.</p>
   <p>This option is optional. When its setting is omitted, English will be used.</p>
-  <p>This option overrides the setting of environment variables $<strong>LC_ALL</strong>, $<strong>LANG</strong>, and $<strong>HOME_LANG</strong>.</p>
+  <p>This option overrides the setting of environment variables $<strong>LC_ALL</strong>, $<strong>LANG</strong>, and $<strong>HOST_LANG</strong>.</p>
   </dd>
   <dt><strong>-s</strong> <em>CODES</em>, <strong>-sl</strong> <em>CODES</em>, <strong>-source</strong> <em>CODES</em>, <strong>-from</strong> <em>CODES</em></dt>
   <dd><p>Specify the source language(s) (the language(s) of original text). When specifying two or more language codes, concatenate them by plus sign "+".</p>
@@ -379,8 +392,8 @@
   <dt><strong>USER_AGENT</strong></dt>
   <dd>Equivalent to option setting <strong>-user-agent</strong>.
   </dd>
-  <dt><strong>HOME_LANG</strong></dt>
-  <dd>Equivalent to option setting <strong>-lang</strong>.
+  <dt><strong>HOST_LANG</strong></dt>
+  <dd>Equivalent to option setting <strong>-host</strong>.
   </dd>
   <dt><strong>SOURCE_LANG</strong></dt>
   <dd>Equivalent to option setting <strong>-source</strong>.
@@ -415,7 +428,7 @@
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
     <li class='tc'></li>
-    <li class='tr'>2020-05-11</li>
+    <li class='tr'>2022-08-19</li>
   </ol>
 
   </div>

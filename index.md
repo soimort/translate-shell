@@ -1,14 +1,14 @@
 ---
 title: Translate Shell
 project-name: Translate Shell
-project-version: 0.9.6.12
+project-version: 0.9.7
 project-logo: images/logo.jpg
 background: images/background.png
 github: soimort/translate-shell
 url: https://www.soimort.org/translate-shell/
 download-url: https://www.soimort.org/translate-shell/trans
 download-checksum-type: SHA1SUM
-download-checksum-data: e9959df02300279b46e1bf7bc4739b07891d86b4
+download-checksum-data: cbbd104aefab9c59972cc332ea6f5723d0f180f9
 download-signature: https://www.soimort.org/translate-shell/trans.sig
 
 ---
@@ -107,11 +107,11 @@ It is a must to have corresponding fonts for the language(s) / script(s) you wis
 
 Start an interactive shell and translate anything you input into your native language: (in **bash** or **zsh**)
 
-    $ gawk -f <(curl -Ls git.io/translate) -- -shell
+    $ gawk -f <(curl -Ls --compressed https://git.io/translate) -- -shell
 
 (in **fish**)
 
-    $ gawk -f (curl -Ls git.io/translate | psub) -- -shell
+    $ gawk -f (curl -Ls --compressed https://git.io/translate | psub) -- -shell
 
 ### Using Docker
 
@@ -365,13 +365,21 @@ Information options:
     -M, -man
         Show man page and exit.
     -T, -reference
-        Print reference table of languages and exit.
+        Print reference table of languages (in endonyms) and codes, and exit.
     -R, -reference-english
-        Print reference table of languages (in English names) and exit.
-    -L CODES, -list CODES
-        Print details of languages and exit.
+        Print reference table of languages (in English names) and codes, and exit.
     -S, -list-engines
         List available translation engines and exit.
+    -list-languages
+        List all languages (in endonyms) and exit.
+    -list-languages-english
+        List all languages (in English names) and exit.
+    -list-codes
+        List all codes and exit.
+    -list-all
+        List all languages (endonyms and English names) and codes, and exit.
+    -L CODES, -linguist CODES
+        Print details of languages and exit.
     -U, -upgrade
         Check for upgrade of this program.
 
@@ -482,8 +490,8 @@ I/O options:
         Specify the output file.
 
 Language preference options:
-    -l CODE, -hl CODE, -lang CODE
-        Specify your home language.
+    -hl CODE, -host CODE
+        Specify the host (interface) language.
     -s CODES, -sl CODES, -source CODES, -from CODES
         Specify the source language(s), joined by '+'.
     -t CODES, -tl CODES, -target CODES, -to CODES
@@ -508,47 +516,63 @@ For more details on languages and corresponding codes, see **[wiki: Languages](h
 
 | Language | Code | Language | Code | Language | Code |
 | :------: | :--: | :------: | :--: | :------: | :--: |
-| **[Afrikaans](http://en.wikipedia.org/wiki/Afrikaans_language)** <br/> **Afrikaans** | **`af`** | **[Hebrew](http://en.wikipedia.org/wiki/Hebrew_language)** <br/> **עִבְרִית** | **`he`** | **[Portuguese](http://en.wikipedia.org/wiki/Portuguese_language)** <br/> **Português** | **`pt`** | 
-| **[Albanian](http://en.wikipedia.org/wiki/Albanian_language)** <br/> **Shqip** | **`sq`** | **[Hill Mari](http://en.wikipedia.org/wiki/Hill_Mari)** <br/> **Кырык мары** | **`mrj`** | **[Punjabi](http://en.wikipedia.org/wiki/Punjabi_language)** <br/> **ਪੰਜਾਬੀ** | **`pa`** | 
-| **[Amharic](http://en.wikipedia.org/wiki/Amharic_language)** <br/> **አማርኛ** | **`am`** | **[Hindi](http://en.wikipedia.org/wiki/Hindi_language)** <br/> **हिन्दी** | **`hi`** | **[Querétaro Otomi](http://en.wikipedia.org/wiki/Querétaro_Otomi)** <br/> **Hñąñho** | **`otq`** | 
-| **[Arabic](http://en.wikipedia.org/wiki/Arabic_language)** <br/> **العربية** | **`ar`** | **[Hmong](http://en.wikipedia.org/wiki/Hmong_language)** <br/> **Hmoob** | **`hmn`** | **[Romanian](http://en.wikipedia.org/wiki/Romanian_language)** <br/> **Română** | **`ro`** | 
-| **[Armenian](http://en.wikipedia.org/wiki/Armenian_language)** <br/> **Հայերեն** | **`hy`** | **[Hmong Daw](http://en.wikipedia.org/wiki/Hmong_Daw)** <br/> **Hmoob Daw** | **`mww`** | **[Russian](http://en.wikipedia.org/wiki/Russian_language)** <br/> **Русский** | **`ru`** | 
-| **[Azerbaijani](http://en.wikipedia.org/wiki/Azerbaijani_language)** <br/> **Azərbaycanca** | **`az`** | **[Hungarian](http://en.wikipedia.org/wiki/Hungarian_language)** <br/> **Magyar** | **`hu`** | **[Samoan](http://en.wikipedia.org/wiki/Samoan_language)** <br/> **Gagana Sāmoa** | **`sm`** | 
-| **[Bashkir](http://en.wikipedia.org/wiki/Bashkir_language)** <br/> **башҡорт теле** | **`ba`** | **[Icelandic](http://en.wikipedia.org/wiki/Icelandic_language)** <br/> **Íslenska** | **`is`** | **[Scots Gaelic](http://en.wikipedia.org/wiki/Scots_Gaelic)** <br/> **Gàidhlig** | **`gd`** | 
-| **[Basque](http://en.wikipedia.org/wiki/Basque_language)** <br/> **Euskara** | **`eu`** | **[Igbo](http://en.wikipedia.org/wiki/Igbo_language)** <br/> **Igbo** | **`ig`** | **[Serbian (Cyrillic)](http://en.wikipedia.org/wiki/Serbian_(Cyrillic))** <br/> **српски** | **`sr-Cyrl`** | 
-| **[Belarusian](http://en.wikipedia.org/wiki/Belarusian_language)** <br/> **беларуская** | **`be`** | **[Indonesian](http://en.wikipedia.org/wiki/Indonesian_language)** <br/> **Bahasa Indonesia** | **`id`** | **[Serbian (Latin)](http://en.wikipedia.org/wiki/Serbian_(Latin))** <br/> **srpski** | **`sr-Latn`** | 
-| **[Bengali](http://en.wikipedia.org/wiki/Bengali_language)** <br/> **বাংলা** | **`bn`** | **[Irish](http://en.wikipedia.org/wiki/Irish_language)** <br/> **Gaeilge** | **`ga`** | **[Sesotho](http://en.wikipedia.org/wiki/Sesotho_language)** <br/> **Sesotho** | **`st`** | 
-| **[Bosnian](http://en.wikipedia.org/wiki/Bosnian_language)** <br/> **Bosanski** | **`bs`** | **[Italian](http://en.wikipedia.org/wiki/Italian_language)** <br/> **Italiano** | **`it`** | **[Shona](http://en.wikipedia.org/wiki/Shona_language)** <br/> **chiShona** | **`sn`** | 
-| **[Bulgarian](http://en.wikipedia.org/wiki/Bulgarian_language)** <br/> **български** | **`bg`** | **[Japanese](http://en.wikipedia.org/wiki/Japanese_language)** <br/> **日本語** | **`ja`** | **[Sindhi](http://en.wikipedia.org/wiki/Sindhi_language)** <br/> **سنڌي** | **`sd`** | 
-| **[Cantonese](http://en.wikipedia.org/wiki/Cantonese_language)** <br/> **粵語** | **`yue`** | **[Javanese](http://en.wikipedia.org/wiki/Javanese_language)** <br/> **Basa Jawa** | **`jv`** | **[Sinhala](http://en.wikipedia.org/wiki/Sinhala_language)** <br/> **සිංහල** | **`si`** | 
-| **[Catalan](http://en.wikipedia.org/wiki/Catalan_language)** <br/> **Català** | **`ca`** | **[Kannada](http://en.wikipedia.org/wiki/Kannada_language)** <br/> **ಕನ್ನಡ** | **`kn`** | **[Slovak](http://en.wikipedia.org/wiki/Slovak_language)** <br/> **Slovenčina** | **`sk`** | 
-| **[Cebuano](http://en.wikipedia.org/wiki/Cebuano_language)** <br/> **Cebuano** | **`ceb`** | **[Kazakh](http://en.wikipedia.org/wiki/Kazakh_language)** <br/> **Қазақ тілі** | **`kk`** | **[Slovenian](http://en.wikipedia.org/wiki/Slovenian_language)** <br/> **Slovenščina** | **`sl`** | 
-| **[Chichewa](http://en.wikipedia.org/wiki/Chichewa_language)** <br/> **Nyanja** | **`ny`** | **[Khmer](http://en.wikipedia.org/wiki/Khmer_language)** <br/> **ភាសាខ្មែរ** | **`km`** | **[Somali](http://en.wikipedia.org/wiki/Somali_language)** <br/> **Soomaali** | **`so`** | 
-| **[Chinese Simplified](http://en.wikipedia.org/wiki/Chinese_Simplified)** <br/> **简体中文** | **`zh-CN`** | **[Klingon](http://en.wikipedia.org/wiki/Klingon_language)** <br/> **tlhIngan Hol** | **`tlh`** | **[Spanish](http://en.wikipedia.org/wiki/Spanish_language)** <br/> **Español** | **`es`** | 
-| **[Chinese Traditional](http://en.wikipedia.org/wiki/Chinese_Traditional)** <br/> **正體中文** | **`zh-TW`** | **[Klingon (pIqaD)](http://en.wikipedia.org/wiki/Klingon_(pIqaD))** <br/> ** ** | **`tlh-Qaak`** | **[Sundanese](http://en.wikipedia.org/wiki/Sundanese_language)** <br/> **Basa Sunda** | **`su`** | 
-| **[Corsican](http://en.wikipedia.org/wiki/Corsican_language)** <br/> **Corsu** | **`co`** | **[Korean](http://en.wikipedia.org/wiki/Korean_language)** <br/> **한국어** | **`ko`** | **[Swahili](http://en.wikipedia.org/wiki/Swahili_language)** <br/> **Kiswahili** | **`sw`** | 
-| **[Croatian](http://en.wikipedia.org/wiki/Croatian_language)** <br/> **Hrvatski** | **`hr`** | **[Kurdish](http://en.wikipedia.org/wiki/Kurdish_language)** <br/> **Kurdî** | **`ku`** | **[Swedish](http://en.wikipedia.org/wiki/Swedish_language)** <br/> **Svenska** | **`sv`** | 
-| **[Czech](http://en.wikipedia.org/wiki/Czech_language)** <br/> **Čeština** | **`cs`** | **[Kyrgyz](http://en.wikipedia.org/wiki/Kyrgyz_language)** <br/> **Кыргызча** | **`ky`** | **[Tahitian](http://en.wikipedia.org/wiki/Tahitian_language)** <br/> **Reo Tahiti** | **`ty`** | 
-| **[Danish](http://en.wikipedia.org/wiki/Danish_language)** <br/> **Dansk** | **`da`** | **[Lao](http://en.wikipedia.org/wiki/Lao_language)** <br/> **ລາວ** | **`lo`** | **[Tajik](http://en.wikipedia.org/wiki/Tajik_language)** <br/> **Тоҷикӣ** | **`tg`** | 
-| **[Dutch](http://en.wikipedia.org/wiki/Dutch_language)** <br/> **Nederlands** | **`nl`** | **[Latin](http://en.wikipedia.org/wiki/Latin_language)** <br/> **Latina** | **`la`** | **[Tamil](http://en.wikipedia.org/wiki/Tamil_language)** <br/> **தமிழ்** | **`ta`** | 
-| **[Eastern Mari](http://en.wikipedia.org/wiki/Eastern_Mari)** <br/> **Олык марий** | **`mhr`** | **[Latvian](http://en.wikipedia.org/wiki/Latvian_language)** <br/> **Latviešu** | **`lv`** | **[Tatar](http://en.wikipedia.org/wiki/Tatar_language)** <br/> **татарча** | **`tt`** | 
-| **[Emoji](http://en.wikipedia.org/wiki/Emoji_language)** <br/> **Emoji** | **`emj`** | **[Lithuanian](http://en.wikipedia.org/wiki/Lithuanian_language)** <br/> **Lietuvių** | **`lt`** | **[Telugu](http://en.wikipedia.org/wiki/Telugu_language)** <br/> **తెలుగు** | **`te`** | 
-| **[English](http://en.wikipedia.org/wiki/English_language)** <br/> **English** | **`en`** | **[Luxembourgish](http://en.wikipedia.org/wiki/Luxembourgish_language)** <br/> **Lëtzebuergesch** | **`lb`** | **[Thai](http://en.wikipedia.org/wiki/Thai_language)** <br/> **ไทย** | **`th`** | 
-| **[Esperanto](http://en.wikipedia.org/wiki/Esperanto_language)** <br/> **Esperanto** | **`eo`** | **[Macedonian](http://en.wikipedia.org/wiki/Macedonian_language)** <br/> **Македонски** | **`mk`** | **[Tongan](http://en.wikipedia.org/wiki/Tongan_language)** <br/> **Lea faka-Tonga** | **`to`** | 
-| **[Estonian](http://en.wikipedia.org/wiki/Estonian_language)** <br/> **Eesti** | **`et`** | **[Malagasy](http://en.wikipedia.org/wiki/Malagasy_language)** <br/> **Malagasy** | **`mg`** | **[Turkish](http://en.wikipedia.org/wiki/Turkish_language)** <br/> **Türkçe** | **`tr`** | 
-| **[Fijian](http://en.wikipedia.org/wiki/Fijian_language)** <br/> **Vosa Vakaviti** | **`fj`** | **[Malay](http://en.wikipedia.org/wiki/Malay_language)** <br/> **Bahasa Melayu** | **`ms`** | **[Udmurt](http://en.wikipedia.org/wiki/Udmurt_language)** <br/> **удмурт** | **`udm`** | 
-| **[Filipino](http://en.wikipedia.org/wiki/Filipino_language)** <br/> **Tagalog** | **`tl`** | **[Malayalam](http://en.wikipedia.org/wiki/Malayalam_language)** <br/> **മലയാളം** | **`ml`** | **[Ukrainian](http://en.wikipedia.org/wiki/Ukrainian_language)** <br/> **Українська** | **`uk`** | 
-| **[Finnish](http://en.wikipedia.org/wiki/Finnish_language)** <br/> **Suomi** | **`fi`** | **[Maltese](http://en.wikipedia.org/wiki/Maltese_language)** <br/> **Malti** | **`mt`** | **[Urdu](http://en.wikipedia.org/wiki/Urdu_language)** <br/> **اُردُو** | **`ur`** | 
-| **[French](http://en.wikipedia.org/wiki/French_language)** <br/> **Français** | **`fr`** | **[Maori](http://en.wikipedia.org/wiki/Maori_language)** <br/> **Māori** | **`mi`** | **[Uzbek](http://en.wikipedia.org/wiki/Uzbek_language)** <br/> **Oʻzbek tili** | **`uz`** | 
-| **[Frisian](http://en.wikipedia.org/wiki/Frisian_language)** <br/> **Frysk** | **`fy`** | **[Marathi](http://en.wikipedia.org/wiki/Marathi_language)** <br/> **मराठी** | **`mr`** | **[Vietnamese](http://en.wikipedia.org/wiki/Vietnamese_language)** <br/> **Tiếng Việt** | **`vi`** | 
-| **[Galician](http://en.wikipedia.org/wiki/Galician_language)** <br/> **Galego** | **`gl`** | **[Mongolian](http://en.wikipedia.org/wiki/Mongolian_language)** <br/> **Монгол** | **`mn`** | **[Welsh](http://en.wikipedia.org/wiki/Welsh_language)** <br/> **Cymraeg** | **`cy`** | 
-| **[Georgian](http://en.wikipedia.org/wiki/Georgian_language)** <br/> **ქართული** | **`ka`** | **[Myanmar](http://en.wikipedia.org/wiki/Myanmar_language)** <br/> **မြန်မာစာ** | **`my`** | **[Xhosa](http://en.wikipedia.org/wiki/Xhosa_language)** <br/> **isiXhosa** | **`xh`** | 
-| **[German](http://en.wikipedia.org/wiki/German_language)** <br/> **Deutsch** | **`de`** | **[Nepali](http://en.wikipedia.org/wiki/Nepali_language)** <br/> **नेपाली** | **`ne`** | **[Yiddish](http://en.wikipedia.org/wiki/Yiddish_language)** <br/> **ייִדיש** | **`yi`** | 
-| **[Greek](http://en.wikipedia.org/wiki/Greek_language)** <br/> **Ελληνικά** | **`el`** | **[Norwegian](http://en.wikipedia.org/wiki/Norwegian_language)** <br/> **Norsk** | **`no`** | **[Yoruba](http://en.wikipedia.org/wiki/Yoruba_language)** <br/> **Yorùbá** | **`yo`** | 
-| **[Gujarati](http://en.wikipedia.org/wiki/Gujarati_language)** <br/> **ગુજરાતી** | **`gu`** | **[Papiamento](http://en.wikipedia.org/wiki/Papiamento_language)** <br/> **Papiamentu** | **`pap`** | **[Yucatec Maya](http://en.wikipedia.org/wiki/Yucatec_Maya)** <br/> **Màaya T'àan** | **`yua`** | 
-| **[Haitian Creole](http://en.wikipedia.org/wiki/Haitian_Creole)** <br/> **Kreyòl Ayisyen** | **`ht`** | **[Pashto](http://en.wikipedia.org/wiki/Pashto_language)** <br/> **پښتو** | **`ps`** | **[Zulu](http://en.wikipedia.org/wiki/Zulu_language)** <br/> **isiZulu** | **`zu`** | 
-| **[Hausa](http://en.wikipedia.org/wiki/Hausa_language)** <br/> **Hausa** | **`ha`** | **[Persian](http://en.wikipedia.org/wiki/Persian_language)** <br/> **فارسی** | **`fa`** | 
-| **[Hawaiian](http://en.wikipedia.org/wiki/Hawaiian_language)** <br/> **ʻŌlelo Hawaiʻi** | **`haw`** | **[Polish](http://en.wikipedia.org/wiki/Polish_language)** <br/> **Polski** | **`pl`** | 
+| **[Afrikaans](http://en.wikipedia.org/wiki/ISO_639:afr)** <br/> **Afrikaans** | **`af`** | **[Hebrew](http://en.wikipedia.org/wiki/ISO_639:heb)** <br/> **עִבְרִית** | **`he`** | **[Portuguese (Brazilian)](http://en.wikipedia.org/wiki/ISO_639:por)** <br/> **Português Brasileiro** | **`pt-BR`** | 
+| **[Albanian](http://en.wikipedia.org/wiki/ISO_639:sqi)** <br/> **Shqip** | **`sq`** | **[Hill Mari](http://en.wikipedia.org/wiki/ISO_639:mrj)** <br/> **Кырык мары** | **`mrj`** | **[Portuguese (European)](http://en.wikipedia.org/wiki/ISO_639:por)** <br/> **Português Europeu** | **`pt-PT`** | 
+| **[Amharic](http://en.wikipedia.org/wiki/ISO_639:amh)** <br/> **አማርኛ** | **`am`** | **[Hindi](http://en.wikipedia.org/wiki/ISO_639:hin)** <br/> **हिन्दी** | **`hi`** | **[Punjabi](http://en.wikipedia.org/wiki/ISO_639:pan)** <br/> **ਪੰਜਾਬੀ** | **`pa`** | 
+| **[Arabic](http://en.wikipedia.org/wiki/ISO_639:ara)** <br/> **العربية** | **`ar`** | **[Hmong](http://en.wikipedia.org/wiki/ISO_639:hmn)** <br/> **Hmoob** | **`hmn`** | **[Quechua](http://en.wikipedia.org/wiki/ISO_639:que)** <br/> **Runasimi** | **`qu`** | 
+| **[Armenian](http://en.wikipedia.org/wiki/ISO_639:hye)** <br/> **Հայերեն** | **`hy`** | **[Hungarian](http://en.wikipedia.org/wiki/ISO_639:hun)** <br/> **Magyar** | **`hu`** | **[Querétaro Otomi](http://en.wikipedia.org/wiki/ISO_639:otq)** <br/> **Hñąñho** | **`otq`** | 
+| **[Assamese](http://en.wikipedia.org/wiki/ISO_639:asm)** <br/> **অসমীয়া** | **`as`** | **[Icelandic](http://en.wikipedia.org/wiki/ISO_639:isl)** <br/> **Íslenska** | **`is`** | **[Romanian](http://en.wikipedia.org/wiki/ISO_639:ron)** <br/> **Română** | **`ro`** | 
+| **[Aymara](http://en.wikipedia.org/wiki/ISO_639:aym)** <br/> **Aymar aru** | **`ay`** | **[Igbo](http://en.wikipedia.org/wiki/ISO_639:ibo)** <br/> **Igbo** | **`ig`** | **[Romansh](http://en.wikipedia.org/wiki/ISO_639:roh)** <br/> **Rumantsch** | **`rm`** | 
+| **[Azerbaijani](http://en.wikipedia.org/wiki/ISO_639:aze)** <br/> **Azərbaycanca** | **`az`** | **[Ilocano](http://en.wikipedia.org/wiki/ISO_639:ilo)** <br/> **Ilokano** | **`ilo`** | **[Russian](http://en.wikipedia.org/wiki/ISO_639:rus)** <br/> **Русский** | **`ru`** | 
+| **[Bambara](http://en.wikipedia.org/wiki/ISO_639:bam)** <br/> **Bamanankan** | **`bm`** | **[Indonesian](http://en.wikipedia.org/wiki/ISO_639:ind)** <br/> **Bahasa Indonesia** | **`id`** | **[Samoan](http://en.wikipedia.org/wiki/ISO_639:smo)** <br/> **Gagana Sāmoa** | **`sm`** | 
+| **[Bashkir](http://en.wikipedia.org/wiki/ISO_639:bak)** <br/> **Башҡортса** | **`ba`** | **[Interlingue](http://en.wikipedia.org/wiki/ISO_639:ile)** <br/> **Interlingue** | **`ie`** | **[Sanskrit](http://en.wikipedia.org/wiki/ISO_639:san)** <br/> **संस्कृतम्** | **`sa`** | 
+| **[Basque](http://en.wikipedia.org/wiki/ISO_639:eus)** <br/> **Euskara** | **`eu`** | **[Inuinnaqtun](http://en.wikipedia.org/wiki/ISO_639:ikt)** <br/> **Inuinnaqtun** | **`ikt`** | **[Scots Gaelic](http://en.wikipedia.org/wiki/ISO_639:gla)** <br/> **Gàidhlig** | **`gd`** | 
+| **[Belarusian](http://en.wikipedia.org/wiki/ISO_639:bel)** <br/> **беларуская** | **`be`** | **[Inuktitut](http://en.wikipedia.org/wiki/ISO_639:iku)** <br/> **ᐃᓄᒃᑎᑐᑦ** | **`iu`** | **[Sepedi](http://en.wikipedia.org/wiki/ISO_639:nso)** <br/> **Sepedi** | **`nso`** | 
+| **[Bengali](http://en.wikipedia.org/wiki/ISO_639:ben)** <br/> **বাংলা** | **`bn`** | **[Inuktitut (Latin)](http://en.wikipedia.org/wiki/ISO_639:iku)** <br/> **Inuktitut** | **`iu-Latn`** | **[Serbian (Cyrillic)](http://en.wikipedia.org/wiki/ISO_639:srp)** <br/> **Српски** | **`sr-Cyrl`** | 
+| **[Bhojpuri](http://en.wikipedia.org/wiki/ISO_639:bho)** <br/> **भोजपुरी** | **`bho`** | **[Irish](http://en.wikipedia.org/wiki/ISO_639:gle)** <br/> **Gaeilge** | **`ga`** | **[Serbian (Latin)](http://en.wikipedia.org/wiki/ISO_639:srp)** <br/> **Srpski** | **`sr-Latn`** | 
+| **[Bosnian](http://en.wikipedia.org/wiki/ISO_639:bos)** <br/> **Bosanski** | **`bs`** | **[Italian](http://en.wikipedia.org/wiki/ISO_639:ita)** <br/> **Italiano** | **`it`** | **[Sesotho](http://en.wikipedia.org/wiki/ISO_639:sot)** <br/> **Sesotho** | **`st`** | 
+| **[Breton](http://en.wikipedia.org/wiki/ISO_639:bre)** <br/> **Brezhoneg** | **`br`** | **[Japanese](http://en.wikipedia.org/wiki/ISO_639:jpn)** <br/> **日本語** | **`ja`** | **[Setswana](http://en.wikipedia.org/wiki/ISO_639:tsn)** <br/> **Setswana** | **`tn`** | 
+| **[Bulgarian](http://en.wikipedia.org/wiki/ISO_639:bul)** <br/> **български** | **`bg`** | **[Javanese](http://en.wikipedia.org/wiki/ISO_639:jav)** <br/> **Basa Jawa** | **`jv`** | **[Shona](http://en.wikipedia.org/wiki/ISO_639:sna)** <br/> **chiShona** | **`sn`** | 
+| **[Cantonese](http://en.wikipedia.org/wiki/ISO_639:yue)** <br/> **粵語** | **`yue`** | **[Kannada](http://en.wikipedia.org/wiki/ISO_639:kan)** <br/> **ಕನ್ನಡ** | **`kn`** | **[Sindhi](http://en.wikipedia.org/wiki/ISO_639:snd)** <br/> **سنڌي** | **`sd`** | 
+| **[Catalan](http://en.wikipedia.org/wiki/ISO_639:cat)** <br/> **Català** | **`ca`** | **[Kazakh](http://en.wikipedia.org/wiki/ISO_639:kaz)** <br/> **Қазақ тілі** | **`kk`** | **[Sinhala](http://en.wikipedia.org/wiki/ISO_639:sin)** <br/> **සිංහල** | **`si`** | 
+| **[Cebuano](http://en.wikipedia.org/wiki/ISO_639:ceb)** <br/> **Cebuano** | **`ceb`** | **[Khmer](http://en.wikipedia.org/wiki/ISO_639:khm)** <br/> **ភាសាខ្មែរ** | **`km`** | **[Slovak](http://en.wikipedia.org/wiki/ISO_639:slk)** <br/> **Slovenčina** | **`sk`** | 
+| **[Cherokee](http://en.wikipedia.org/wiki/ISO_639:chr)** <br/> **ᏣᎳᎩ** | **`chr`** | **[Kinyarwanda](http://en.wikipedia.org/wiki/ISO_639:kin)** <br/> **Ikinyarwanda** | **`rw`** | **[Slovenian](http://en.wikipedia.org/wiki/ISO_639:slv)** <br/> **Slovenščina** | **`sl`** | 
+| **[Chichewa](http://en.wikipedia.org/wiki/ISO_639:nya)** <br/> **Nyanja** | **`ny`** | **[Klingon](http://en.wikipedia.org/wiki/ISO_639:tlh)** <br/> **tlhIngan Hol** | **`tlh-Latn`** | **[Somali](http://en.wikipedia.org/wiki/ISO_639:som)** <br/> **Soomaali** | **`so`** | 
+| **[Chinese (Literary)](http://en.wikipedia.org/wiki/ISO_639:lzh)** <br/> **文言** | **`lzh`** | **[Konkani](http://en.wikipedia.org/wiki/ISO_639:gom)** <br/> **कोंकणी** | **`gom`** | **[Spanish](http://en.wikipedia.org/wiki/ISO_639:spa)** <br/> **Español** | **`es`** | 
+| **[Chinese (Simplified)](http://en.wikipedia.org/wiki/ISO_639:zho)** <br/> **简体中文** | **`zh-CN`** | **[Korean](http://en.wikipedia.org/wiki/ISO_639:kor)** <br/> **한국어** | **`ko`** | **[Sundanese](http://en.wikipedia.org/wiki/ISO_639:sun)** <br/> **Basa Sunda** | **`su`** | 
+| **[Chinese (Traditional)](http://en.wikipedia.org/wiki/ISO_639:zho)** <br/> **繁體中文** | **`zh-TW`** | **[Krio](http://en.wikipedia.org/wiki/ISO_639:kri)** <br/> **Krio** | **`kri`** | **[Swahili](http://en.wikipedia.org/wiki/ISO_639:swa)** <br/> **Kiswahili** | **`sw`** | 
+| **[Chuvash](http://en.wikipedia.org/wiki/ISO_639:chv)** <br/> **Чӑвашла** | **`cv`** | **[Kurdish (Central)](http://en.wikipedia.org/wiki/ISO_639:ckb)** <br/> **سۆرانی** | **`ckb`** | **[Swedish](http://en.wikipedia.org/wiki/ISO_639:swe)** <br/> **Svenska** | **`sv`** | 
+| **[Corsican](http://en.wikipedia.org/wiki/ISO_639:cos)** <br/> **Corsu** | **`co`** | **[Kurdish (Northern)](http://en.wikipedia.org/wiki/ISO_639:kmr)** <br/> **Kurmancî** | **`ku`** | **[Tahitian](http://en.wikipedia.org/wiki/ISO_639:tah)** <br/> **Reo Tahiti** | **`ty`** | 
+| **[Croatian](http://en.wikipedia.org/wiki/ISO_639:hrv)** <br/> **Hrvatski** | **`hr`** | **[Kyrgyz](http://en.wikipedia.org/wiki/ISO_639:kir)** <br/> **Кыргызча** | **`ky`** | **[Tajik](http://en.wikipedia.org/wiki/ISO_639:tgk)** <br/> **Тоҷикӣ** | **`tg`** | 
+| **[Czech](http://en.wikipedia.org/wiki/ISO_639:ces)** <br/> **Čeština** | **`cs`** | **[Lao](http://en.wikipedia.org/wiki/ISO_639:lao)** <br/> **ລາວ** | **`lo`** | **[Tamil](http://en.wikipedia.org/wiki/ISO_639:tam)** <br/> **தமிழ்** | **`ta`** | 
+| **[Danish](http://en.wikipedia.org/wiki/ISO_639:dan)** <br/> **Dansk** | **`da`** | **[Latin](http://en.wikipedia.org/wiki/ISO_639:lat)** <br/> **Latina** | **`la`** | **[Tatar](http://en.wikipedia.org/wiki/ISO_639:tat)** <br/> **татарча** | **`tt`** | 
+| **[Dari](http://en.wikipedia.org/wiki/ISO_639:prs)** <br/> **دری** | **`prs`** | **[Latvian](http://en.wikipedia.org/wiki/ISO_639:lav)** <br/> **Latviešu** | **`lv`** | **[Telugu](http://en.wikipedia.org/wiki/ISO_639:tel)** <br/> **తెలుగు** | **`te`** | 
+| **[Dhivehi](http://en.wikipedia.org/wiki/ISO_639:div)** <br/> **ދިވެހި** | **`dv`** | **[Lingala](http://en.wikipedia.org/wiki/ISO_639:lin)** <br/> **Lingála** | **`ln`** | **[Thai](http://en.wikipedia.org/wiki/ISO_639:tha)** <br/> **ไทย** | **`th`** | 
+| **[Dogri](http://en.wikipedia.org/wiki/ISO_639:doi)** <br/> **डोगरी** | **`doi`** | **[Lithuanian](http://en.wikipedia.org/wiki/ISO_639:lit)** <br/> **Lietuvių** | **`lt`** | **[Tibetan](http://en.wikipedia.org/wiki/ISO_639:bod)** <br/> **བོད་ཡིག** | **`bo`** | 
+| **[Dutch](http://en.wikipedia.org/wiki/ISO_639:nld)** <br/> **Nederlands** | **`nl`** | **[Luganda](http://en.wikipedia.org/wiki/ISO_639:lug)** <br/> **Luganda** | **`lg`** | **[Tigrinya](http://en.wikipedia.org/wiki/ISO_639:tir)** <br/> **ትግርኛ** | **`ti`** | 
+| **[Dzongkha](http://en.wikipedia.org/wiki/ISO_639:dzo)** <br/> **རྫོང་ཁ** | **`dz`** | **[Luxembourgish](http://en.wikipedia.org/wiki/ISO_639:ltz)** <br/> **Lëtzebuergesch** | **`lb`** | **[Tongan](http://en.wikipedia.org/wiki/ISO_639:ton)** <br/> **Lea faka-Tonga** | **`to`** | 
+| **[Eastern Mari](http://en.wikipedia.org/wiki/ISO_639:mhr)** <br/> **Олык марий** | **`mhr`** | **[Macedonian](http://en.wikipedia.org/wiki/ISO_639:mkd)** <br/> **Македонски** | **`mk`** | **[Tsonga](http://en.wikipedia.org/wiki/ISO_639:tso)** <br/> **Xitsonga** | **`ts`** | 
+| **[English](http://en.wikipedia.org/wiki/ISO_639:eng)** <br/> **English** | **`en`** | **[Maithili](http://en.wikipedia.org/wiki/ISO_639:mai)** <br/> **मैथिली** | **`mai`** | **[Turkish](http://en.wikipedia.org/wiki/ISO_639:tur)** <br/> **Türkçe** | **`tr`** | 
+| **[Esperanto](http://en.wikipedia.org/wiki/ISO_639:epo)** <br/> **Esperanto** | **`eo`** | **[Malagasy](http://en.wikipedia.org/wiki/ISO_639:mlg)** <br/> **Malagasy** | **`mg`** | **[Turkmen](http://en.wikipedia.org/wiki/ISO_639:tuk)** <br/> **Türkmen** | **`tk`** | 
+| **[Estonian](http://en.wikipedia.org/wiki/ISO_639:est)** <br/> **Eesti** | **`et`** | **[Malay](http://en.wikipedia.org/wiki/ISO_639:msa)** <br/> **Bahasa Melayu** | **`ms`** | **[Twi](http://en.wikipedia.org/wiki/ISO_639:twi)** <br/> **Twi** | **`tw`** | 
+| **[Ewe](http://en.wikipedia.org/wiki/ISO_639:ewe)** <br/> **Eʋegbe** | **`ee`** | **[Malayalam](http://en.wikipedia.org/wiki/ISO_639:mal)** <br/> **മലയാളം** | **`ml`** | **[Udmurt](http://en.wikipedia.org/wiki/ISO_639:udm)** <br/> **Удмурт** | **`udm`** | 
+| **[Faroese](http://en.wikipedia.org/wiki/ISO_639:fao)** <br/> **Føroyskt** | **`fo`** | **[Maltese](http://en.wikipedia.org/wiki/ISO_639:mlt)** <br/> **Malti** | **`mt`** | **[Ukrainian](http://en.wikipedia.org/wiki/ISO_639:ukr)** <br/> **Українська** | **`uk`** | 
+| **[Fijian](http://en.wikipedia.org/wiki/ISO_639:fij)** <br/> **Vosa Vakaviti** | **`fj`** | **[Maori](http://en.wikipedia.org/wiki/ISO_639:mri)** <br/> **Māori** | **`mi`** | **[Upper Sorbian](http://en.wikipedia.org/wiki/ISO_639:hsb)** <br/> **Hornjoserbšćina** | **`hsb`** | 
+| **[Filipino](http://en.wikipedia.org/wiki/ISO_639:fil)** <br/> **Filipino** | **`tl`** | **[Marathi](http://en.wikipedia.org/wiki/ISO_639:mar)** <br/> **मराठी** | **`mr`** | **[Urdu](http://en.wikipedia.org/wiki/ISO_639:urd)** <br/> **اُردُو** | **`ur`** | 
+| **[Finnish](http://en.wikipedia.org/wiki/ISO_639:fin)** <br/> **Suomi** | **`fi`** | **[Meiteilon](http://en.wikipedia.org/wiki/ISO_639:mni)** <br/> **ꯃꯤꯇꯩꯂꯣꯟ** | **`mni-Mtei`** | **[Uyghur](http://en.wikipedia.org/wiki/ISO_639:uig)** <br/> **ئۇيغۇر تىلى** | **`ug`** | 
+| **[French](http://en.wikipedia.org/wiki/ISO_639:fra)** <br/> **Français** | **`fr`** | **[Mizo](http://en.wikipedia.org/wiki/ISO_639:lus)** <br/> **Mizo ṭawng** | **`lus`** | **[Uzbek](http://en.wikipedia.org/wiki/ISO_639:uzb)** <br/> **Oʻzbek tili** | **`uz`** | 
+| **[French (Canadian)](http://en.wikipedia.org/wiki/ISO_639:fra)** <br/> **Français canadien** | **`fr-CA`** | **[Mongolian](http://en.wikipedia.org/wiki/ISO_639:mon)** <br/> **Монгол** | **`mn`** | **[Vietnamese](http://en.wikipedia.org/wiki/ISO_639:vie)** <br/> **Tiếng Việt** | **`vi`** | 
+| **[Frisian](http://en.wikipedia.org/wiki/ISO_639:fry)** <br/> **Frysk** | **`fy`** | **[Mongolian (Traditional)](http://en.wikipedia.org/wiki/ISO_639:mon)** <br/> **ᠮᠣᠩᠭᠣᠯ** | **`mn-Mong`** | **[Volapük](http://en.wikipedia.org/wiki/ISO_639:vol)** <br/> **Volapük** | **`vo`** | 
+| **[Galician](http://en.wikipedia.org/wiki/ISO_639:glg)** <br/> **Galego** | **`gl`** | **[Myanmar](http://en.wikipedia.org/wiki/ISO_639:mya)** <br/> **မြန်မာစာ** | **`my`** | **[Welsh](http://en.wikipedia.org/wiki/ISO_639:cym)** <br/> **Cymraeg** | **`cy`** | 
+| **[Georgian](http://en.wikipedia.org/wiki/ISO_639:kat)** <br/> **ქართული** | **`ka`** | **[Nepali](http://en.wikipedia.org/wiki/ISO_639:nep)** <br/> **नेपाली** | **`ne`** | **[Wolof](http://en.wikipedia.org/wiki/ISO_639:wol)** <br/> **Wollof** | **`wo`** | 
+| **[German](http://en.wikipedia.org/wiki/ISO_639:deu)** <br/> **Deutsch** | **`de`** | **[Norwegian](http://en.wikipedia.org/wiki/ISO_639:nor)** <br/> **Norsk** | **`no`** | **[Xhosa](http://en.wikipedia.org/wiki/ISO_639:xho)** <br/> **isiXhosa** | **`xh`** | 
+| **[Greek](http://en.wikipedia.org/wiki/ISO_639:ell)** <br/> **Ελληνικά** | **`el`** | **[Occitan](http://en.wikipedia.org/wiki/ISO_639:oci)** <br/> **Occitan** | **`oc`** | **[Yakut](http://en.wikipedia.org/wiki/ISO_639:sah)** <br/> **Sakha** | **`sah`** | 
+| **[Greenlandic](http://en.wikipedia.org/wiki/ISO_639:kal)** <br/> **Kalaallisut** | **`kl`** | **[Odia](http://en.wikipedia.org/wiki/ISO_639:ori)** <br/> **ଓଡ଼ିଆ** | **`or`** | **[Yiddish](http://en.wikipedia.org/wiki/ISO_639:yid)** <br/> **ייִדיש** | **`yi`** | 
+| **[Guarani](http://en.wikipedia.org/wiki/ISO_639:gug)** <br/> **Avañe'ẽ** | **`gn`** | **[Oromo](http://en.wikipedia.org/wiki/ISO_639:orm)** <br/> **Afaan Oromoo** | **`om`** | **[Yoruba](http://en.wikipedia.org/wiki/ISO_639:yor)** <br/> **Yorùbá** | **`yo`** | 
+| **[Gujarati](http://en.wikipedia.org/wiki/ISO_639:guj)** <br/> **ગુજરાતી** | **`gu`** | **[Papiamento](http://en.wikipedia.org/wiki/ISO_639:pap)** <br/> **Papiamentu** | **`pap`** | **[Yucatec Maya](http://en.wikipedia.org/wiki/ISO_639:yua)** <br/> **Màaya T'àan** | **`yua`** | 
+| **[Haitian Creole](http://en.wikipedia.org/wiki/ISO_639:hat)** <br/> **Kreyòl Ayisyen** | **`ht`** | **[Pashto](http://en.wikipedia.org/wiki/ISO_639:pus)** <br/> **پښتو** | **`ps`** | **[Zulu](http://en.wikipedia.org/wiki/ISO_639:zul)** <br/> **isiZulu** | **`zu`** | 
+| **[Hausa](http://en.wikipedia.org/wiki/ISO_639:hau)** <br/> **Hausa** | **`ha`** | **[Persian](http://en.wikipedia.org/wiki/ISO_639:fas)** <br/> **فارسی** | **`fa`** | 
+| **[Hawaiian](http://en.wikipedia.org/wiki/ISO_639:haw)** <br/> **ʻŌlelo Hawaiʻi** | **`haw`** | **[Polish](http://en.wikipedia.org/wiki/ISO_639:pol)** <br/> **Polski** | **`pl`** | 
 
 
 ## Wiki
