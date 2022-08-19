@@ -117,12 +117,12 @@ function wiki(    code, group, iso, language, saveSortedIn) {
 
         split(getISO(code), group, "-")
         iso = group[1]
-        split(getName(code), group, " ")
-        language = length(group) == 1 ? group[1] "_language" :
-            group[2] ~ /^\(.*\)$/ ? group[1] "_language" : join(group, "_")
+        #split(getName(code), group, " ")
+        #language = length(group) == 1 ? group[1] "_language" :
+        #    group[2] ~ /^\(.*\)$/ ? group[1] "_language" : join(group, "_")
         print sprintf("| **`%s`** <br/> [`%s`](%s) | **[%s](%s)** <br/> **%s** | %s | `%s` | %s | %s |",
                       getCode(code), iso, "http://www.ethnologue.com/language/" iso,
-                      getName(code), "http://en.wikipedia.org/wiki/" language, getEndonym(code),
+                      getName(code), "http://en.wikipedia.org/wiki/ISO_639:" iso, getEndonym(code),
                       getFamily(code), getScript(code),
                       isRTL(code) ? "✓" : NULLSTR,
                       hasDictionary(code) ? "✓" : NULLSTR) > WikiLanguages
