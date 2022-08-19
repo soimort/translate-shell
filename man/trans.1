@@ -30,7 +30,8 @@ Print version and exit.
 .TP
 .B \f[B]\-H\f[R], \f[B]\-help\f[R]
 Print help message and exit.
-\f[B]\-M\f[R], \f[B]\-man\f[R]
+.TP
+.B \f[B]\-M\f[R], \f[B]\-man\f[R]
 Show man page and exit.
 .TP
 .B \f[B]\-T\f[R], \f[B]\-reference\f[R]
@@ -42,13 +43,26 @@ language itself).
 Print reference table of all supported languages and codes, and exit.
 Names of languages are displayed in English.
 .TP
-.B \f[B]\-L\f[R] \f[I]CODES\f[R], \f[B]\-list\f[R] \f[I]CODES\f[R]
+.B \f[B]\-S\f[R], \f[B]\-list\-engines\f[R]
+List available translation engines and exit.
+.TP
+.B \f[B]\-list\-languages\f[R]
+List all supported languages (in endonyms) and exit.
+.TP
+.B \f[B]\-list\-languages\-english\f[R]
+List all supported languages (in English names) and exit.
+.TP
+.B \f[B]\-list\-codes\f[R]
+List all supported codes and exit.
+.TP
+.B \f[B]\-list\-all\f[R]
+List all supported languages (endonyms and English names) and codes, and
+exit.
+.TP
+.B \f[B]\-L\f[R] \f[I]CODES\f[R], \f[B]\-linguist\f[R] \f[I]CODES\f[R]
 Print details of languages and exit.
 When specifying two or more language codes, concatenate them by plus
 sign \[dq]+\[dq].
-.TP
-.B \f[B]\-S\f[R], \f[B]\-list\-engines\f[R]
-List available translation engines and exit.
 .TP
 .B \f[B]\-U\f[R], \f[B]\-upgrade\f[R]
 Check for upgrade of this program.
@@ -56,7 +70,7 @@ Check for upgrade of this program.
 .TP
 .B \f[B]\-e\f[R] \f[I]ENGINE\f[R], \f[B]\-engine\f[R] \f[I]ENGINE\f[R]
 Specify the translation engine to use.
-(default: google)
+(default: auto)
 .SS Display options
 .TP
 .B \f[B]\-verbose\f[R]
@@ -308,7 +322,7 @@ output.
 .RE
 .SS Language preference options
 .TP
-.B \f[B]\-l\f[R] \f[I]CODE\f[R], \f[B]\-hl\f[R] \f[I]CODE\f[R], \f[B]\-lang\f[R] \f[I]CODE\f[R]
+.B \f[B]\-hl\f[R] \f[I]CODE\f[R], \f[B]\-host\f[R] \f[I]CODE\f[R]
 Specify your home language (the language you would like to see for
 displaying prompt messages in the translation).
 .RS
@@ -322,7 +336,7 @@ This option is optional.
 When its setting is omitted, English will be used.
 .PP
 This option overrides the setting of environment variables
-$\f[B]LC_ALL\f[R], $\f[B]LANG\f[R], and $\f[B]HOME_LANG\f[R].
+$\f[B]LC_ALL\f[R], $\f[B]LANG\f[R], and $\f[B]HOST_LANG\f[R].
 .RE
 .TP
 .B \f[B]\-s\f[R] \f[I]CODES\f[R], \f[B]\-sl\f[R] \f[I]CODES\f[R], \f[B]\-source\f[R] \f[I]CODES\f[R], \f[B]\-from\f[R] \f[I]CODES\f[R]
@@ -410,8 +424,8 @@ Equivalent to option setting \f[B]\-proxy\f[R].
 .B \f[B]USER_AGENT\f[R]
 Equivalent to option setting \f[B]\-user\-agent\f[R].
 .TP
-.B \f[B]HOME_LANG\f[R]
-Equivalent to option setting \f[B]\-lang\f[R].
+.B \f[B]HOST_LANG\f[R]
+Equivalent to option setting \f[B]\-host\f[R].
 .TP
 .B \f[B]SOURCE_LANG\f[R]
 Equivalent to option setting \f[B]\-source\f[R].

@@ -27,6 +27,7 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 
 **-H**, **-help**
 :   Print help message and exit.
+
 **-M**, **-man**
 :   Show man page and exit.
 
@@ -36,11 +37,23 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 **-R**, **-reference-english**
 :   Print reference table of all supported languages and codes, and exit. Names of languages are displayed in English.
 
-**-L** *CODES*, **-list** *CODES*
-:   Print details of languages and exit. When specifying two or more language codes, concatenate them by plus sign "+".
-
 **-S**, **-list-engines**
 :   List available translation engines and exit.
+
+**-list-languages**
+:   List all supported languages (in endonyms) and exit.
+
+**-list-languages-english**
+:   List all supported languages (in English names) and exit.
+
+**-list-codes**
+:   List all supported codes and exit.
+
+**-list-all**
+:   List all supported languages (endonyms and English names) and codes, and exit.
+
+**-L** *CODES*, **-linguist** *CODES*
+:   Print details of languages and exit. When specifying two or more language codes, concatenate them by plus sign "+".
 
 **-U**, **-upgrade**
 :   Check for upgrade of this program.
@@ -48,7 +61,7 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 ## Translator options
 
 **-e** *ENGINE*, **-engine** *ENGINE*
-:   Specify the translation engine to use. (default: google)
+:   Specify the translation engine to use. (default: auto)
 
 ## Display options
 
@@ -237,14 +250,14 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 
 ## Language preference options
 
-**-l** *CODE*, **-hl** *CODE*, **-lang** *CODE*
+**-hl** *CODE*, **-host** *CODE*
 :   Specify your home language (the language you would like to see for displaying prompt messages in the translation).
 
     This option affects only the display in verbose mode (anything other than source language and target language will be displayed in your home language). This option has no effect in brief mode.
 
     This option is optional. When its setting is omitted, English will be used.
 
-    This option overrides the setting of environment variables $**LC_ALL**, $**LANG**, and $**HOME_LANG**.
+    This option overrides the setting of environment variables $**LC_ALL**, $**LANG**, and $**HOST_LANG**.
 
 **-s** *CODES*, **-sl** *CODES*, **-source** *CODES*, **-from** *CODES*
 :   Specify the source language(s) (the language(s) of original text). When specifying two or more language codes, concatenate them by plus sign "+".
@@ -312,8 +325,8 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 **USER_AGENT**
 :   Equivalent to option setting **-user-agent**.
 
-**HOME_LANG**
-:   Equivalent to option setting **-lang**.
+**HOST_LANG**
+:   Equivalent to option setting **-host**.
 
 **SOURCE_LANG**
 :   Equivalent to option setting **-source**.
