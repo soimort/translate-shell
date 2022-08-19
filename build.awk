@@ -50,7 +50,7 @@ function man(    text) {
     return system("pandoc -s -f markdown-smart -t man " ManMarkdown " -o " Man)
 }
 
-function readme(    code, col, cols, content, group, i, j, num, language, r, rows, text) {
+function readme(    code, col, cols, content, group, i, iso, j, num, r, rows, text) {
     text = readFrom(ReadmeTemplate)
 
     content = getOutput("gawk -f translate.awk -- -no-ansi -h")
@@ -82,9 +82,11 @@ function readme(    code, col, cols, content, group, i, j, num, language, r, row
         r = r "| "
         for (j = 0; j < 3; j++)
             if (cols[j][i]) {
-                split(getName(cols[j][i]), group, " ")
-                language = length(group) == 1 ? group[1] "_language" : join(group, "_")
-                r = r "**[" getName(cols[j][i]) "](" "http://en.wikipedia.org/wiki/" language ")** <br/> **" getEndonym(cols[j][i]) "** | **`" cols[j][i] "`** | "
+                split(getISO(cols[j][i]), group, "-")
+                iso = group[1]
+
+                r = r "**[" getName(cols[j][i]) "](" "http://en.wikipedia.org/wiki/ISO_639:" iso \
+                    ")** <br/> **" getEndonym(cols[j][i]) "** | **`" cols[j][i] "`** | "
             }
         r = r RS
     }
