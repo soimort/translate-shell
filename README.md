@@ -130,7 +130,7 @@ See **[wiki: Distros](https://github.com/soimort/translate-shell/wiki/Distros)**
 
 Add the following line to your `.zshrc`:
 
-    antigen bundle soimort/translate-shell
+    antigen bundle soimort/translate-shell@develop
 
 ### Option #3. From Git
 
