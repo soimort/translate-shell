@@ -68,7 +68,7 @@ function prompt(    i, p, temp) {
     # %s : source languages, separated by "+"
     # 's' is the format-control character for string
 
-    # %S : source languages (English names), seperated by "+"
+    # %S : source languages (English names), separated by "+"
     if (p ~ /%S/) {
         temp = getName(Option["sls"][1])
         for (i = 2; i <= length(Option["sls"]); i++)
@@ -144,6 +144,15 @@ function repl(line,    command, group, name, i, value, words) {
         name = words[2]
         value = words[3]
         Option[name] = value
+        # :set sl and :set tl should work as intended
+        # TODO: support multiple language codes
+        if (name == "sl") {
+            delete Option["sls"]
+            Option["sls"][1] = Option["sl"]
+        } else if (name == "tl") {
+            delete Option["tl"]
+            Option["tl"][1] = value
+        }
     } else if (command ~ /^:show$/) {
         name = words[2]
         print prettify("welcome-submessage", toString(Option[name], 1, 0, 1))
@@ -155,6 +164,8 @@ function repl(line,    command, group, name, i, value, words) {
         value = words[2]
         Option["engine"] = value
         initHttpService()
+    } else if (command ~ /^:reset$/) {
+        # TODO: reset source and target languages, etc.
     } else {
         match(command, /^[{(\[]?((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)[})\]]?$/, group)
         if (RSTART) {
