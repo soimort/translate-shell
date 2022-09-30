@@ -143,15 +143,16 @@ function repl(line,    command, group, name, i, value, words) {
     } else if (command ~ /^:set$/) {
         name = words[2]
         value = words[3]
-        Option[name] = value
         # :set sl and :set tl should work as intended
         # TODO: support multiple language codes
         if (name == "sl") {
             delete Option["sls"]
-            Option["sls"][1] = Option["sl"]
+            Option["sls"][1] = value
         } else if (name == "tl") {
             delete Option["tl"]
             Option["tl"][1] = value
+        } else {
+            Option[name] = value
         }
     } else if (command ~ /^:show$/) {
         name = words[2]
