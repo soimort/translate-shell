@@ -12,7 +12,7 @@
 
 ### Waiving Copyrights
 
-This is a public domain software, which means the author(s) do not retain any copyright interest in this repository. You ("the contributor") will be asked to **[sign the Contributor License Agreement](https://www.clahub.com/agreements/soimort/translate-shell)** before your contribution can be considered.
+This is a public domain software, which means the author(s) do not retain any copyright interest in this repository. By submitting a pull request, you (as a contributor) must agree that your code is also put into the public domain, as this software is.
 
 ### Following the Coding Style
 
