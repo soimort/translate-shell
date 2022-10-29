@@ -119,6 +119,7 @@ function getResponse(text, sl, tl, hl,
     if (HttpAuthUser && HttpAuthPass)
         # TODO: digest auth
         header = header "Proxy-Authorization: Basic " HttpAuthCredentials "\r\n"
+    header = header "\r\n" # separate header and body correctly, per RFC 2616
 
     content = NULLSTR; isBody = 0
     while (1) {
@@ -189,6 +190,7 @@ function postResponse(text, sl, tl, hl, type,
     if (HttpAuthUser && HttpAuthPass)
         # TODO: digest auth
         header = header "Proxy-Authorization: Basic " HttpAuthCredentials "\r\n"
+    header = header "\r\n" # separate header and body correctly, per RFC 2616
 
     content = NULLSTR; isBody = 0
     while (1) {
