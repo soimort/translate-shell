@@ -66,7 +66,7 @@ function bingSetup(    ast, content, cookie, group, header, isBody, key,
         exit 1
     }
 
-    match(content, /params_RichTranslateHelper = ([^;]+);/, group)
+    match(content, /params_AbusePreventionHelper = ([^;]+);/, group)
     if (group[1]) {
         tokenize(tokens, group[1])
         parseJson(ast, tokens)
