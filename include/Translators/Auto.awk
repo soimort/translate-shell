@@ -8,12 +8,18 @@ function autoInit() {
 
 function autoTTSUrl(text, tl) {
     # TODO: support Bing
+    Option["engine"] = "google"
+    initHttpService()
     return googleTTSUrl(text, tl)
+    # TODO: reset engine to auto
 }
 
 function autoWebTranslateUrl(uri, sl, tl, hl) {
     # TODO: support Bing
+    Option["engine"] = "google"
+    initHttpService()
     return googleWebTranslateUrl(uri, sl, tl, hl)
+    # TODO: reset engine to auto
 }
 
 function autoTranslate(text, sl, tl, hl,
