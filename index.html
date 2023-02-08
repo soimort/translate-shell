@@ -27,11 +27,11 @@
   <a href="https://www.soimort.org/translate-shell/"><img src="images/logo.jpg"/></a>
   <div id="desc">
     <h1>Translate Shell</h1>
-    <h2>version 0.9.7</h2>
+    <h2>version 0.9.7.1</h2>
     <a href="https://github.com/soimort/translate-shell">Star <i class="fa fa-github-square fa-2x"></i></a>
     <a href="https://www.soimort.org/translate-shell/trans">Download <i class="fa fa-download fa-2x"></i></a>
     <div id="msg">
-      <span id="checksum" onmouseover="this.innerHTML='cbbd104aefab9c59972cc332ea6f5723d0f180f9'" onmouseout="this.innerHTML='SHA1SUM'">SHA1SUM</span>
+      <span id="checksum" onmouseover="this.innerHTML='9734bce6b5b4dc9132fb25ef64820b216dcbab6e'" onmouseout="this.innerHTML='SHA1SUM'">SHA1SUM</span>
       <a href="https://www.soimort.org/translate-shell/trans.sig">PGP SIGNATURE</a>
     </div>
   </div>
@@ -110,6 +110,7 @@ In order to be happy, the best way is to be loved by people.</code></pre>
 <li>On FreeBSD, gawk is available in the ports.</li>
 <li>On macOS, gawk is available in MacPorts and Homebrew.</li>
 </ul></li>
+<li>Please note that gawk 5.2.0 has a <a href="https://github.com/soimort/translate-shell/issues/463">known bug</a> – update to gawk 5.2.1 instead.</li>
 </ul></li>
 <li><strong><a href="http://www.gnu.org/software/bash/">GNU Bash</a></strong> or <strong><a href="http://www.zsh.org/">Zsh</a></strong>
 <ul>
@@ -164,7 +165,7 @@ $ chmod +x ./trans</code></pre>
 <p>See <strong><a href="https://github.com/soimort/translate-shell/wiki/Distros">wiki: Distros</a></strong> on how to install from a specific package manager on your distro.</p>
 <h4 id="using-antigen-for-zsh-users">Using <a href="https://github.com/zsh-users/antigen">Antigen</a> (for Zsh users)</h4>
 <p>Add the following line to your <code>.zshrc</code>:</p>
-<pre><code>antigen bundle soimort/translate-shell</code></pre>
+<pre><code>antigen bundle soimort/translate-shell@develop</code></pre>
 <h3 id="option-3.-from-git">Option #3. From Git</h3>
 <pre><code>$ git clone https://github.com/soimort/translate-shell
 $ cd translate-shell/

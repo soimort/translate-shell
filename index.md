@@ -1,14 +1,14 @@
 ---
 title: Translate Shell
 project-name: Translate Shell
-project-version: 0.9.7
+project-version: 0.9.7.1
 project-logo: images/logo.jpg
 background: images/background.png
 github: soimort/translate-shell
 url: https://www.soimort.org/translate-shell/
 download-url: https://www.soimort.org/translate-shell/trans
 download-checksum-type: SHA1SUM
-download-checksum-data: cbbd104aefab9c59972cc332ea6f5723d0f180f9
+download-checksum-data: 9734bce6b5b4dc9132fb25ef64820b216dcbab6e
 download-signature: https://www.soimort.org/translate-shell/trans.sig
 
 ---
@@ -80,6 +80,7 @@ In order to be happy, the best way is to be loved by people.
       * gawk comes with all GNU/Linux distributions.
       * On FreeBSD, gawk is available in the ports.
       * On macOS, gawk is available in MacPorts and Homebrew.
+    * Please note that gawk 5.2.0 has a [known bug](https://github.com/soimort/translate-shell/issues/463) -- update to gawk 5.2.1 instead.
 * **[GNU Bash](http://www.gnu.org/software/bash/)** or **[Zsh](http://www.zsh.org/)**
     * You may use Translate Shell from any Unix shell of your choice (bash, zsh, ksh, tcsh, fish, etc.); however, the wrapper script requires either **bash** or **zsh** installed.
 
@@ -144,7 +145,7 @@ See **[wiki: Distros](https://github.com/soimort/translate-shell/wiki/Distros)**
 
 Add the following line to your `.zshrc`:
 
-    antigen bundle soimort/translate-shell
+    antigen bundle soimort/translate-shell@develop
 
 ### Option #3. From Git
 

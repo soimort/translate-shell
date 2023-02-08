@@ -2,8 +2,8 @@
 BEGIN {
 Name        = "Translate Shell"
 Description = "Command-line translator using Google Translate, Bing Translator, Yandex.Translate, etc."
-Version     = "0.9.7"
-ReleaseDate = "2022-08-19"
+Version     = "0.9.7.1"
+ReleaseDate = "2023-02-08"
 Command     = "trans"
 EntryPoint  = "translate.awk"
 EntryScript = "translate"
@@ -2489,7 +2489,7 @@ Locale["to"]["spoken-in"]          = "Tonga"
 Locale["to"]["supported-by"]       = "bing"
 Locale["ts"]["name"]               = "Tsonga"
 Locale["ts"]["endonym"]            = "Xitsonga"
-Locale["ts"]["family"]             = "Atlantic–Congo"
+Locale["ts"]["family"]             = "Atlantic-Congo"
 Locale["ts"]["branch"]             = "Bantu"
 Locale["ts"]["iso"]                = "tso"
 Locale["ts"]["glotto"]             = "tson1249"
@@ -4038,9 +4038,10 @@ if (Cookie)
 header = header "Cookie: " Cookie "\r\n"
 if (HttpAuthUser && HttpAuthPass)
 header = header "Proxy-Authorization: Basic " HttpAuthCredentials "\r\n"
+l(header)
 content = NULLSTR; isBody = 0
 while (1) {
-print header |& HttpService
+print (header "\r\n") |& HttpService
 while ((HttpService |& getline) > 0) {
 if (isBody)
 content = content ? content "\n" $0 : $0
@@ -4099,6 +4100,7 @@ if (Cookie)
 header = header "Cookie: " Cookie "\r\n"
 if (HttpAuthUser && HttpAuthPass)
 header = header "Proxy-Authorization: Basic " HttpAuthCredentials "\r\n"
+l(header)
 content = NULLSTR; isBody = 0
 while (1) {
 print (header "\r\n" reqBody) |& HttpService
@@ -4770,7 +4772,7 @@ l(IID, "IID")
 e("[ERROR] Failed to extract IID.")
 exit 1
 }
-match(content, /params_RichTranslateHelper = ([^;]+);/, group)
+match(content, /params_AbusePreventionHelper = ([^;]+);/, group)
 if (group[1]) {
 tokenize(tokens, group[1])
 parseJson(ast, tokens)
@@ -5491,9 +5493,13 @@ BEGIN { provides("auto") }
 function autoInit() {
 }
 function autoTTSUrl(text, tl) {
+Option["engine"] = "google"
+initHttpService()
 return googleTTSUrl(text, tl)
 }
 function autoWebTranslateUrl(uri, sl, tl, hl) {
+Option["engine"] = "google"
+initHttpService()
 return googleWebTranslateUrl(uri, sl, tl, hl)
 }
 function autoTranslate(text, sl, tl, hl,
@@ -5675,7 +5681,15 @@ exit
 } else if (command ~ /^:set$/) {
 name = words[2]
 value = words[3]
+if (name == "sl") {
+delete Option["sls"]
+Option["sls"][1] = value
+} else if (name == "tl") {
+delete Option["tl"]
+Option["tl"][1] = value
+} else {
 Option[name] = value
+}
 } else if (command ~ /^:show$/) {
 name = words[2]
 print prettify("welcome-submessage", toString(Option[name], 1, 0, 1))
@@ -5687,6 +5701,7 @@ Option["sls"][1] = tl
 value = words[2]
 Option["engine"] = value
 initHttpService()
+} else if (command ~ /^:reset$/) {
 } else {
 match(command, /^[{(\[]?((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)[})\]]?$/, group)
 if (RSTART) {
