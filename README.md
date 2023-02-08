@@ -66,6 +66,7 @@ In order to be happy, the best way is to be loved by people.
       * gawk comes with all GNU/Linux distributions.
       * On FreeBSD, gawk is available in the ports.
       * On macOS, gawk is available in MacPorts and Homebrew.
+    * Please note that gawk 5.2.0 has a [known bug](https://github.com/soimort/translate-shell/issues/463) -- update to gawk 5.2.1 instead.
 * **[GNU Bash](http://www.gnu.org/software/bash/)** or **[Zsh](http://www.zsh.org/)**
     * You may use Translate Shell from any Unix shell of your choice (bash, zsh, ksh, tcsh, fish, etc.); however, the wrapper script requires either **bash** or **zsh** installed.
 
