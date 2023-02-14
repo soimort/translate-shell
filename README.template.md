@@ -61,29 +61,29 @@ In order to be happy, the best way is to be loved by people.
 ### Dependencies
 
 * **[GNU Awk](https://www.gnu.org/software/gawk/)** (**gawk**) **4.0 or later**
-    * This program relies heavily on GNU extensions of the [AWK language](http://en.wikipedia.org/wiki/AWK), which are non-portable for other AWK implementations (e.g. nawk).
+    * This program relies heavily on GNU extensions of the [AWK language](https://en.wikipedia.org/wiki/AWK), which are non-portable for other AWK implementations (e.g. nawk).
     * How to get gawk:
       * gawk comes with all GNU/Linux distributions.
       * On FreeBSD, gawk is available in the ports.
       * On macOS, gawk is available in MacPorts and Homebrew.
     * Please note that gawk 5.2.0 has a [known bug](https://github.com/soimort/translate-shell/issues/463) -- update to gawk 5.2.1 instead.
-* **[GNU Bash](http://www.gnu.org/software/bash/)** or **[Zsh](http://www.zsh.org/)**
+* **[GNU Bash](https://www.gnu.org/software/bash/)** or **[Zsh](https://www.zsh.org/)**
     * You may use Translate Shell from any Unix shell of your choice (bash, zsh, ksh, tcsh, fish, etc.); however, the wrapper script requires either **bash** or **zsh** installed.
 
 ### Recommended Dependencies
 
 These dependencies are optional, but strongly recommended for full functionality:
 
-* **[curl](http://curl.haxx.se/)** with **OpenSSL** support
+* **[curl](https://curl.se/)** with **OpenSSL** support
 * **[GNU FriBidi](http://fribidi.org/)**: _an implementation of the Unicode Bidirectional Algorithm (bidi)_
     * required for displaying text in Right-to-Left scripts (e.g. Arabic, Hebrew)
-* **[mplayer](http://www.mplayerhq.hu/)**, **[mpv](http://mpv.io/)**, **[mpg123](http://mpg123.org/)**, or **[eSpeak](http://espeak.sourceforge.net/)**
+* **[mplayer](http://www.mplayerhq.hu/)**, **[mpv](https://mpv.io/)**, **[mpg123](https://mpg123.org/)**, or **[eSpeak](https://espeak.sourceforge.net/)**
     * required for the Text-to-Speech functionality
-* **[less](http://www.greenwoodsoftware.com/less/)**, **[more](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/more.html)** or **[most](http://www.jedsoft.org/most/)**
+* **[less](https://www.greenwoodsoftware.com/less/)**, **[more](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/more.html)** or **[most](https://www.jedsoft.org/most/)**
     * required for terminal paging
-* **[rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/#rlwrap)**: *a GNU readline wrapper*
+* **[rlwrap](https://github.com/hanslub42/rlwrap)**: *a GNU readline wrapper*
     * required for readline-style editing and history in the interactive shell
-* **[aspell](http://aspell.net/)** or **[hunspell](http://hunspell.github.io/)**
+* **[aspell](http://aspell.net/)** or **[hunspell](https://hunspell.github.io/)**
     * required for spell checking
 
 ### Environment and Fonts
@@ -114,7 +114,7 @@ Then you may start an interactive shell from the Docker image for translating:
 
 ### Option #1. Direct Download
 
-Download [the self-contained executable](http://git.io/trans) and place it into your path. It's everything you need.
+Download [the self-contained executable](https://git.io/trans) and place it into your path. It's everything you need.
 
     $ wget git.io/trans
     $ chmod +x ./trans
@@ -279,7 +279,7 @@ Sometimes the content of translation can be too much for display in one screen. 
 
 ### Right-to-Left (RTL) Languages
 
-[Right-to-Left (RTL) languages](http://en.wikipedia.org/wiki/Right-to-left) are well supported via [GNU FriBidi](http://fribidi.org/).
+[Right-to-Left (RTL) languages](https://en.wikipedia.org/wiki/Right-to-left) are well supported via [GNU FriBidi](http://fribidi.org/).
 
 The program will automatically adjust the screen width for padding when displaying right-to-left languages. Alternatively, you may use the `-width` (`-w`) option to specify the screen width:
 
@@ -300,7 +300,7 @@ Translations are written to standard output, or to the file specified by the `-o
 
 ### Translate a File
 
-Instead of using the `-input` option, a [file URI scheme](http://en.wikipedia.org/wiki/File_URI_scheme) (`file://` followed by the file name) can be used as a command-line argument:
+Instead of using the `-input` option, a [file URI scheme](https://en.wikipedia.org/wiki/File_URI_scheme) (`file://` followed by the file name) can be used as a command-line argument:
 
     $ trans :fr file://input.txt
 
@@ -310,11 +310,11 @@ Instead of using the `-input` option, a [file URI scheme](http://en.wikipedia.or
 
 To translate a web page, an http(s) URI scheme can be used as an argument:
 
-    $ trans :fr http://www.w3.org/
+    $ trans :fr https://www.w3.org/
 
 A browser session will open for viewing the translation (via Google Translate's web interface). To specify your web browser of choice, use the `-browser` option:
 
-    $ trans -browser firefox :fr http://www.w3.org/
+    $ trans -browser firefox :fr https://www.w3.org/
 
 ### Language Details
 

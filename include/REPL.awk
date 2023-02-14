@@ -18,7 +18,7 @@ function prompt(    i, p, temp) {
     # Roughly following ISO 8601:1988, with the notable exception of "%S", "%t" and "%T".
     # GNU libc extensions like "%l", "%s" and "%_*" are not supported.
     # See: <https://www.gnu.org/software/gawk/manual/html_node/Time-Functions.html>
-    #      <http://pubs.opengroup.org/onlinepubs/007908799/xsh/strftime.html>
+    #      <https://pubs.opengroup.org/onlinepubs/007908799/xsh/strftime.html>
     if (p ~ /%a/) gsub(/%a/, strftime("%a"), p)
     if (p ~ /%A/) gsub(/%A/, strftime("%A"), p)
     if (p ~ /%b/) gsub(/%b/, strftime("%b"), p)

@@ -122,7 +122,7 @@ function compName(i1, v1, i2, v2) {
 
 # Return the name of script (writing system).
 # See: <https://en.wikipedia.org/wiki/ISO_15924#List_of_codes>
-#      <http://unicode.org/iso15924/iso15924-codes.html>
+#      <https://unicode.org/iso15924/iso15924-codes.html>
 function scriptName(code) {
     switch (code) {
     case "Arab": return "Arabic"

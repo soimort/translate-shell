@@ -1,7 +1,7 @@
 FROM alpine:latest
 MAINTAINER soimort
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories 
+RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories 
 
 RUN apk add bash gawk curl mplayer fribidi less hunspell wget \
     && wget git.io/trans \
