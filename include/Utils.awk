@@ -78,7 +78,7 @@ function newerVersion(ver1, ver2,    i, group1, group2) {
     return 0
 }
 
-# Fork a rlwrap process as the wrapper. Return non-zero if failed,
+# Fork an rlwrap process as the wrapper. Return non-zero if failed,
 function rlwrapMe(    i, command) {
     initRlwrap()
 
