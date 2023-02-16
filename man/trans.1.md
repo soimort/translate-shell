@@ -72,6 +72,11 @@ If neither *TEXT* nor the input file is specified by command-line arguments, the
 
     This option is unnecessary in most cases since verbose mode is enabled by default.
 
+**-c**, **-compact**
+:   Compact mode.
+
+    Show one translate dictionary entry per line instead of splitting it into two lines.
+
 **-b**, **-brief**
 :   Brief mode.
 
