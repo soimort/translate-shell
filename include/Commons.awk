@@ -204,6 +204,8 @@ function escapeChar(char) {
         return ">" # Unicode Character 'GREATER-THAN SIGN'
     case "u200b":
         return "" # Unicode Character 'ZERO WIDTH SPACE'
+    case "u200c":
+        return "" # Unicode Character 'ZERO WIDTH NON-JOINER'
     default:
         return char
     }
