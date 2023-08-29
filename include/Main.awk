@@ -63,7 +63,7 @@ function init() {
         "AppleWebKit/537.36 (KHTML, like Gecko) "            \
         "Chrome/104.0.0.0 "                                  \
         "Safari/537.36 "                                     \
-        "Edg/104.0.1293.54"
+        "Edge/104.0.1293.54"
     Option["ip-version"] = 0
 
     # Interactive shell
