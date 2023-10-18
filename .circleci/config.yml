@@ -5,7 +5,7 @@ jobs:
       LC_ALL: C.UTF-8
       LANG: C.UTF-8
     docker:
-      - image: debian:stretch
+      - image: cimg/base:2023.09
     steps:
       - checkout
       - run:
