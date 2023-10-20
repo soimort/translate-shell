@@ -23,6 +23,9 @@ function initBiDiTerm() {
         BiDiTerm = "mlterm"
     else if (ENVIRON["KONSOLE_VERSION"])
         BiDiTerm = "konsole"
+    else if (ENVIRON["VTE_VERSION"])
+        if (int(ENVIRON["VTE_VERSION"]) >= 5703)
+            BiDiTerm = "vte"
 }
 
 # Detect external bidirectional algorithm utility (fribidi);

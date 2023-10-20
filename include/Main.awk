@@ -139,8 +139,8 @@ function initMisc(    command, group, temp) {
     if (Option["no-bidi"] || BiDiTerm == "mlterm")
         # mlterm implements its own padding
         BiDi = BiDiNoPad = NULLSTR
-    else if (!Option["force-bidi"] && BiDiTerm == "konsole") {
-        # konsole implements no padding; we should handle this
+    else if (!Option["force-bidi"] && (BiDiTerm == "vte" || BiDiTerm == "konsole")) {
+        # vte & konsole implement no padding; we should handle this
         BiDiNoPad = NULLSTR
         BiDi = "sed \"s/'/\\\\\\'/\" | xargs -0 printf '%%%ss'"
     }
