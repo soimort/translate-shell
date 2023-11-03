@@ -168,7 +168,7 @@ function repl(line,    command, group, name, i, value, words) {
     } else if (command ~ /^:reset$/) {
         # TODO: reset source and target languages, etc.
     } else {
-        match(command, /^[{(\[]?((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)?(:|=)((@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[[:alpha:]][[:alpha:]][[:alpha:]]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)[})\]]?$/, group)
+        match(command, /^[{(\[]?((@?[a-z][a-z][a-z]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[a-z][a-z][a-z]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)?(:|=)((@?[a-z][a-z][a-z]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?\+)*(@?[a-z][a-z][a-z]?(-[[:alpha:]][[:alpha:]][[:alpha:]]?[[:alpha:]]?)?)?)[})\]]?$/, group)
         if (RSTART) {
             if (group[1]) {
                 split(group[1], Option["sls"], "+")
