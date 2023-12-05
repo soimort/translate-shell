@@ -91,10 +91,10 @@ function rlwrapMe(    i, command) {
     }
 
     if (ENVIRON["TRANS_ENTRY"]) {
-        command = Rlwrap " " ENVIRON["TRANS_ENTRY"] " "                 \
+        command = Rlwrap " -C trans " ENVIRON["TRANS_ENTRY"] " "        \
             parameterize("-no-rlwrap") # never fork rlwrap again!
     } else if (fileExists(ENVIRON["TRANS_DIR"] "/" EntryScript)) {
-        command = Rlwrap " sh "                                         \
+        command = Rlwrap " -C trans " " sh "                            \
             parameterize(ENVIRON["TRANS_DIR"] "/" EntryScript)          \
             " - " parameterize("-no-rlwrap") # never fork rlwrap again!
     } else {
