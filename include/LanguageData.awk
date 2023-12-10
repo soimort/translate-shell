@@ -11,7 +11,7 @@
 # See: <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>
 #      <https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes>
 #      <https://en.wikipedia.org/wiki/ISO_15924#List_of_codes>
-#      <http://glottolog.org/>
+#      <https://glottolog.org/>
 function initLocale() {
 
     # Afrikaans
@@ -2787,7 +2787,7 @@ function initLocaleAlias(    i) {
     }
 
     # Other aliases
-    # See: <http://www.loc.gov/standards/iso639-2/php/code_changes.php>
+    # See: <https://www.loc.gov/standards/iso639-2/php/code_changes.php>
     LocaleAlias["in"] = "id" # withdrawn language code for Indonesian
     LocaleAlias["iw"] = "he" # withdrawn language code for Hebrew
     LocaleAlias["ji"] = "yi" # withdrawn language code for Yiddish

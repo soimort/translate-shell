@@ -85,7 +85,7 @@ function readme(    code, col, cols, content, group, i, iso, j, num, r, rows, te
                 split(getISO(cols[j][i]), group, "-")
                 iso = group[1]
 
-                r = r "**[" getName(cols[j][i]) "](" "http://en.wikipedia.org/wiki/ISO_639:" iso \
+                r = r "**[" getName(cols[j][i]) "](" "https://en.wikipedia.org/wiki/ISO_639:" iso \
                     ")** <br/> **" getEndonym(cols[j][i]) "** | **`" cols[j][i] "`** | "
             }
         r = r RS
@@ -106,7 +106,7 @@ function wiki(    code, group, iso, language, saveSortedIn) {
     print "*Generated from the source code of Translate Shell " Version ".*\n" > WikiLanguages
     print "*Version: [English](https://github.com/soimort/translate-shell/wiki/Languages) " \
         "| [Chinese Simplified](https://github.com/soimort/translate-shell/wiki/Languages-%28%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%29)*\n" > WikiLanguages
-    print "| Code | Name | Family | [Writing system](https://github.com/soimort/translate-shell/wiki/Writing-Systems-and-Fonts) | Is [RTL](http://en.wikipedia.org/wiki/Right-to-left)? | Has dictionary? |" > WikiLanguages
+    print "| Code | Name | Family | [Writing system](https://github.com/soimort/translate-shell/wiki/Writing-Systems-and-Fonts) | Is [RTL](https://en.wikipedia.org/wiki/Right-to-left)? | Has dictionary? |" > WikiLanguages
     print "| :--: | ---: | -----: | :------------: | :---------------------------------------------------: | :-------------: |" > WikiLanguages
     saveSortedIn = PROCINFO["sorted_in"]
     PROCINFO["sorted_in"] = "@ind_num_asc"
@@ -121,8 +121,8 @@ function wiki(    code, group, iso, language, saveSortedIn) {
         #language = length(group) == 1 ? group[1] "_language" :
         #    group[2] ~ /^\(.*\)$/ ? group[1] "_language" : join(group, "_")
         print sprintf("| **`%s`** <br/> [`%s`](%s) | **[%s](%s)** <br/> **%s** | %s | `%s` | %s | %s |",
-                      getCode(code), iso, "http://www.ethnologue.com/language/" iso,
-                      getName(code), "http://en.wikipedia.org/wiki/ISO_639:" iso, getEndonym(code),
+                      getCode(code), iso, "https://www.ethnologue.com/language/" iso,
+                      getName(code), "https://en.wikipedia.org/wiki/ISO_639:" iso, getEndonym(code),
                       getFamily(code), getScript(code),
                       isRTL(code) ? "✓" : NULLSTR,
                       hasDictionary(code) ? "✓" : NULLSTR) > WikiLanguages

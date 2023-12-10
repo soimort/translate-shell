@@ -6,7 +6,7 @@
 BEGIN { provides("yandex") }
 
 function genSID(    content, group, temp) {
-    content = curl("http://translate.yandex.com")
+    content = curl("https://translate.yandex.com")
 
     match(content, /SID:[[:space:]]*'([^']+)'/, group)
     if (group[1]) {
@@ -47,7 +47,7 @@ function yandexGetDictionaryResponse(text, sl, tl, hl,    content, header, isBod
     split(sl, group, "-"); sl = group[1]
     split(tl, group, "-"); tl = group[1]
 
-    url = "http://dictionary.yandex.net/dicservice.json/lookupMultiple?" \
+    url = "https://dictionary.yandex.net/dicservice.json/lookupMultiple?" \
         "&text=" preprocess(text) "&dict=" sl "-" tl
     content = curl(url) # but why?!
 
