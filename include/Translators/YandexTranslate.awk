@@ -5,21 +5,15 @@
 # Last Updated: 11 Aug 2018
 BEGIN { provides("yandex") }
 
-function genSID(    content, group, temp) {
-    content = curl("http://translate.yandex.com")
-
-    match(content, /SID:[[:space:]]*'([^']+)'/, group)
-    if (group[1]) {
-        split(group[1], temp, ".")
-        SID = reverse(temp[1]) "." reverse(temp[2]) "." reverse(temp[3])
-    } else {
-        e("[ERROR] Oops! Something went wrong and I can't translate it for you :(")
-        exit 1
-    }
+function genUcid() {
+    "uuidgen" |  getline uuid;
+    close("uuidgen");
+    gsub("-", "", uuid);
+    ucid = tolower(uuid)
 }
 
 function yandexInit() {
-    genSID() # generate a one-time key
+    genUcid() # generate a one-time key
     YandexWebTranslate = "z5h64q92x9.net" # host for web translation
 
     HttpProtocol = "http://"
@@ -27,19 +21,28 @@ function yandexInit() {
     HttpPort = 80
 }
 
-function yandexRequestUrl(text, sl, tl, hl,    group) {
+function yandexPostRequestUrl(text, sl, tl, hl,    group) {
     # Quick hack: Yandex doesn't support digraphia code (yet)
     split(sl, group, "-"); sl = group[1]
     split(tl, group, "-"); tl = group[1]
 
-    return HttpPathPrefix "/api/v1/tr.json/translate?"                  \
-        "id=" SID "-0-0&srv=tr-text"                                    \
-        "&text=" preprocess(text) "&lang=" (sl == "auto" ? tl : sl "-" tl)
+    return HttpPathPrefix "/api/v1/tr.json/translate" \
+        "?ucid=" ucid                                 \
+        "&srv=android"                                \
+        "&text=" preprocess(text)                     \
+        "&lang=" (sl == "auto" ? tl : sl "-" tl)
 }
 
 function yandexPostRequestBody(text, sl, tl, hl, type) {
-    # type == "translit"
-    return "text=" quote(text) "&lang=" sl
+    return ""
+}
+
+function yandexPostRequestContentType(text, sl, tl, hl, type) {
+    return "application/x-www-form-urlencoded"
+}
+
+function yandexPostRequestUserAgent(text, sl, tl, hl, type) {
+    return ""
 }
 
 function yandexGetDictionaryResponse(text, sl, tl, hl,    content, header, isBody, url) {
@@ -131,7 +134,7 @@ function yandexTranslate(text, sl, tl, hl,
     _tl = getCode(tl); if (!_tl) _tl = tl
     _hl = getCode(hl); if (!_hl) _hl = hl
 
-    content = getResponse(text, _sl, _tl, _hl)
+    content = postResponse(text, _sl, _tl, _hl)
     if (Option["dump"])
         return content
     tokenize(tokens, content)
@@ -156,8 +159,7 @@ function yandexTranslate(text, sl, tl, hl,
     # Transliteration
     wShowTranslationPhonetics = Option["show-translation-phonetics"]
     if (wShowTranslationPhonetics && _tl != "emj") {
-        split(_tl, group, "-")
-        data = yandexPostRequestBody(translation, group[1], group[1], _hl, "translit")
+        data = "text=" text "&lang=" tl
         content = curlPost("https://translate.yandex.net/translit/translit", data)
         phonetics = (content ~ /not supported$/) ? "" : unparameterize(content)
     }
@@ -188,8 +190,7 @@ function yandexTranslate(text, sl, tl, hl,
         # Transliteration (original)
         wShowOriginalPhonetics = Option["show-original-phonetics"]
         if (wShowTranslationPhonetics && il != "emj") {
-            split(il, group, "-")
-            data = yandexPostRequestBody(text, group[1], group[1], _hl, "translit")
+            data = "text=" text "&lang=" sl
             content = curlPost("https://translate.yandex.net/translit/translit", data)
             oPhonetics = (content ~ /not supported$/) ? "" : unparameterize(content)
         }
