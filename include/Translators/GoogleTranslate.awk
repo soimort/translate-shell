@@ -89,7 +89,7 @@ function googleTranslate(text, sl, tl, hl,
                          wShowTranslation, wShowTranslationPhonetics,
                          wShowPromptMessage, wShowLanguages,
                          wShowOriginalDictionary, wShowDictionary,
-                         wShowAlternatives,
+                         wShowDictionaryCompact, wShowAlternatives,
                          genderedTrans, hasWordClasses, hasAltTranslations,
                          i, j, k, group, temp, saveSortedIn) {
     isPhonetic = match(tl, /^@/)
@@ -235,6 +235,7 @@ function googleTranslate(text, sl, tl, hl,
         wShowLanguages = Option["show-languages"]
         wShowOriginalDictionary = Option["show-original-dictionary"]
         wShowDictionary = Option["show-dictionary"]
+        wShowDictionaryCompact = Option["compact"]
         wShowAlternatives = Option["show-alternatives"]
 
         if (!anything(oPhonetics)) wShowOriginalPhonetics = 0
@@ -429,10 +430,17 @@ function googleTranslate(text, sl, tl, hl,
                     }
 
                     r = r RS prettify("dictionary-word", ins(1, (article ? "(" article ") " : "") word, tl))
-                    if (isRTL(il))
-                        r = r RS prettify("dictionary-explanation-item", ins(2, explanation, il))
-                    else
-                        r = r RS ins(2, explanation)
+                    if (wShowDictionaryCompact) {
+                        if (isRTL(il))
+                            r = r " - " prettify("dictionary-explanation-item", ins(0, explanation, il))
+                        else
+                            r = r " - " ins(0, explanation)
+                    } else {
+                        if (isRTL(il))
+                            r = r RS prettify("dictionary-explanation-item", ins(2, explanation, il))
+                        else
+                            r = r RS ins(2, explanation)
+                    }
                 }
             }
         }
