@@ -157,7 +157,7 @@ function googleTranslate(text, sl, tl, hl,
         # 7 - autocorrection
         if (i ~ "^0" SUBSEP "7" SUBSEP "5$") {
             if (!Option["no-autocorrect"] && ast[i] == "true")
-                w("Showing translation for:  (use -no-auto to disable autocorrect)")
+                w("Showing translation for:  (use -no-autocorrect to disable autocorrect)")
             else
                 w("Did you mean: "                                      \
                   ansi("bold", unparameterize(ast["0" SUBSEP "7" SUBSEP "1"])))
