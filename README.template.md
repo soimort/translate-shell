@@ -81,7 +81,7 @@ These dependencies are optional, but strongly recommended for full functionality
     * required for the Text-to-Speech functionality
 * **[less](http://www.greenwoodsoftware.com/less/)**, **[more](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/more.html)** or **[most](http://www.jedsoft.org/most/)**
     * required for terminal paging
-* **[rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/#rlwrap)**: *a GNU readline wrapper*
+* **[rlwrap](https://github.com/hanslub42/rlwrap)**: *a GNU readline wrapper*
     * required for readline-style editing and history in the interactive shell
 * **[aspell](http://aspell.net/)** or **[hunspell](http://hunspell.github.io/)**
     * required for spell checking
