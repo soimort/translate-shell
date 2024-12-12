@@ -7,12 +7,12 @@ BEGIN { provides("apertium") }
 
 function apertiumInit() {
     HttpProtocol = "http://"
-    HttpHost = "www.apertium.org"
-    HttpPort = 80
+    HttpHost = "localhost"
+    HttpPort = 2737
 }
 
 function apertiumRequestUrl(text, sl, tl, hl) {
-    return HttpPathPrefix "/apy/translate?"                             \
+    return HttpPathPrefix "/translate?"                                 \
         "langpair=" preprocess(sl) "|" preprocess(tl)                   \
         "&q=" preprocess(text)
 }
