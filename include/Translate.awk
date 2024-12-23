@@ -351,9 +351,10 @@ function translate(text, inline,
             # translate URL only from command-line parameters (inline)
             webTranslation(text, Option["sl"], Option["tl"][i], Option["hl"])
         } else {
-            if (!Option["no-translate"])
+            if (!Option["no-translate"]){
                 p(getTranslation(text, Option["sl"], Option["tl"][i], Option["hl"], Option["verbose"], Option["play"] || Option["download-audio"], playlist, il))
-            else
+            	p("\n===============================================================================\n")
+	    }else
                 il[0] = Option["sl"] == "auto" ? "en" : Option["sl"]
 
             if (Option["play"] == 1) {
