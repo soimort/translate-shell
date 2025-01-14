@@ -122,12 +122,25 @@ function getResponse(text, sl, tl, hl,
     l(header) # log request header
 
     content = NULLSTR; isBody = 0
+    hasChunk = 0; chunkWillEnd = 0; hasContentLength = 0; contentLength = 0
     while (1) {
         # separate header and body correctly with CRLF, per RFC 2616
         print (header "\r\n") |& HttpService
         while ((HttpService |& getline) > 0) {
-            if (isBody)
+            if (isBody){
                 content = content ? content "\n" $0 : $0
+                if (hasContentLength && length(content) >= contentLength){
+                    break
+                }
+                if (hasChunk){
+                    if (chunkWillEnd && $0 == "\r") {
+                        break
+                    }
+                    if ($0 == "0\r") {
+                        chunkWillEnd = 1
+                    }
+                }
+            }
             else if (length($0) <= 1)
                 isBody = 1
             else { # interesting fields in header
@@ -135,6 +148,13 @@ function getResponse(text, sl, tl, hl,
                 if (RSTART) status = group[1]
                 match($0, /^Location: (.*)/, group)
                 if (RSTART) location = squeeze(group[1]) # squeeze the URL!
+                if (match(tolower($0), /content-length: ([0-9]+)/, arr)) {
+                    hasContentLength=1
+                    contentLength = arr[1]
+                }
+                if (match(tolower($0), /transfer-encoding: chunked/, arr)) {
+                    hasChunk=1
+                }
             }
             l(sprintf("%4s bytes > %s", length($0), $0))
         }
@@ -194,11 +214,24 @@ function postResponse(text, sl, tl, hl, type,
     l(header) # log request header
 
     content = NULLSTR; isBody = 0
+    hasChunk = 0; chunkWillEnd = 0; hasContentLength = 0; contentLength = 0
     while (1) {
         print (header "\r\n" reqBody) |& HttpService
         while ((HttpService |& getline) > 0) {
-            if (isBody)
+            if (isBody){
                 content = content ? content "\n" $0 : $0
+                if (hasContentLength && length(content) >= contentLength){
+                    break
+                }
+                if (hasChunk){
+                    if (chunkWillEnd && $0 == "\r") {
+                        break
+                    }
+                    if ($0 == "0\r") {
+                        chunkWillEnd = 1
+                    }
+                }
+            }
             else if (length($0) <= 1)
                 isBody = 1
             else { # interesting fields in header
@@ -206,6 +239,13 @@ function postResponse(text, sl, tl, hl, type,
                 if (RSTART) status = group[1]
                 match($0, /^Location: (.*)/, group)
                 if (RSTART) location = squeeze(group[1]) # squeeze the URL!
+                if (match(tolower($0), /content-length: ([0-9]+)/, arr)) {
+                    hasContentLength=1
+                    contentLength = arr[1]
+                }
+                if (match(tolower($0), /transfer-encoding: chunked/, arr)) {
+                    hasChunk=1
+                }
             }
             l(sprintf("%4s bytes > %s", length($0), $0))
         }
