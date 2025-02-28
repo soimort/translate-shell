@@ -24,6 +24,7 @@ function init() {
 
     # Display
     Option["verbose"] = 1
+    Option["compact"] = 0
     Option["show-original"] = 1
     Option["show-original-phonetics"] = 1
     Option["show-translation"] = 1
@@ -341,6 +342,13 @@ BEGIN {
         match(ARGV[pos], /^--?verbose$/)
         if (RSTART) {
             Option["verbose"] = 1 # default value
+            continue
+        }
+
+        # -compact
+        match(ARGV[pos], /^--?(c|compact)$/)
+        if (RSTART) {
+            Option["compact"] = 1
             continue
         }
 
