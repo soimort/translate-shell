@@ -62,6 +62,14 @@ function initPager() {
 function initHttpService(    inet) {
     _Init()
 
+    if (HttpProtocol == "https://") {
+        # gawk's /inet/tcp does not support TLS; signal callers to use curl
+        UseHttps = 1
+        HttpPathPrefix = (Option["proxy"] ? HttpProtocol HttpHost : "")
+        return
+    }
+
+    UseHttps = 0
     inet = "inet"
     if (Option["ip-version"])
         inet = inet Option["ip-version"]
@@ -108,6 +116,11 @@ function getResponse(text, sl, tl, hl,
                      ####
                      content, header, isBody, url, group, status, location) {
     url = _RequestUrl(text, sl, tl, hl)
+
+    # gawk's /inet/tcp has no TLS support; delegate HTTPS requests to curl
+    if (UseHttps)
+        return assert(curlGetResponse(HttpProtocol HttpHost url),
+                      "[ERROR] Null response.")
 
     header = "GET " url " HTTP/1.1\r\n"           \
         "Host: " HttpHost "\r\n"                  \
@@ -169,6 +182,13 @@ function postResponse(text, sl, tl, hl, type,
                       content, contentLength, contentType, group,
                       header, isBody, reqBody, url, status, location, userAgent) {
     url = _PostRequestUrl(text, sl, tl, hl, type)
+
+    # gawk's /inet/tcp has no TLS support; delegate HTTPS requests to curl
+    if (UseHttps) {
+        reqBody = _PostRequestBody(text, sl, tl, hl, type)
+        return curlPost(HttpProtocol HttpHost url, reqBody)
+    }
+
     contentType = _PostRequestContentType(text, sl, tl, hl, type)
     userAgent = _PostRequestUserAgent(text, sl, tl, hl, type)
     reqBody = _PostRequestBody(text, sl, tl, hl, type)

@@ -152,6 +152,33 @@ function emacsMe(    i, params, el, command) {
     }
 }
 
+# Fetch the content of a URL via curl with full header support (proxy, cookie,
+# user-agent). Intended for HTTPS requests where gawk /inet/tcp lacks TLS.
+# Returns a null string if curl is unavailable or response is empty.
+function curlGetResponse(url,    command, content, line) {
+    initCurl()
+
+    if (!Curl) {
+        l(">> not found: curl")
+        w("[WARNING] curl is not found.")
+        return NULLSTR
+    }
+
+    command = Curl " --location --silent"
+    if (Option["proxy"])
+        command = command " --proxy " parameterize(Option["proxy"])
+    if (Option["user-agent"])
+        command = command " --user-agent " parameterize(Option["user-agent"])
+    if (Cookie)
+        command = command " --cookie " parameterize(Cookie)
+    command = command " " parameterize(url)
+    content = NULLSTR
+    while ((command |& getline line) > 0)
+        content = (content ? content "\n" : NULLSTR) line
+    close(command)
+    return content
+}
+
 # Fetch the content of a URL. Return a null string if failed.
 function curl(url, output,    command, content, line) {
     initCurl()
